@@ -1,0 +1,117 @@
+
+.class-schedule .content, .count_jiaowu .content {
+
+    width: 100%;
+}
+
+
+.statistics-table table {
+    width: 100%;
+}
+
+.statistics-table thead {
+    background: #EEEEEE;
+}
+
+.statistics-table thead tr {
+    height: 40px;
+    color: #555555;
+    font-weight: normal;
+}
+
+.statistics-table tbody {
+    background: #fff;
+}
+
+.statistics-table th {
+    /*padding: 0 40px;*/
+    height: 50px;
+    font-weight: normal;
+    border-left: 1px solid #EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
+    text-align: center;
+
+}
+
+.statistics-table tr th:last-child {
+    border-right: 1px solid #eee;
+}
+
+.statistics-table .class-excel {
+}
+
+.statistics-table .class-excel td {
+    width: 70px;
+    min-width: 70px;
+}
+
+.statistics-table .class-excel th {
+    width: 70px;
+    min-width: 70px;
+    text-align: center;
+    padding: 0;
+    line-height: 15px;
+    border-color: #ddd;
+}
+
+.statistics-table .class-excel th div.teacher {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.statistics-table .class-excel td {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.statistics-table .class-excel .yellow-bg {
+    background: #DEDE18;
+    color: #222222;
+}
+
+.statistics-table .class-excel .blueblark-bg {
+    background: #003266;
+    color: #FFFF00;
+}
+
+.statistics-table .class-excel .blue-bg {
+    background: #3266FF;
+    color: #FFFF00;
+
+}
+
+.statistics-table .class-excel .pink-bg {
+    background: #FF99CD;
+    color: #000000;
+
+}
+
+.statistics-table .class-excel .skyblue-bg {
+    background: #00B1F1;
+    color: #000000;
+
+}
+
+
+.statistics-table .statistics-excel td {
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    width: 70px;
+    min-width: 70px;
+    padding: 0;
+    line-height: 15px;
+}
+
+.statistics-table .statistics-excel th {
+    padding: 10px;
+    border-color: #ddd;
+}
+
+.statistics-table .statistics-excel tbody th {
+    width: 150px;
+    min-width: 150px;
+}

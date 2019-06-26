@@ -1,0 +1,126 @@
+
+.filter {
+    background: #fff;
+    padding: 10px 30px;
+}
+
+.filter label {
+    color: #666;
+
+}
+
+.filter ul.fiter-list {
+    width: calc(100% - 42px)
+}
+
+.filter .all a {
+    color: #4849A6;
+    font-weight: bold;
+}
+
+.filter-item {
+    padding: 0 15.5px;
+    margin-bottom: 15px;
+    /*position: relative;*/
+    cursor: pointer;
+    color: #666;
+}
+
+.filter-item:hover {
+    color: #5859B5;
+    font-weight: 700;
+}
+
+#filter_subject .filter-item:hover {
+    color: #666;
+    font-weight: normal;
+}
+
+#filter_subject .filter-item .options .option:hover {
+    color: #5859B5;
+    font-weight: 700;
+}
+
+.filter-item a {
+    color: #777777;
+}
+
+.filter-item .dropdown button {
+    width: 82px;
+    height: 24px;
+    background: none;
+    border: 1px solid rgba(221, 221, 221, 1);
+    box-shadow: none;
+    color: #777777;
+}
+
+.filter-item .choose-date {
+    width: 140px;
+    height: 24px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(221, 221, 221, 1);
+    color: #777;
+    border-radius: 0;
+}
+
+.filter-item .choose-date input {
+    width: 120px;
+    cursor: pointer;
+}
+
+.filter-item a.subject {
+    display: block;
+    width: 82px;
+    height: 24px;
+    background: none;
+    border: 1px solid rgba(221, 221, 221, 1);
+    box-shadow: none;
+    color: #777777;
+    text-align: center;
+}
+
+.filter-item a.subject input {
+    width: 60px;
+    border: none;
+    height: 22px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.filter-item a.subject img {
+    margin-right: 3px;
+}
+
+.filter-item .options {
+    /*width: 369px;*/
+    min-width: 82px;
+    height: 40px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid #aaa;
+    z-index: 3;
+    padding-right: 10px;
+}
+
+.filter-item .options.remove {
+    display: none !important;
+}
+
+.filter-item.have-after:after {
+    content: '';
+    height: 1px;
+    width: 82px;
+    background: #fff;
+    position: absolute;
+    /*left: 15.5px;*/
+    z-index: 4;
+}
+
+.filter-item.no-after:after {
+    height: 1px;
+    content: '';
+    width: 82px;
+    background: rgba(221, 221, 221, 1);
+    position: absolute;
+    left: 15.5px;
+    z-index: 4;
+}

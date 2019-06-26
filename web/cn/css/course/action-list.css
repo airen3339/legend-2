@@ -1,0 +1,34 @@
+
+.action-list {
+    margin-top: 15px;
+    position: absolute;
+    right: 0;
+}
+
+.action-list .action-item {
+    display: block;
+    height: 32px;
+    line-height: 32px;
+    background: #fff;
+    padding-left: 11px;
+    padding-right: 10px;
+    margin-right: 10px;
+    color: #5859B5;
+    border: 1px solid #E5E5E5;
+    cursor: pointer;
+}
+
+.action-list .action-item img {
+    margin-right: 5px;
+}
+
+.action-list .action-item:last-child {
+    margin-right: 0;
+}
+
+.xueguan-action-list .action-item span:nth-child(2) {
+    border-left: 1px solid #DCDCDC;
+    border-right: 1px solid #DCDCDC;
+    padding: 0 10px;
+    margin: 0 10px;
+}

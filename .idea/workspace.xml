@@ -2,6 +2,57 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a89fd5b7-33fd-43d9-9828-4a55acf6aac5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/action-list.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-grid.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-grid.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-grid.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-grid.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-reboot.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-reboot.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-reboot.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap-reboot.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/css/bootstrap.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/js/bootstrap.bundle.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/js/bootstrap.bundle.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/class-statistics.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/datepicker.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/filter.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/jquery.datetimepicker.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/paike-modal.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/public.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/scheduling-list.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/scheduling-table.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/statistics-table.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/css/course/subject_options.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/bootstrap.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/bootstrap.min.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/choose-date.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/choosedate-hasHour.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/datapicker-separate/api.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/datapicker-separate/datepicker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/datapicker-separate/day.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/datapicker-separate/month.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/datapicker-separate/time.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/datapicker-separate/year.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/datepicker.all.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/filter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/jquery.datetimepicker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/modal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/plugins/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/plugins/moment.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/popper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/scheduling-choose.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/cn/js/course/scheduling-function.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../course/commands/front/ContentTopWidget.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../course/commands/front/FilterWidget.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../course/commands/front/views/contentTop.php" beforeDir="false" />
@@ -69,7 +120,12 @@
       <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/UserController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../course/modules/content/views/layouts/content.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/views/layouts/content.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../course/modules/content/views/login/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/views/login/login.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/logs/app.log" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/logs/app.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/logs/app.log.1" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/logs/app.log.1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/logs/app.log.2" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/logs/app.log.2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/logs/app.log.3" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/logs/app.log.3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/logs/app.log.4" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/logs/app.log.4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runtime/logs/app.log.5" beforeDir="false" afterPath="$PROJECT_DIR$/runtime/logs/app.log.5" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,6 +138,9 @@
       <executable />
     </execution>
   </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -91,22 +150,163 @@
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="index" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="legend" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+              <item name="plugins" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="legend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="course" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="cn" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/cn/images" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\project\legend\web\cn\images" />
+      <recent name="D:\project\legend\web\cn\js" />
+      <recent name="D:\project\legend\web\cn\css" />
+      <recent name="D:\project\legend" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -132,16 +332,17 @@
       <updated>1561542927810</updated>
       <workItem from="1561542928854" duration="21000" />
       <workItem from="1561542969860" duration="45000" />
+      <workItem from="1561543259823" duration="293000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66000" />
+    <option name="totallyTimeSpent" value="359000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -164,5 +365,31 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/config/db.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3097" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/cn/views/index/login.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/cn/css/course/login.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/cn/js/course/plugins/jquery.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
   </component>
 </project>

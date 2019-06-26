@@ -1,0 +1,162 @@
+
+.scheduling-table {
+    background: #fff;
+    padding-bottom: 30px;
+}
+
+.scheduling-table .choose {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 30px;
+    color: #333;
+}
+
+.scheduling-table .choose div.float-left {
+    margin-right: 40px;
+}
+
+.scheduling-table .choose label {
+    margin-right: 5px;
+}
+
+.scheduling-table .choose select {
+    width: 100px;
+    height: 24px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    color: #888;
+    cursor: pointer;
+}
+
+.scheduling-table .choose .add-button {
+    margin-left: 30px;
+}
+
+.scheduling-table .choose .add-button button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #5859B5;
+    cursor: pointer;
+}
+
+.scheduling-table select {
+    width: 100px;
+    height: 24px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    color: #888;
+    cursor: pointer;
+
+}
+
+.scheduling-table table thead {
+    border-top: 1px solid #eee;
+}
+
+.scheduling-table table thead th {
+    color: #888;
+}
+
+.scheduling-table table th {
+    border-left: 1px solid #EEEEEE;
+    border-bottom: 1px solid #EEEEEE;
+    height: 40px;
+    color: #333;
+
+}
+
+.scheduling-table table th input {
+    width: 100px;
+    height: 24px;
+    border: 1px solid rgba(220, 220, 220, 1);
+}
+
+.scheduling-table table th .c-datepicker-date-editor {
+    width: 100px;
+    height: 24px;
+    border: 1px solid rgba(220, 220, 220, 1);
+}
+
+.scheduling-table table th .c-datepicker-date-editor input {
+    width: 60px;
+    height: 22px;
+    color: #888;
+    font-size: 12px;
+}
+
+
+
+.scheduling-table table th.d-flex {
+    height: 42px;
+}
+
+.scheduling-table table th span.button {
+    /*line-height: 41px;*/
+    /*margin-left: calc((100% - 56px) / 3);*/
+}
+
+/*.scheduling-table table th span:last-child {
+    margin-right: calc((100% - 56px) / 3);
+}*/
+
+.scheduling-table table tr th:first-child {
+    border-left: none;
+    border-left: none;
+}
+
+.Time-range{
+    width: 220px !important;
+    border: none !important;
+    margin: 0 auto;
+}
+.Time-range .c-datepicker-date-editor{
+    margin-top: 0;
+
+}
+.Time-range input{
+    width: 90px !important;
+}
+
+/*我的课表*/
+.choose-year::-ms-expand { display: none; }
+.choose-year{
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    /*在选择框的最右侧中间显示小箭头图片*/
+    background: url("/cn/images/course/kb_calendar.png") no-repeat scroll  center transparent;
+    background-position: 90%;
+    width: 95px !important;
+    height: 30px !important;
+    line-height: 30px;
+    padding-left: 20px;
+}
+.month-count{
+    width: calc(100% - 60px);
+    margin-left: 30px;
+    border: 1px solid #eee;
+}
+.month-count th{
+    cursor: pointer;
+}
+.month-count th.on{
+    background: #5859b5;
+    color: #fff;
+}
+.myschedule-count thead{
+    background: #eee;
+}
+.myschedule-count thead th{
+    border-left-color: #e5e5e5;
+}
+.have-class{
+    color: #34ad75 !important;
+}
+.going-room span{
+    background: #5859b5;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+.not-start{
+    color: #888888 !important;
+}

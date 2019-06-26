@@ -1,0 +1,102 @@
+
+.scheduling-list {
+    margin-top: 10px;
+}
+
+.scheduling-list .choose-input {
+    width: 100px;
+    height: 24px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    background: none;
+    margin: 0 auto;
+}
+
+.scheduling-list .choose-input input {
+    width: 70px;
+    border: none;
+    height: 22px;
+    cursor: pointer ;
+}
+
+.scheduling-list th {
+    position: relative;
+}
+
+.scheduling-list th .choose-time {
+    position: absolute;
+    top: -140px;
+    left: 90%;
+    width: 222px;
+    height: 319px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.23);
+    border-radius: 5px;
+    z-index: 3;
+    display: none;
+}
+
+.scheduling-list th .choose-time .times {
+    padding: 15px 15px 0;
+
+}
+
+.scheduling-list th .choose-time .time-result {
+    width: 70px;
+    height: 20px;
+    border: 1px solid #DCDCDC;
+    position: relative;
+}
+
+.scheduling-list th .choose-time .time-result i {
+    font-size: 12px;
+    position: absolute;
+    left: 2px;
+}
+
+.scheduling-list th .choose-time .time-result input {
+    width: 50px;
+    height: 18px;
+    position: absolute;
+    right: 2px;
+}
+
+.scheduling-list th .choose-time ul {
+    height: 220px;
+    overflow-y: scroll;
+    padding-top: 10px;
+    margin-bottom: 0;
+}
+
+/*滚动条样式*/
+.scheduling-list th .choose-time ul::-webkit-scrollbar { /*滚动条整体样式*/
+    width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+    /*height: 100%;*/
+}
+
+.scheduling-list th .choose-time ul li {
+    height: 27px;
+    line-height: 27px;
+cursor: pointer;
+}
+
+.scheduling-list th .choose-time ul li.pitchOn,.scheduling-list th .choose-time ul li:hover {
+    background: #5859B5;
+    color: #fff;
+}
+
+.scheduling-list th .choose-time .button-group {
+    border-top: 1px solid #DDDDDD;
+    padding-top: 10px;
+}
+
+.scheduling-list th.have-modal {
+    position: relative;
+}
+
+.scheduling-list th .lable {
+    border: 1px solid #5859B5;
+    padding: 0 5px;
+    font-size: 12px;
+    border-radius: 3px;
+    margin-right: 2px;
+}

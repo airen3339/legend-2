@@ -1,0 +1,81 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: MicrosoftYaHei;
+    background: url("/cn/images/course/login/bj.jpg") no-repeat;
+    background-size: 100% 100%;
+}
+
+.left-title {
+    color: #fff;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+}
+
+.left-title h1 {
+    font-weight: bold;
+    margin-bottom: 42px;
+}
+
+.login-form {
+    width: 264px;
+    height: 311px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 1);
+    position: absolute;
+    top: calc((100% - 311px) / 2);
+    left: 60%;
+}
+
+.form-head {
+    background: #3E40AB;
+    color: #fff;
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+}
+
+form {
+    padding: 40px 24px;
+}
+
+.form-group {
+    width: 219px;
+    height: 42px;
+    border: 1px solid rgba(221, 221, 221, 1);
+    border-radius: 3px;
+    margin-bottom: 25px;
+    padding-left: 11px;
+}
+
+.form-group input {
+    border: none;
+    margin-top: 6px;
+    color: #AAAAAA;
+}
+
+.form-group input::-webkit-input-placeholder {
+    color: #AAAAAA;
+}
+
+.submit {
+    width: 219px;
+    height: 42px;
+    border-radius: 5px;
+    line-height: 42px;
+    background: #3E40AB;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    margin-top: 6px;
+}
+
+.shadow {
+    position: relative;
+    left: -33px;
+    top: -22.5px;
+}

@@ -1,0 +1,316 @@
+.add-class-modal.modal {
+
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 14px;
+
+}
+
+.add-class-modal.modal .modal-dialog {
+    min-width: 790px;
+    max-width: 80%;
+    width: 80%;
+    height: 600px;
+    background: rgba(255, 255, 255, 1);
+    margin: 0 auto;
+    pointer-events: auto;
+    /*overflow-x: scroll;*/
+}
+
+.add-class-modal.modal .modal-dialog .modal-title {
+    position: relative;
+}
+
+.add-class-modal.modal .modal-dialog .cancel {
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.add-class-modal.modal .modal-dialog .modal-body {
+    padding: 0;
+}
+
+.paike {
+    padding: 20px 0 0;
+}
+
+.paike .paike-filter {
+    padding: 0 20px;
+    /*padding: 0 20px;*/
+}
+
+.paike .paike-filter .paike-filter-item {
+    /*float: left;*/
+    margin-right: 12px;
+    font-size: 14px;
+}
+
+.paike .paike-filter .paike-filter-item label {
+    margin-right: 5px;
+}
+
+.paike .paike-filter .paike-filter-item select {
+    width: 118px;
+    height: 24px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    color: #888888;
+
+}
+
+.paike .paike-filter .paike-filter-item input {
+    border: 1px solid rgba(220, 220, 220, 1);
+    height: 24px;
+    width: 80px;
+    text-align: center;
+}
+
+.paike .paike-filter .export {
+    margin-top: 0;
+    border: 1px solid #EEEEEE;
+}
+
+.paike .paike-filter .export img {
+    margin-right: 5px;
+}
+
+.paike table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.paike table thead tr {
+    height: 42px;
+    background: #F3F3F3;
+}
+
+.paike table th {
+    border-bottom: 1px solid #E5E5E5;
+    border-right: 1px solid #E5E5E5;
+}
+
+.paike table tbody th {
+    padding: 20px 10px;
+    position: relative;
+    min-width: 90px;
+}
+
+.paike table tbody th span {
+    cursor: pointer;
+}
+
+.paike table tbody th select {
+    width: 104px;
+    height: 24px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    color: #888;
+}
+
+.paike table tbody th select.choose-status {
+    border: none;
+    text-align: center;
+    text-align-last: center;
+}
+
+.paike table tbody th select.choose-status option {
+    color: #888888;
+}
+
+.add-button {
+    padding: 20px;
+}
+
+.add-button button {
+    width: 79px;
+    height: 25px;
+    background: rgba(88, 89, 181, 1);
+    border-radius: 5px;
+    color: #fff;
+    border: none;
+}
+
+.export-alert {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.export-alert .modal-dialog {
+    display: block;
+    width: 380px;
+    height: 170px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(188, 188, 188, 1);
+}
+
+.export-alert .modal-dialog .cancel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+}
+
+.export-alert .modal-dialog p.remind-word {
+    margin-top: 60px;
+    margin-bottom: 30px;
+    text-align: center;
+
+}
+
+.export-alert .modal-dialog p.button {
+    text-align: center;
+}
+
+.export-alert .modal-dialog p.button button {
+    width: 120px;
+    height: 30px;
+    border: 1px solid rgba(88, 89, 181, 1);
+    border-radius: 5px;
+    color: #5859B5;
+    background: #fff;
+}
+
+.Paike_choose_student .modal-dialog {
+    width: 500px;
+    height: 300px;
+}
+
+.Paike_choose_student .modal-dialog .modal-header .input-group {
+    border: 1px solid #ccc;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.Paike_choose_student .modal-dialog .modal-header .input-group input {
+    padding-left: 10px;
+    border: none;
+}
+
+.Paike_choose_student .modal-dialog .modal-header .input-group img {
+    float: right;
+    height: 16px;
+    position: absolute;
+    right: 5px;
+    top: 6px;
+}
+
+.Paike_choose_student .modal-dialog ul {
+    padding-left: 0;
+    height: 100px;
+    overflow-y: auto;
+}
+
+.Paike_choose_student .modal-dialog ul li {
+    float: left;
+    width: 20%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Paike_choose_student .modal-dialog ul li:hover {
+    color: #5859B5;
+}
+
+.Paike_choose_student .modal-dialog .modal-footer button {
+    width: 77px;
+    height: 26px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-right: 10px;
+
+}
+
+.Paike_choose_student .modal-dialog .modal-footer button:first-child {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #000;
+    font-weight: normal;
+}
+
+.Paike_choose_student .modal-dialog .modal-footer button:last-child {
+    background: #5859B5;
+    color: #fff;
+    border: none;
+}
+
+
+.add-class-modal .edit-time {
+    width: 250px;
+    height: 400px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    position: absolute;
+    top: 70px;
+}
+
+.add-class-modal .modal .times {
+    height: 300px;
+}
+
+.add-class-modal .edit-time .times .time .time-result {
+    padding-left: 5px;
+    margin: 10px 0;
+}
+
+.add-class-modal .edit-time .times .time .time-result input {
+    width: 40px;
+}
+
+.add-class-modal .edit-time .times .start-time .time-result {
+    padding-left: 30px;
+}
+
+.add-class-modal .edit-time .times .start-time .time-result input {
+    text-align: right;
+}
+
+.add-class-modal .edit-time .times .time {
+    /*width: 100px;*/
+}
+
+.add-class-modal .edit-time .times .time ul {
+    width: 120px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.add-class-modal .edit-time .times .bar {
+    position: absolute;
+    left: 40%;
+    top: 10px;
+}
+
+.add-class-modal .edit-time .times .time ul li.pitchOn,
+.add-class-modal .edit-time .times .time ul li:hover {
+    color: #fff;
+    background: #5859B5;
+}
+
+.add-class-modal .choose-input {
+    width: 100px;
+    float: left;
+    border: 1px solid #dcdfe6;
+}
+
+.add-class-modal .choose-input input {
+    width: 80%;
+    border: none;
+    cursor: pointer;
+}

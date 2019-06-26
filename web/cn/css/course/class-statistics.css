@@ -1,0 +1,61 @@
+.class-statistics {
+    height: 50px;
+}
+
+
+.class-statistics p {
+    line-height: 50px;
+    color: #333333;
+    margin-right: 5px;
+    margin-bottom: 0;
+}
+
+.class-statistics p span {
+    color: #5859B5;
+}
+
+.class-statistics .input-group {
+    width: 207px;
+    height: 27px;
+    background: rgba(255, 255, 255, 1);
+    margin-top: 11.5px;
+    margin-right: 20px;
+}
+
+.class-statistics .input-group .form-control {
+    width: 178px;
+    height: 27px;
+    border: 1px solid rgba(229, 229, 229, 1);
+    border-radius: 0;
+    font-size: 12px;
+    color: #777777;
+
+}
+
+.class-statistics .input-group .input-group-append {
+    width: 27px;
+    height: 27px;
+    background: #5859B5;
+}
+
+.class-statistics .input-group .input-group-append button {
+    padding: 0;
+    width: 100%;
+    border: none;
+}
+
+.class-statistics .input-group .input-group-append button img {
+    margin-top: -5px;
+}
+
+.class-statistics-min {
+    height: 40px;
+}
+
+.class-statistics-min p {
+    line-height: 40px;
+}
+
+.class-statistics-min .input-group {
+    margin-top: 6.5px;
+}

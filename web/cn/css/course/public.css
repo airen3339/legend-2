@@ -1,0 +1,1129 @@
+.nav-left {
+    height: 100%;
+    width: 203px;
+    background: #36376C;
+    position: fixed;
+    color: #fff;
+    z-index: 2;
+}
+
+.nav-left a {
+    color: #fff;
+
+}
+
+.nav-left .logo {
+    height: 70px;
+    padding: 19px 0 0 22px;
+    background: #5859B5;
+}
+
+.nav-left .logo span {
+    margin-top: 32px;
+    margin-left: 10px;
+}
+
+body {
+    min-width: 1200px;
+    overflow-x: scroll;
+}
+
+li {
+    list-style: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.purple-font {
+    color: #5859B5 !important;
+}
+
+.purple-font a {
+    color: #5859B5 !important;
+}
+
+.font-red {
+    color: #D15454;
+}
+
+.font-red2 {
+    color: #DC6D6D !important;
+}
+
+.green-font {
+    color: #3AB368 !important;
+}
+
+.font-7 {
+    color: #777 !important;
+}
+
+.font-8 {
+    color: #888;
+}
+
+.font-dd {
+    color: #ddd;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.font-weight {
+    font-weight: 700;
+}
+
+.fs-12 {
+    font-size: 12px;
+}
+
+/*顶部外边距-5px*/
+.mmtf {
+    margin-top: -5px;
+}
+
+/*顶部外边距-3px*/
+.mt-n3 {
+    margin-top: -3px;
+}
+
+.nav-left ul li {
+    padding-left: 46px;
+    height: 68px;
+    line-height: 68px;
+    border-bottom: 1px solid #404180;
+    position: relative;
+    cursor: pointer;
+}
+
+.nav-left ul li a {
+    /*    display: block;
+        height: 68px;
+        line-height: 68px;*/
+    position: relative;
+}
+
+.nav-left ul li img.left-icon {
+    margin-right: 22px;
+    float: left;
+    margin-top: 23px;
+}
+
+.nav-left ul li:last-child {
+    border-bottom: none;
+}
+
+.nav-left ul li.on {
+    background: #fff;
+
+}
+
+.nav-left ul li.on a {
+    color: #4849A6;
+
+}
+
+.nav-left ul li a:hover {
+    text-decoration: none;
+}
+
+.arrows {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    margin-right: 0 !important;
+}
+
+.nav-left ul.vip-second {
+    display: none;
+    padding: 0;
+}
+
+.nav-left ul.vip-second.on {
+    display: block;
+}
+
+.nav-left ul li.myclass {
+    height: 50px;
+    line-height: 50px;
+
+    background: #3f407b;
+    /*display: none;*/
+    text-align: right;
+    padding-right: 40px;
+}
+
+.nav-left ul li.myclass.on {
+    display: block;
+    background: #fff;
+}
+
+.nav-left ul li.myclass a {
+    text-align: center;
+}
+
+.main-right {
+    margin-left: 203px;
+
+}
+
+.top {
+    height: 70px;
+    padding-left: 27px;
+}
+
+
+.top .top-left span {
+    margin-right: 11px;
+    line-height: 70px;
+
+}
+
+.top .top-left .border-r {
+    padding-right: 18px;
+    border-right: 1px solid #DDDDDD;
+    margin-right: 16px;
+}
+
+.message {
+    line-height: 70px;
+    padding: 0 36px;
+    border-left: 1px solid #EEEEEE;
+    height: 100%;
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+
+.message a {
+    cursor: pointer;
+}
+
+.to-teacher-count {
+    width: 102px;
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    position: relative;
+    border-left: 1px solid #EEEEEE;
+
+}
+
+.notice {
+    width: 160px;
+    height: 70px;
+    position: absolute;
+    background: url('/cn/images/course/ts_bj.png');
+    font-size: 14px;
+    left: -29px;
+    top: 50px;
+    z-index: 2;
+}
+
+.notice p {
+    line-height: 20px;
+    margin-bottom: 0;
+}
+
+.notice p:first-child {
+    text-align: center;
+    padding-top: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.notice p:last-child {
+    padding: 0 15px;
+}
+
+.notice .to-cancle {
+    cursor: pointer;
+
+}
+
+.msg-num {
+    display: block;
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    top: 12.5px;
+    right: 27.5px;
+    background: #EB6565;
+    border-radius: 50%;
+    font-size: 14px;
+    text-align: center;
+    line-height: 19px;
+    color: #fff;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.calling-card {
+    padding: 13px 26px;
+    height: 70px;
+    width: 219px;
+    position: relative;
+    border-left: 1px solid #EEEEEE;
+    cursor: pointer;
+}
+
+.head {
+    width: 47px;
+    height: 47px;
+    border-radius: 50%;
+    margin-right: 24px;
+}
+
+.name {
+    color: #333333;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+.job {
+    font-size: 14px;
+    color: #888888;
+}
+
+.user_down {
+    position: relative;
+    top: 50%;
+}
+
+.top .dropdown-menu {
+    width: 221px;
+    height: 113px;
+    margin-top: 0;
+    padding: 0;
+    border-radius: 0;
+    border-right: 0;
+    transform: translate3d(0, 70px, 0px) !important;
+}
+
+.top .dropdown-menu a {
+    display: block;
+    height: 56px;
+    line-height: 56px;
+    padding: 0;
+    color: #888888 !important;
+}
+
+.top .dropdown-menu a:first-child {
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.content {
+    background: #F5F5F5;
+    padding: 0 12px;
+    font-size: 14px;
+
+}
+
+.export {
+    display: block;
+    width: 70px;
+    height: 29px;
+    line-height: 29px;
+    margin-top: 11.5px;
+    background: #fff;
+    padding-left: 11px;
+    color: #5859B5;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.export1 {
+    display: block;
+    width: 52px;
+    height: 29px;
+    line-height: 29px;
+    margin-top: 11.5px;
+    background: #fff;
+    padding-left: 11px;
+    color: #5859B5;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.content-top-max {
+    height: 60px;
+    position: relative;
+}
+
+.content-top-max .export {
+    height: 26px;
+    position: absolute;
+    right: 0;
+    margin-top: 14px;
+
+}
+
+.content-top-min {
+    height: 50px;
+    line-height: 50px;
+    position: relative;
+}
+
+.content-top-min a {
+    color: #777777;
+}
+
+.content-top-min .export {
+    height: 26px;
+    margin-top: 12px;
+    position: absolute;
+    right: 0;
+}
+
+.content-title {
+    font-size: 18px;
+    color: #5859B5;
+    margin-bottom: 0;
+    line-height: 60px;
+}
+
+th {
+    text-align: center;
+    font-weight: normal;
+}
+
+#changPassword .modal-content {
+    width: 330px;
+    height: 315px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 0;
+    border: none;
+}
+
+#changPassword .modal-header {
+    padding: 30px;
+    border-bottom: none;
+    position: relative;
+}
+
+#changPassword .close {
+    position: absolute;
+    top: 15px;
+    padding: 0;
+    right: 23px;
+}
+
+#changPassword .modal-title {
+    width: 100%;
+    color: #5859B5;
+
+}
+
+#changPassword .col-form-label {
+    width: 103px;
+    font-size: 14px;
+    margin-right: 13px;
+}
+
+#changPassword .form-group {
+    margin-bottom: 20px;
+}
+
+#changPassword .form-control {
+    width: 152px;
+    height: 28px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    border-radius: 0;
+}
+
+#changPassword .submit {
+    width: 133px;
+    height: 34px;
+    background: rgba(88, 89, 181, 1);
+    border-radius: 3px;
+    border: none;
+    margin-left: 98.5px;
+    margin-top: 10px;
+}
+
+#scheduling .modal-content {
+    width: 462px;
+    height: 217px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 0;
+    border: none;
+}
+
+#scheduling .modal-header {
+    padding: 30px;
+    border-bottom: none;
+    position: relative;
+}
+
+#scheduling .close {
+    position: absolute;
+    top: 15px;
+    padding: 0;
+    right: 23px;
+}
+
+#scheduling ul li {
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+#scheduling ul li .img {
+    height: 77px;
+}
+
+#export .modal-content {
+    width: 380px;
+    height: 170px;
+    border-radius: 0;
+    border: none;
+}
+
+#export .modal-header {
+    border-bottom: none;
+    position: relative;
+}
+
+#export .close {
+    position: absolute;
+    top: 15px;
+    padding: 0;
+    right: 23px;
+}
+
+#export .modal-body p {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+#export .modal-body button {
+    width: 120px;
+    height: 30px;
+    border: 1px solid rgba(88, 89, 181, 1);
+    border-radius: 5px;
+    background: #fff;
+    margin-left: 130px;
+
+}
+
+.table-modal {
+    font-size: 14px;
+}
+
+.table-modal .close {
+    position: absolute;
+    top: 5px;
+    right: -50px;
+}
+
+.table-modal .modal-dialog {
+    max-width: 1100px;
+
+}
+
+.table-modal .modal-content {
+    width: 1100px;
+    position: relative;
+}
+
+nav {
+    background: #EEEEEE;
+
+}
+
+.tab-choose {
+    border: none;
+}
+
+.tab-choose .nav-item {
+    width: 140px;
+    height: 46px;
+    border: none;
+    border-right: 1px solid #E3E3E3;
+    text-align: center;
+    color: #777777;
+    border-top: 4px solid #EEEEEE;
+    border-radius: 0;
+
+}
+
+.tab-choose .nav-item.active {
+    border-top-color: #5859B5;
+    color: #5859B5;
+}
+
+.tab-choose .nav-item:last-child {
+    border-right: none;
+}
+
+nav .choose-dates {
+    width: 75px;
+    height: 46px;
+    line-height: 46px;
+    border: none;
+    background: none;
+    text-align: center;
+    color: #777777;
+    cursor: pointer;
+
+}
+
+nav .choose-dates span {
+    display: block;
+    width: 75px;
+}
+
+nav .choose-dates span img {
+    margin-right: 10px;
+    float: right;
+    margin-top: 19px;
+}
+
+.dropdown-choose .dropdown-toggle {
+    width: 75px;
+    height: 46px;
+    line-height: 46px;
+    background: none;
+    box-shadow: none;
+    border: none;
+    border-left: 1px solid #E3E3E3;
+    color: #777777;
+    cursor: pointer;
+}
+
+.table-modal .modal-content .tab-content table {
+    width: 100%;
+}
+
+.table-modal .modal-content .tab-content thead {
+    color: #777;
+
+}
+
+.table-modal .modal-content .tab-content tr {
+    border-bottom: 1px solid #EEEEEE;
+    height: 50px;
+}
+
+.table-modal .modal-content .tab-content tbody {
+    color: #333;
+    font-weight: 400;
+}
+
+.scheduling .content-top {
+    height: 40px;
+    line-height: 40px;
+
+}
+
+.scheduling .content-top a {
+    color: #777777;
+}
+
+
+.scheduling .statistics-table th {
+    border: none;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+
+.zongji img {
+    margin-right: 10px;
+}
+
+.state {
+    position: relative;
+}
+
+.state span {
+    display: block;
+    width: 50px;
+    float: left
+}
+
+.state img {
+    position: absolute;
+    top: 40%;
+    right: 40px;
+}
+
+.review-list {
+    margin-top: 10px;
+}
+
+.review-list nav {
+    background: #eee;
+}
+
+.review-table tbody th {
+    color: #333;
+}
+
+.choose .export {
+    width: 70px;
+    height: 29px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 3px;
+    line-height: 29px;
+    margin-top: 10.5px;
+    text-align: center;
+    margin-left: 30px;
+}
+
+.chooseTeacher {
+    width: 500px;
+    height: 250px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.23);
+    border-radius: 5px;
+    border: none;
+    position: absolute;
+    left: -50%;
+    top: 70px;
+
+}
+
+.chooseTeacher p {
+    line-height: 60px;
+    margin-bottom: 20px;
+}
+
+.chooseTeacher ul {
+    height: 120px;
+    overflow-y: auto;
+}
+
+.chooseTeacher ul li {
+    font-size: 14px;
+    text-align: center;
+    width: 33.333%;
+    cursor: pointer;
+    line-height: 30px;
+}
+
+.chooseTeacher ul li span {
+    color: #888;
+    margin-left: 0;
+}
+
+.chooseTeacher ul li:hover, .chooseTeacher ul li:hover span {
+    color: #5859B5;
+}
+
+
+.choosSubject {
+    position: absolute;
+    width: 498px;
+    height: 225px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.23);
+    border-radius: 5px;
+    padding: 0 20px;
+    left: calc(50% - 149px);
+    top: calc(50% - 112.5px);
+
+}
+
+.choosSubject ul li {
+    cursor: pointer;
+}
+
+.choosSubject ul li:hover span {
+    color: #5859B5;
+}
+
+th.have-modal .choosSubject {
+    left: calc(50% - 149px) !important;
+    top: 40px;
+
+}
+
+.choosSubject p {
+    line-height: 60px;
+    margin-bottom: 20px;
+}
+
+.choosSubject ul li {
+    margin-left: 30px;
+    position: relative;
+}
+
+.choosSubject ul li a {
+    display: block;
+    width: 76px;
+    height: 24px;
+    border: 1px solid #aaa;
+    color: #777777;
+    text-align: center;
+    background: #fff;
+}
+
+.choosSubject ul li a input {
+    width: 50px;
+    height: 22px;
+    border: none;
+    text-align: center;
+}
+
+.choosSubject ul li.have-after:after {
+    content: '';
+    height: 1px;
+    width: 76px;
+    background: #fff;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+}
+
+.options {
+    display: none;
+    position: absolute;
+    border: 1px solid #aaa;
+    color: #777777;
+    /*width: 349px;*/
+    height: 40px;
+    background: rgba(255, 255, 255, 1);
+    /*left: -136.5px;*/
+    z-index: 1;
+}
+
+.options .option {
+    float: left;
+    margin: 0;
+    text-align: center;
+    line-height: 40px;
+    padding-left: 20px;
+}
+
+.options .option:hover {
+    color: #5859B5;
+}
+
+.button-group {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-group button, .button-group button {
+    cursor: pointer;
+}
+
+.button-group .cancle {
+    width: 77px;
+    height: 26px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    border-radius: 3px;
+    background: none;
+    color: #777777;
+    margin-right: 30px;
+}
+
+.button-group .submit {
+    width: 77px;
+    height: 26px;
+    background: rgba(88, 89, 181, 1);
+    border-radius: 3px;
+    border: none;
+    color: #fff;
+}
+
+
+/*teacher_schedule-list*/
+.scheduling-table .c-datepicker-date-editor {
+    width: 141px;
+    height: 24px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(221, 221, 221, 1);
+    margin-right: 0 !important;
+    margin-top: 13px;
+}
+
+.scheduling-table .c-datepicker-date-editor input {
+    width: 100%;
+}
+
+.scheduling-list nav .choose-input {
+    width: 75px;
+    border: none;
+    height: 45px;
+    line-height: 45px;
+    border-left: 1px solid #E3E3E3;
+
+}
+
+.scheduling-list nav .choose-input input {
+    width: 50px;
+    line-height: 45px;
+
+}
+
+.dropdown-choose {
+    position: relative;
+    /*height: 45px;*/
+    /*line-height: 45px;*/
+}
+
+.dropdown-choose .choose-input {
+    width: 75px;
+    cursor: pointer;
+    border-left: 1px solid #e3e3e3;
+}
+
+.dropdown-choose .choose-input input {
+    background: none;
+    width: 50px;
+    line-height: 45px;
+    text-align: center;
+    color: #777;
+    cursor: pointer;
+
+}
+
+.dropdown-choose .choosSubject {
+    width: 451px;
+    height: 139px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(221, 221, 221, 1);
+    padding: 30px 0 40px;
+    top: 100%;
+}
+
+.dropdown-choose .choosSubject ul.options {
+    width: 430px;
+}
+
+.dropdown-choose .choosSubject ul.options li.option {
+    width: 20%;
+}
+
+.dropdown-choose .choosSubject ul li {
+    margin-left: 15px;
+
+}
+
+.dropdown-choose .choosSubject ul li:first-child a {
+    width: 50px;
+}
+
+.dropdown-choose .choosSubject ul li:nth-child(2) ul.options {
+    left: -70px;
+}
+
+.dropdown-choose .choosSubject ul li:nth-child(3) ul.options {
+    left: -160px;
+}
+
+.dropdown-choose .choosSubject ul li:nth-child(4) ul.options {
+    left: -250px;
+}
+
+.dropdown-choose .choosSubject ul li:nth-child(5) ul.options {
+    left: -350px;
+}
+
+.dropdown-choose input.pitchOn::-webkit-input-placeholder {
+    color: #5859B5;
+}
+
+.choose-dates {
+    position: relative;
+}
+
+.choose-dates .chooseDateModal {
+    width: 260px;
+    height: 170px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(221, 221, 221, 1);
+    position: absolute;
+    top: 100%;
+    left: -21px;
+    padding: 13px 15px;
+}
+
+.choose-dates .chooseDateModal label {
+    line-height: 24px;
+    margin-right: 15px;
+    margin-top: 10px;
+}
+
+.choose-dates .chooseDateModal .choose-date {
+    width: 141px;
+    height: 24px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(221, 221, 221, 1);
+}
+
+.choose-dates .chooseDateModal .choose-date input {
+    width: 100%;
+}
+
+.choose-dates .chooseDateModal .btn-group button {
+    width: 73px;
+    height: 23px;
+    line-height: 21px;
+    border-radius: 3px;
+    padding: 0;
+}
+
+.choose-dates .chooseDateModal .btn-group button.cancel {
+    background: #fff;
+    color: #777777;
+    border: 1px solid rgba(221, 221, 221, 1);
+    margin-right: 20px;
+}
+
+.choose-dates .chooseDateModal .btn-group button.submit {
+    background: #5859B5;
+    color: #fff;
+    border: none;
+}
+
+.teacher-list {
+    background: #fff;
+    padding: 20px 0;
+
+
+}
+
+.teacher-list .teacher-item {
+    width: 80px;
+    height: 70px;
+    border: 1px solid rgba(220, 220, 220, 1);
+    text-align: center;
+    padding: 10px 0;
+    float: left;
+    margin: 10px 20px;
+}
+
+.dropdown_choose .dropdown-item:hover, .dropdown_choose .dropdown-item:visited {
+    background: #e5e3e3;
+    color: #5859B5 !important;
+}
+
+.pageHtml {
+    margin: 6px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.pageHtml .on {
+    background-color: #093e77 !important;
+    color: white !important;
+
+}
+
+.pageHtml > li {
+    display: inline-block;
+    width: 25px;
+    line-height: 25px;
+    height: 25px;
+    text-align: center;
+    border: 1px solid #1c3345;
+    margin: 0 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.handle span {
+    cursor: pointer;
+}
+
+#chooseTeacher li.tired {
+    color: red;
+}
+
+.vip-see-kebiao, .see-shenhe-kebiao {
+    cursor: pointer;
+}
+
+.full-screen-modal {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background: rgba(0, 0, 0, .5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
+.full-screen-modal .modal-dialog {
+    max-width: calc(100% - 100px);
+    max-height: calc(100% - 100px);
+    width: calc(100% - 100px);
+    height: calc(100% - 100px);
+    min-height: 500px;
+    min-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    pointer-events: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.full-screen-modal .modal-dialog .modal-title {
+    position: relative;
+}
+
+.full-screen-modal .modal-dialog .cancel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.full-screen-modal .modal-dialog table tbody {
+    display: block;
+    height: 195px;
+    overflow-y: scroll;
+}
+
+.full-screen-modal .modal-dialog table thead, .full-screen-modal .modal-dialog tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.full-screen-modal .modal-dialog table thead {
+    width: calc(100% - 1em);
+    height: 50px;
+}
+
+.full-screen-modal .modal-dialog .statistics-excel thead tr th:first-child {
+    width: 349px;
+}
+
+
+.full-screen-modal .modal-dialog .statistics-excel thead tr th:last-child {
+    width: 420px;
+}
+
+.full-screen-modal .modal-dialog .statistics-excel tbody tr {
+    display: table-row;
+
+}
+
+
+input[type="date"] {
+    width: 130px;
+    height: 30px;
+    border: 1px solid #ccc;
+}
+
+.classCount .red {
+    color: red;
+}
+
+.classCount .black {
+    color: black;
+}
+
