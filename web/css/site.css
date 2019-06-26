@@ -1,0 +1,136 @@
+html,
+body {
+    height: 100%;
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.wrap > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: transparent;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: /*"\e113"*/ "\e151";
+}
+
+a.desc:after {
+    content: /*"\e114"*/ "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+.nav-parent li{
+     list-style-type: none;
+     border: 1px solid #eeeeee;
+     line-height: 36px;
+     background-color: #0d3349;
+     position: relative;
+ }
+.nav-parent li>a{
+    padding-left: 6px;
+    border: 0 solid white;
+}
+
+.nav-child li {
+    border: 1px solid #0d3349;
+    padding: 3px auto;
+    border-radius: 3px;
+    line-height: 20px;
+    margin-top: 1px;
+    background-color: #0d3349;
+}
+.nav-child{
+    margin-bottom: 0px !important;
+}
+.nav-child li:hover{
+    background-color: aliceblue;
+}
+.nav-child li a:hover{
+    background-color: aliceblue;
+}
+.nav-child li a {
+    padding: 3px 0 3px 18px;
+
+}
+.nav-hid {
+    display: none;
+}
+.nav-img{
+    position: relative;
+    float: right;
+    margin: 14px;
+}
+.img-rotate{
+    transform: rotate(180deg);
+}
+

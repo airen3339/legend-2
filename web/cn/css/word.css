@@ -1,0 +1,92 @@
+
+body{
+    background:#C0C2CC;
+}
+.content{
+    width: 1287px;
+    margin: 0 auto;
+    background:#C0C2CC;
+    padding: 68px 0 0;
+}
+.section_1{
+    width: 793px;
+    background: white;
+    margin: auto ;
+    padding:42px 42px 0;
+    margin-bottom: 16px;
+}
+
+.section_1_top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #C0C2CC;
+}
+.word_logo{
+   width: 33px;
+   height: 33px;
+   margin-right: 10px
+}
+.section_1_center{
+    text-align: center;
+    padding:40px 0 30px
+}
+.toelf{
+    font-weight: 600;
+    font-size: 26px;
+}
+.words{
+    color: #37BC85;
+    margin-top:44px
+}
+.section_1_content{
+    padding:22px 0 ; 
+   border-bottom: 1px solid #C0C2CC;
+}
+
+.translate{
+    display: flex;
+    margin: 10px 0;
+    
+}
+.remember{
+    width:696px;
+    line-height: 30px; 
+}
+.translate>span:first-child{
+    margin:6px 30px 0 0;
+}
+.word_sentence{
+    display: flex;
+    justify-content: space-between;
+    width: 660px
+}
+.word_sentence>div{
+    line-height: 30px
+}
+.word_example{
+    width: 660px;
+    line-height: 30px
+}
+.word{
+    font-weight: 600;
+    margin-right: 12px;
+    margin-left: 9px
+}
+.alphabet{
+    color: gray
+}
+.section_1_bottom{
+    display: flex;
+    justify-content: space-between;
+    padding-top:15px
+}
+.page{
+    text-align: center;
+    padding: 16px
+}
+.word_detail{
+    padding:42px 0;
+    border-bottom:1px solid #C0C2CC;
+}

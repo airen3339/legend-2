@@ -1,0 +1,333 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    list-style-image: none;
+    list-style-type: none;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+html {
+    /*谷歌网页中的最小字体*/
+    -webkit-text-size-adjust: none;
+}
+
+body {
+    font-family: '微软雅黑';
+    font-size: 16px;
+    cursor: pointer;
+}
+
+img {
+    border: 0 none;
+}
+
+a {
+    text-decoration: none;
+    color: #000000;
+}
+
+input[type='button'] {
+    font-family: '微软雅黑';
+}
+
+.col-xs-9, .col-xs-3, .col-xs-5, .col-xs-7, .col-xs-8, .col-xs-4, .col-xs-6, .col-xs-2, .col-xs-1, .col-xs-11, .col-xs-10 {
+    padding: 0 !important;
+}
+
+.col-sm-9, .col-sm-3, .col-sm-5, .col-sm-7, .col-sm-8, .col-sm-4, .col-sm-6, .col-sm-2, .col-sm-1, .col-sm-11, .col-sm-10 {
+    padding: 0 !important;
+}
+
+.clearBox {
+    clear: both;
+}
+
+.autoWidth {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.flex-container {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-container-center {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-container-left {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/*蓝色导航*/
+.blueNav {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background: #0fadfc;
+    color: white;
+    text-align: center;
+    font-size: 1.2em;
+    position: relative;
+}
+
+.blueNav > span {
+    width: 80%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.blueNav a {
+    color: white;
+}
+
+.blueNav b {
+    font-weight: normal;
+    float: left;
+    font-size: 1.3em;
+    position: absolute;
+    left: 2%;
+    top: 0;
+}
+
+.blueNav b img {
+    width: 50%;
+}
+
+.blueNav p {
+    position: absolute;
+    right: 5px;
+    top: 0;
+}
+
+.blueNav img.rightShare {
+    width: 6%;
+    position: absolute;
+    right: 2%;
+    top: 23px;
+}
+
+/*头部搜索css*/
+.headGroup {
+    width: 100%;
+    /*height: 98px;*/
+    padding-bottom: 10px;
+    border-top: 1px #d4d4d4 solid;
+    background: white;
+    position: relative;
+}
+
+.leftLogo {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.leftLogo img {
+    width: 90%;
+}
+
+.inputGroup {
+    width: 100%;
+    /*height: 2.5em;*/
+    margin-top: 12px;
+    position: relative;
+}
+
+.inputGroup span {
+    width: 20%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.inputGroup input {
+    width: 100%;
+    border: 1px #e6e6e6 solid;
+    border-radius: 5px;
+    background: url("../images/index_search.png") no-repeat 5% 0.25em;
+    background-size: auto 80%;
+    padding: 0.5em 0 0.5em 20%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-size: 0.6em;
+}
+
+.personRight, .navRight {
+    margin-top: 19px;
+    text-align: center;
+}
+
+.personRight img {
+    width: 70%;
+}
+
+.navRight img {
+    width: 70%;
+}
+
+.personNav {
+    width: 50%;
+    background: #232a30;
+    position: absolute;
+    right: -50%;
+    top: 0;
+    z-index: 999;
+    display: none;
+}
+
+.topUser {
+    width: 98%;
+    margin: 0 auto;
+    border-bottom: 1px #7c7d7f solid;
+    padding: 20px 0;
+}
+
+.userImg {
+    width: 60%;
+    border-radius: 50%;
+    margin: 0 auto;
+    overflow: hidden;
+    background: white;
+}
+
+.userImg img {
+    width: 100%;
+}
+
+.topUser .col-xs-6 p {
+    color: white;
+    font-size: 1.2em;
+    margin-top: 11%;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bottom-list {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.bottom-list ul {
+    padding-left: 12%;
+}
+
+.bottom-list ul li {
+    margin-top: 20px;
+}
+
+.bottom-list ul li a {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: white;
+    font-size: 1.2em;
+}
+
+/*改版头部*/
+.header_black {
+    width: 100%;
+    text-align: center;
+    background: #343434;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.header_black img {
+    width: 30%;
+}
+
+.header_nav {
+    width: 96%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 0 0 0;
+    border-bottom: 1px #e4e4e4 solid;
+    font-size: 0.4rem;
+    margin-bottom: 8px;
+}
+
+.header_div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header_nav img {
+    height: 39px;
+}
+
+.header_nav .on {
+    color: #ff6702;
+    border-bottom: 2px #ff6702 solid;
+}
+
+.module_nav {
+    width: 96%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.module_nav img {
+    width: 60%;
+}
+
+.module_nav p {
+    font-size: 0.8em;
+    color: #343434;
+}
+
+/*loading遮罩层样式*/
+.common_mask {
+    width: 100%;
+    background: rgba(247, 247, 247, 0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    display: none;
+}
+
+.common_mask img {
+    width: 20%;
+    position: fixed;
+    left: 50%;
+    margin-left: -10%;
+    top: 40%;
+}
+
+input[type=date]::-webkit-inner-spin-button {
+    visibility: hidden;
+}
+
+input[type="date"]::-webkit-clear-button {
+    display: none;
+}
