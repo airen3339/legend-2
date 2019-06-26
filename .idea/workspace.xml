@@ -1,15 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="260" />
-    <option name="y" value="20" />
+  <component name="ChangeListManager">
+    <list default="true" id="a89fd5b7-33fd-43d9-9828-4a55acf6aac5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../course/commands/front/ContentTopWidget.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/commands/front/FilterWidget.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/commands/front/views/contentTop.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/commands/front/views/filter.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/commands/front/views/footerOld.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/config/params.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/config/params.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/config/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/config/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/controllers/GuideController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/controllers/SiteController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/controllers/TestsController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/ApiControl.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/libs/ApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/CourseController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/Jpush.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/libs/Jpush.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/Method.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/libs/Method.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/Methods.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/libs/Methods.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/Sms.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/ToeflController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/libs/VerificationCode.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/ApiController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/ClassesController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/ClassesCountController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/CourseController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/CourseDetailController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/IndexController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/cn/controllers/IndexController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/MyCourseController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/TeacherCountController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/controllers/VipClassesController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/Category.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/Course.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/CourseDetailsSet.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/CourseSet.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/LoginLog.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/MessageLook.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/SetCourse.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/Teacher.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/TeacherDay.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/models/TeacherSet.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/classes-count/count_jiaowu.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/classes-count/count_xueguan.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/classes-count/teacher-count.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/classes/class_course.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/classes/class_jiaowu.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/course-detail/course_class_detail.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/course-detail/course_vip_detail.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/course-detail/student_check_detail.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/course-detail/teacher-course.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/course/user_jiaowu.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/course/user_xueguan.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/index/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/cn/views/index/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/layouts/cn.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/cn/views/layouts/cn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/my-course/jiaowu_class.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/my-course/jiaowu_vip.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/my-course/xueguan_vip.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/teacher-count/teacher-count.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/vip-classes/VIP_jiaowu.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/vip-classes/VIP_xueguan.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/cn/views/vip-classes/vip_course.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/ApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/CategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/CategoryController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/ClassController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/ClassController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/ClassroomController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/ClassroomController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/ContentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/ContentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/TeacherController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/TeacherController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/views/layouts/content.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/views/layouts/content.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/modules/content/views/login/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/../course/modules/content/views/login/login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="561" />
+    <option name="y" value="154" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../course" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a89fd5b7-33fd-43d9-9828-4a55acf6aac5" name="Default Changelist" comment="" />
+      <created>1561542927810</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1561542927810</updated>
+      <workItem from="1561542928854" duration="21000" />
+      <workItem from="1561542969860" duration="45000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="66000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
 </project>

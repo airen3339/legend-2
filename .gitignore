@@ -1,0 +1,9 @@
+/config/db.php
+/config/console.php
+/web/jpush.log
+/.idea
+/runtime
+/robots.txt
+/u.php
+/ErrorFiles
+/web/files
