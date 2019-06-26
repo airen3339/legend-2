@@ -678,3 +678,249 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1561543555.6999
     'REQUEST_TIME' => 1561543555
 ]
+2019-06-26 19:02:25 [127.0.0.1][-][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: content/operate/data-query' in D:\project\legend\vendor\yiisoft\yii2\base\Controller.php:122
+Stack trace:
+#0 D:\project\legend\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('data-query', Array)
+#1 D:\project\legend\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('content/operate...', Array)
+#2 D:\project\legend\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 D:\project\legend\web\index.php(13): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in D:\project\legend\vendor\yiisoft\yii2\web\Application.php:96
+Stack trace:
+#0 D:\project\legend\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\project\legend\web\index.php(13): yii\base\Application->run()
+#2 {main}
+2019-06-26 19:02:25 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'PHPSESSID' => '9d2k4eg19tfd9dnjvtcecvo7g5'
+]
+
+$_SESSION = [
+    '__flash' => []
+    'adminId' => 1
+    'createPower' => 1
+    'contentId' => '4'
+    'headArr' => [
+        0 => [
+            'id' => '1'
+            'roleId' => '1'
+            'cataId' => '1'
+            'createTime' => '1561365326'
+            'name' => '权限功能'
+            'pid' => '0'
+            'rule' => 'rule'
+            'rank' => '5'
+        ]
+        1 => [
+            'id' => '13'
+            'roleId' => '1'
+            'cataId' => '13'
+            'createTime' => '1561452444'
+            'name' => '礼包管理'
+            'pid' => '0'
+            'rule' => 'gift'
+            'rank' => '2'
+        ]
+        2 => [
+            'id' => '4'
+            'roleId' => '1'
+            'cataId' => '4'
+            'createTime' => '2019'
+            'name' => '运营数据'
+            'pid' => '0'
+            'rule' => 'operate'
+            'rank' => '4'
+        ]
+        3 => [
+            'id' => '5'
+            'roleId' => '1'
+            'cataId' => '5'
+            'createTime' => '1561445961'
+            'name' => '玩家相关'
+            'pid' => '0'
+            'rule' => 'plyerplayer'
+            'rank' => '3'
+        ]
+        4 => [
+            'id' => '6'
+            'roleId' => '1'
+            'cataId' => '6'
+            'createTime' => '1561446136'
+            'name' => 'GM工具'
+            'pid' => '0'
+            'rule' => 'gm'
+            'rank' => '3'
+        ]
+    ]
+    'actionId' => '3'
+]
+
+$_SERVER = [
+    'PATH' => 'D:\\Xshell\\;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;D:\\WinSCP\\;D:\\Git\\cmd;C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SYSTEMROOT' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'PHP_FCGI_MAX_REQUESTS' => '1000'
+    'PHPRC' => 'D:/phpStudy/php55n'
+    '_FCGI_SHUTDOWN_EVENT_' => '2940'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/content/operate/data-query'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'REDIRECT_URL' => '/content/operate/data-query'
+    'REMOTE_PORT' => '64907'
+    'SCRIPT_FILENAME' => 'D:/project/legend/web/index.php'
+    'SERVER_ADMIN' => 'admin@phpStudy.net'
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/project/legend/web'
+    'CONTEXT_PREFIX' => ''
+    'REQUEST_SCHEME' => 'http'
+    'DOCUMENT_ROOT' => 'D:/project/legend/web'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_NAME' => 'legend.cn'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i mod_fcgid/2.3.9'
+    'SERVER_SIGNATURE' => ''
+    'SystemRoot' => 'C:\\Windows'
+    'HTTP_COOKIE' => 'PHPSESSID=9d2k4eg19tfd9dnjvtcecvo7g5'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.9'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://legend.cn/content/rule/catalog'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CONNECTION' => 'close'
+    'HTTP_HOST' => 'legend.cn'
+    'REDIRECT_STATUS' => '200'
+    'FCGI_ROLE' => 'RESPONDER'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1561546945.3564
+    'REQUEST_TIME' => 1561546945
+]
+2019-06-26 19:03:24 [127.0.0.1][-][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request: content/operate/data-query' in D:\project\legend\vendor\yiisoft\yii2\base\Controller.php:122
+Stack trace:
+#0 D:\project\legend\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('data-query', Array)
+#1 D:\project\legend\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('content/operate...', Array)
+#2 D:\project\legend\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 D:\project\legend\web\index.php(13): yii\base\Application->run()
+#4 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in D:\project\legend\vendor\yiisoft\yii2\web\Application.php:96
+Stack trace:
+#0 D:\project\legend\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\project\legend\web\index.php(13): yii\base\Application->run()
+#2 {main}
+2019-06-26 19:03:24 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'PHPSESSID' => '9d2k4eg19tfd9dnjvtcecvo7g5'
+]
+
+$_SESSION = [
+    '__flash' => []
+    'adminId' => 1
+    'createPower' => 1
+    'contentId' => '4'
+    'headArr' => [
+        0 => [
+            'id' => '1'
+            'roleId' => '1'
+            'cataId' => '1'
+            'createTime' => '1561365326'
+            'name' => '权限功能'
+            'pid' => '0'
+            'rule' => 'rule'
+            'rank' => '5'
+        ]
+        1 => [
+            'id' => '13'
+            'roleId' => '1'
+            'cataId' => '13'
+            'createTime' => '1561452444'
+            'name' => '礼包管理'
+            'pid' => '0'
+            'rule' => 'gift'
+            'rank' => '2'
+        ]
+        2 => [
+            'id' => '4'
+            'roleId' => '1'
+            'cataId' => '4'
+            'createTime' => '2019'
+            'name' => '运营数据'
+            'pid' => '0'
+            'rule' => 'operate'
+            'rank' => '4'
+        ]
+        3 => [
+            'id' => '5'
+            'roleId' => '1'
+            'cataId' => '5'
+            'createTime' => '1561445961'
+            'name' => '玩家相关'
+            'pid' => '0'
+            'rule' => 'plyerplayer'
+            'rank' => '3'
+        ]
+        4 => [
+            'id' => '6'
+            'roleId' => '1'
+            'cataId' => '6'
+            'createTime' => '1561446136'
+            'name' => 'GM工具'
+            'pid' => '0'
+            'rule' => 'gm'
+            'rank' => '3'
+        ]
+    ]
+    'actionId' => '3'
+]
+
+$_SERVER = [
+    'PATH' => 'D:\\Xshell\\;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;D:\\WinSCP\\;D:\\Git\\cmd;C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps;'
+    'SYSTEMROOT' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'PHP_FCGI_MAX_REQUESTS' => '1000'
+    'PHPRC' => 'D:/phpStudy/php55n'
+    '_FCGI_SHUTDOWN_EVENT_' => '2940'
+    'SCRIPT_NAME' => '/index.php'
+    'REQUEST_URI' => '/content/operate/data-query'
+    'QUERY_STRING' => ''
+    'REQUEST_METHOD' => 'GET'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'REDIRECT_URL' => '/content/operate/data-query'
+    'REMOTE_PORT' => '65002'
+    'SCRIPT_FILENAME' => 'D:/project/legend/web/index.php'
+    'SERVER_ADMIN' => 'admin@phpStudy.net'
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/project/legend/web'
+    'CONTEXT_PREFIX' => ''
+    'REQUEST_SCHEME' => 'http'
+    'DOCUMENT_ROOT' => 'D:/project/legend/web'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_NAME' => 'legend.cn'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Win32) OpenSSL/1.0.1i mod_fcgid/2.3.9'
+    'SERVER_SIGNATURE' => ''
+    'SystemRoot' => 'C:\\Windows'
+    'HTTP_COOKIE' => 'PHPSESSID=9d2k4eg19tfd9dnjvtcecvo7g5'
+    'HTTP_ACCEPT_LANGUAGE' => 'zh-CN,zh;q=0.9'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_REFERER' => 'http://legend.cn/content/rule/catalog'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_CONNECTION' => 'close'
+    'HTTP_HOST' => 'legend.cn'
+    'REDIRECT_STATUS' => '200'
+    'FCGI_ROLE' => 'RESPONDER'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1561547004.6747
+    'REQUEST_TIME' => 1561547004
+]

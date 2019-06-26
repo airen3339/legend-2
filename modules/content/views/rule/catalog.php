@@ -43,6 +43,7 @@
             <th data-options="field:'id'" align="middle">ID</th>
             <th data-options="field:'name'" align="left">分类名称</th>
             <th data-options="field:'createTime'" align="middle">创建时间</th>
+            <th data-options="field:'rule'" align="middle">分类规则</th>
             <th data-options="field:'action'" align="middle">操作</th>
             <th data-options="field:'rank'" align="middle">排序</th>
         </tr>
