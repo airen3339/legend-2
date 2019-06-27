@@ -17,10 +17,10 @@
     <style>
         .choose_download {
             padding-top: 20px;
-            top: 50%;
+            top: 35%;
             width: 350px;
             height: 290px;
-            left: 60%;
+            left: 54%;
             text-align: center;
             padding-right: 0 !important;
             display: none;
