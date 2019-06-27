@@ -3,17 +3,17 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="title" content="后台">
-    <meta name="description" content="后台">
-    <meta name="keywords" content="后台">
+    <meta name="title" content="传奇后台">
+    <meta name="description" content="传奇后台">
+    <meta name="keywords" content="传奇后台">
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>后台</title>
+    <title>传奇后台</title>
     <!-- Le styles -->
+    <script type="text/javascript" src="/js/jquery-3.3.1.js"></script>
     <link href="/css/coreCss/bootstrap-combined.min.css" rel="stylesheet">
     <link href="/css/coreCss/layoutit.css" rel="stylesheet">
     <link href="/css/coreCss/plugin.css" rel="stylesheet">
     <link href="/css/site.css" rel="stylesheet">
-    <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
     <style>
         .choose_download {
             padding-top: 20px;
@@ -60,7 +60,7 @@
     <div class="navbar-inner">
         <div class="container-fluid">
             <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-            <a href="/content/index/index" target="_blank" class="brand"><img src="/css/coreCss/img/favicon.png">后台</a>
+            <a href="/content/index/index" target="_blank" class="brand"><img src="/css/coreCss/img/favicon.png">传奇后台</a>
             <div class="nav-collapse navbar-responsive-collapse collapse">
                 <?php use app\commands\background\HeadWidget;?>
                 <?php HeadWidget::begin();?>

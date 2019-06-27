@@ -2,11 +2,11 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/operate/index">运营数据</a> <span class="divider">/</span></li>
-        <li class="active">数据查询</li>
+        <li class="active">等级分布</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/operate/data-query" method="get" class="form-horizontal">
+    <form action="/content/operate/level-list" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
@@ -22,20 +22,10 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
-                    区服：
+                    查询区服：
                 </td>
                 <td>
                     <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
-                    </select>
-                </td>
-                <td>
-                    渠道：
-                </td>
-                <td>
-                    <select name="channel">
                         <option value="-99">请选择</option>
                         <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
                         <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
@@ -48,25 +38,15 @@
             </tr>
         </table>
     </form>
-    <form action="/content/operate/data-query" method="post">
+    <form action="/content/operate/level-list" method="post">
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>日期</th>
-                <th>总注册数</th>
-                <th>新增设备</th>
-                <th>新增账号登录</th>
-                <th >设备DAU</th>
-                <th >账号DAU</th>
-                <th >账号老用户</th>
-                <th >付费率</th>
-                <th >充值人数</th>
-                <th >充值次数</th>
-                <th >充值金额</th>
-                <th >ARPU</th>
-                <th >ARPPU</th>
-                <th >新增充值数据</th>
-                <th >新增充值金额</th>
+                <th>等级</th>
+                <th>当前等级用户数</th>
+                <th>总用户占比</th>
+                <th>等级滞留用户数</th>
+                <th >等级滞留占比</th>
             </tr>
             </thead>
             <tbody>
@@ -77,16 +57,6 @@
                     <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                 </tr>

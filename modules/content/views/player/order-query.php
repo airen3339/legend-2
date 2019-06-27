@@ -1,25 +1,25 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/operate/index">运营数据</a> <span class="divider">/</span></li>
-        <li class="active">数据查询</li>
+        <li><a href="/content/player/index">玩家相关</a> <span class="divider">/</span></li>
+        <li class="active">订单查询</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/operate/data-query" method="get" class="form-horizontal">
+    <form action="/content/player/order-query" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
-                    开始日期：
+                    uid：
                 </td>
                 <td>
-                    <input class="input-small Wdate" onclick="WdatePicker()" type="text" size="10" id="beginTime"  name="beginTime" value="<?php echo isset($_GET['beginTime'])?$_GET['beginTime']:''?>"/>
+                    <input class="input-small "  type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
                 </td>
                 <td>
-                    结束日期：
+                    订单查询：
                 </td>
                 <td>
-                    <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
+                    <input class="input-small "  type="text" size="10" id="order"  name="order" value="<?php echo isset($_GET['order'])?$_GET['order']:''?>"/>
                 </td>
                 <td>
                     区服：
@@ -32,41 +32,25 @@
                     </select>
                 </td>
                 <td>
-                    渠道：
-                </td>
-                <td>
-                    <select name="channel">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
-                    </select>
-                </td>
-                <td>
                     <button class="btn btn-primary" type="submit">提交</button>
                 </td>
                 <td></td>
             </tr>
         </table>
     </form>
-    <form action="/content/operate/data-query" method="post">
+    <form action="/content/player/order-query" method="post">
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>日期</th>
-                <th>总注册数</th>
-                <th>新增设备</th>
-                <th>新增账号登录</th>
-                <th >设备DAU</th>
-                <th >账号DAU</th>
-                <th >账号老用户</th>
-                <th >付费率</th>
-                <th >充值人数</th>
-                <th >充值次数</th>
-                <th >充值金额</th>
-                <th >ARPU</th>
-                <th >ARPPU</th>
-                <th >新增充值数据</th>
-                <th >新增充值金额</th>
+                <th>账号</th>
+                <th>区服</th>
+                <th>昵称</th>
+                <th>渠道</th>
+                <th>订单号</th>
+                <th>金额</th>
+                <th >充值时间</th>
+                <th >领取时间</th>
+                <th >状态</th>
             </tr>
             </thead>
             <tbody>
@@ -77,12 +61,6 @@
                     <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>

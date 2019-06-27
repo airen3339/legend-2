@@ -89,10 +89,10 @@ class RoleCatalog extends ActiveRecord
      * 两级目录
      */
     public static function getRoleCatalog($roleId){
-        $sql = " select c.id,c.name,c.rule from {{%role_catalog}} rc left join {{%catalog}} c on c.id = rc.cataId where rc.roleId = $roleId and c.pid = 0 order by c.rank desc";
+        $sql = " select c.id,c.name,c.rule from {{%role_catalog}} rc left join {{%catalog}} c on c.id = rc.cataId where rc.roleId = $roleId and c.pid = 0 order by c.rank desc,c.id asc";
         $catalog = \Yii::$app->db->createCommand($sql)->queryAll();
         foreach($catalog as $k => $v){
-            $sql = " select c.id,c.name,c.rule from {{%role_catalog}} rc left join {{%catalog}} c on c.id = rc.cataId where rc.roleId = $roleId and c.pid = {$v['id']} order by c.rank desc";
+            $sql = " select c.id,c.name,c.rule from {{%role_catalog}} rc left join {{%catalog}} c on c.id = rc.cataId where rc.roleId = $roleId and c.pid = {$v['id']} order by c.rank desc,c.id asc";
             $child = \Yii::$app->db->createCommand($sql)->queryAll();
             $catalog[$k]['child'] = $child;
         }

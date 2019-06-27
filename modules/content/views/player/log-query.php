@@ -1,12 +1,12 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/operate/index">运营数据</a> <span class="divider">/</span></li>
-        <li class="active">数据查询</li>
+        <li><a href="/content/player/index">玩家相关</a> <span class="divider">/</span></li>
+        <li class="active">日志查询</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/operate/data-query" method="get" class="form-horizontal">
+    <form action="/content/player/log-query" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
@@ -22,6 +22,12 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
+                    uid：
+                </td>
+                <td>
+                    <input class="input-small "  type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
+                </td>
+                <td>
                     区服：
                 </td>
                 <td>
@@ -31,11 +37,40 @@
                         <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
                     </select>
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    渠道：
+                    属性：
                 </td>
                 <td>
-                    <select name="channel">
+                    <select name="attr">
+                        <option value="-99">请选择</option>
+                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
+                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    </select>
+                </td><td>
+                    物品：
+                </td>
+                <td>
+                    <select name="goods">
+                        <option value="-99">请选择</option>
+                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
+                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    </select>
+                </td><td>
+                    增加\减少：
+                </td>
+                <td>
+                    <select name="count">
+                        <option value="-99">请选择</option>
+                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
+                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    </select>
+                </td><td>
+                    获得\消耗方式：
+                </td>
+                <td>
+                    <select name="way">
                         <option value="-99">请选择</option>
                         <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
                         <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
@@ -48,25 +83,15 @@
             </tr>
         </table>
     </form>
-    <form action="/content/operate/data-query" method="post">
+    <form action="/content/player/log-query" method="post">
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>日期</th>
-                <th>总注册数</th>
-                <th>新增设备</th>
-                <th>新增账号登录</th>
-                <th >设备DAU</th>
-                <th >账号DAU</th>
-                <th >账号老用户</th>
-                <th >付费率</th>
-                <th >充值人数</th>
-                <th >充值次数</th>
-                <th >充值金额</th>
-                <th >ARPU</th>
-                <th >ARPPU</th>
-                <th >新增充值数据</th>
-                <th >新增充值金额</th>
+                <th>获得\消耗方式</th>
+                <th>增加\减少</th>
+                <th>操作时间</th>
+                <th>属性</th>
+                <th>数量</th>
             </tr>
             </thead>
             <tbody>
@@ -79,16 +104,6 @@
                     <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
                 </tr>
                 <?php
             }
@@ -96,27 +111,5 @@
             </tbody>
         </table>
     </form>
-    <div class="pagination pagination-right">
-        <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
-        <?php if($count > 200){?>
-            <span style="font-size: 17px;position: relative;bottom: 5px;">
-            <a onclick="jumpPage()">Go</a>&nbsp;
-            <input type="text" style="width: 20px;height: 18px;" id="jumpPage">&nbsp;页
-        </span>
-        <?php }?>
-        <?php use yii\widgets\LinkPager;
-        echo LinkPager::widget([
-            'pagination' => $page,
-        ])?>
-    </div>
+
 </div>
-<script>
-    function jumpPage(){
-        var page = $("#jumpPage").val();
-        if(isNaN(page) || page <= 0 || !page){
-            alert('请输入正确的数值');
-            return false;
-        }
-        location.href = '/content/rule/role?page='+page;
-    }
-</script>
