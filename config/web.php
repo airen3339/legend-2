@@ -125,6 +125,7 @@ $config = [
 
              'rules' => [
                  ''=>'/cn/index/index',  //首页
+                 'admin.php'=>'/content/login/login',
              ],
 
          ],

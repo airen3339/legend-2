@@ -60,7 +60,7 @@
                     <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                    <td ><span style="width: 120px;height: 5.2em !important; " title="<?php echo $v['catalog'];?>"><?php echo $v['catalog']?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">
                         <div>
