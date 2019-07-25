@@ -10,12 +10,15 @@ class LoginController extends ApiControl
 {
     public function actionIndex()
     {
-        $userId = Yii::$app->session->get('adminId');
-        if(!$userId){
-            $this->redirect('/user/login/index');
-        }else{
-            return $this->render('index');
-        }
-    }
+      
+require('./../vendor/autoload.php');
+require('./../libs/UserInfo.php');
+require('./../libs/GPBMetadata/User.php');
 
+$pbUserInfo = new UserInfo();
+$pbUserInfo->setId(1001);
+$pbUserInfo->setName('jack');
+$str = $pbUserInfo->serializeToString(); 
+var_dump($str);die;
+}
 }
