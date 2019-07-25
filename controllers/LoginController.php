@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\libs\UserInfo;
 use Yii;
 use yii\web\Controller;
 
