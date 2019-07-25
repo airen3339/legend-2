@@ -3,10 +3,10 @@
 namespace app\controllers;
 
 use Yii;
-use app\libs\ApiControl;
+use yii\web\Controller;
 
 
-class LoginController extends ApiControl
+class LoginController extends Controller
 {
     public function actionIndex()
     {
