@@ -1,0 +1,742 @@
+
+syntax='proto3';
+message PlayerProtocol 
+{
+	 uint32 sex = 1;
+	 uint32 vip = 2;
+	 uint32 level = 3;
+	 uint32 school = 4;
+	 uint32 mapId = 5;
+	 uint32 posX = 6;
+	 uint32 posY = 7;
+	 uint32 exp = 8;
+	 uint32 id = 9;
+	 uint32 pk = 10;
+	 uint32 worldId = 11;
+	 uint32 battle = 12;
+	 uint32 status = 13;
+	 uint32 userId = 14;
+	 uint32 vital = 15;
+	 uint32 money = 16;
+	 uint32 ingot = 17;
+	 uint32 cash = 18;	
+	 uint32 factionId = 19;
+	 uint32 ingotAll = 20;
+	 uint32 loginCnt = 21;
+	 uint32 diedCnt = 22;
+	 uint32 medalLevel = 23;
+	 uint32 equipLevel = 24;
+	 uint32 title = 25;
+	 uint32 glamour = 26;	
+	 uint32 soulScore = 27;	
+	 uint32 emailTick = 28;
+	 uint32 speakTick = 29;
+	 uint32 lastLogin = 30;	
+	 string name = 40;
+	 string wname = 41;
+	 string openId = 42;
+	 string createDate = 43;
+	 uint32 curhp = 44;
+	 uint32 curmp = 45;
+	 uint32 onlineTime = 46;
+	 uint32 contribute = 47;
+	 uint32 integral = 48;
+	 string silentReason = 49;
+	 uint32 totalGainIngot = 50;
+	 uint32 totalCosIngot = 51;
+	 uint32 monsterKillNum = 52;
+	 uint32 swornBrosID = 53;
+	 uint32 leaveSwornTime = 54;
+	 uint32 fightTeamID = 55;
+	 string marriageID = 56;
+}
+
+message PBSkill
+{
+	 uint32 id = 1;
+	 uint32 level = 2;
+	 uint32 exp = 3;
+	 uint32 key = 4;
+	 uint32 cdTime = 5;
+}
+message PBShortCutKey
+{
+	 uint32 ptotokey = 1;
+	 uint32 prototype = 2;
+	 uint32 protoid = 3;
+}
+
+message SkillProtocol 
+{
+	repeated PBSkill skills = 1;
+	repeated PBShortCutKey shortCutKey = 2;
+}
+
+message PBBuff
+{
+	 uint32 id = 1;
+	 uint32 hurt = 2;
+	 uint32 tick = 3;
+	 uint32 itemId = 4;
+}
+
+message BuffProtocol 
+{
+	repeated PBBuff buffs = 1;
+}
+
+message PBAttr
+{
+	 uint32 propId = 1;
+	 uint32 value = 2;	
+}
+
+message PBItem
+{
+	 uint32 slot = 1;
+	 uint32 protoId = 2;	
+	 uint32 count = 3;
+	 uint32 tlimit = 4;
+	 bool bind = 5;
+	 uint32 strength = 6;
+	 int32 luck = 7;
+	 uint32 stallprice = 8;
+	 uint32 stalltime = 9;
+	repeated PBAttr attrs = 10;
+	 string guid = 11;
+	 uint32 upStallTime=12;
+	 uint32 specialPropValue=13;
+	 uint32 blessNum=14;
+	 uint32 emblazonry1=15;
+	 uint32 emblazonry2=16;
+	 uint32 emblazonry3=17;
+	 uint32 level = 18;
+	 uint32 exp = 19;
+	 uint32 skinid = 20;
+	 uint32 active = 21;
+}
+
+message PBItemGroup
+{
+	 uint32 id = 1;
+	 uint32 capacity = 2;
+	repeated PBItem items = 3;
+}
+
+message ItemProtocol 
+{
+	repeated PBItemGroup groups = 1;
+}
+
+message PBIimitAttr
+{
+	 uint32 id = 1;
+	 uint32 count = 2;
+	 uint32 tick = 3;
+}
+
+message LimitProtocol 
+{
+	repeated PBIimitAttr limits = 1;
+}
+
+message StallProtocol 
+{
+	repeated PBItem stalls = 1;
+	repeated PBItem mygots = 2;
+}
+
+
+message PBPvplog 
+{
+	 bool res = 1;
+	 uint32 sch = 2;
+	 uint32 sex = 3;
+	 uint32 rank = 4;
+	 uint32 fight = 5;
+	 uint32 time = 6;	
+	 string name = 7;
+}
+
+message PvpProtocol
+{
+	 uint32 cding = 1;
+	 uint32 buyCnt = 2;
+	 uint32 fightCnt = 3;
+	 uint32 coolTime = 4;
+	 uint32 history = 5;
+	 uint32 coolTick = 6;	
+	 uint32 timeTick = 7;	
+
+	repeated PBPvplog logs = 8;
+}
+
+message DigMineProtocol 
+{
+	 uint32 exchangeCount = 1;
+	 uint32 exchangeTime = 2;
+	 uint32 out = 3;
+	 bool new = 4;
+}
+
+message PBTradeLimit
+{
+	 uint32 num = 1;
+	 uint32 id = 2;
+}
+
+message TradeProtocol
+{
+	 uint32 timetick = 1;
+	 int32 ingotTrade = 2;
+	repeated PBTradeLimit limits = 3;
+}
+message DartData
+{
+	 uint32 count = 1;
+	 uint32 state = 2;
+	 uint32 date  = 3;
+	 uint32 offline = 4;
+	 uint32 rewardExp = 5;
+	 uint32 rewardType = 6;
+}
+message DartReward
+{
+	 string roleSID = 1;
+	 uint32 rewardExp = 2;
+	 uint32 count = 3;
+}
+message DartOffRewardExp
+{
+	repeated DartReward dart = 1;
+}
+
+message MainObjectData
+{
+	repeated uint32 doneObjectID = 1;		// 完成了的目标id
+	repeated uint32 takeRewardObjectID = 2;		// 领取了奖励的目标id
+}
+
+message CommonProtocol
+{
+	 uint32 firstKill = 1;
+	 uint32 freeBugle = 2;
+	 uint32 dartCount = 3;
+	 uint32 dartState = 4;
+	 uint32 dartStar = 5;
+	 uint32 dartDate = 6;
+	 uint32 timeTick = 7;
+	 bool inlineTest = 8;
+	 uint32 redBagCount = 10;
+	 uint32 redBagTime = 11;
+	repeated uint32 downloads = 12;
+	 uint32 dartOffline = 13;
+	 uint32 dartRewardExp = 14;
+	 DartData dartData = 	15;
+	 uint32 invadeDropID = 16;
+	 uint32 convoy = 17;
+	 MainObjectData mainObject = 18;		// 主线目标数据
+	 uint32 reliveTime = 19;
+	 uint32 reliveStamp = 20;
+}
+
+message PbBranch 
+{
+	 uint32 branchID = 1;
+	 uint32 state = 2;
+	 string taskTargetState = 3;
+}
+
+message TaskProtocol 
+{
+	 uint32 mainTaskId = 1;
+	 uint32 maintaskState = 2;
+	 string mainTaskTargetState = 3;
+	 uint32 dailyTaskStamp = 4;
+	 uint32 dailyTaskId = 5;
+	 uint32 dailyCurLoop = 6;	
+	 uint32 dailyRewardId = 7;	
+	 string dailyTaskTargetState = 8;	
+	 uint32 hunterTaskStamp = 9;	
+	 uint32 hunterTaskId = 10;	
+	 uint32 hunterCurLoop = 11;	
+	 uint32 hunterState = 12;	
+	 string hunterTaskTargetState = 13;	
+	 uint32 finishByIngot = 14;
+	 uint32 annRewardTaskNum = 15;	
+	 uint32 accBlueRewardTaskNum = 16;	
+	 uint32 accPurpleRewardTaskNum = 17;	
+	 uint32 rewardTaskStamp = 18;	
+	 uint32 rewardTaskGUID = 19;	
+	 uint32 rewardTaskId = 20;	
+	 string rewardTaskTargetState = 21;	
+	repeated PbBranch branchs = 22;
+	 string lastTaskInfo = 23;
+	 uint32 sharedTaskId = 24;
+	 uint32 sharedtaskState = 25;
+	 string sharedTaskTargetState = 26;
+	 uint32 sharedTaskOwner = 27;
+	 uint32 sharedPrizeStamp = 28;
+	 uint32 sharedPrizeNum = 29;
+	 uint32 annSuperRewardTaskNum = 30;
+	 uint32 accSuperRewardTaskNum = 31;
+	 string sharedTaskTargetPos = 32;
+	 uint32 rewardTaskGuardTime = 33;
+}
+
+message TaskProtocol2
+{
+	repeated uint32 branchDones = 1;
+}
+
+message RelationProtocol
+{
+	 uint32 stamp = 1;
+	repeated uint32 gift = 2;
+	repeated uint32 beGift = 3;
+	 string enemyWord = 4;
+}
+
+message FacApplyRoleProtocol
+{
+	repeated ApplyRoles appInfo = 1;
+}
+
+message ApplyRoles
+{
+	 string roleSID = 1;
+	 uint32 level = 2;
+	 uint32 school = 3;
+	 uint32 sex = 4;
+	 uint32 battle = 5;
+	 string name = 6;	
+	 uint32 contri = 7;
+	 uint32 wingID = 8;
+}
+
+message PbSet 
+{
+	 uint32 id = 1;
+	 uint32 value = 2;
+}
+
+message GameSetProtocol 
+{
+	repeated uint32 guardStep = 1;
+	repeated PbSet gameSets = 2;
+}
+
+message RideProtocol 
+{
+	repeated uint32 rides = 1;
+}
+
+message PBAchieveEvent
+{
+	 uint32 eventType = 1;
+	 uint32 data = 2;
+}
+
+message AchieveEventProtocol
+{
+	repeated PBAchieveEvent achieveEvent = 1;
+}
+
+message PBAchieve
+{
+	 uint32 achieveID = 1;
+	 uint32 finishTime = 2;
+}
+
+message AchieveProtocol
+{
+	repeated PBAchieve achieve = 1;
+}
+
+message PBTitle
+{
+	 uint32 titleID = 1;
+	 uint32 finishTime = 2;
+}
+
+message TitleProtocol
+{
+	 uint32 curTitle = 1;
+	repeated PBTitle titles = 2;
+	repeated PBTitle validTitles = 3;
+	repeated PBAchieveEvent progress = 4;
+}
+
+message AdoreProtocol
+{
+	 string datas = 1;
+}
+
+message FacPrayInfo
+{
+	 uint32 praytype = 1;
+	 uint32 praycount = 2;	
+}
+
+message FacmemProtocol
+{
+	 string name = 1;
+	 uint32 level = 2;
+	 uint32 sex = 3;
+	 uint32 school = 4;
+	 uint32 ability = 5;
+	 uint32 activeState = 6;
+	 uint32 contribution = 7;
+	 uint32 cumContrib = 8;
+	 uint32 instContrib = 9;
+	 uint32 position = 10;
+	 uint32 joinTime = 11;
+	 uint32 weapon = 12;
+	 uint32 upperBody = 13;
+	 uint64 praytimestamp = 14;
+	repeated FacPrayInfo prayinfos = 15;
+	 uint32 fireNum = 16;
+	 uint32 wingID = 17;
+}
+
+message ActivitySevenFestival
+{
+	 int32 index = 1;
+	 int32 state = 2;
+}
+
+message ActivitySevenFestivalProtocol
+{
+	repeated ActivitySevenFestival allProg = 1;
+	repeated ActivitySevenFestival allStatus = 2;
+	 bool recheck = 3;
+}
+
+message ActivityProtocol 
+{
+	 int32 modelID = 1;
+	 int32 activityID = 2;
+	 string datas = 3;
+}
+
+message PlayerDropItemProtocol
+{
+	 uint32 lastDropTick = 1;
+	 uint32 lastDropEquipPos = 2;
+	repeated uint32 deathTicks = 3;
+}
+
+message CompetitionProtocol
+{
+	 uint32 remainTime = 1;
+	 uint32 endTime = 2;
+	 uint32 rewardId = 3;
+	 uint32 tamp = 4;
+	 string playerSIDTb = 5;
+	 uint32 isInCompetition = 6;
+	 uint32 activeTime = 7;
+}
+
+message EmailItem
+{
+	 uint32 itemId = 1;
+	 uint32 count = 2;
+	 uint32 strength = 3;
+	 uint32 timeout = 4;	
+	 bool bind = 5;
+}
+
+message EmailProtocol
+{
+	 string title = 1;
+	 string desc = 2;
+	 string sender = 3;
+	 uint32 startDate = 4;
+	 uint32 endDate = 5;
+	 uint32 descId = 6;
+	 string emailId = 7;
+
+	repeated string params = 9;
+	repeated EmailItem items = 10;
+	repeated PBItem insItems = 11;
+	 string hyperlink = 12;
+	 string linkContent = 13;
+
+	 uint32 source = 14;
+	 uint32 type = 15;
+}
+
+message FactionTask
+{
+	 uint32 taskID = 1;
+	 uint32 state = 2;
+	 string taskTargetState = 3;
+	 uint32 completed = 4;
+	 uint32 rewarded = 5;
+}
+
+message FactionTaskProtocol 
+{
+	 uint32 dailyReFreshTime = 1;
+	repeated FactionTask dailyTasks = 2;
+	 uint32 joinCount = 3;
+}
+
+message ShaWarProtocol 
+{
+	 uint32 factionID = 1;
+	 uint32 rewardStamp = 2;
+	 uint32 totalOpenCnt = 3;
+	 string record = 4;
+	repeated string salaryRoleID = 5;
+	 uint32 oldFaction = 6;
+	repeated uint32 joinFacId = 7;
+}
+
+message MasterInfo
+{
+	 string roleSID = 1;
+	 string name = 2;
+	 uint32 school = 3;
+	 uint32 level = 4;
+}
+
+message MasterProtocol
+{
+	 uint32 CD1 = 1;
+	 uint32 CD2 = 2;
+	 string SID = 3;
+	 bool initiative = 4;
+	 uint32 now = 6;
+	 uint32 count = 7;
+	 uint32 betray = 8;
+	 uint32 expel = 9;
+	 uint32 flower = 10;
+	 uint32 finish = 11;
+	 uint32 master = 12;
+	 string name = 13;
+	 uint32 time = 14;
+	repeated MasterInfo t1 = 15;
+	repeated MasterInfo t2 = 16;
+	 string t3 = 17;
+	 string selfName = 18;
+}
+
+message MasterProtocol2
+{
+	 string name = 1;
+	 uint32 school = 2;
+	 uint32 level = 3;
+	 uint32 battle = 4;
+	 string word = 5;
+	 bool expel = 6;
+	 uint32 out = 7;
+	 uint32 flower = 8;
+	repeated MasterInfo t1 = 9;
+	 string t2 = 10;
+	 string t3 = 11;
+	 string t4 = 12;
+	 string t5 = 13;
+	 bool taskIssue = 14;
+	 uint32 taskIssueTime = 15;
+	 uint32 taskProgress = 16;
+	 bool taskFinish = 17;
+	 uint32 taskFinishTime = 18;
+	 uint32 taskRewardTime = 19;
+	 uint32 taskRewardCount = 20;
+}
+message SwornBrosInfo
+{
+	 string sid = 1;
+	 string name = 2;
+	 uint32 level = 3;
+	 uint32 profession = 4;
+	 bool hint = 5;
+}
+message SwornBrosProtocol
+{
+	repeated SwornBrosInfo info = 1;
+}
+message SwornBrosSkillProtocol
+{
+	repeated uint32 skills = 1;
+}
+
+message ActivenessData
+{
+	 int32 actType = 1;
+	 int32 times = 2;
+}
+
+message ActivenessState
+{
+	 int32 integral = 1;
+	 int32 state = 2;
+}
+
+message ActivityFindReward
+{
+	 int32 activityType = 1;
+	 int32 times = 2;
+	 int32 lastFreshDay = 3;
+	 int32 flag = 4;
+	 int32 lastTotalFinishTimes = 5;
+	 int32 lastFinishTimes = 6;
+	 int32 lastFinishDay = 7;
+}
+
+message ActivityNormal
+{
+	 uint32 integral = 1;
+	 uint32 actvienessTime = 2;
+	repeated ActivenessData activeness = 3;
+	repeated ActivenessState state = 4;
+	repeated ActivityFindReward findReward = 5;
+}
+
+message FightMemProtocol
+{
+	 uint32 position = 1;
+}
+
+message PBP3v3Key
+{
+	 uint32 key = 1;
+	 uint32 skillId = 2;
+}
+
+message P3v3Protocol
+{
+	 uint32 count = 1;
+	 uint32 fightCnt = 2;
+	 uint32 winCnt = 3;
+	 uint32 edition = 4;	
+	repeated PBP3v3Key keys = 5;
+	 uint32 fightTeamAuditionGameCount = 6;			// 战队3v3一天参与的淘汰赛
+	 uint32 fightTeamAuditionStamp = 7;			// 战队3v3参与的淘汰赛时间戳
+	 uint32 fightTeamAuditionRewardStamp = 8;		// 战队3v3台套赛奖励时间戳
+}
+
+message FightTeam3v3Protocol
+{
+	repeated uint32 rank = 1;		// 战队排名
+	repeated uint32 regulateTeam = 2;	// 进入正式比赛的队伍
+	 uint32 rewardStamp = 3;	// 奖励时间戳
+}
+
+message QQVipRewardProtocol
+{
+		int32	QQVipNoviceReward = 1;
+		int32	QQVipDailyReward = 2;
+		int32	QQVipChargeReward = 3;
+		int32	SVipNoviceReward = 4;
+		int32	SVipDailyReward = 5;
+		int32	SVipChargeReward = 6;
+		int32	QQVipChargeRecord = 7;
+		int32	SVipChargeRecord = 8;
+		uint32	LastFreshTime = 9;
+		uint32  LastFreshChargeRewardTime = 10;
+}
+
+message EnvoyInfoProtocol
+{
+	 uint32	lastJoinTime = 1;
+	 uint32	stayTime = 2;
+}
+
+message TreasureInfoProtocol
+{
+	 uint32	joinCount = 1;
+	 uint32	lastFreshTime = 2;
+	 uint32 usedTime = 3;
+}
+
+message MarriageTour
+{
+	 uint32 taskStatus = 1;
+}
+
+message Wedding
+{
+	 uint32 weddingCarStatus = 1;
+	 uint32 weddingType = 2;
+	 uint32 weddingVenueStatus = 3;
+	 uint32 weddingBroadcast = 4;
+}
+
+message MarriageProtocol
+{
+	 string marriageId = 1;
+	 string maleSId = 2;
+	 string maleName = 3;
+	 string femaleSId = 4;
+	 string femaleName = 5;
+	 uint32 status = 6;
+	 uint32 time = 7;
+	 MarriageTour tour = 8;
+	 Wedding wedding = 9;
+	 uint32 weddingStatus = 10;
+	 uint32 weddingStartTime = 11;
+	 uint32 bonusTotal = 12;
+}
+
+message DBMountInfoList
+{
+	 uint32 dwCurrentMountBagSlot = 1;	//当前使用的灵兽的背包槽,0:无使用
+	repeated uint32 vecSkinId = 2; //可幻化列表
+	 uint32 dwLastSacrificetTime = 3; //上一次祭祀灵兽的时间
+	 uint32 dwIsCompletePerTask = 4; //是否已完成灵兽的前置任务(1:完成)
+}
+
+
+message DBMountGlobalInfo
+{
+	 uint32 dwRandIndexToday = 1;	//今天随机到的祭祀需要的极品属性
+	 uint32 dwLastUpdateTime = 2; //上次更新的时候
+}
+
+message SingleInstData
+{
+	 uint32 instID = 1;
+	 uint32 randomTime = 2;
+}
+message SingleInstsDataProtocol
+{
+	 uint32 dailyInstID = 1;
+	 bool dailyInstPassed = 2;
+	 uint32 dailyInstTime = 3;
+	repeated SingleInstData passedInsts = 4;
+}
+
+message	MazeNodeProtocol
+{
+	 int32	index		= 1;	//房间索引
+	 int32	mapId		= 2;	//地图Id
+	 int32	openState	= 3;	//门打开标志，低四位表示
+	 int32	eventType	= 4;	//事件类型
+}
+
+message MazeData
+{
+	 int32 headIndex = 1;			//起点
+	 int32 endIndex = 2;			//终点
+	repeated int32 rightPath = 3;			//正确路线
+	repeated MazeNodeProtocol mazeNodes = 4;	//所有迷仙阵房间具体信息
+	 int32 resetTime = 5;			//重置时间
+}
+
+message MazeCurPath
+{
+	repeated int32 curPath = 1;			//已探明路线
+}
+
+message	MazeNodeState
+{
+	 int32	index		= 1;	//房间索引
+	 int32	eventState	= 2;	//事件状态 0未激活 1激活 2完成
+}
+
+message MazeCurState
+{
+	repeated MazeNodeState curState = 1;	//迷仙阵房间状态信息
+}
