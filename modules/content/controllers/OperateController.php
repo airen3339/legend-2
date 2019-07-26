@@ -27,10 +27,21 @@ class OperateController  extends AdminController
     public function actionIndex(){
         return $this->redirect('/content/index/index');
     }
-    /**
-     * 数据查询
-     */
-    public function actionDataQuery(){
+    public function actionTest1(){
+        $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];
+        var_dump($strTest);
+        $digMine = new \DigMineProtocol();
+        $digMine->setExchangeCount(12);
+        $digMine->setExchangeTime(300);
+        $digMine->setOut(23);
+        $digMine->setNew(false);
+        $str = $digMine->serializeToString();
+        var_dump($str);
+        $sig = new \DigMineProtocol();
+        $sig->mergeFromString($str);
+        var_dump('Count:'.$sig->getExchangeCount().' Time:'.$sig->getExchangeTime().' Out:'.$sig->getOut().' New:'.$sig->getNew());die;
+    }
+    public function actionTest2(){
         $data = Yii::$app->db2->createCommand("select * from item")->queryAll();
         $str = $data[0]['datas'];
         $group = new \PBItemGroup();
@@ -51,6 +62,11 @@ class OperateController  extends AdminController
         $item = new \ItemProtocol();
         $item->mergeFromString($str);
         var_dump($item->getGroups());die;
+    }
+    /**
+     * 数据查询
+     */
+    public function actionDataQuery(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
@@ -102,18 +118,6 @@ class OperateController  extends AdminController
      * 等级分布
      */
     public function actionLevelList(){
-        $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];
-        var_dump($strTest);
-        $digMine = new \DigMineProtocol();
-        $digMine->setExchangeCount(12);
-        $digMine->setExchangeTime(300);
-        $digMine->setOut(23);
-        $digMine->setNew(false);
-        $str = $digMine->serializeToString();
-        var_dump($str);
-        $sig = new \DigMineProtocol();
-        $sig->mergeFromString($str);
-        var_dump('Count:'.$sig->getExchangeCount().' Time:'.$sig->getExchangeTime().' Out:'.$sig->getOut().' New:'.$sig->getNew());die;
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
