@@ -7,6 +7,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\modules\content\models\Role;
 use Yii;
 use yii\data\Pagination;
 
@@ -18,6 +19,10 @@ class OperateController  extends AdminController
     public function init(){
         parent::init();
         parent::setContentId('operate');
+        require_once IndexDir.'/../libs/protobuf/out/ItemProtocol.php';
+        require_once IndexDir.'/../libs/protobuf/out/PBItemGroup.php';
+        require_once IndexDir.'/../libs/protobuf/out/PBItem.php';
+        require_once IndexDir.'/../libs/protobuf/out/DigMineProtocol.php';
     }
     public function actionIndex(){
         return $this->redirect('/content/index/index');
@@ -26,6 +31,26 @@ class OperateController  extends AdminController
      * 数据查询
      */
     public function actionDataQuery(){
+        $data = Yii::$app->db2->createCommand("select * from item")->queryAll();
+        $str = $data[0]['datas'];
+        $group = new \PBItemGroup();
+        $group->setId(23);
+        $group->setCapacity('12');
+        $str = $group->serializeToString();
+        $role = Role::findOne(9);
+        $role->realPass = $str;
+        $role->save();
+        var_dump($str);echo '<br/>';
+        $group = new \PBItemGroup();
+        $strs = Role::findOne(9);
+        $strs = $strs->realPass;
+        var_dump($strs);
+        $strs = trim($strs);
+        $group->mergeFromString($strs);
+        var_dump('id:'.$group->getId().' capacity:'.$group->getCapacity());die;
+        $item = new \ItemProtocol();
+        $item->mergeFromString($str);
+        var_dump($item->getGroups());die;
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
@@ -77,6 +102,18 @@ class OperateController  extends AdminController
      * 等级分布
      */
     public function actionLevelList(){
+        $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];
+        var_dump($strTest);
+        $digMine = new \DigMineProtocol();
+        $digMine->setExchangeCount(12);
+        $digMine->setExchangeTime(300);
+        $digMine->setOut(23);
+        $digMine->setNew(false);
+        $str = $digMine->serializeToString();
+        var_dump($str);
+        $sig = new \DigMineProtocol();
+        $sig->mergeFromString($str);
+        var_dump('Count:'.$sig->getExchangeCount().' Time:'.$sig->getExchangeTime().' Out:'.$sig->getOut().' New:'.$sig->getNew());die;
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
