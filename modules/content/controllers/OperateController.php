@@ -7,6 +7,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\libs\Chart;
 use app\modules\content\models\Role;
 use Yii;
 use yii\data\Pagination;
@@ -34,7 +35,7 @@ class OperateController  extends AdminController
         $digMine->setExchangeCount(12);
         $digMine->setExchangeTime(300);
         $digMine->setOut(23);
-        $digMine->setNew(false);
+        $digMine->setNew('false');
         $str = $digMine->serializeToString();
         var_dump($str);
         $sig = new \DigMineProtocol();
@@ -44,20 +45,20 @@ class OperateController  extends AdminController
     public function actionTest2(){
         $data = Yii::$app->db2->createCommand("select * from item")->queryAll();
         $str = $data[0]['datas'];
+//        $group = new \PBItemGroup();
+//        $group->setId(23);
+//        $group->setCapacity('12');
+//        $str = $group->serializeToString();
+//        $role = Role::findOne(9);
+//        $role->realPass = $str;
+//        $role->save();
+//        var_dump($str);echo '<br/>';
+//        $strs = Role::findOne(9);
+//        $strs = $strs->realPass;
+//        var_dump($strs);
+//        $strs = trim($strs);
         $group = new \PBItemGroup();
-        $group->setId(23);
-        $group->setCapacity('12');
-        $str = $group->serializeToString();
-        $role = Role::findOne(9);
-        $role->realPass = $str;
-        $role->save();
-        var_dump($str);echo '<br/>';
-        $group = new \PBItemGroup();
-        $strs = Role::findOne(9);
-        $strs = $strs->realPass;
-        var_dump($strs);
-        $strs = trim($strs);
-        $group->mergeFromString($strs);
+        $group->mergeFromString($str);
         var_dump('id:'.$group->getId().' capacity:'.$group->getCapacity());die;
         $item = new \ItemProtocol();
         $item->mergeFromString($str);
@@ -347,8 +348,8 @@ class OperateController  extends AdminController
         if($service){
             $where .= " and service = '{$service}'";
         }
-        $data = [];
-        return $this->render('login-online-list',['data'=>$data]);
+        $data = ['series'=>'29,30,45,54,65,45,76,23,54,67,32,45,66,78,99,67,123,121,99,321,123,156,222,333'];
+        return $this->render('login-online-list',$data);
     }
     /**
      * 滚服数据

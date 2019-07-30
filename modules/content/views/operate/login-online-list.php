@@ -1,4 +1,13 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<!--<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>-->
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/operate/index">运营数据</a> <span class="divider">/</span></li>
@@ -35,29 +44,65 @@
     <form action="/content/operate/login-online-list" method="post">
         <table class="table table-hover">
             <thead>
-            <tr>
-                <th>等级</th>
-                <th>当前等级用户数</th>
-                <th>总用户占比</th>
-                <th>等级滞留用户数</th>
-                <th >等级滞留占比</th>
-            </tr>
             </thead>
             <tbody>
-            <?php
-            foreach($data as $kss => $v) {
-                ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                </tr>
-                <?php
-            }
-            ?>
+            <div id="container" style="width: 90%;height: 440px;"></div>
+            <input type="hidden" value="<?php echo isset($series)?$series:'';?>" id="linedata"/>
             </tbody>
         </table>
     </form>
 </div>
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    var ydata = $('#linedata').val();
+    var arr = ydata.split(',');
+    option = null;
+    option = {
+        title: {
+            text: '登录分布'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['登录在线分布']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            name:'小时',
+            type: 'category',
+            // boundaryGap: false,
+            data: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+        },
+        yAxis: {
+            name:'人数',
+            type: 'value',
+            // axisLabel:{formatter:'{value} 人数'}
+        },
+        series: [
+            {
+                name:'登录在线分布',
+                type:'line',
+                stack: '登录',
+                data:arr
+            }
+
+        ]
+    };
+
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+</script>
