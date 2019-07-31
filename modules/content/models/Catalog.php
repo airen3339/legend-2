@@ -35,6 +35,7 @@ class Catalog extends ActiveRecord
             $data[$k]['action'] = $str;
             $data[$k]['rank'] = '<input type="text" value="'.$v->rank.'" id="index'.$v->id.'"  style="width:30px;position:relative;margin-top:4px;" onkeyup="setRank('.$v->id.',this)"/>';
             $data[$k]['createTime'] = date('Y-m-d H:i');
+            $data[$k]['showed']=$v['showed']==1?'显示':'隐藏';
         }
         foreach($data as $k => $v){
             $childData = $this->getAllCate($v['id'],$catId);

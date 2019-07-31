@@ -46,6 +46,19 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">显示状态</label>
+                <div class="controls">
+                    <label for="yes">
+                        <input type="radio" id="yes" value="1" <?php if(isset($data['showed']) && $data['showed']==1) echo 'checked';?> name="category[showed]" />
+                        显示
+                    </label>
+                    <label for="no">
+                        <input type="radio" id="no" value="0" <?php if(isset($data['showed']) && $data['showed']==0) echo 'checked';?> name="category[showed]" />
+                        隐藏
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="controls">
                     <input name="id" type="hidden" value="<?php echo isset($id)?$id:''?>">
                     <input type="submit"  class="btn btn-primary" value="提交">

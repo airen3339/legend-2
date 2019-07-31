@@ -142,6 +142,9 @@ class RuleController extends  AdminController {
             if(empty($categoryData['rule'])){
                 die('<script>alert("请添加分类规则");history.go(-1);</script>');
             }
+            if(!isset($categoryData['showed'])){
+                $categoryData['showed'] = 1;
+            }
             $where = '';
             if($id){
                 $where .= " and id != $id";
