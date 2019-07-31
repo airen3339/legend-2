@@ -5,9 +5,10 @@ namespace app\modules\content\controllers;
 
 
 use app\modules\content\models\Catalog;
+use yii\web\Controller;
 use Yii;
 
-class ApiController
+class ApiController extends  Controller
 {
     public $enableCsrfValidation = false;
     /**

@@ -9,9 +9,8 @@ namespace app\modules\content\controllers;
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
-use yii\web\Controller;
 
-class TimerController  extends Controller
+class TimerController  
 {
     /**
      * 当天用户登录数据获取
