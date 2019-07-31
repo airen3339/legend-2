@@ -53,12 +53,12 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                <tr class="text-item tdPad">
+                    <td ><span style="width: 80px; "><?php echo $v['level']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['user_total']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['user_proportion']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['retention_user']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['retention_proportion']?></span></td>
                 </tr>
                 <?php
             }
@@ -66,7 +66,7 @@
             </tbody>
         </table>
     </form>
-    <div class="pagination pagination-right">
+    <div class="pagination pagination-right" style="margin: 10px !important;">
         <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
         <?php if($count > 200){?>
             <span style="font-size: 17px;position: relative;bottom: 5px;">

@@ -65,7 +65,7 @@
                 <th >充值金额</th>
                 <th >ARPU</th>
                 <th >ARPPU</th>
-                <th >新增充值数据</th>
+                <th >新增充值人数</th>
                 <th >新增充值金额</th>
             </tr>
             </thead>
@@ -73,22 +73,22 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                <tr  class="text-item tdPad">
+                    <td ><span style="width: 80px; "><?php echo $v['date']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['newRegister']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['newDevice']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['newLogin']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['deviceDau']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['accountDau']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['oldUser']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['payRate']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['rechargeUser']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['rechargeCount']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['rechargeMoney']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['arpu']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['arppu']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['newRechargeUser']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['newRechargeMoney']?></span></td>
                 </tr>
                 <?php
             }

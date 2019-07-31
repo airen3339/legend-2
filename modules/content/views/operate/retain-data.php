@@ -67,16 +67,16 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                <tr  class="text-item tdPad">
+                    <td ><span style="width: 80px; "><?php echo $v['date']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['total']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['accountDau']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['oldUser']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['two']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['three']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['five']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['seven']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['fifteen']?></span></td>
                 </tr>
                 <?php
             }

@@ -148,4 +148,6 @@ a.desc:after {
     font-weight: bold;
     width: 62px;
 }
-
+.tdPad td{
+    padding: 3.9px !important;
+}
