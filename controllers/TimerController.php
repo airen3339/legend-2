@@ -3,14 +3,14 @@
  * 定时任务api
  */
 
-namespace app\modules\content\controllers;
+namespace app\controllers;
 
 
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 
-class TimerController  
+class TimerController
 {
     /**
      * 当天用户登录数据获取
@@ -18,7 +18,7 @@ class TimerController
      * 留存数据
      *
      */
-    public function actionRetainDataGet(){
+    public function actionRetain(){
         $today = date('Y-m-d');
         $begin = strtotime($today);
         $end = $begin + 86399;
