@@ -3,14 +3,15 @@
  * 定时任务api
  */
 
-namespace app\controllers;
+namespace app\modules\content\controllers;
 
 
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
+use yii\web\Controller;
 
-class TimerController
+class TimerController extends Controller
 {
     /**
      * 当天用户登录数据获取
