@@ -216,7 +216,7 @@ class OperateController  extends AdminController
 //        }
         $data = [];
         $levelTotal = 70;
-        $pageSize = 30;
+        $pageSize = 20;
         $page = Yii::$app->request->get('page',1);
         $start = ($page-1)*$pageSize;
         $end = $page*$pageSize;
@@ -242,7 +242,7 @@ class OperateController  extends AdminController
             }
             $data[]= ['level'=>$i,'user_total'=>$level_num,'user_proportion'=>$user_proportion,'retention_user'=>$retention_user,'retention_proportion'=>$retention_proportion];
         }
-        $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>30]);
+        $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>$pageSize]);
         return $this->render('level-list',['data'=>$data,'page'=>$page,'count'=>$levelTotal]);
     }
     /**
@@ -356,13 +356,22 @@ class OperateController  extends AdminController
         if($channel){
             $where .= " and channel = $channel";
         }
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd']
-        ];
-        return $this->render('level-deposit-list',['data'=>$data]);
+        $levelTotal = 70;
+        $pageSize = 20;
+        $page = Yii::$app->request->get('page',1);
+        $start = ($page-1)*$pageSize;
+        $end = $page*$pageSize;
+        if($end > $levelTotal)$end = $levelTotal;
+        $data = [];
+        for($i=($start+1);$i<=$end;$i++){
+            //总充值金额
+            $depositMoney = 100*$i;
+            //人数
+            $userNum = Player::find()->where("Level = $i")->count();
+            $data[]= ['level'=>$i,'depositMoney'=>$depositMoney,'userNum'=>$userNum];
+        }
+        $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>$pageSize]);
+        return $this->render('level-deposit-list',['data'=>$data,'page'=>$page,'count'=>$levelTotal]);
     }
     /**
      * 充值排行查询
@@ -376,22 +385,29 @@ class OperateController  extends AdminController
         $where = " 1=1 ";
         if($beginTime){
             $begin = strtotime($beginTime);
-            $where .=  " and createTime >= $begin";
+            $where .=  " and unix_timestamp(CreateDate) >= $begin";
         }
         if($endTime){
             $end = strtotime($endTime) + 86399;
-            $where .= " and createTime <= $end";
+            $where .= " and unix_timestamp(CreateDate) <= $end";
         }
-        if($service){
-            $where .= " and service = '{$service}'";
+//        if($service){
+//            $where .= " and service = '{$service}'";
+//        }
+        $total = Player::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$total,'pageSize'=>20]);
+        $data = Player::find()->select('RoleID,Name,LastLogin,Ingot as currentYB')->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
+        foreach($data as $k=> $v){
+            $platform = '缘创进';//平台
+            $depositMoney = 100*$k;//充值金额
+            $lastRechTime = date('Y-m-d H:i');
+            $lastLogin = date('Y-m-d H:i',$v['LastLogin']);
+            $data[$k]['platform'] = $platform;
+            $data[$k]['depositMoney'] = $depositMoney;
+            $data[$k]['lastRechTime'] = $lastRechTime;
+            $data[$k]['lastLogin'] = $lastLogin;
         }
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd']
-        ];
-        return $this->render('deposit-rank-query',['data'=>$data]);
+        return $this->render('deposit-rank-query',['data'=>$data,'page'=>$page,'count'=>$total]);
     }
     /**
      * LTV数据

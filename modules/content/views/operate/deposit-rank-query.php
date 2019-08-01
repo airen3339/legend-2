@@ -55,12 +55,12 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['platform']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['Name']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['depositMoney']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['currentYB']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['lastRechTime']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['lastLogin']?></span></td>
                 </tr>
                 <?php
             }
@@ -68,4 +68,17 @@
             </tbody>
         </table>
     </form>
+    <div class="pagination pagination-right" style="margin: 10px !important;">
+        <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
+        <?php if($count > 200){?>
+            <span style="font-size: 17px;position: relative;bottom: 5px;">
+            <a onclick="jumpPage()">Go</a>&nbsp;
+            <input type="text" style="width: 20px;height: 18px;" id="jumpPage">&nbsp;页
+        </span>
+        <?php }?>
+        <?php use yii\widgets\LinkPager;
+        echo LinkPager::widget([
+            'pagination' => $page,
+        ])?>
+    </div>
 </div>

@@ -53,7 +53,7 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr class="text-item tdPad">
+                <tr class="text-item ">
                     <td ><span style="width: 80px; "><?php echo $v['level']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['user_total']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['user_proportion']?></span></td>
