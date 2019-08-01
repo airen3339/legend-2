@@ -10,10 +10,10 @@
         <table class="table">
             <tr>
                 <td>
-                    uid：
+                    RoleID：
                 </td>
                 <td>
-                    <input class="input-small "  type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
+                    <input class="input-small "  type="text" size="10" id="roleId"  name="rolId" value="<?php echo isset($_GET['roleId'])?$_GET['roleId']:''?>"/>
                 </td>
                 <td>
                     区服：
@@ -47,16 +47,16 @@
             </thead>
             <tbody>
             <?php
-            foreach($data as $kss => $v) {
+            foreach($user as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['UserID']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo '一区'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['Name']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo '乐山'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo '11'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['CreateDate']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i:s',$v['LastLogin']);?></span></td>
                 </tr>
                 <?php
             }
@@ -85,6 +85,6 @@
             alert('请输入正确的数值');
             return false;
         }
-        location.href = '/content/rule/role?page='+page;
+        location.href = '/content/player/role-information?page='+page;
     }
 </script>

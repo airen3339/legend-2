@@ -7,6 +7,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\modules\content\models\Player;
 use yii\data\Pagination;
 
 class PlayerController  extends AdminController
@@ -28,29 +29,18 @@ class PlayerController  extends AdminController
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
         $service = \Yii::$app->request->get('service');
-        $uid = \Yii::$app->request->get('uid');
+        $roleId = \Yii::$app->request->get('rolId');
         $where = ' 1=1 ';
-        if($service){
-            $where .= " and service = '{$service}'";
+//        if($service){
+//            $where .= " and service = '{$service}'";
+//        }
+        if($roleId){
+            $where .= " and RoleID = $roleId ";
         }
-        if($uid){
-            $where .= " and uid = $uid ";
-        }
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-        ];
-        $count = 20;
+        $count = Player::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
-        return $this->render('role-information',['data'=>$data,'page'=>$page,'count'=>$count]);
+        $user = Player::find()->select("RoleID,UserID,Name,LastLogin    ,CreateDate")->where($where)->offset($page->offset)->limit($page->limit)->asArray()->all();
+        return $this->render('role-information',['user'=>$user,'page'=>$page,'count'=>$count]);
     }
     /**
      * 详细信息

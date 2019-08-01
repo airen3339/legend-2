@@ -117,6 +117,6 @@
             alert('请输入正确的数值');
             return false;
         }
-        location.href = '/content/rule/role?page='+page;
+        location.href = '/content/operate/data-query?page='+page;
     }
 </script>
