@@ -43,12 +43,6 @@ $config = [
 
         ],
 
-        'test' => [
-
-            'class'=>'app\modules\test\TestModule'
-
-        ],
-
         'agency' => [
 
             'class'=>'app\modules\agency\AgencyModule'
