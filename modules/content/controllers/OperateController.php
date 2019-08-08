@@ -23,49 +23,9 @@ class OperateController  extends AdminController
     public function init(){
         parent::init();
         parent::setContentId('operate');
-        require_once IndexDir.'/../libs/protobuf/out/ItemProtocol.php';
-        require_once IndexDir.'/../libs/protobuf/out/PBItemGroup.php';
-        require_once IndexDir.'/../libs/protobuf/out/PBItem.php';
-        require_once IndexDir.'/../libs/protobuf/out/DigMineProtocol.php';
     }
     public function actionIndex(){
         return $this->redirect('/content/index/index');
-    }
-    public function actionTest1(){
-        $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];
-        var_dump($strTest);
-        $digMine = new \DigMineProtocol();
-        $digMine->setExchangeCount(12);
-        $digMine->setExchangeTime(300);
-        $digMine->setOut(23);
-        $digMine->setNew('false');
-        $str = $digMine->serializeToString();
-        var_dump($str);
-        $sig = new \DigMineProtocol();
-        $sig->mergeFromString($str);
-        var_dump('Count:'.$sig->getExchangeCount().' Time:'.$sig->getExchangeTime().' Out:'.$sig->getOut().' New:'.$sig->getNew());die;
-    }
-    public function actionTest2(){
-        $data = Yii::$app->db2->createCommand("select * from item")->queryAll();
-        $str = $data[0]['datas'];
-//        $group = new \PBItemGroup();
-//        $group->setId(23);
-//        $group->setCapacity('12');
-//        $str = $group->serializeToString();
-//        $role = Role::findOne(9);
-//        $role->realPass = $str;
-//        $role->save();
-//        var_dump($str);echo '<br/>';
-//        $strs = Role::findOne(9);
-//        $strs = $strs->realPass;
-//        var_dump($strs);
-//        $strs = trim($strs);
-        $group = new \PBItemGroup();
-        $group->mergeFromString($str);
-        var_dump('id:'.$group->getId().' capacity:'.$group->getCapacity());die;
-        $item = new \ItemProtocol();
-        $item->mergeFromString($str);
-        var_dump($item->getGroups());die;
     }
     /**
      * 数据查询
