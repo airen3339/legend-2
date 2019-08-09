@@ -18,6 +18,9 @@ class TestController extends Controller
         require_once IndexDir.'/../libs/protobuf/out/SkillProtocol.php';
         require_once IndexDir.'/../libs/protobuf/out/PBSkill.php';
         require_once IndexDir.'/../libs/protobuf/out/PBShortCutKey.php';
+        require_once IndexDir.'/../libs/protobuf/out/ActivityProtocol.php';
+        require_once IndexDir.'/../libs/protobuf/out/TaskProtocol.php';
+        require_once IndexDir.'/../libs/protobuf/out/PbBranch.php';
     }
 
     public function actionIndex()
@@ -87,18 +90,31 @@ class TestController extends Controller
 
     }
     public function actionTest3(){
-        $data = Yii::$app->db2->createCommand("select * from item")->queryAll();
-        $str = $data[0]['datas'];
+        $data = Yii::$app->db2->createCommand("select * from activity where modelID =5 and activityID = 6")->queryOne();
+        $str = $data['datas'];
 
         var_dump($str);echo '<br/>';
 
-        $group = new \PBItemGroup();
+        $group = new \ActivityProtocol();
         $group->mergeFromString($str);
 
 //        var_dump($group);
-        var_dump('id:'.$group->getId().' capacity:'.$group->getCapacity());die;
-        $item = new \ItemProtocol();
-        $item->mergeFromString($str);
-        var_dump($item->getGroups());die;
+        var_dump('modelId:'.$group->getModelID().' activityId:'.$group->getActivityID().'datas:'.$group->getDatas());
+
+        echo '<hr/>';
+
+        $data = Yii::$app->db2->createCommand("select * from task ")->queryOne();
+        $str = $data['datas'];
+
+        var_dump($str);echo '<br/>';
+
+        $group = new \TaskProtocol();
+        $group->mergeFromString($str);
+
+//        var_dump($group);
+        var_dump('modelId:'.$group->getMainTaskId().' activityId:'.$group->getMaintaskState());
+
+        echo '<hr/>';
+
     }
 }
