@@ -119,7 +119,8 @@ $config = [
              //'suffix' => '.html',
 
              'rules' => [
-                 ''=>'/cn/index/index',  //首页
+//                 ''=>'/cn/index/index',  //首页
+                 ''=>'/content/login/login',//后台登录页
                  'admin.php'=>'/content/login/login',
              ],
 
