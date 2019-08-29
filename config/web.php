@@ -43,9 +43,9 @@ $config = [
 
         ],
 
-        'agency' => [
+        'pay' => [
 
-            'class'=>'app\modules\agency\AgencyModule'
+            'class'=>'app\modules\pay\PayModule'
 
         ],
 

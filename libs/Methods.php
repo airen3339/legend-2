@@ -203,17 +203,17 @@ class Methods
 
         curl_setopt ($ch, CURLOPT_POST, 1);
 
-        if($post_data != ''){
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
 
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
-
-        }
 
         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 
         curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 
         curl_setopt($ch, CURLOPT_HEADER, false);
+        //忽略证书
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
         $file_contents = curl_exec($ch);
 
