@@ -31,11 +31,12 @@ class ApiController extends Controller
         $dateTime = date('YmdHis',$time);
         $date = date('Y-m-d H:i:s',$time);
         $orderNumber = 'YCJ'.time();
-        $province = $request->post('province',350000);
-        $city = $request->post('city',350100);
-        $area = $request->post('area',350102);
-        //通知服务器
-        self::dataToServer($orderNumber,$productName,$amount,1,$date,$detail);
+//        $orderNumber = $request->post('orderNumber');
+        $province = $request->post('province',510000);
+        $city = $request->post('city',510100);
+        $area = $request->post('area',510101);
+//        通知服务器
+//        self::dataToServer($orderNumber,$productName,$amount,1,$date,$detail);
         $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area);
         die(json_encode($return));
     }
@@ -53,8 +54,14 @@ class ApiController extends Controller
         $orderNumber = 'YCJ'.time();
         $pay_type = $request->post('pay_type','');//支付类型
         $ip_add = $request->post('ip_add','');//客户端ip
-        //通知服务器
-        self::dataToServer($orderNumber,$productName,$amount,2,$date,$detail);
+//        通知服务器
+//        self::dataToServer($orderNumber,$productName,$amount,2,$date,$detail);
+        //本地数据记录
+        $uid = $request->post('uid');
+        $ratio = $request->post('ratio');//兑换元宝比例
+        $lucknum = $request->post('lucknum');//额外奖励的元宝数
+        $server_id = $request->post('server_id');//游戏服务器id
+
         $return = self::QingYiOrder($orderNumber,$productName,$amount,$time,$pay_type,$ip_add);
         die(json_encode($return));
     }
