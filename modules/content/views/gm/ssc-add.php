@@ -9,13 +9,13 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="beginTime" name="beginTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="beginTime" name="beginTime" autocomplete="off"  value=""/>
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">结束日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="endTime" name="endTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" autocomplete="off"  id="endTime" name="endTime"  value=""/>
                 </div>
             </div>
             <div class="control-group">

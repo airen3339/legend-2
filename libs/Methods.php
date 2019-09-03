@@ -109,7 +109,8 @@ class Methods
     public static function GmFileGet($command_content,$server_id=903,$command=6,$command_cls=4234){
         $url = 'http://192.168.0.15:8080';
         $post_data = ['server_id'=>$server_id,'command'=>$command,'command_cls'=>$command_cls,'command_content'=>json_encode(['body'=>$command_content])];
-        $aContext = array('http'=>array('method' => 'POST','header' => 'Content-type: application/x-www-form-urlencoded','content' => $post_data));
+        $post_data = http_build_query($post_data);
+        $aContext = array('http'=>array('method' => 'POST','header' =>'Content-type: application/x-www-form-urlencoded','content' =>$post_data));
         $cxContext = stream_context_create($aContext);
         $res = file_get_contents($url,true,$cxContext);
         return $res;

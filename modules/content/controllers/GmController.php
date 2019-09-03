@@ -157,9 +157,9 @@ class GmController  extends AdminController
             $res = $model->save();
             if($res){
                 //通知服务端
-                $command_content = ['beginTime'=>$begin,'end'=>$end];
+                $command_content = ['beginTime'=>strtotime($begin),'end'=>strtotime($end)+86399];
 //                $res = Methods::GmPost($command_content,903,6,4241);
-                $res = Methods::GmFileGet($command_content,903,6,4241);
+                Methods::GmFileGet($command_content,903,6,4241);
                 echo "<script>alert('添加成功');setTimeout(function(){location.href='ssc'},1000)</script>";die;
             }else{
                 echo "<script>alert('添加失败');setTimeout(function(){history.go(-1)},1000)</script>";die;
