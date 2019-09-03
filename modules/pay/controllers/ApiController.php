@@ -5,6 +5,7 @@ namespace app\modules\pay\controllers;
 
 
 use app\libs\Methods;
+use app\modules\pay\models\Recharge;
 use yii\web\Controller;
 
 header('Access-Control-Allow-Origin:*');
@@ -26,15 +27,33 @@ class ApiController extends Controller
         $request = \Yii::$app->request;
         $productName = $request->post('productName','ceshi2');
         $amount = $request->post('amount',1);
-        $detail = $request->post('detail','');
         $time = time();
         $dateTime = date('YmdHis',$time);
-        $date = date('Y-m-d H:i:s',$time);
         $orderNumber = 'YCJ'.time();
 //        $orderNumber = $request->post('orderNumber');
         $province = $request->post('province',510000);
         $city = $request->post('city',510100);
         $area = $request->post('area',510101);
+        $uid = $request->post('uid');
+        $ratio = $request->post('ratio');//元宝比例
+        $luckNum = $request->post('lucknum');//随机赠送元宝数
+        $extInfo = $request->post('ext_info');//其他扩展数据
+        $server_id = $request->post('server_id');//服务器id
+        $sign = $request->post('sign');//验证签名字段
+        //订单数据生成记录
+        $model = new Recharge();
+        $model->uid = $uid;
+        $model->orderNumber = $orderNumber;
+        $model->product = $productName;
+        $model->money = $amount;
+        $model->ratio = $ratio;
+        $model->lucknum = $luckNum;
+        $model->sign = $sign;
+        $model->extInfo = $extInfo;
+        $model->status = 0;
+        $model->server_id = $server_id;
+        $model->createTime = $time;
+        $model->save();
 //        通知服务器
 //        self::dataToServer($orderNumber,$productName,$amount,1,$date,$detail);
         $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area);
@@ -96,11 +115,11 @@ class ApiController extends Controller
      * H5
      */
     public static  function AliOrder($orderNumber,$productName,$amount,$time,$province,$city,$area){
-        $appid = '982280b3587d4133912a8e9e47dc8f3b';
-        $key = 'c43eaf9e8e284fae94bc245326473d3e';
+        $appid = \Yii::$app->params['alipayAppid'];
+        $key = \Yii::$app->params['alipayKey'];
         $dateTime = $time;
         $payType = 'SCANPAY_ALIPAY';
-        $asynNotifyUrl = 'https://www.baidu.com';//商户异步通知地址
+        $asynNotifyUrl = \Yii::$app->params['alipayNotify'];//商户异步通知地址
         $returnUrl = '';//商户前端返回页面地址
         $amount = $amount*100;//金额处理 单位为分
         //生成签名
@@ -209,10 +228,14 @@ class ApiController extends Controller
         $result = self::checkAlipaySign($paySign,$orderNo);
         if($result){
             if($resultcode == '0000'){
-                //通知服务器处理后续
-                $postData = ['orderNumber'=>$orderNo,'amount'=>($amount/100),'success'=>1,'platformNumber'=>$payTrxNo];
-                $url = '';
-                Methods::post($url,$postData);
+                $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = '{$amount}'")->asArray()->one();
+                if($orderData['status'] != 1){//订单未完成
+                    Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
+                    //通知服务器处理后续
+                    $postData = ['uid'=>$orderData['uid'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
+                    $url = '192.168.0.15:8080';
+                    Methods::post($url,$postData);
+                }
                 echo 'SUCCESS';
             }else{
                 echo 'fail';
@@ -277,7 +300,23 @@ class ApiController extends Controller
     第二步，在stringA最后拼接上应用key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为小写，得到sign值signValue。
      */
     public static function checkAlipaySign($paySign,$orderNumber){
+        $appid = \Yii::$app->params['alipayAppid'];
+        $key = \Yii::$app->params['alipayKey'];
+        $province = 510000;//四川省
+        $city = 510100;//四川省成都市
+        $area = 510101;//四川省成都市市辖区
+        $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
+        $payType = 'SCANPAY_ALIPAY';
         //查询数据库数据生成签名进行验证
-        return true;
+        $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
+        $dateTime = date('YmdHis',$orderData['createTime']);
+        $postData = ['amount'=>$orderData['money'],'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
+        ksort($postData);
+        $sign = self::signAlipay($postData,$key);
+        if($sign ==$paySign){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

@@ -6,7 +6,9 @@
  */
 namespace app\modules\pay\controllers;
 
+use app\libs\Methods;
 use app\modules\pay\models\Lottery;
+use function GuzzleHttp\Psr7\str;
 use yii;
 
 class SscController extends yii\web\Controller {
@@ -25,6 +27,8 @@ class SscController extends yii\web\Controller {
         if(isset($data['data'])){
             $code = $data['code'];
             $insert = $data['data'];
+            $newData = 0;//判断是否有新数据
+            $datas = [];
             foreach($insert as $k => $v){
                 $expect = $v['expect'];//开奖编码
                 $openCode = $v['opencode'];//开奖码
@@ -36,16 +40,23 @@ class SscController extends yii\web\Controller {
                 $isHad = Lottery::find()->where("expect = '{$expect}' and openCode = '{$openCode}' and code = '{$code}'")->one();
                 if($isHad){
                     continue;
+                }else{
+                    $model = new Lottery();
+                    $model->date = $date;
+                    $model->code = $code;
+                    $model->expect = $expect;
+                    $model->openCode = $openCode;
+                    $model->openTime = $openTime;
+                    $model->openUnixTime = $openUnixTime;
+                    $model->createTime = $time;
+                    $model->save();
+                    $newData = 1;
+                    $datas[] = $insert[$k];
                 }
-                $model = new Lottery();
-                $model->date = $date;
-                $model->code = $code;
-                $model->expect = $expect;
-                $model->openCode = $openCode;
-                $model->openTime = $openTime;
-                $model->openUnixTime = $openUnixTime;
-                $model->createTime = $time;
-                $model->save();
+            }
+            if($newData ==1){//通知客户端
+                $url = '';
+                Methods::post($url,$datas);
             }
         }
     }
@@ -54,6 +65,23 @@ class SscController extends yii\web\Controller {
      * 返回客户端
      */
     public function actionDataQuery(){
-        $date = Yii::$app->request->post('date');//查询时期
+        $begin = Yii::$app->request->post('begin','2019-09-02');//查询时间 开始
+        $end = Yii::$app->request->post('end');//查询时间 结束
+        if($begin || $end){
+            $where = ' 1 = 1 ';
+            if($begin){
+                $beginTime = strtotime($begin);
+                $where .= " and openUnixTime >= $beginTime" ;
+            }
+            if($end){
+                $endTime = strtotime($end);
+                $where .= " and openUnixTime <= $endTime";
+            }
+            $data = Lottery::find()->where($where)->asArray()->orderBy("openUnixTime desc")->all();
+            $return = ['code'=>1,'msg'=>'数据获取成功','data'=>$data];
+        }else {
+            $return = ['code' => 0, 'msg' => '请至少填写一个筛选时间'];
+        }
+        die(json_encode($return));
     }
 }
