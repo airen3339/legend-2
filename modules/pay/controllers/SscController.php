@@ -27,8 +27,8 @@ class SscController extends yii\web\Controller {
         if(isset($data['data'])){
             $code = $data['code'];
             $insert = $data['data'];
-            $newData = 0;//判断是否有新数据
-            $datas = [];
+//            $newData = 0;//判断是否有新数据
+//            $datas = [];
             foreach($insert as $k => $v){
                 $expect = $v['expect'];//开奖编码
                 $openCode = $v['opencode'];//开奖码
@@ -50,13 +50,13 @@ class SscController extends yii\web\Controller {
                     $model->openUnixTime = $openUnixTime;
                     $model->createTime = $time;
                     $model->save();
-                    $newData = 1;
+//                    $newData = 1;
                     $datas[] = $insert[$k];
                 }
             }
-            if($newData ==1){//通知客户端
-                Methods::GmPost($datas,903,6,4241);
-            }
+//            if($newData ==1){//通知客户端
+//                Methods::GmPost($datas,903,6,4241);
+//            }
         }
     }
     /**
