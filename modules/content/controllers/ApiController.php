@@ -8,6 +8,8 @@ use app\modules\content\models\Catalog;
 use yii\web\Controller;
 use Yii;
 
+header('Access-Control-Allow-Origin:*');
+
 class ApiController extends  Controller
 {
     public $enableCsrfValidation = false;
