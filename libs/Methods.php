@@ -78,7 +78,7 @@ class Methods
      * @return bool|string
      * 与服务端对接GM命令
      */
-    public static function GmPost($server_id,$command_content,$command=6,$command_cls=4234,$timeout = 5){
+    public static function GmPost($command_content,$server_id=903,$command=6,$command_cls=4234,$timeout = 5){
         $url = 'http://192.168.0.15:8080';
         $post_data = ['server_id'=>$server_id,'command'=>$command,'command_cls'=>$command_cls,'command_content'=>json_encode(['body'=>$command_content])];
         $ch = curl_init();

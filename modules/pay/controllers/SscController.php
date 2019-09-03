@@ -55,8 +55,7 @@ class SscController extends yii\web\Controller {
                 }
             }
             if($newData ==1){//通知客户端
-                $url = '';
-                Methods::post($url,$datas);
+                Methods::GmPost($datas,903,6,4241);
             }
         }
     }
