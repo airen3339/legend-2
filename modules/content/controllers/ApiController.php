@@ -23,6 +23,7 @@ class ApiController extends  Controller
         $id = Yii::$app->request->get('id','');
         $data = $model->getAllCate($pid,$id);
         echo json_encode($data);
+        exit;
     }
 
     /**
@@ -35,6 +36,7 @@ class ApiController extends  Controller
         $id = Yii::$app->request->get('id','');
         $data = $model->getTree($pid,$id);
         echo json_encode($data);
+        exit;
     }
     /**
      * 设置排序号
