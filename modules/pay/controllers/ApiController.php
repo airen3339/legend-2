@@ -25,24 +25,25 @@ class ApiController extends Controller
      */
     public function actionAlipayOrder(){
         $request = \Yii::$app->request;
-        $productName = $request->post('productName','ceshi2');
+        $productName = $request->post('productName','元宝充值');
         $amount = $request->post('amount',1);
         $time = time();
         $dateTime = date('YmdHis',$time);
-        $orderNumber = 'YCJ'.time();
-//        $orderNumber = $request->post('orderNumber');
+        $orderNumber = $request->post('orderNumber','11111');
         $province = $request->post('province',510000);
         $city = $request->post('city',510100);
         $area = $request->post('area',510101);
-        $uid = $request->post('uid');
-        $ratio = $request->post('ratio');//元宝比例
-        $luckNum = $request->post('lucknum');//随机赠送元宝数
-        $extInfo = $request->post('ext_info');//其他扩展数据
-        $server_id = $request->post('server_id');//服务器id
-        $sign = $request->post('sign');//验证签名字段
+        $roleId = $request->post('roleId');//用户角色id
+        $ratio = $request->post('ratio',500);//元宝比例
+//        $luckNum = $request->post('lucknum');//随机赠送元宝数
+        $luckNum = rand(100,1000);
+        $extInfo = $request->post('ext_info','');//其他扩展数据
+        $server_id = $request->post('server_id',0);//服务器id
+        $username = $request->post('username','');
+        $sign = '';//验证签名字段
         //订单数据生成记录
         $model = new Recharge();
-        $model->uid = $uid;
+        $model->roleId = $roleId;
         $model->orderNumber = $orderNumber;
         $model->product = $productName;
         $model->money = $amount;
@@ -53,6 +54,8 @@ class ApiController extends Controller
         $model->status = 0;
         $model->server_id = $server_id;
         $model->createTime = $time;
+        $model->username = $username;
+        $model->payType = 1;
         $model->save();
 //        通知服务器
 //        self::dataToServer($orderNumber,$productName,$amount,1,$date,$detail);
@@ -232,7 +235,7 @@ class ApiController extends Controller
                 if($orderData['status'] != 1){//订单未完成
                     Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
-                    $postData = ['uid'=>$orderData['uid'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
+                    $postData = ['roleId'=>$orderData['roleId'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = '192.168.0.15:8080';
                     Methods::post($url,$postData);
                 }
