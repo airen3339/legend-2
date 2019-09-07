@@ -26,20 +26,35 @@ class ApiController extends Controller
     public function actionAlipayOrder(){
         $request = \Yii::$app->request;
         $productName = $request->post('productName','元宝充值');
-        $amount = $request->post('amount',1);
+        $amount = $request->post('amount',0);
+        if($amount <= 0){
+            die(json_encode(['code'=>0,'msg'=>'支付金额不能为零']));
+        }
         $time = time();
         $dateTime = date('YmdHis',$time);
-        $orderNumber = $request->post('orderNumber','11111');
+        $orderNumber = $request->post('orderNumber','');
+        if(!$orderNumber){
+            die(json_encode(['code'=>0,'msg'=>'订单号不存在']));
+        }
         $province = $request->post('province',510000);
         $city = $request->post('city',510100);
         $area = $request->post('area',510101);
-        $roleId = $request->post('roleId');//用户角色id
+        $roleId = $request->post('roleId','');//用户角色id
+        if(!$roleId){
+            die(json_encode(['code'=>0,'msg'=>'角色id不存在']));
+        }
         $ratio = $request->post('ratio',500);//元宝比例
 //        $luckNum = $request->post('lucknum');//随机赠送元宝数
         $luckNum = rand(100,1000);
         $extInfo = $request->post('ext_info','');//其他扩展数据
         $server_id = $request->post('server_id',0);//服务器id
+        if(!$server_id){
+            die(json_encode(['code'=>0,'msg'=>'服务器id不存在']));
+        }
         $username = $request->post('username','');
+        if(!$username){
+            die(json_encode(['code'=>0,'msg'=>'用户名不存在']));
+        }
         $sign = '';//验证签名字段
         //订单数据生成记录
         $model = new Recharge();
