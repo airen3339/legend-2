@@ -35,7 +35,7 @@ class ApiController extends Controller
 //        var_dump($cont);
 //        die;
         $file = fopen(IndexDir.'/files/write.txt','a');
-        $request = \Yii::$app->request->post();
+        $request = $_POST;
         if(is_string($request)){
             fputs($file,$request."\n");
         }
