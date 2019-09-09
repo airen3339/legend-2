@@ -348,7 +348,7 @@ class ApiController extends Controller
         $payType = 'SCANPAY_ALIPAY';
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
-        Methods::varDumpLog('pay.txt',json_encode($orderData),'a');
+        Methods::varDumpLog('payLog.txt',json_encode($orderData),'a');
         $dateTime = date('YmdHis',$orderData['createTime']);
         $postData = ['amount'=>$orderData['money'],'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
         ksort($postData);//生成签名
