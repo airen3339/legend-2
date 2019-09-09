@@ -29,6 +29,10 @@ class ApiController extends Controller
 
         $file = fopen(IndexDir.'/files/write.txt','a');
         $request = \Yii::$app->request->post();
+        $post = $_POST;
+        fwrite($file,$post."\n");
+        $get = $_GET;
+        fputs($file,$get."\n");
         if(is_string($request)){
             fputs($file,$request."\n");
             $postData = json_decode($request,true);
