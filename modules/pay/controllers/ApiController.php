@@ -240,6 +240,8 @@ class ApiController extends Controller
         $data = $_POST['data'];
         if(!$data){
             echo 'fail';die;
+        }else{
+            $data = json_decode($data,true);
         }
         $resultcode = $data['resultcode'];//支付状态
         $resultmessage = $data['resultmessage'];//支付信息
