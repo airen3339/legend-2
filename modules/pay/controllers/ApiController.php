@@ -236,6 +236,7 @@ class ApiController extends Controller
      * POST方式
      */
     public function actionAlipayNotify(){
+        var_dump($_POST);die;
         $data = $_POST['data'];var_dump($data);die;
         $resultcode = $data['resultcode'];//支付状态
         $resultmessage = $data['resultmessage'];//支付信息
