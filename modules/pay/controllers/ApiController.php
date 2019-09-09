@@ -29,13 +29,14 @@ class ApiController extends Controller
 //        $str = '{"{\"server_id\":900,\"roleId\":\"1013720893575667904\",\"ext_info\":\"\",\"amount\":0,\"sign\":\"c59e03db8b2524183cea81f2a607588c\",\"orderNumber\":\"pay_20190909164752\",\"username\":\"nametest2\"}":""}
 //';
 //        $sstr = json_decode($str);
-//        $content = get_object_vars($sstr);
-//        $key = key($content);
-//        $cont = json_decode($key,true);
-//        var_dump($cont);
+
 //        die;
         $file = fopen(IndexDir.'/files/write.txt','a');
         $request = \Yii::$app->request->post();
+        $content = get_object_vars($request);
+        $key = key($content);
+        $cont = json_decode($key,true);
+
         if(is_string($request)){
             fputs($file,$request."\n");
         }else{
@@ -57,15 +58,14 @@ class ApiController extends Controller
             fputs($file,$get."get\n");
         }
         fclose($file);
-        $request = \Yii::$app->request;
-        $productName = $request->post('productName','元宝充值');
-        $amount = $request->post('amount',0);
+        $productName = '元宝充值';
+        $amount = $cont['amount'];
         if($amount <= 0){
             die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
         }
         $time = time();
         $dateTime = date('YmdHis',$time);
-        $orderNumber = $request->post('orderNumber','');
+        $orderNumber = $cont['orderNumber'];
         if(!$orderNumber){
             die(json_encode(['code'=>-2]));//,'msg'=>'订单号不存在'
         }
@@ -73,23 +73,23 @@ class ApiController extends Controller
         $province = \Yii::$app->params['province'];
         $city = \Yii::$app->params['city'];
         $area = \Yii::$app->params['area'];
-        $roleId = $request->post('roleId','');//用户角色id
+        $roleId = $cont['roleId'];//用户角色id
         if(!$roleId){
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
         }
-        $ratio = $request->post('ratio',500);//元宝比例
+        $ratio = 500;//元宝比例
 //        $luckNum = $request->post('lucknum');//随机赠送元宝数
         $luckNum = rand(100,1000);
-        $extInfo = $request->post('ext_info','');//其他扩展数据
-        $server_id = $request->post('server_id',0);//服务器id
+        $extInfo = $cont['ext_info'];//其他扩展数据
+        $server_id = $cont['server_id'];//服务器id
         if(!$server_id){
             die(json_encode(['code'=>-4]));//,'msg'=>'服务器id不存在'
         }
-        $username = $request->post('username','');
+        $username = $cont['username'];
         if(!$username){
             die(json_encode(['code'=>-5]));//,'msg'=>'用户名不存在'
         }
-        $sign = '';//验证签名字段
+        $sign = $cont['sign'];//验证签名字段
         //订单数据生成记录
         $model = new Recharge();
         $model->roleId = $roleId;
