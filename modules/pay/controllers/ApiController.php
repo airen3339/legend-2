@@ -26,40 +26,12 @@ class ApiController extends Controller
      * code返回类型 1 成功 -1 支付金额不能为零 -2 订单号不存在 -3  角色id不存在 -4 服务器id不存在  -5 用户名不存在 -6 支付请求错误
      */
     public function actionAlipayOrder(){
-//        $str = '{"{\"server_id\":900,\"roleId\":\"1013720893575667904\",\"ext_info\":\"\",\"amount\":0,\"sign\":\"c59e03db8b2524183cea81f2a607588c\",\"orderNumber\":\"pay_20190909164752\",\"username\":\"nametest2\"}":""}
-//';
-//        $sstr = json_decode($str);
-
-//        die;
-        $file = fopen(IndexDir.'/files/write.txt','a');
         $request = \Yii::$app->request->post();
-        $poststr = json_encode($request);
-        fputs($file,$poststr);
-        $request = json_decode($poststr);
+//        $poststr = json_encode($request);
+//        $request = json_decode($poststr);
         $content = get_object_vars($request);
         $key = key($content);
         $cont = json_decode($key,true);
-//        if(is_string($request)){
-//            fputs($file,$request."\n");
-//        }else{
-//            $poststr = json_encode($request);
-//            fputs($file,$poststr."req\n");
-//        }
-//        $post = $_POST;
-//        if(is_string($post)){
-//            fputs($file,$post."\n");
-//        }else{
-//            $poststr = json_encode($post);
-//            fputs($file,$poststr."post\n");
-//        }
-//        $get = $_GET;
-//        if(is_string($get)){
-//            fputs($file,$get."\n");
-//        }else{
-//            $get = json_encode($get);
-//            fputs($file,$get."get\n");
-//        }
-        fclose($file);
         $productName = '元宝充值';
         $amount = $cont['amount'];
         if($amount <= 0){
@@ -80,7 +52,6 @@ class ApiController extends Controller
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
         }
         $ratio = 500;//元宝比例
-//        $luckNum = $request->post('lucknum');//随机赠送元宝数
         $luckNum = rand(100,1000);
         $extInfo = $cont['ext_info'];//其他扩展数据
         $server_id = $cont['server_id'];//服务器id
