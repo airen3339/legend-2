@@ -38,14 +38,23 @@ class ApiController extends Controller
         $request = \Yii::$app->request->post();
         if(is_string($request)){
             fputs($file,$request."\n");
+        }else{
+            $poststr = json_encode($request);
+            fputs($file,$poststr."req\n");
         }
         $post = $_POST;
         if(is_string($post)){
             fputs($file,$post."\n");
+        }else{
+            $poststr = json_encode($post);
+            fputs($file,$poststr."post\n");
         }
         $get = $_GET;
-        if(is_string($post)){
+        if(is_string($get)){
             fputs($file,$get."\n");
+        }else{
+            $get = json_encode($get);
+            fputs($file,$get."get\n");
         }
         fclose($file);
         $request = \Yii::$app->request;
