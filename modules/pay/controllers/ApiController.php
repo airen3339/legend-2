@@ -33,30 +33,32 @@ class ApiController extends Controller
 //        die;
         $file = fopen(IndexDir.'/files/write.txt','a');
         $request = \Yii::$app->request->post();
+        $poststr = json_encode($request);
+        fputs($file,$request);
+        $request = json_decode($poststr);
         $content = get_object_vars($request);
         $key = key($content);
         $cont = json_decode($key,true);
-
-        if(is_string($request)){
-            fputs($file,$request."\n");
-        }else{
-            $poststr = json_encode($request);
-            fputs($file,$poststr."req\n");
-        }
-        $post = $_POST;
-        if(is_string($post)){
-            fputs($file,$post."\n");
-        }else{
-            $poststr = json_encode($post);
-            fputs($file,$poststr."post\n");
-        }
-        $get = $_GET;
-        if(is_string($get)){
-            fputs($file,$get."\n");
-        }else{
-            $get = json_encode($get);
-            fputs($file,$get."get\n");
-        }
+//        if(is_string($request)){
+//            fputs($file,$request."\n");
+//        }else{
+//            $poststr = json_encode($request);
+//            fputs($file,$poststr."req\n");
+//        }
+//        $post = $_POST;
+//        if(is_string($post)){
+//            fputs($file,$post."\n");
+//        }else{
+//            $poststr = json_encode($post);
+//            fputs($file,$poststr."post\n");
+//        }
+//        $get = $_GET;
+//        if(is_string($get)){
+//            fputs($file,$get."\n");
+//        }else{
+//            $get = json_encode($get);
+//            fputs($file,$get."get\n");
+//        }
         fclose($file);
         $productName = '元宝充值';
         $amount = $cont['amount'];
