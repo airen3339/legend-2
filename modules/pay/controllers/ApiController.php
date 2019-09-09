@@ -39,6 +39,14 @@ class ApiController extends Controller
         if(is_string($request)){
             fputs($file,$request."\n");
         }
+        $post = $_POST;
+        if(is_string($post)){
+            fputs($file,$post."\n");
+        }
+        $get = $_GET;
+        if(is_string($post)){
+            fputs($file,$get."\n");
+        }
         fclose($file);
         $request = \Yii::$app->request;
         $productName = $request->post('productName','元宝充值');
