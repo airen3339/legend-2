@@ -26,21 +26,18 @@ class ApiController extends Controller
      * code返回类型 1 成功 -1 支付金额不能为零 -2 订单号不存在 -3  角色id不存在 -4 服务器id不存在  -5 用户名不存在 -6 支付请求错误
      */
     public function actionAlipayOrder(){
-
+//        $str = '{"{\"server_id\":900,\"roleId\":\"1013720893575667904\",\"ext_info\":\"\",\"amount\":0,\"sign\":\"c59e03db8b2524183cea81f2a607588c\",\"orderNumber\":\"pay_20190909164752\",\"username\":\"nametest2\"}":""}
+//';
+//        $sstr = json_decode($str);
+//        $content = get_object_vars($sstr);
+//        $key = key($content);
+//        $cont = json_decode($key,true);
+//        var_dump($cont);
+//        die;
         $file = fopen(IndexDir.'/files/write.txt','a');
         $request = \Yii::$app->request->post();
-        $post = $_POST;
-        $post = json_encode($post);
-        fwrite($file,$post."\n");
-        $get = $_GET;
-        $get = json_encode($get);
-        fputs($file,$get."\n");
         if(is_string($request)){
             fputs($file,$request."\n");
-            $postData = json_decode($request,true);
-            foreach($postData as $k => $v){
-                fputs($file,$k.'=>'.$v);
-            }
         }
         fclose($file);
         $request = \Yii::$app->request;
