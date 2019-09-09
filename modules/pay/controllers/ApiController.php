@@ -36,9 +36,10 @@ class ApiController extends Controller
         if(!$orderNumber){
             die(json_encode(['code'=>0,'msg'=>'订单号不存在']));
         }
-        $province = $request->post('province',510000);
-        $city = $request->post('city',510100);
-        $area = $request->post('area',510101);
+        //签名地区参数 省 市 区
+        $province = \Yii::$app->params['province'];
+        $city = \Yii::$app->params['city'];
+        $area = \Yii::$app->params['area'];
         $roleId = $request->post('roleId','');//用户角色id
         if(!$roleId){
             die(json_encode(['code'=>0,'msg'=>'角色id不存在']));
@@ -242,8 +243,9 @@ class ApiController extends Controller
         $payTrxNo = $data['payTrxNo'];//平台流水号
         $amount = $data['amount'];//支付金额 单位为分
         $paySign = $data['paySign'];//签名信息
+        $appId = $data['appId'];
         //验证签名
-        $result = self::checkAlipaySign($paySign,$orderNo);
+        $result = self::checkAlipaySign($paySign,$orderNo,$appId);
         if($result){
             if($resultcode == '0000'){
                 $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = '{$amount}'")->asArray()->one();
@@ -317,19 +319,18 @@ class ApiController extends Controller
      * 第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
     第二步，在stringA最后拼接上应用key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为小写，得到sign值signValue。
      */
-    public static function checkAlipaySign($paySign,$orderNumber){
-        $appid = \Yii::$app->params['alipayAppid'];
+    public static function checkAlipaySign($paySign,$orderNumber,$appid){
         $key = \Yii::$app->params['alipayKey'];
-        $province = 510000;//四川省
-        $city = 510100;//四川省成都市
-        $area = 510101;//四川省成都市市辖区
+        $province = \Yii::$app->params['province'];
+        $city = \Yii::$app->params['city'];
+        $area = \Yii::$app->params['area'];
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
         $payType = 'SCANPAY_ALIPAY';
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
         $dateTime = date('YmdHis',$orderData['createTime']);
         $postData = ['amount'=>$orderData['money'],'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
-        ksort($postData);
+        ksort($postData);//生成签名
         $sign = self::signAlipay($postData,$key);
         if($sign ==$paySign){
             return true;
