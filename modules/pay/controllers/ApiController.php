@@ -34,7 +34,7 @@ class ApiController extends Controller
         $file = fopen(IndexDir.'/files/write.txt','a');
         $request = \Yii::$app->request->post();
         $poststr = json_encode($request);
-        fputs($file,$request);
+        fputs($file,$poststr);
         $request = json_decode($poststr);
         $content = get_object_vars($request);
         $key = key($content);
