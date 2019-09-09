@@ -23,19 +23,20 @@ class ApiController extends Controller
      * detail  支付详情数据
      * 支付逻辑  客户端发送订单数据  ==》 PHP接受数据 ==》将订单数据发送给服务端 ==》调用对应的支付接口获取支付二维码 ==》将二维码返给客户端
      * 支付成功  回调地址中 验证支付结果  ==》通知服务端
+     * code返回类型 1 成功 -1 支付金额不能为零 -2 订单号不存在 -3  角色id不存在 -4 服务器id不存在  -5 用户名不存在 -6 支付请求错误
      */
     public function actionAlipayOrder(){
         $request = \Yii::$app->request;
         $productName = $request->post('productName','元宝充值');
         $amount = $request->post('amount',0);
         if($amount <= 0){
-            die(json_encode(['code'=>0,'msg'=>'支付金额不能为零']));
+            die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
         }
         $time = time();
         $dateTime = date('YmdHis',$time);
         $orderNumber = $request->post('orderNumber','');
         if(!$orderNumber){
-            die(json_encode(['code'=>0,'msg'=>'订单号不存在']));
+            die(json_encode(['code'=>-2]));//,'msg'=>'订单号不存在'
         }
         //签名地区参数 省 市 区
         $province = \Yii::$app->params['province'];
@@ -43,7 +44,7 @@ class ApiController extends Controller
         $area = \Yii::$app->params['area'];
         $roleId = $request->post('roleId','');//用户角色id
         if(!$roleId){
-            die(json_encode(['code'=>0,'msg'=>'角色id不存在']));
+            die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
         }
         $ratio = $request->post('ratio',500);//元宝比例
 //        $luckNum = $request->post('lucknum');//随机赠送元宝数
@@ -51,11 +52,11 @@ class ApiController extends Controller
         $extInfo = $request->post('ext_info','');//其他扩展数据
         $server_id = $request->post('server_id',0);//服务器id
         if(!$server_id){
-            die(json_encode(['code'=>0,'msg'=>'服务器id不存在']));
+            die(json_encode(['code'=>-4]));//,'msg'=>'服务器id不存在'
         }
         $username = $request->post('username','');
         if(!$username){
-            die(json_encode(['code'=>0,'msg'=>'用户名不存在']));
+            die(json_encode(['code'=>-5]));//,'msg'=>'用户名不存在'
         }
         $sign = '';//验证签名字段
         //订单数据生成记录
@@ -155,9 +156,9 @@ class ApiController extends Controller
         if($return['code'] == 'success'){
             $returnData = json_decode($return['data'],true);
             $payUrl = $returnData['payUrl'];
-            $data = ['code'=>1,'payUrl'=>$payUrl,'msg'=>'支付请求成功'];
+            $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
         }else{
-            $data = ['code'=>0,'msg'=>$return['message']];
+            $data = ['code'=>-6];//,'msg'=>$return['message'] 支付请求错误
         }
         return $data;
     }
