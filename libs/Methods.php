@@ -106,6 +106,15 @@ class Methods
         return $file_contents;
     }
 
+    /**
+     * @param $command_content
+     * @param int $server_id
+     * @param int $command
+     * @param int $command_cls
+     * @return bool|false|string
+     * GM命令推送
+     * PHP 推向 服务器
+     */
     public static function GmFileGet($command_content,$server_id=903,$command=6,$command_cls=4234){
         $url = 'http://192.168.0.15:8080';
         $post_data = ['server_id'=>$server_id,'command'=>$command,'command_cls'=>$command_cls,'command_content'=>json_encode(['body'=>$command_content])];
@@ -114,5 +123,17 @@ class Methods
         $cxContext = stream_context_create($aContext);
         $res = file_get_contents($url,true,$cxContext);
         return $res;
+    }
+
+    /**
+     * @param $filename
+     * @param $content
+     * @param string $do
+     * 日志打印
+     */
+    public static function varDumpLog($filename,$content,$do='w'){
+        $path = fopen(IndexDir.'/files/log/'.$filename,$do);
+        fwrite($path,$content);
+        fclose($path);
     }
 }
