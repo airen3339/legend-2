@@ -26,16 +26,11 @@ class ApiController extends Controller
      * code返回类型 1 成功 -1 支付金额不能为零 -2 订单号不存在 -3  角色id不存在 -4 服务器id不存在  -5 用户名不存在 -6 支付请求错误
      */
     public function actionAlipayOrder(){
-        $post = $_POST;
-        $get = $_GET;
-        $data = json_encode($post);
-        $dataget= json_encode($get);
-        $data .=$dataget;
+
         $file = fopen(IndexDir.'/files/write.txt','a');
-        fwrite($file,$data);
         $request = \Yii::$app->request->post();
         if(is_string($request)){
-            fputs($file,$request);
+            fputs($file,$request."\n");
             $postData = json_decode($request,true);
             foreach($postData as $k => $v){
                 fputs($file,$k.'=>'.$v);
