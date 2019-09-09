@@ -34,7 +34,7 @@ class ApiController extends Controller
         $file = fopen(IndexDir.'/files/write.txt','a');
         fwrite($file,$data);
         $request = \Yii::$app->request->post();
-        if(is_string($request));{
+        if(is_string($request)){
             fputs($file,$request);
             $postData = json_decode($request,true);
             foreach($postData as $k => $v){
@@ -42,6 +42,7 @@ class ApiController extends Controller
             }
         }
         fclose($file);
+        $request = \Yii::$app->request;
         $productName = $request->post('productName','元宝充值');
         $amount = $request->post('amount',0);
         if($amount <= 0){
