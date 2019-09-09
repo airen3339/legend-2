@@ -5,6 +5,7 @@ namespace app\modules\pay\controllers;
 
 
 use app\libs\Methods;
+use app\modules\cn\models\MessageLook;
 use app\modules\pay\models\Recharge;
 use yii\web\Controller;
 
@@ -243,12 +244,16 @@ class ApiController extends Controller
      */
     public function actionAlipayNotify(){
         $data = $_POST['data'];
+        $file = 'payLog.txt';
+        Methods::varDumpLog($file,111,'a');
+        Methods::varDumpLog($file,json_encode($data),'a');
         if(!$data){
             echo 'fail';die;
         }else{
             $data = json_decode($data,true);
         }
         $resultcode = $data['resultcode'];//支付状态
+        Methods::varDumpLog($file,$resultcode,'a');
         $resultmessage = $data['resultmessage'];//支付信息
         $orderNo = $data['orderNo'];//商户订单号
         $payTrxNo = $data['payTrxNo'];//平台流水号
@@ -257,9 +262,13 @@ class ApiController extends Controller
         $appId = $data['appId'];
         //验证签名
         $result = self::checkAlipaySign($paySign,$orderNo,$appId);
+        Methods::varDumpLog($file,222,'a');
+        Methods::varDumpLog($file,$result,'a');
+
         if($result){
             if($resultcode == '0000'){
                 $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = '{$amount}'")->asArray()->one();
+                Methods::varDumpLog($file,json_encode($orderData),'a');
                 if($orderData['status'] != 1){//订单未完成
                     Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
@@ -339,6 +348,7 @@ class ApiController extends Controller
         $payType = 'SCANPAY_ALIPAY';
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
+        Methods::varDumpLog('pay.txt',json_encode($orderData),'a');
         $dateTime = date('YmdHis',$orderData['createTime']);
         $postData = ['amount'=>$orderData['money'],'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
         ksort($postData);//生成签名
