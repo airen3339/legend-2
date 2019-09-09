@@ -26,7 +26,6 @@ class ApiController extends Controller
      * code返回类型 1 成功 -1 支付金额不能为零 -2 订单号不存在 -3  角色id不存在 -4 服务器id不存在  -5 用户名不存在 -6 支付请求错误
      */
     public function actionAlipayOrder(){
-        Methods::varDumpLog('test.txt',1111);die;
         $request = \Yii::$app->request->post();
         $poststr = json_encode($request);
         $request = json_decode($poststr);
