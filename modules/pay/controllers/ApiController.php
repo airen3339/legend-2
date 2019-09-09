@@ -12,6 +12,7 @@ header('Access-Control-Allow-Origin:*');
 
 class ApiController extends Controller
 {
+    public $enableCsrfValidation = false;
     /**
      * 支付宝
      * 支付数据获取
@@ -236,6 +237,7 @@ class ApiController extends Controller
      * POST方式
      */
     public function actionAlipayNotify(){
+        var_dump(\Yii::$app->request->post('data'));
         var_dump($_POST);die;
         $data = $_POST['data'];var_dump($data);die;
         $resultcode = $data['resultcode'];//支付状态
