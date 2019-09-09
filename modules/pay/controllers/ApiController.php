@@ -31,10 +31,15 @@ class ApiController extends Controller
         $data = json_encode($post);
         $dataget= json_encode($get);
         $data .=$dataget;
-        $file = fopen(IndexDir.'/files/write.txt','w');
+        $file = fopen(IndexDir.'/files/write.txt','a');
         fwrite($file,$data);
+        $request = \Yii::$app->request->post();
+        fputs($file,$request);
+        $postData = json_decode($request,true);
+        foreach($postData as $k => $v){
+            fputs($file,$k.'=>'.$v);
+        }
         fclose($file);
-        $request = \Yii::$app->request;
         $productName = $request->post('productName','元宝充值');
         $amount = $request->post('amount',0);
         if($amount <= 0){
