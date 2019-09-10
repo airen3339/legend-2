@@ -272,7 +272,7 @@ class ApiController extends Controller
                 if($orderData['status'] != 1){//订单未完成
                     Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
-                    $postData = ['roleId'=>$orderData['roleId'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
+                    $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = '192.168.0.15:8080';
                     Methods::post($url,$postData);
                 }
@@ -284,6 +284,20 @@ class ApiController extends Controller
             echo 'fail,sign error';
         }
         die;
+    }
+    public function actionNotifyTest(){
+        $order = \Yii::$app->request->get('order','');
+        $amount = \Yii::$app->request->get('amount',1);
+        $orderData = Recharge::find()->where("orderNumber = '{$order}' and money = '{$amount}'")->asArray()->one();
+//        if($orderData['status'] != 1){//订单未完成
+            Recharge::updateAll(['status'=>1],"orderNumber='{$order}'");//修改订单状态
+            //通知服务器处理后续
+            $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$order,'ext_info'=>$orderData['extInfo']];
+            $url = '192.168.0.15:8080';
+            $res = Methods::post($url,$postData);
+            var_dump($res);
+//        }
+        die('SUCCESS');
     }
     /**
      * 清逸支付回调

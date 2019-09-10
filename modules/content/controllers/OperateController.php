@@ -8,10 +8,14 @@ namespace app\modules\content\controllers;
 
 use app\libs\AdminController;
 use app\libs\Chart;
+use app\modules\content\models\ChargeMoney;
+use app\modules\content\models\LTV;
 use app\modules\content\models\Player;
+use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\Role;
+use app\modules\content\models\User;
 use Yii;
 use yii\data\Pagination;
 
@@ -39,6 +43,7 @@ class OperateController  extends AdminController
         $channel = Yii::$app->request->get('channel');
         $page = Yii::$app->request->get('page',1);
         $where = " 1=1 ";
+        $joinWhere = ' 1=1 ';
         if($beginTime && $endTime){
             $month_begin = $beginTime;
             $month_now = $endTime;
@@ -47,10 +52,12 @@ class OperateController  extends AdminController
             $month_now = date("Y-m-d");
         }
         if($service){
-            $where .= " and service = '{$service}'";
+            $where .= " and WorldID = '{$service}'";
+            $joinWhere .= " and u.WorldID = '{$service}'";
         }
         if($channel){
-            $where .= " and channel = '{$channel}'";
+            $where .= " and PackageFlag = '{$channel}'";
+            $joinWhere .= " and u.PackageFlag = '{$channel}'";
         }
         //计算时期天数
         $monthNow = strtotime($month_now);
@@ -85,26 +92,26 @@ class OperateController  extends AdminController
             $dateTime = $monthBegin + 86400*$i;
             $date = date('Y-m-d',$dateTime);
             $end = $dateTime + 86399;
-            //总注册数
-            $newRegister = 100;
+            //当日注册数
+            $newRegister = User::find()->where($where." and unix_timestamp(CreateDate) between $dateTime and $end")->count();
             $sumRegister += $newRegister;
-            //新增设备数
-            $newDevice = $newRegister;
+            //当日新增设备数
+            $newDevice =  User::getTodayRegisterLoginDevice($dateTime,$end,$joinWhere);
             $sumDevice += $newDevice;
-            //新增账号登录
-            $newLogin = Player::find()->where("unix_timestamp(CreateDate) between $dateTime and $end")->count();
+            //新增账号登录 当日注册账号中的登录数
+            $newLogin = User::getTodayRegisterLogin($dateTime,$end,$joinWhere);
             $sumLogin += $newLogin;
-            //设备DAU
-            $deviceDau = Player::find()->where("LastLogin between $dateTime and $end")->count();
+            //设备DAU 当日总设备登录数
+            $deviceDau = User::getTodayLoginDevice($dateTime,$end,$joinWhere);
             $sumDeviceDau += $deviceDau;
-            //账号DAU
-            $accountDau = $deviceDau;
+            //账号DAU 当日总账号登录数
+            $accountDau = Player::getTodayLogin($dateTime,$end,$joinWhere);
             $sumAccountDau += $accountDau;
-            $oldUser = 123;
+            //老用户 账号DAU-新增账号登录数
+            $oldUser = $accountDau - $newLogin;
             $sumOldUser += $oldUser;
             //充值人数
-            $rechargeUser = 1;
-            $sumRechUser += $rechargeUser;
+            $rechargeUser = ChargeMoney::getTodayChargeNum($dateTime,$end,$joinWhere);
             //付费率
             if($accountDau == 0 || $rechargeUser == 0){
                 $payRate = 0;
@@ -114,30 +121,31 @@ class OperateController  extends AdminController
             $sumPayRate += $payRate;
             $payRate .= '%';
             //充值次数
-            $rechargeCount = 2;
-            $sumRechCount += $rechargeCount;
+            $rechargeCount = ChargeMoney::getTodayChargeCount($dateTime,$end,$joinWhere);
             //充值金额
-            $rechargeMoney = 2;
+            $rechargeMoney = ChargeMoney::getTodayChargeMoney($dateTime,$end,$joinWhere);
+            $rechargeMoney = $rechargeMoney?$rechargeMoney:0;
             $sumRechMoney += $rechargeMoney;
-            //ARPU
+            //ARPU  充值金额/账号DAU
             if($rechargeMoney ==0 || $accountDau ==0){
                 $arpu = '0';
             }else{
-                $arpu = (floor(10000*($rechargeMoney/$accountDau))/100);
+                $arpu = round($rechargeMoney/$accountDau,2);
             }
             $sumArpu += $arpu;
-            //ARPPU
+            //ARPPU  充值金额/充值人数
             if($rechargeMoney ==0 || $rechargeUser ==0){
                 $arppu = '0';
             }else{
-                $arppu = (floor(10000*($rechargeMoney/$rechargeUser))/100);
+                $arppu = $rechargeMoney/$rechargeUser;
             }
             $sumArppu += $arppu;
             //新增充值人数
-            $newRechargeUser = 34;
+            $rechargeData = ChargeMoney::getTodayChargeData($dateTime,$end,$joinWhere);
+            $newRechargeUser = $rechargeData['rechargeNum'];
             $sumNewRechUser += $newRechargeUser;
             //新增充值金额
-            $newRechargeMoney = 333;
+            $newRechargeMoney = $rechargeData['rechargeMoney'];
             $sumNewRechMoney += $newRechargeMoney;
             $data[] = ['date'=>$date,'newRegister'=>$newRegister,'newDevice'=>$newDevice,'newLogin'=>$newLogin,'deviceDau'=>$deviceDau,'accountDau'=>$accountDau,'oldUser'=>$oldUser,'payRate'=>$payRate,'rechargeUser'=>$rechargeUser,'rechargeCount'=>$rechargeCount,'rechargeMoney'=>$rechargeMoney,'arpu'=>$arpu,'arppu'=>$arppu,'newRechargeUser'=>$newRechargeUser,'newRechargeMoney'=>$newRechargeMoney];
         }
@@ -171,9 +179,9 @@ class OperateController  extends AdminController
             $end = strtotime($endTime) + 86399;
             $where .= " and unix_timestamp(CreateDate) <= $end";
         }
-//        if($service){
-//            $where .= " and service = '{$service}'";
-//        }
+        if($service){
+            $where .= " and WorldID = '{$service}'";
+        }
         $data = [];
         $levelTotal = 70;
         $pageSize = 20;
@@ -193,7 +201,7 @@ class OperateController  extends AdminController
             $now = time();
             $seven_before = $now - 86400*7;
             //滞留用户数
-            $retention_user = Player::find()->where("LastLogin < $seven_before and Level = $i")->count();
+            $retention_user = Player::find()->where($where." and LastLogin < $seven_before and Level = $i")->count();
             //滞留用户比例
             if($retention_user ==0 || $level_num ==0){
                 $retention_proportion = '0%';
@@ -213,7 +221,6 @@ class OperateController  extends AdminController
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
-        $service = Yii::$app->request->get('service');
         $channel = Yii::$app->request->get('channel');
         $page = Yii::$app->request->get('page',1);
         $where = " 1=1 ";
@@ -224,11 +231,8 @@ class OperateController  extends AdminController
             $month_begin = date('Y-m-01');
             $month_now = date("Y-m-d");
         }
-        if($service){
-            $where .= " and service = '{$service}'";
-        }
         if($channel){
-            $where .= " and channel = '{$channel}'";
+            $where .= " and u.channel = '{$channel}'";
         }//计算时期天数
         $monthNow = strtotime($month_now);
         $monthBegin = strtotime($month_begin);
@@ -247,7 +251,11 @@ class OperateController  extends AdminController
         for($i=$first;$i<$endDays;$i++){
             $dateTime = $monthBegin + $i*86400;
             $date = date("Y-m-d",$dateTime);
-            $register = PlayerRegister::find()->where("date = '{$date}'")->asArray()->one();
+            if($channel){//获取渠道留存数据
+                $register = PlayerChannelRegister::find()->where("date='{$date}' and channel = '{$channel}'")->asArray()->one();
+            }else{//全部留存数据
+                $register = PlayerRegister::find()->where("date = '{$date}'")->asArray()->one();
+            }
             if($register){
                 $roleIds = $register['roleIds'];
                 //老用户
@@ -311,10 +319,10 @@ class OperateController  extends AdminController
         $channel = Yii::$app->request->get('channel');
         $where = ' 1=1 ';
         if($service){
-            $where .= " and service = '{$service}'";
+            $where .= " and u.WorldID = '{$service}'";
         }
         if($channel){
-            $where .= " and channel = $channel";
+            $where .= " and u.PackageFlag = '{$channel}'";
         }
         $levelTotal = 70;
         $pageSize = 20;
@@ -325,9 +333,10 @@ class OperateController  extends AdminController
         $data = [];
         for($i=($start+1);$i<=$end;$i++){
             //总充值金额
-            $depositMoney = 100*$i;
+            $depositData = ChargeMoney::getChargeMoney($i,$where);
+            $depositMoney = $depositData['money'];
             //人数
-            $userNum = Player::find()->where("Level = $i")->count();
+            $userNum = $depositData['total'];
             $data[]= ['level'=>$i,'depositMoney'=>$depositMoney,'userNum'=>$userNum];
         }
         $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>$pageSize]);
@@ -340,34 +349,24 @@ class OperateController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
-        $endTime = Yii::$app->request->post('endTime');
+        $endTime = Yii::$app->request->get('endTime');
         $service = Yii::$app->request->get('service');
+        $page = Yii::$app->request->get('page',1);
         $where = " 1=1 ";
+        if($service){
+            $where .= " and c.WorldID = '{$service}'";
+        }
         if($beginTime){
             $begin = strtotime($beginTime);
-            $where .=  " and unix_timestamp(CreateDate) >= $begin";
+            $where .=  " and unix_timestamp(c.finishTime) >= $begin";
         }
         if($endTime){
             $end = strtotime($endTime) + 86399;
-            $where .= " and unix_timestamp(CreateDate) <= $end";
+            $where .= " and unix_timestamp(c.finishTime) <= $end";
         }
-//        if($service){
-//            $where .= " and service = '{$service}'";
-//        }
-        $total = Player::find()->where($where)->count();
-        $page = new Pagination(['totalCount'=>$total,'pageSize'=>20]);
-        $data = Player::find()->select('RoleID,Name,LastLogin,Ingot as currentYB')->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
-        foreach($data as $k=> $v){
-            $platform = '缘创进';//平台
-            $depositMoney = 100*$k;//充值金额
-            $lastRechTime = date('Y-m-d H:i');
-            $lastLogin = date('Y-m-d H:i',$v['LastLogin']);
-            $data[$k]['platform'] = $platform;
-            $data[$k]['depositMoney'] = $depositMoney;
-            $data[$k]['lastRechTime'] = $lastRechTime;
-            $data[$k]['lastLogin'] = $lastLogin;
-        }
-        return $this->render('deposit-rank-query',['data'=>$data,'page'=>$page,'count'=>$total]);
+        $where .= " and c.status = 2";
+        $data = ChargeMoney::getChargeRankQuery($where,$page);
+        return $this->render('deposit-rank-query',$data);
     }
     /**
      * LTV数据
@@ -377,50 +376,79 @@ class OperateController  extends AdminController
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->post('endTime');
-        $service = Yii::$app->request->get('service');
         $channel = Yii::$app->request->get('channel');
-        $ltv = Yii::$app->request->get('ltv');
+        $page = Yii::$app->request->get('page',1);
+        $ltv = Yii::$app->request->get('ltv',1);//1-账号登录数  2-设备登录数
         $where = " 1=1 ";
-        if($beginTime){
-            $begin = strtotime($beginTime);
-            $where .=  " and createTime >= $begin";
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+        }else{
+            $month_begin = date('Y-m-01');
+            $month_now = date("Y-m-d");
         }
-        if($endTime){
-            $end = strtotime($endTime) + 86399;
-            $where .= " and createTime <= $end";
+        //计算时期天数
+        $monthNow = strtotime($month_now);
+        $monthBegin = strtotime($month_begin);
+        $days = ($monthNow-$monthBegin)/86400;
+        $data = [];
+        if($page==1){
+            $first = 0;
+        } else{
+            $first = ($page-1)*31;
         }
-        if($service){
-            $where .= " and service = '{$service}'";
+        if($days <= (31*$page)){
+            $endDays = $days+1;
+        }else{
+            $endDays = $page*31;
         }
-        if($channel){
-            $where .= " and channel = '{$channel}'";
+        $data = [];
+        $arrDay = ['one'=>1,'three'=>3,'five'=>5,'seven'=>7,'fifteen'=>15,'thirty'=>30];
+        for($i=$first;$i<$endDays;$i++){
+            $dateData = [];
+            $dateTime = $monthBegin + 86400*$i;
+            $date = date('Y-m-d',$dateTime);
+            //新增数
+            if($channel){//选择某个渠道
+                $add = LTV::find()->where("date = '{$date}' and channel = '{$channel}'")->asArray()->one();
+                if($ltv ==1){
+                    $addNum = $add['login'];//账号数
+                }else{
+                    $addNum = $add['device'];//设备数
+                }
+            }else{//所有渠道
+                if($ltv ==1){
+                    $addNum = LTV::find()->where("date = '{$date}' ")->asArray()->sum('login');
+                }else{
+                    $addNum = LTV::find()->where("date = '{$date}' ")->asArray()->sum('device');
+                }
+            }
+            $addNum = $addNum?$addNum:0;
+            $dateData['date'] = $date;
+            $dateData['addNum'] = $addNum;
+            foreach($arrDay as $k => $v){
+                if($addNum == 0){
+                    $rate = 0;
+                }else{
+                    $endTime = $dateTime + 86399*$v;
+                    //充值金额
+                    if($channel){//选择某个渠道
+                        $moneySum = LTV::find()->where("( unix_timestamp(date) between $dateTime and $endTime ) and channel = '{$channel}'")->sum('money');
+                    }else{//所有渠道
+                        $moneySum = LTV::find()->where("unix_timestamp(date) between $dateTime and $endTime ")->sum('money');
+                    }
+                    //总充值/新增数
+                    if($moneySum ==0){
+                        $rate = 0;
+                    }else{
+                        $rate = round($moneySum/$addNum,2);
+                    }
+                }
+                $dateData[$k] = $rate;
+            }
+            $data[] = $dateData;
         }
-        if($ltv){
-            $where .= " and ltv = '{$ltv}'";
-        }
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-        ];
-        $count = 20;
+        $count = $days+1;
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         return $this->render('ltv-data',['data'=>$data,'page'=>$page,'count'=>$count]);
     }

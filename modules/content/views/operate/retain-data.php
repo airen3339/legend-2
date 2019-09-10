@@ -22,23 +22,13 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
-                    区服：
-                </td>
-                <td>
-                    <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
-                    </select>
-                </td>
-                <td>
                     渠道：
                 </td>
                 <td>
                     <select name="channel">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                        <option value="0">请选择</option>
+                        <option value="offical" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>offical</option>
+                        <option value="my" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>my</option>
                     </select>
                 </td>
                 <td>

@@ -26,7 +26,7 @@
                 </td>
                 <td>
                     <select name="service">
-                        <option value="-99">请选择</option>
+                        <option value="0">请选择</option>
                         <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
                         <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
                     </select>
@@ -55,7 +55,7 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['platform']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['PackageFlag']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['Name']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['depositMoney']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['currentYB']?></span></td>

@@ -22,23 +22,13 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
-                    区服：
-                </td>
-                <td>
-                    <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
-                    </select>
-                </td>
-                <td>
                     渠道：
                 </td>
                 <td>
                     <select name="channel">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                        <option value="">请选择</option>
+                        <option value="official" <?php if(isset($_GET['channel']) && $_GET['channel'] == 'official') echo 'selected';?>>official</option>
+                        <option value="my" <?php if(isset($_GET['channel']) && $_GET['channel'] == 'my') echo 'selected';?>>my</option>
                     </select>
                 </td>
                 <td>
@@ -46,9 +36,8 @@
                 </td>
                 <td>
                     <select name="ltv">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                        <option value="1" <?php if(isset($_GET['ltv']) && $_GET['ltv'] == 1) echo 'selected';?>>新增账号</option>
+                        <option value="2" <?php if(isset($_GET['ltv']) && $_GET['ltv'] == 2) echo 'selected';?>>新增设备</option>
                     </select>
                 </td>
                 <td>
@@ -78,15 +67,14 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['date']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['addNum']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['one']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['three']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['five']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['seven']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['fifteen']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['thirty']?></span></td>
                 </tr>
                 <?php
             }
