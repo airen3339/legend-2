@@ -152,9 +152,9 @@ class ApiController extends Controller
         $postData = ['amount'=>$amount,'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$productName,'province'=>$province,'returnUrl'=>$returnUrl];
         $signArr = $postData;
         ksort($signArr);
-        Methods::varDumpLog('sign.txt',json_encode($signArr,'a'));
+//        Methods::varDumpLog('sign.txt',json_encode($signArr,'a'));
         $sign = self::signAlipay($signArr,$key);
-        Methods::varDumpLog('sign.txt',$sign,'a');
+//        Methods::varDumpLog('sign.txt',$sign,'a');
 
         //请求支付
         $postData['sign'] = $sign;
