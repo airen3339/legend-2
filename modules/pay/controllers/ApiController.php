@@ -263,13 +263,18 @@ class ApiController extends Controller
         //验证签名
         $result = self::checkAlipaySign($paySign,$orderNo,$appId);
         Methods::varDumpLog($file,222,'a');
-        Methods::varDumpLog($file,$result,'a');
-
         if($result){
+            Methods::varDumpLog($file,'ok','a');
             if($resultcode == '0000'){
                 $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = '{$amount}'")->asArray()->one();
                 Methods::varDumpLog($file,json_encode($orderData),'a');
+
+                Methods::varDumpLog($file,$orderData['status'],'a');
+
+                Methods::varDumpLog($file,$orderNo,'a');
                 if($orderData['status'] != 1){//订单未完成
+
+                    Methods::varDumpLog($file,'ok','a');
                     Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
 //                    $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
@@ -281,6 +286,7 @@ class ApiController extends Controller
                 echo 'fail';
             }
         }else{
+            Methods::varDumpLog($file,'fail','a');
             echo 'fail,sign error';
         }
         die;
