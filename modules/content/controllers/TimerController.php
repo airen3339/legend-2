@@ -70,6 +70,7 @@ class TimerController extends Controller
         }else{
             $tr->rollBack();
         }
+        var_dump(PlayerRegister::find()->asArray()->all());
         //记录当天不同渠道的留存数据
         $channels = ['official','my','self'];
         foreach($channels as $l => $t){
@@ -105,6 +106,7 @@ class TimerController extends Controller
             $re= $model->save();
             var_dump($re);
         }
+        var_dump(PlayerChannelRegister::find()->asArray()->all());
     }
 
     /**
@@ -139,5 +141,6 @@ class TimerController extends Controller
             $re = $model->save();
             var_dump($re);
         }
+        var_dump(LTV::find()->asArray()->all());
     }
 }
