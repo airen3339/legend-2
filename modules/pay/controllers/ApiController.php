@@ -82,7 +82,7 @@ class ApiController extends Controller
         $model->save();
 //        通知服务器
 //        self::dataToServer($orderNumber,$productName,$amount,1,$date,$detail);
-        $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area);
+        $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id);
         die(json_encode($return));
     }
 
@@ -140,7 +140,7 @@ class ApiController extends Controller
      * 支付扫码
      * H5
      */
-    public static  function AliOrder($orderNumber,$productName,$amount,$time,$province,$city,$area){
+    public static  function AliOrder($orderNumber,$productName,$amount,$time,$province,$city,$area,$orderId){
         $appid = \Yii::$app->params['alipayAppid'];
         $key = \Yii::$app->params['alipayKey'];
         $dateTime = $time;
@@ -165,6 +165,8 @@ class ApiController extends Controller
             $returnData = json_decode($return['data'],true);
             $payUrl = $returnData['payUrl'];
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
+            //记录签名
+            Recharge::updateAll(['paySign'=>$sign],"id = $orderId");
         }else{
             $data = ['code'=>-6];//,'msg'=>$return['message'] 支付请求错误
         }
@@ -264,7 +266,7 @@ class ApiController extends Controller
         $paySign = $data['paySign'];//签名信息
         $appId = $data['appId'];
         //验证签名
-        $result = self::checkAlipaySign($paySign,$orderNo,$appId);
+        $result = self::checkAlipaySign($orderNo,$appId);
         Methods::varDumpLog($file,222,'a');
         if($result){
             Methods::varDumpLog($file,'ok','a');
@@ -297,7 +299,7 @@ class ApiController extends Controller
     public function actionNotifyTest(){
 
         //验证签名
-        $result = self::checkAlipaySign($paySign='4999bfa7aaeefa06f47697cfa625f27d',$orderNo='pay_20190911191937734_6',$appId='982280b3587d4133912a8e9e47dc8f3b');
+        $result = self::checkAlipaySign($paySign='4999bfa7aaeefa06f47697cfa625f27d',$orderNo='pay_20190911195017142_10',$appId='982280b3587d4133912a8e9e47dc8f3b');
         var_dump($result);die;
         $order = \Yii::$app->request->get('order','');
         $amount = \Yii::$app->request->get('amount',1);
@@ -366,7 +368,7 @@ class ApiController extends Controller
      * 第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
     第二步，在stringA最后拼接上应用key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为小写，得到sign值signValue。
      */
-    public static function checkAlipaySign($paySign,$orderNumber,$appid){
+    public static function checkAlipaySign($orderNumber,$appid){
         $key = \Yii::$app->params['alipayKey'];
         $province = \Yii::$app->params['province'];
         $city = \Yii::$app->params['city'];
@@ -383,6 +385,7 @@ class ApiController extends Controller
         ksort($postData);//生成签名
         $sign = self::signAlipay($postData,$key);
         var_dump($sign);
+        $paySign = $orderData['paySign'];
         if($sign ==$paySign){
             return true;
         }else{
