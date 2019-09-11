@@ -28,7 +28,7 @@ class ApiController extends Controller
      */
     public function actionAlipayOrder(){
         $request = \Yii::$app->request->post();
-        $poststr = json_encode($request);Methods::varDumpLog('pay.txt',$poststr,'a');
+        $poststr = json_encode($request);
         $request = json_decode($poststr);
         $content = get_object_vars($request);
         $key = key($content);
