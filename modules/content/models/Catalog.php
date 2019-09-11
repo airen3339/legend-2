@@ -58,7 +58,7 @@ class Catalog extends ActiveRecord
      */
     public function getTree($pid,$id=''){
 
-        $data = \Yii::$app->db->createCommand('select id,name as text from {{%catalog}} where pid='.$pid)->queryAll();
+        $data = \Yii::$app->db->createCommand('select id,name as text from {{%catalog}} where showed =1 and pid='.$pid)->queryAll();
         if($id){
             $idArr = explode(",",$id);
         }
@@ -68,7 +68,7 @@ class Catalog extends ActiveRecord
                     $data[$k]['checked'] = true;
                 }
             }
-            $result = self::find()->where("pid = {$v['id']}")->count();
+            $result = self::find()->where("pid = {$v['id']} and showed = 1")->count();
             if($result > 0){
                 $childData = $this->getTree($v['id'],$id);
                 if(count($childData) > 0){

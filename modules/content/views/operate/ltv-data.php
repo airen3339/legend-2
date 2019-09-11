@@ -54,7 +54,6 @@
                 <th>日期</th>
                 <th>新增</th>
                 <th>1日</th>
-                <th>2日</th>
                 <th >3日</th>
                 <th >5日</th>
                 <th >7日</th>
