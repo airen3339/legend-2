@@ -152,7 +152,10 @@ class ApiController extends Controller
         $postData = ['amount'=>$amount,'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$productName,'province'=>$province,'returnUrl'=>$returnUrl];
         $signArr = $postData;
         ksort($signArr);
+        Methods::varDumpLog('sign.txt',json_encode($signArr,'a'));
         $sign = self::signAlipay($signArr,$key);
+        Methods::varDumpLog('sign.txt',$sign,'a');
+
         //请求支付
         $postData['sign'] = $sign;
         $url = 'https://pay.quanyuwenlv.com/ts/scanpay/pay';
@@ -292,6 +295,10 @@ class ApiController extends Controller
         die;
     }
     public function actionNotifyTest(){
+
+        //验证签名
+        $result = self::checkAlipaySign($paySign='4999bfa7aaeefa06f47697cfa625f27d',$orderNo='pay_20190911191937734_6',$appId='982280b3587d4133912a8e9e47dc8f3b');
+        var_dump($result);die;
         $order = \Yii::$app->request->get('order','');
         $amount = \Yii::$app->request->get('amount',1);
         $orderData = Recharge::find()->where("orderNumber = '{$order}' and money = '{$amount}'")->asArray()->one();
@@ -368,11 +375,14 @@ class ApiController extends Controller
         $payType = 'SCANPAY_ALIPAY';
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
+        var_dump($orderNumber);
         Methods::varDumpLog('payLog.txt',json_encode($orderData),'a');
         $dateTime = date('YmdHis',$orderData['createTime']);
-        $postData = ['amount'=>$orderData['money'],'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
+        $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
+        var_dump($postData);
         ksort($postData);//生成签名
         $sign = self::signAlipay($postData,$key);
+        var_dump($sign);
         if($sign ==$paySign){
             return true;
         }else{
