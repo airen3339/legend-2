@@ -72,13 +72,17 @@ class TimerController extends Controller
         //记录当天不同渠道的留存数据
         $channels = ['official','my','self'];
         foreach($channels as $l => $t){
-            $sql = " select p.RoleID from player p inner join `user` u on u.UserID = p.UserID where u.PackageFlag = '{$t}' and p.RoleID in ($roleIds)";
-            $roles = \Yii::$app->db2->createCommand($sql)->queryAll();
-            $ids = [];
-            foreach($roles as $e => $q){
-                $ids[] = $q['RoleID'];
+            if($roleIds){
+                $sql = " select p.RoleID from player p inner join `user` u on u.UserID = p.UserID where u.PackageFlag = '{$t}' and p.RoleID in ($roleIds)";
+                $roles = \Yii::$app->db2->createCommand($sql)->queryAll();
+                $ids = [];
+                foreach($roles as $e => $q){
+                    $ids[] = $q['RoleID'];
+                }
+                $channel_roleIds = implode(',',$ids);
+            }else{
+                $channel_roleIds = '';
             }
-            $channel_roleIds = implode(',',$ids);
             if($channel_roleIds){
                 //当前渠道今日新增账号登录数
                 $channel_user = Player::find()->select("RoleID")->where("( unix_timestamp(CreateDate) between $begin and $end )  and RoleID in ($channel_roleIds)")->asArray()->all();
