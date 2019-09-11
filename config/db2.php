@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=192.168.0.15;dbname=longwen_name',
+    'dsn' => 'mysql:host=139.9.149.194;dbname=longwen_name',
     'username' => 'game',
-    'password' => 'abcdefg',
+    'password' => 'szkR6GzpJtgpKRSV',
     'charset' => 'latin1',
     'tablePrefix'=>''
 ];
