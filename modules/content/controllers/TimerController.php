@@ -61,6 +61,7 @@ class TimerController extends Controller
             $register->accountDau = $loginTotal;
             $register->createTime = $time;
             $result = $register->save();
+            var_dump($result);
             if($result){
                 $tr->commit();
             }else{
@@ -101,7 +102,8 @@ class TimerController extends Controller
             $model->total = $channel_total;
             $model->accountDau = $loginTotal;
             $model->createTime = $time;
-            $model->save();
+            $re= $model->save();
+            var_dump($re);
         }
     }
 
@@ -114,6 +116,7 @@ class TimerController extends Controller
         $today = date('Y-m-d');
         $begin = strtotime($today);
         $end = $begin + 86399;
+        var_dump($channel);
         foreach($channel as $k => $v){
             //渠道今日新增账号数
             $sql = "select p.* from `user` u inner join `player` p on p.UserID = u.UserID where u.PackageFlag = '{$v}' and ( unix_timestamp(u.CreateDate) between $begin and $end ) ";
@@ -133,7 +136,8 @@ class TimerController extends Controller
             $model->login = $login;
             $model->createTime = time();
             $model->channel = $v;
-            $model->save();
+            $re = $model->save();
+            var_dump($re);
         }
     }
 }
