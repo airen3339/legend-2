@@ -24,7 +24,6 @@ class SscController extends yii\web\Controller {
         $result = file_get_contents($url);
 //        $result = '{"rows":2,"code":"cqssc","remain":"727hrs","data":[{"expect":"20190902030","opencode":"0,7,3,0,7","opentime":"2019-09-02 14:10:49","opentimestamp":1567404649},{"expect":"20190902029","opencode":"8,3,2,2,1","opentime":"2019-09-02 13:53:03","opentimestamp":1567403583}]}';
         $data = json_decode($result,true);
-        var_dump($data);
         if(isset($data['data'])){
             $code = $data['code'];
             $insert = $data['data'];
