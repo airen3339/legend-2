@@ -25,10 +25,20 @@
                     区服：
                 </td>
                 <td>
-                    <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="server">
+                        <option value="0">请选择</option>
+                        <option value="1" <?php if(isset($_GET['server']) && $_GET['server'] == 1) echo 'selected';?>>1区</option>
+                        <option value="2" <?php if(isset($_GET['server']) && $_GET['server'] == 2) echo 'selected';?>>2区</option>
+                    </select>
+                </td>
+                <td>
+                    充值状态：
+                </td>
+                <td>
+                    <select name="status">
+                        <option value="0">请选择</option>
+                        <option value="1" <?php if(isset($_GET['status']) && $_GET['status'] == 1) echo 'selected';?>>已完成</option>
+                        <option value="2" <?php if(isset($_GET['status']) && $_GET['status'] == 2) echo 'selected';?>>未完成</option>
                     </select>
                 </td>
                 <td>
@@ -58,15 +68,15 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['roleID']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['worldID']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['username']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['channel']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['orderid']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['chargenum']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['createTime']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['finishTime']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo strtotime($v['finishTime'])>0?'已完成':'未完成'?></span></td>
                 </tr>
                 <?php
             }

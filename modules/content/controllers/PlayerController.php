@@ -7,7 +7,10 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\Player;
+use app\modules\content\models\User;
+use app\modules\pay\models\Recharge;
 use yii\data\Pagination;
 
 class PlayerController  extends AdminController
@@ -68,34 +71,35 @@ class PlayerController  extends AdminController
     public function actionOrderQuery(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $service = \Yii::$app->request->get('service');
+        $service = \Yii::$app->request->get('server',0);
         $uid = \Yii::$app->request->get('uid');
         $order = \Yii::$app->request->get('order');
+        $status = \Yii::$app->request->get('status',0);
         $where = ' 1=1 ';
         if($service){
-            $where .= " and service = '{$service}'";
+            $where .= " and worldID = '{$service}'";
         }
         if($uid){
-            $where .= " and uid = $uid ";
+            $where .= " and roleID = '{$uid}' ";
         }
         if($order){
-            $where .= " and order = '{$order}'";
+            $where .= " and orderid = '{$order}'";
         }
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-        ];
-        $count = 20;
-        $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
-        return $this->render('order-query',['data'=>$data,'page'=>$page,'count'=>$count]);
+        if($status ==1){
+            $where .= " and unix_timestamp(finishTime) > 0 ";
+        }elseif($status ==2){
+            $where .= " and unix_timestamp(finishTime) = 0 ";
+        }
+        $total = ChargeMoney::find()->where("$where")->count();
+        $pages = new Pagination(['totalCount'=>$total,'pageSize'=>20]);
+        $data = ChargeMoney::find()->where($where)->orderBy('createTime desc')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $sql = "select u.Username,u.PackageFlag from `user` u inner join player p on p.UserID = u.UserID inner join chargemoney c on c.roleID = p.RoleID where c.roleID = '{$v['roleID']}' ";
+            $da = \Yii::$app->db2->createCommand($sql)->queryOne();
+            $data[$k]['channel'] = $da['Username'];
+            $data[$k]['username'] = $da['PackageFlag'];
+        }
+        return $this->render('order-query',['data'=>$data,'page'=>$pages,'count'=>$total]);
     }
     /**
      * 货币消耗
