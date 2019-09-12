@@ -59,12 +59,23 @@ class PlayerController  extends AdminController
         $service = \Yii::$app->request->get('service');
         $uid = \Yii::$app->request->get('uid');
         $where = ' 1=1 ';
+        $wh = ' 1=1 ';
         if($service){
-            $where .= " and service = '{$service}'";
+            $where .= " and WorldID = '{$service}'";
+            $wh = " and  worldID = '{$service}'";
         }
         if($uid){
-            $where .= " and uid = $uid ";
-            $data = ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'];
+            $where .= " and RoleID = '{$uid}' ";
+            $wh .= " and roleID = '{$uid}'";
+            $data = Player::find()->select("UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle")->where($where)->asArray()->one();
+            if($data){
+                $wh .= " and status = 2 ";
+                //充值金额
+                $money = ChargeMoney::find()->where($wh)->sum('chargenum');
+                $data['rechargeMoney'] = $money?$money:0;
+            }else{
+                $data = [];
+            }
         }else{
             $data = [];
         }
