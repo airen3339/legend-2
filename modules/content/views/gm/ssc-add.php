@@ -6,6 +6,7 @@
     </ul>
     <form action="/content/gm/ssc-add" method="post" class="form-horizontal">
         <fieldset>
+
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
@@ -16,6 +17,19 @@
                 <label for="modulename" class="control-label">结束日期</label>
                 <div class="controls">
                     <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" autocomplete="off"  id="endTime" name="endTime"  value=""/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">区服</label>
+                <div class="controls">
+                    <select name="server">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){
+                            echo "<option value='{$v['id']}'>{$v['name']}</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="control-group">

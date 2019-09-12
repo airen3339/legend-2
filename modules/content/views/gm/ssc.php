@@ -26,6 +26,20 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
+                    区服：
+                </td>
+                <td>
+                    <select name="serverId">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['serverId']) && $_GET['serverId'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td>
                     <button class="btn btn-primary" type="submit">提交</button>
                 </td>
                 <td></td>
@@ -37,6 +51,7 @@
             <thead>
             <tr>
                 <th>ID</th>
+                <th>区服</th>
                 <th>开始时间</th>
                 <th>结束时间</th>
                 <th>说明</th>
@@ -48,6 +63,7 @@
                 ?>
                 <tr  class="text-item">
                     <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['serverId']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['beginTime']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['endTime']?></span></td>
                     <td ><span ><?php echo $v['remark']?></span></td>
