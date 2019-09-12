@@ -9,6 +9,7 @@
     <form action="/content/player/detail-information" method="get" class="form-horizontal">
         <table class="table">
             <tr>
+
                 <td>
                     uid：
                 </td>

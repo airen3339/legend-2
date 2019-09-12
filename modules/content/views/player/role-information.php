@@ -13,14 +13,14 @@
                     RoleID：
                 </td>
                 <td>
-                    <input class="input-small "  type="text" size="10" id="roleId"  name="rolId" value="<?php echo isset($_GET['roleId'])?$_GET['roleId']:''?>"/>
+                    <input  style="height: 20px;" type="text"  id="roleId"  name="roleId" value="<?php echo isset($_GET['roleId'])?$_GET['roleId']:''?>"/>
                 </td>
                 <td>
                     区服：
                 </td>
                 <td>
                     <select name="service">
-                        <option value="-99">请选择</option>
+                        <option value="0">请选择</option>
                         <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
                         <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
                     </select>
@@ -36,6 +36,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>角色ID</th>
                 <th>账号</th>
                 <th>区服</th>
                 <th>昵称</th>
@@ -50,10 +51,11 @@
             foreach($user as $kss => $v) {
                 ?>
                 <tr  class="text-item">
+                    <td ><span style="width: 80px; "><?php echo $v['RoleID']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['UserID']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo '一区'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['WorldID']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['Name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo '乐山'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['PackageFlag']?></span></td>
                     <td ><span style="width: 80px; "><?php echo '11'?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['CreateDate']?></span></td>
                     <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i:s',$v['LastLogin']);?></span></td>

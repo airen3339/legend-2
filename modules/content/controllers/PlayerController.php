@@ -32,18 +32,23 @@ class PlayerController  extends AdminController
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
         $service = \Yii::$app->request->get('service');
-        $roleId = \Yii::$app->request->get('rolId');
+        $roleId = \Yii::$app->request->get('roleId');
+        $page = \Yii::$app->request->get('page',1);
         $where = ' 1=1 ';
-//        if($service){
-//            $where .= " and service = '{$service}'";
-//        }
-        if($roleId){
-            $where .= " and RoleID = $roleId ";
+        if($service){
+            $where .= " and u.WorldID = '{$service}'";
         }
-        $count = Player::find()->where($where)->count();
-        $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
-        $user = Player::find()->select("RoleID,UserID,Name,LastLogin    ,CreateDate")->where($where)->offset($page->offset)->limit($page->limit)->asArray()->all();
-        return $this->render('role-information',['user'=>$user,'page'=>$page,'count'=>$count]);
+        if($roleId){
+            $where .= " and p.RoleID = '{$roleId}' ";
+        }
+        $sql = "select p.RoleID,p.UserID,p.LastLogin,p.CreateDate,u.PackageFlag,u.WorldID,p.Name from `user` u inner join player p on p.UserID = u.UserID where $where";
+        $count = \Yii::$app->db2->createCommand($sql)->queryAll();
+        $count = count($count);
+        $limit = " limit ".(20*($page-1)).",20";
+        $pages = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
+        $sql .= $limit;
+        $user = \Yii::$app->db2->createCommand($sql)->queryAll();
+        return $this->render('role-information',['user'=>$user,'page'=>$pages,'count'=>$count]);
     }
     /**
      * 详细信息
