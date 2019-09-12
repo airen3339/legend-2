@@ -14,5 +14,6 @@ return [
     'alipayAppid' => '982280b3587d4133912a8e9e47dc8f3b',
     'alipayKey' => 'c43eaf9e8e284fae94bc245326473d3e',
     'alipayNotify' => 'http://139.9.243.254/pay/api/alipay-notify',
+    'gameServerUrl' => 'http://139.9.238.82：8080',
     'alipay_path' => dirname(__FILE__).'/../libs/yii2_alipay/',
     ];
