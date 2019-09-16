@@ -114,10 +114,11 @@ class Methods
      * @return bool|false|string
      * GM命令推送
      * PHP 推向 服务器
+     * 4242 - 活动推送端口  4241-时时彩推送
      */
     public static function GmFileGet($command_content,$server_id=100,$command=6,$command_cls=4234){
-//        $url = 'http://192.168.0.15:8080';
-        $url = Yii::$app->params['gameServerUrl'];
+        $url = 'http://192.168.0.15:8080';
+//        $url = Yii::$app->params['gameServerUrl'];
         $post_data = ['server_id'=>$server_id,'command'=>$command,'command_cls'=>$command_cls,'command_content'=>json_encode(['body'=>$command_content])];
         $post_data = http_build_query($post_data);
         $aContext = array('http'=>array('method' => 'POST','header' =>'Content-type: application/x-www-form-urlencoded','content' =>$post_data));

@@ -1,10 +1,10 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
+        <li><a href="/content/activity/index">活动管理</a> <span class="divider">/</span></li>
         <li class="active">ssc活动</li>
     </ul>
-    <form action="/content/gm/ssc-add" method="post" class="form-horizontal">
+    <form action="/content/activity/ssc-add" method="post" class="form-horizontal">
         <fieldset>
 
             <div class="control-group">

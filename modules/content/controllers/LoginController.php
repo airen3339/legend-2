@@ -34,6 +34,7 @@ class LoginController extends  Controller{
         $res = Role::find()->where("name='{$userName}' and password = '{$userPass}'")->one();
         if($res){
             Yii::$app->session->set('adminId',$res->id);
+            Yii::$app->session->set('adminName',$res->name);
             Yii::$app->session->set('createPower',$res->createPower);
             return $this->redirect('/content/index/index');
         }else{

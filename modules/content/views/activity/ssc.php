@@ -1,16 +1,16 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
+        <li><a href="/content/activity/index">活动管理</a> <span class="divider">/</span></li>
         <li class="active">ssc活动</li>
     </ul>
     <ul class="nav">
         <li class="dropdown pull-right">
             <a class="dropdown-toggle"
-               href="/content/gm/ssc-add">添加ssc活动</a>
+               href="/content/activity/ssc-add">添加ssc活动</a>
         </li>
     </ul>
-    <form action="/content/gm/ssc" method="get" class="form-horizontal">
+    <form action="/content/activity/ssc" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
@@ -46,7 +46,7 @@
             </tr>
         </table>
     </form>
-    <form action="/content/gm/ssc" method="post">
+    <form action="/content/activity/ssc" method="post">
         <table class="table table-hover">
             <thead>
             <tr>
