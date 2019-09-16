@@ -46,8 +46,9 @@ class ChargeMoney extends ActiveRecord
         $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID where c.level = '{$level}' and c.status = 2 and $where";
         $money = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
         if($money){
-            $sql .= "select count(c.roleID) as total from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID where c.level = '{$level}' and c.status = 2 and $where group by c.roleID";
-            $total = \Yii::$app->db2->createCommand($sql)->queryOne()['total'];
+            $sql = "select c.roleID from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID where c.level = '{$level}' and c.status = 2 and $where group by c.roleID";
+            $role = \Yii::$app->db2->createCommand($sql)->queryOne();
+            $total = $role['total'];
         }else{
             $money = 0;
             $total = 0;
