@@ -37,8 +37,9 @@ class SscController extends yii\web\Controller {
                 $openUnixTime = $v['opentimestamp'];//开间时间 时间戳
                 $date = explode(' ',$openTime)[0];
                 $time = time();
-                //查看是否已有改条时彩数据
+                //查看是否已有该条时彩数据
                 $isHad = Lottery::find()->where("expect = '{$expect}' and openCode = '{$openCode}' and code = '{$code}'")->one();
+                var_dump($isHad);
                 if($isHad){
                     continue;
                 }else{
