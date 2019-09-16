@@ -2,9 +2,10 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/activity/index">活动管理</a> <span class="divider">/</span></li>
-        <li class="active">活动推送奖励</li>
+        <li class="active"><?php echo $data['remark'];?></li>
     </ul>
     <form action="/content/activity/activity-push" method="post" class="form-horizontal" onsubmit="return propSubmit();">
+        <input type="hidden" value="<?php echo $data['id'];?>" name="pushId" />
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">区服</label>
@@ -13,7 +14,11 @@
                         <option value="0">请选择</option>
                         <?php
                         foreach($servers as $k => $v){
-                            echo "<option value='{$v['id']}'>{$v['name']}</option>";
+                            if($v['id'] == $data['serverId']){
+                                echo "<option value='{$v['id']}' selected >{$v['name']}</option>";
+                            }else{
+                                echo "<option value='{$v['id']}' >{$v['name']}</option>";
+                            }
                         }
                         ?>
                     </select>
@@ -23,8 +28,8 @@
                 <div class="controls">
                     <select name="remark" id="remark" style="width: 105px;">
                         <option value="">请选择</option>
-                        <option value='每日首充'>每日首充</option>;
-                        <option value='累计充值'>累计充值</option>;
+                        <option value='每日首充' <?php if($data['remark'] == '每日首充')echo 'selected'?>>每日首充</option>;
+                        <option value='累计充值' <?php if($data['remark'] == '累计充值')echo 'selected'?>>累计充值</option>;
                     </select>
                 </div>
             </div>
@@ -32,19 +37,19 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
-                    <input type="text" class="input-small"  name="type" id="type" value=""  >
+                    <input type="text" class="input-small"  name="type" id="type" value="<?php echo $data['type'];?>"  >
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()" autocomplete="off" size="10" type="text" id="beginTime" name="beginTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="beginTime" name="beginTime"  value="<?php echo $data['beginTime'];?>"/>
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">截止日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()"  autocomplete="off" size="10" type="text" id="endTime" name="endTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="endTime" name="endTime"  value="<?php echo $data['endTime'];?>"/>
                 </div>
             </div>
 
@@ -74,6 +79,22 @@
                         <li>是否删除</li>
                     </ul>
                 </div>
+                <?php if(isset($data['pushContent']['condition'])){
+                    $content = $data['pushContent'];
+                    foreach($data['pushContent']['condition'] as $k => $v){
+                        ?>
+                        <div class="control-group propContent">
+                            <ul class="reward-child controls reward-ul">
+                                <li class="liCondition"><?php echo $v?><input type="hidden" value="<?php echo $v?>" name="liConditions[]"/></li>
+                                <li class="lipropId"><?php echo $content['propId'][$k]?><input type="hidden" value="<?php echo $content['propId'][$k]?>" name="propIds[]"/></li>
+                                <li class="liNumber"><?php echo $content['number'][$k]?><input type="hidden" value="<?php echo $content['number'][$k]?>" name="numbers[]"/></li>
+                                <li class="liBind"><?php echo $content['bind'][$k]==1?'绑定':'未绑定';?><input type="hidden" value="<?php echo $content['bind'][$k]?>" name="binds[]"/></li>
+                                <li><a href="#" class="btn" onclick="deleteProp(this)">删除</a></li>
+                            </ul>
+                        </div>
+                <?php
+                    }
+                }?>
             </table>
             <div class="control-group">
                 <div class="controls">

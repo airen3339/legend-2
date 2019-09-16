@@ -2,9 +2,10 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/activity/index">活动管理</a> <span class="divider">/</span></li>
-        <li class="active">活动推送奖励</li>
+        <li class="active">五行运势活动编辑</li>
     </ul>
-    <form action="/content/activity/activity-push" method="post" class="form-horizontal" onsubmit="return propSubmit();">
+    <form action="/content/activity/five-activity-add" method="post" class="form-horizontal" onsubmit="return propSubmit();">
+        <input type="hidden" value="<?php echo isset($data['id'])?$data['id']:0;?>" name="pushId" />
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">区服</label>
@@ -13,52 +14,36 @@
                         <option value="0">请选择</option>
                         <?php
                         foreach($servers as $k => $v){
-                            echo "<option value='{$v['id']}'>{$v['name']}</option>";
+                            if(isset($data['serverId']) && ($v['id'] == $data['serverId'])){
+                                echo "<option value='{$v['id']}' selected >{$v['name']}</option>";
+                            }else{
+                                echo "<option value='{$v['id']}' >{$v['name']}</option>";
+                            }
                         }
                         ?>
-                    </select>
-                </div>
-            </div><div class="control-group">
-                <label for="modulename" class="control-label">活动说明</label>
-                <div class="controls">
-                    <select name="remark" id="remark" style="width: 105px;">
-                        <option value="">请选择</option>
-                        <option value='每日首充'>每日首充</option>;
-                        <option value='累计充值'>累计充值</option>;
                     </select>
                 </div>
             </div>
 
             <div class="control-group">
-                <label for="modulename" class="control-label">活动类型</label>
-                <div class="controls">
-                    <input type="text" class="input-small"  name="type" id="type" value=""  >
-                </div>
-            </div>
-            <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()" autocomplete="off" size="10" type="text" id="beginTime" name="beginTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="beginTime" name="beginTime"  value="<?php echo isset($data['beginTime'])?$data['beginTime']:'';?>" autocomplete="off"/>
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">截止日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()"  autocomplete="off" size="10" type="text" id="endTime" name="endTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($data['endTime'])?$data['endTime']:'';?>" autocomplete="off"/>
                 </div>
             </div>
 
             <div class="control-group">
-                <label for="modulename" class="control-label">发放物品</label>
+                <label for="modulename" class="control-label">活动道具</label>
                 <div class="controls">
-                    领取条件：<input type="text" style="width:70px" name="condition" id='condition' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
-                    道具ID：<input type="text" style="width:70px" name="propId" id='propId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    道具名称：<input type="text" style="width:70px" name="toolName" id='toolName' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    道具ID：<input type="text" style="width:70px" name="toolId" id='toolId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
                     道具数量：<input type="text" style="width:70px" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')"  />&nbsp;&nbsp;&nbsp;&nbsp;
-                    绑定状态：<select name="bind" id="bind" class="input-small">
-                                <option value="0">请选择</option>
-                                <option value="1">是</option>
-                                <option value="2">否</option>
-                            </select>&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn" onclick="addProp()">添加</a>
                 </div>
             </div>
@@ -67,13 +52,27 @@
             <table id="addContent" >
                 <div class="control-group">
                     <ul class="reward-head controls reward-ul">
-                        <li>领取条件</li>
+                        <li>道具名称</li>
                         <li>道具ID</li>
                         <li>道具数量</li>
-                        <li>绑定状态</li>
                         <li>是否删除</li>
                     </ul>
                 </div>
+                <?php if(isset($data['pushContent']['toolName'])){
+                    $content = $data['pushContent'];
+                    foreach($data['pushContent']['toolName'] as $k => $v){
+                        ?>
+                        <div class="control-group propContent">
+                            <ul class="reward-child controls reward-ul">
+                                <li class="toolName"><?php echo $v?><input type="hidden" value="<?php echo $v?>" name="toolName[]"/></li>
+                                <li class="toolId"><?php echo $content['toolId'][$k]?><input type="hidden" value="<?php echo $content['toolId'][$k]?>" name="toolId[]"/></li>
+                                <li class="liNumber"><?php echo $content['number'][$k]?><input type="hidden" value="<?php echo $content['number'][$k]?>" name="numbers[]"/></li>
+                                <li><a href="#" class="btn" onclick="deleteProp(this)">删除</a></li>
+                            </ul>
+                        </div>
+                        <?php
+                    }
+                }?>
             </table>
             <div class="control-group">
                 <div class="controls">
@@ -85,42 +84,30 @@
 </div>
 <script>
     function addProp(){
-        var condition = $('#condition').val();
-        var propId = $('#propId').val();
+        var toolName = $('#toolName').val();
+        var toolId = $('#toolId').val();
         var number = $('#number').val();
-        var bind = $('#bind').val();
-        if(!condition){
-            alert('请填写领取条件');return false;
+        if(!toolName){
+            alert('请填写道具名称');return false;
         }
-        if(!propId){
+        if(!toolId){
             alert('请填写道具ID');return false;
         }
         if(!number){
             alert('请填写道具数量');return false;
         }
-        if(bind < 1){
-            alert('请选择绑定状态');return false;
-        }
-        var bindStr  = '';
-        if(bind == 1){
-            bindStr = '绑定';
-        }else{
-            bindStr = '未绑定';
-        }
         var addStr = '<div class="control-group propContent">' +
             '                    <ul class="reward-child controls reward-ul">' +
-            '                        <li class="liCondition">'+condition+'<input type="hidden" value="'+condition+'" name="liConditions[]"/></li>' +
-            '                        <li class="lipropId">'+propId+'<input type="hidden" value="'+propId+'" name="propIds[]"/></li>' +
+            '                        <li class="toolName">'+toolName+'<input type="hidden" value="'+toolName+'" name="toolName[]"/></li>' +
+            '                        <li class="toolId">'+toolId+'<input type="hidden" value="'+toolId+'" name="toolId[]"/></li>' +
             '                        <li class="liNumber">'+number+'<input type="hidden" value="'+number+'" name="numbers[]"/></li>' +
-            '                        <li class="liBind">'+bindStr+'<input type="hidden" value="'+bind+'" name="binds[]"/></li>' +
             '                        <li><a href="#" class="btn" onclick="deleteProp(this)">删除</a></li>' +
             '                    </ul>' +
             '                </div>';
         $('#addContent').append(addStr);
-        $('#condition').val('');
-        $('#propId').val('');
+        $('#toolName').val('');
+        $('#toolId').val('');
         $('#number').val('');
-        $('#bind').val(0);
     }
     function deleteProp(_this){
         if(confirm('确认删除该条数据？')){
@@ -129,19 +116,11 @@
     }
     function propSubmit(){
         var server = $('#server').val();
-        var remark = $('#remark').val();
-        var type = $('#type').val();
         var beginTime = $('#beginTime').val();
         var endTime = $('#endTime').val();
-        var condition = $('li.liCondition').html();
+        var condition = $('li.toolName').html();
         if(server < 1){
             alert('请选择区服');return false;
-        }
-        if(!remark){
-            alert('请选择活动说明');return false;
-        }
-        if(!type){
-            alert('请填写活动类型');return false;
         }
         if(!beginTime){
             alert('请选择开始时间');return false;
