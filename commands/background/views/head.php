@@ -7,6 +7,12 @@
 </ul>
 <ul class="nav pull-right">
     <li>
+        <a href="#" class="download" role="button" onclick="setIp(1)"   data-toggle="modal" >外网</a>
+    </li>
+    <li>
+        <a href="#" class="download" role="button" onclick="setIp(2)"   data-toggle="modal" >内网</a>
+    </li>
+    <li>
         <a href="#" class="download" role="button" onclick="showPassFrame()"   data-toggle="modal" >修改密码</a>
     </li>
     <li>
@@ -47,5 +53,8 @@
                 }
             }
         })
+    }
+    function setIp(type){
+        $.post('/content/api/set-ip',{type:type},function(e){console.log(e.ipAddress)},'json');
     }
 </script>

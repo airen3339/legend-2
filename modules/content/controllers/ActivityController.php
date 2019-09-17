@@ -10,6 +10,7 @@ use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\ActivityLog;
 use app\modules\content\models\ActivityPush;
+use app\modules\content\models\LTV;
 use app\modules\content\models\Role;
 use app\modules\content\models\SscActivity;
 use Yii;
@@ -51,11 +52,7 @@ class ActivityController  extends AdminController
         if($serverId){
             $where .= " and serverId = $serverId";
         }
-        $servers =[
-            ['id'=>100,'name'=>'外服'],
-            ['id'=>900,'name'=>'品鉴'],
-            ['id'=>903,'name'=>'刘佳林'],
-        ];
+        $servers = LTV::getServers();
         $count = SscActivity::find()->where($where)->count();
         $pages = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         $data = SscActivity::find()->asArray()->where($where)->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
@@ -94,11 +91,7 @@ class ActivityController  extends AdminController
                 echo "<script>alert('添加失败');setTimeout(function(){history.go(-1)},1000)</script>";die;
             }
         }else{
-            $servers =[
-                ['id'=>100,'name'=>'外服'],
-                ['id'=>900,'name'=>'品鉴'],
-                ['id'=>903,'name'=>'刘佳林'],
-            ];
+            $servers = LTV::getServers();
             return $this->render('ssc-add',['servers'=>$servers]);
         }
     }
@@ -109,11 +102,7 @@ class ActivityController  extends AdminController
     public function actionActivityPush(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $servers =[
-            ['id'=>100,'name'=>'外服'],
-            ['id'=>900,'name'=>'品鉴'],
-            ['id'=>903,'name'=>'刘佳林'],
-        ];
+        $servers = LTV::getServers();
         if($_POST){
             $pushId = Yii::$app->request->post('pushId',0);
             $serverId = Yii::$app->request->post('server');//区服id
@@ -186,10 +175,18 @@ class ActivityController  extends AdminController
     public function actionActivityPushList(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $count = ActivityPush::find()->where("activityType = 1")->count();
+        //获取区服
+        $servers = LTV::getServers();
+        $server = Yii::$app->request->get('server');//区服
+        if($server){
+            $where = " activityType = 1 and serverId = $server ";
+        }else{
+            $where = " activityType = 1 ";
+        }
+        $count = ActivityPush::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
-        $data = ActivityPush::find()->where("activityType = 1")->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
-        return $this->render('activity-push-list',['data'=>$data]);
+        $data = ActivityPush::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        return $this->render('activity-push-list',['data'=>$data,'servers'=>$servers]);
     }
     /**
      * 活动推送列表
@@ -218,11 +215,7 @@ class ActivityController  extends AdminController
     public function actionActivityPushEdit(){
         $id = Yii::$app->request->get('id');
         $data = ActivityPush::find()->where("id = $id")->asArray()->one();
-        $servers =[
-            ['id'=>100,'name'=>'外服'],
-            ['id'=>900,'name'=>'品鉴'],
-            ['id'=>903,'name'=>'刘佳林'],
-        ];
+        $servers = LTV::getServers();
         $data['pushContent'] = json_decode($data['pushContent'],true);
         return $this->render('activity-push-edit',['data'=>$data,'servers'=>$servers]);
     }
@@ -232,13 +225,21 @@ class ActivityController  extends AdminController
     public function actionFiveActivity(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $count = ActivityPush::find()->where("activityType = 2")->count();
+        //获取区服
+        $servers = LTV::getServers();
+        $server = Yii::$app->request->get('server');//区服
+        if($server){
+            $where = " activityType = 2 and serverId = $server ";
+        }else{
+            $where = " activityType = 2 ";
+        }
+        $count = ActivityPush::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
-        $data = ActivityPush::find()->where("activityType = 2")->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        $data = ActivityPush::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['operatorName'] = Role::find()->where("id = {$v['operator']}")->asArray()->one()['name'];
         }
-        return $this->render('five-activity',['data'=>$data]);
+        return $this->render('five-activity',['data'=>$data,'servers'=>$servers]);
     }
     /**
      * 五行运势活动列表
@@ -246,11 +247,7 @@ class ActivityController  extends AdminController
      */
     public function actionFiveActivityAdd()
     {
-        $servers = [
-            ['id' => 100, 'name' => '外服'],
-            ['id' => 900, 'name' => '品鉴'],
-            ['id' => 903, 'name' => '刘佳林'],
-        ];
+        $servers = LTV::getServers();
         if ($_POST) {
             $pushId = Yii::$app->request->post('pushId', 0);
             $serverId = Yii::$app->request->post('server');//区服id
@@ -344,15 +341,18 @@ class ActivityController  extends AdminController
      */
     public function actionActivityLog(){
         $type = Yii::$app->request->get('type',0);//type 1-活动推送 2-五行运势
+        $uid = Yii::$app->request->get('uid');
+        $where = " 1 = 1 ";
         if($type){
-            $where = " type = $type";
-        }else{
-            $where = '';
+            $where .= " and type = $type";
+        }
+        if($uid){
+            $where .= " and operatorId = $uid";
         }
         $count = ActivityLog::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = ActivityLog::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
-        return $this->render('activity-log',['data'=>$data]);
+        return $this->render('activity-log',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
 
 }

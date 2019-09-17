@@ -67,4 +67,19 @@ class ApiController extends  Controller
         }
         die(json_encode(['code' => $code]));
     }
+    /**
+     * 设置ip
+     */
+    public function actionSetIp(){
+        $type = Yii::$app->request->post('type',1);
+        if($type ==1){//外网
+            $ip = 'http://139.9.238.82:8080';
+        }else{//内网
+            $ip = 'http://192.168.0.15:8080';
+        }
+        Yii::$app->session->set('ipAddress',$ip);
+        $ipAddress = Yii::$app->session->get('ipAddress');
+        $data = ['ipAddress'=>$ipAddress];
+        die(json_encode($data));
+    }
 }
