@@ -32,7 +32,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
-                    <input type="text" class="input-small"  name="type" id="type" value=""  >
+                    <input type="text" class="input-small" onkeyup="value = value.replace(/[^0-9]/g,'')"  name="type" id="type" value=""  >
                 </div>
             </div>
             <div class="control-group">

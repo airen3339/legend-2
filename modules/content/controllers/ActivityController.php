@@ -160,7 +160,7 @@ class ActivityController  extends AdminController
                 }
                 ActivityLog::logAdd($remark,$model->id,1);//1-活动推送 2-五行运势
                 //推送服务端 4242-活动推送
-                Methods::GmFileGet(['activityId'=>$model->id],$serverId,6,4242);
+                ActivityPush::pushActivity($serverId,$model->id,$type,$beginTime,$endTime,$pushContent);
 
                 echo "<script>alert('添加成功');setTimeout(function(){window.location.href='$target';},1000)</script>";die;
             }else{
