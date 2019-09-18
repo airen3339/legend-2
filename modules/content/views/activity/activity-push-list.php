@@ -28,6 +28,16 @@
                     </select>
                 </td>
                 <td>
+                    类型：
+                </td>
+                <td>
+                    <select name="type">
+                        <option value="0">请选择</option>
+                        <option value='1' <?php if(isset($_GET['type']) && $_GET['type'] == 1) echo 'selected';?>>每日单充</option>";
+                        <option value='2' <?php if(isset($_GET['type']) && $_GET['type'] == 2) echo 'selected';?>>累计充值</option>";
+                    </select>
+                </td>
+                <td>
                     <button class="btn btn-primary" type="submit">提交</button>
                 </td>
             </tr>
@@ -51,14 +61,14 @@
                 <?php
                     foreach($data as $k => $v){
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['serverId']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['remark']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['type']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['beginTime']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['endTime']?></span></td>
-                    <td ><span><?php echo $v['pushContent']?></span></td>
+                <tr  class="">
+                    <td style="width: 80px; "><span ><?php echo $v['id']?></span></td>
+                    <td style="width: 80px; "><span ><?php echo $v['serverId']?></span></td>
+                    <td style="width: 80px; "><span ><?php echo $v['remark']?></span></td>
+                    <td style="width: 80px; "><span ><?php echo $v['type']?></span></td>
+                    <td style="width: 80px; "><span ><?php echo $v['beginTime']?></span></td>
+                    <td style="width: 80px; "><span ><?php echo $v['endTime']?></span></td>
+                    <td style="width: 180px;"><span><?php echo $v['pushContent']?></span></td>
                     <td  class="notSLH" style="width: 130px;">
                         <a class="btn btn-primary" href="/content/activity/activity-push-edit?id=<?php echo $v['id'] ; ?>" >修改</a>
                         <a href='#' class="btn btn-primary" onclick="javascript:if(confirm('确定删除吗？')){location.href='/content/activity/activity-push-delete?id=<?php echo $v['id']; ?>'}" >删除</a>

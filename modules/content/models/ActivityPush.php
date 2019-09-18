@@ -30,7 +30,7 @@ class ActivityPush extends ActiveRecord
             $data = [];//对应条件的数据
             foreach($pushContent['condition'] as $k => $v){
                 $key = 'condition'.$v;//条件键区分
-                $data[$key][] = ['id'=>$pushContent['propId'][$k],'count'=>$pushContent['number'][$k],'binding'=>$pushContent['bind'][$k]];
+                $data[$key][] = ['id'=>intval($pushContent['propId'][$k]),'count'=>intval($pushContent['number'][$k]),'binding'=>intval($pushContent['bind'][$k])];
             }
             //构造推送数据
             $AwardList = [];

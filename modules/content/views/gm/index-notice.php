@@ -5,23 +5,24 @@
         <li class="active">首页公告</li>
     </ul>
     <form action="/content/gm/index-notice" method="post" class="form-horizontal">
+        <input type="hidden" name="id" value="<?php echo isset($notice['id'])?$notice['id']:''?>">
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="beginTime" name="beginTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="beginTime" name="beginTime"  value="<?php echo isset($notice['beginTime'])?$notice['beginTime']:''?>" autocomplete="off"/>
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">结束日期</label>
                 <div class="controls">
-                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="endTime" name="endTime"  value=""/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($notice['endTime'])?$notice['endTime']:''?>" autocomplete="off"/>
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">公告内容</label>
                 <div class="controls">
-                    <textarea name="content"></textarea>
+                    <textarea name="content"><?php echo isset($notice['content'])?$notice['content']:''?></textarea>
                 </div>
             </div>
             <div class="control-group">

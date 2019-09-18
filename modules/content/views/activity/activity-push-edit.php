@@ -24,22 +24,22 @@
                     </select>
                 </div>
             </div><div class="control-group">
-                <label for="modulename" class="control-label">活动说明</label>
+                <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
                     <select name="remark" id="remark" style="width: 105px;">
                         <option value="">请选择</option>
-                        <option value='每日首充' <?php if($data['remark'] == '每日首充')echo 'selected'?>>每日首充</option>;
-                        <option value='累计充值' <?php if($data['remark'] == '累计充值')echo 'selected'?>>累计充值</option>;
+                        <option value='1' <?php if($data['type'] == '1')echo 'selected'?>>每日单充</option>;
+                        <option value='2' <?php if($data['type'] == '2')echo 'selected'?>>累计充值</option>;
                     </select>
                 </div>
             </div>
 
-            <div class="control-group">
-                <label for="modulename" class="control-label">活动类型</label>
-                <div class="controls">
-                    <input type="text" class="input-small"  name="type" id="type" value="<?php echo $data['type'];?>"  >
-                </div>
-            </div>
+<!--            <div class="control-group">-->
+<!--                <label for="modulename" class="control-label">活动类型</label>-->
+<!--                <div class="controls">-->
+<!--                    <input type="text" class="input-small"  name="type" id="type" value="--><?php //echo $data['type'];?><!--"  >-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">

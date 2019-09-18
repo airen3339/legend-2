@@ -8,8 +8,13 @@ namespace app\modules\content\controllers;
 
 use app\libs\AdminController;
 use app\libs\Methods;
+use app\modules\content\models\ActivityLog;
+use app\modules\content\models\LTV;
+use app\modules\content\models\Notice;
+use app\modules\content\models\Role;
 use app\modules\content\models\SscActivity;
 use Yii;
+use yii\base\Controller;
 use yii\data\Pagination;
 
 class GmController  extends AdminController
@@ -86,19 +91,23 @@ class GmController  extends AdminController
     public function actionNoticeQuery(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-        ];
-        return $this->render('notice-query',['data'=>$data]);
+        $serverId = Yii::$app->request->get('server',0);
+        $type = Yii::$app->request->get('type');//1-首页公告
+        $where = " 1 = 1 ";
+        if($serverId){
+            $where .= " and serverId = $serverId";
+        }
+        if($type){
+            $where .= " and type = $type";
+        }
+        $count = Notice::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = Notice::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $data[$k]['createName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
+        }
+        $servers = LTV::getServers();
+        return $this->render('notice-query',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);
     }
     /**
      * 首页公告
@@ -107,11 +116,44 @@ class GmController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         if($_POST){
+            $id = Yii::$app->request->post('id',0);
             $beginTime = Yii::$app->request->post('beginTime');
             $endTime = Yii::$app->request->post('endTime');
             $content = Yii::$app->request->post('content');
+            if(!$content){
+                echo "<script>alert('请填写公告内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = Notice::findOne($id);
+                $remark = '修改首页公告';
+            }else{
+                $remark = '添加首页公告';
+                $model = new Notice();
+            }
+            $model->content = $content;
+            $model->beginTime = $beginTime;
+            $model->endTime = $endTime;
+            $model->creator = Yii::$app->session->get('adminId');
+            $model->type = 1;//1-首页公告
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                ActivityLog::logAdd($remark,$model->id,3);
+                //推送服务端
+//                Methods::GmFileGet($content,0,6,4243);
+                echo "<script>alert('添加成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
+            }else{
+                echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
         }else{
-            return $this->render('index-notice',[]);
+            $id = Yii::$app->request->get('id',0);
+            if($id){
+                $notice = Notice::find()->where("id = $id")->asArray()->one();
+                $data = ['notice'=>$notice];
+            }else{
+                $data  = [];
+            }
+            return $this->render('index-notice',$data);
         }
     }
 }

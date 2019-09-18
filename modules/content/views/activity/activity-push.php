@@ -19,22 +19,22 @@
                     </select>
                 </div>
             </div><div class="control-group">
-                <label for="modulename" class="control-label">活动说明</label>
+                <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
                     <select name="remark" id="remark" style="width: 105px;">
                         <option value="">请选择</option>
-                        <option value='每日首充'>每日首充</option>;
-                        <option value='累计充值'>累计充值</option>;
+                        <option value='1'>每日单充</option>;
+                        <option value='2'>累计充值</option>;
                     </select>
                 </div>
             </div>
 
-            <div class="control-group">
-                <label for="modulename" class="control-label">活动类型</label>
-                <div class="controls">
-                    <input type="text" class="input-small" onkeyup="value = value.replace(/[^0-9]/g,'')"  name="type" id="type" value=""  >
-                </div>
-            </div>
+<!--            <div class="control-group">-->
+<!--                <label for="modulename" class="control-label">活动类型</label>-->
+<!--                <div class="controls">-->
+<!--                    <input type="text" class="input-small" onkeyup="value = value.replace(/[^0-9]/g,'')"  name="type" id="type" value=""  >-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
