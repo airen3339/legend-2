@@ -45,7 +45,7 @@
                 <th>ID</th>
                 <th>发布时间</th>
                 <th>截止时间</th>
-                <th>公告内容</th>
+                <th style="width: 460px;">公告内容</th>
                 <th>公告类型</th>
                 <th>操作者</th>
                 <th>操作时间</th>
@@ -60,13 +60,13 @@
                     <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['beginTime']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['endTime']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['content']?></span></td>
+                    <td ><span style="display: block;width: 450px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" title="<?php echo $v['content'];?>"><?php echo $v['content']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['type']==1?'首页公告':'区服公告'?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['createName']?></span></td>
                     <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
                     <td  class="notSLH" style="width: 130px;">
                         <a class="btn btn-primary" href="/content/gm/<?php echo $v['type']==1?'index-notice':'' ?>?id=<?php echo $v['id'] ; ?>" >修改</a>
-                        <a href='#' class="btn btn-primary" onclick="javascript:if(confirm('确定删除吗？')){location.href='/content/activity/notice-delete?id=<?php echo $v['id']; ?>'}" >删除</a>
+                        <a href='#' class="btn btn-primary" onclick="javascript:if(confirm('确定删除吗？')){location.href='/content/gm/notice-delete?id=<?php echo $v['id']; ?>'}" >删除</a>
                     </td>
                 </tr>
                 <?php

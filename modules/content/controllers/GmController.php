@@ -141,7 +141,7 @@ class GmController  extends AdminController
                 ActivityLog::logAdd($remark,$model->id,3);
                 //推送服务端
 //                Methods::GmFileGet($content,0,6,4243);
-                echo "<script>alert('添加成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
             }else{
                 echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
@@ -154,6 +154,23 @@ class GmController  extends AdminController
                 $data  = [];
             }
             return $this->render('index-notice',$data);
+        }
+    }
+    /**
+     * 公告删除
+     */
+    public function actionNoticeDelete(){
+        $id = Yii::$app->request->get('id');
+        if($id){
+            $res = Notice::deleteAll("id = $id");
+            if($res ){
+                ActivityLog::logAdd('删除首页公告',$id,3);
+                echo "<script>alert('删除成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
         }
     }
 }

@@ -4,7 +4,9 @@
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
         <li class="active">首页公告</li>
     </ul>
-    <form action="/content/gm/index-notice" method="post" class="form-horizontal">
+    <form action="/content/gm/index-notice" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定提交并推送服务端吗？')){return true}else{
+        return false;
+    }">
         <input type="hidden" name="id" value="<?php echo isset($notice['id'])?$notice['id']:''?>">
         <fieldset>
             <div class="control-group">
