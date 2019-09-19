@@ -13,20 +13,28 @@
                     区服：
                 </td>
                 <td>
-                    <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="server">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
                 </td>
                 <td>
-                    货币消耗：
+                    类型：
                 </td>
                 <td>
-                    <select name="moneyUse">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="type">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($types as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['type']) && $_GET['type'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
                 </td>
                 <td>
@@ -40,8 +48,11 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>操作方式</th>
-                <th>元宝/铜钱消耗总和</th>
+                <th>区服</th>
+                <th>操作说明</th>
+                <th>操作类型</th>
+                <th>元宝数量</th>
+                <th>收入支出</th>
             </tr>
             </thead>
             <tbody>
@@ -49,8 +60,11 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['serverId']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['typeObject']==1?'元宝兑换':($v['typeObject']==2?'时时彩':($v['typeObject']==3?'赠送元宝':'元宝充值'))?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['remark']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['money']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['added']==1?'收入':'消耗'?></span></td>
                 </tr>
                 <?php
             }
@@ -58,4 +72,17 @@
             </tbody>
         </table>
     </form>
+    <div class="pagination pagination-right">
+        <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
+        <?php if($count > 200){?>
+            <span style="font-size: 17px;position: relative;bottom: 5px;">
+            <a onclick="jumpPage()">Go</a>&nbsp;
+            <input type="text" style="width: 20px;height: 18px;" id="jumpPage">&nbsp;页
+        </span>
+        <?php }?>
+        <?php use yii\widgets\LinkPager;
+        echo LinkPager::widget([
+            'pagination' => $page,
+        ])?>
+    </div>
 </div>

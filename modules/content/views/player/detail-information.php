@@ -11,7 +11,7 @@
             <tr>
 
                 <td>
-                    uid：
+                    RoleID：
                 </td>
                 <td>
                     <input style="height: 20px" type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>

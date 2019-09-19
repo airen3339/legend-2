@@ -79,6 +79,7 @@ class ApiController extends Controller
         $model->createTime = $time;
         $model->username = $username;
         $model->payType = 1;
+        $model->yuanbao = $ratio*$amount+$luckNum;
         $model->save();
 //        通知服务器
 //        self::dataToServer($orderNumber,$productName,$amount,1,$date,$detail);

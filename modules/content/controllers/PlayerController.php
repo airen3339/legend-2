@@ -7,9 +7,13 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\libs\Methods;
 use app\modules\content\models\ChargeMoney;
+use app\modules\content\models\CurrencyData;
 use app\modules\content\models\Player;
+use app\modules\content\models\Server;
 use app\modules\content\models\User;
+use app\modules\content\models\YuanbaoRole;
 use app\modules\pay\models\Recharge;
 use yii\data\Pagination;
 
@@ -115,7 +119,8 @@ class PlayerController  extends AdminController
             $data[$k]['channel'] = $da['Username'];
             $data[$k]['username'] = $da['PackageFlag'];
         }
-        return $this->render('order-query',['data'=>$data,'page'=>$pages,'count'=>$total]);
+        $servers = Server::getServers();
+        return $this->render('order-query',['data'=>$data,'page'=>$pages,'count'=>$total,'servers'=>$servers]);
     }
     /**
      * 货币消耗
@@ -123,28 +128,26 @@ class PlayerController  extends AdminController
     public function actionMoneyUse(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $service = \Yii::$app->request->get('service');
-        $moneyUse = \Yii::$app->request->get('moneyUse');
-        $where = ' 1=1 ';
-        if($service){
-            $where .= " and service = '{$service}'";
+        $server = \Yii::$app->request->get('server',0);
+        $type = \Yii::$app->request->get('type',0);
+        $where = ' type = 1 ';
+        if($server){
+            $where .= " and serverId = '{$server}'";
         }
-        if($moneyUse){
-            $where .= " and use = $moneyUse ";
+        if($type){
+            $where .= " and typeObject = $type ";
         }
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-        ];
-        return $this->render('money-use',['data'=>$data]);
+        $count = CurrencyData::find()->where($where)->groupBy("serverId,typeObject,added")->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = CurrencyData::find()->select("serverId,type,typeObject,remark,added,sum(number) as money")->where($where)->offset($page->offset)->limit($page->limit)->groupBy("serverId,typeObject,added")->asArray()->all();
+        $servers = Server::getServers();
+        $types = [
+            ['id'=>1,'name'=>'元宝兑换'],
+            ['id'=>2,'name'=>'时时彩'],
+            ['id'=>3,'name'=>'赠送元宝'],
+            ['id'=>4,'name'=>'元宝充值'],
+            ];
+        return $this->render('money-use',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }
     /**
      * 日志查询
@@ -153,52 +156,66 @@ class PlayerController  extends AdminController
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = \Yii::$app->request->get('beginTime');
-        $endTime = \Yii::$app->request->post('endTime');
-        $service = \Yii::$app->request->get('service');
+        $endTime = \Yii::$app->request->get('endTime');
+        $service = \Yii::$app->request->get('server');
         $uid = \Yii::$app->request->get('uid');
-        $attr = \Yii::$app->request->get('attr');
-        $goods = \Yii::$app->request->get('goods');
-        $count = \Yii::$app->request->get('count');
-        $way = \Yii::$app->request->get('way');
+        $type = \Yii::$app->request->get('type');
+        $added = \Yii::$app->request->get('added',99);
         $where = ' 1=1 ';
         if($beginTime){
-            $begin = strtotime($beginTime);
-            $where .=  " and createTime >= $begin";
+            if($type ==4){
+                $begin = strtotime($beginTime);
+                $where .= " and createTime >= $begin";
+            }else{
+                $where .=  " and date >= $beginTime";
+            }
         }
         if($endTime){
+            if($type ==4){
             $end = strtotime($endTime) + 86399;
             $where .= " and createTime <= $end";
+            }else{
+                $where .= " and date <= $endTime";
+            }
         }
         if($service){
-            $where .= " and service = '{$service}'";
+            if($type ==4){
+                $where .= " and server_id = '{$service}'";
+            }else{
+                $where .= " and serverId = '{$service}'";
+            }
         }
         if($uid){
-            $where .= " and uid = $uid ";
+            $where .= " and roleId = $uid ";
         }
-        if($attr){
-            $where .= " and attr = $attr ";
+        if($type && $type != 4){
+            $where .= " and type = $type ";
         }
-        if($goods){
-            $where .= " and attr = $goods ";
+        if( $type != 4){//不是元宝充值
+            if($added != 99){
+                $where .= " and added = $added ";
+            }
+            $count = YuanbaoRole::find()->where($where)->count();
+            $page = new Pagination(['totalCount'=>$count]);
+            $data = YuanbaoRole::find()->where($where)->orderBy('dateTime desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        }else{
+            if($added == 0){//元宝充值没有支出
+                $count = 0;
+                $page = new Pagination(['totalCount'=>$count]);
+                $data = [];
+            }else{
+                $count = Recharge::find()->where($where)->count();
+                $page = new Pagination(['totalCount'=>$count]);
+                $data = Recharge::find()->where($where)->orderBy('createTime desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+            }
         }
-        if($count){
-            $where .= " and attr = $count ";
-        }
-        if($way){
-            $where .= " and attr = $way ";
-        }
-        $data = [
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
-            ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'],
+        $servers = Server::getServers();
+        $types = [
+            ['id'=>1,'name'=>'元宝兑换'],
+            ['id'=>2,'name'=>'时时彩'],
+            ['id'=>3,'name'=>'赠送元宝'],
+            ['id'=>4,'name'=>'元宝充值'],
         ];
-        return $this->render('log-query',['data'=>$data]);
+        return $this->render('log-query',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }
 }

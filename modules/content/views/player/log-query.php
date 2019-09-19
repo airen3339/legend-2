@@ -22,7 +22,7 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
-                    uid：
+                    RoleID：
                 </td>
                 <td>
                     <input class="input-small "  type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
@@ -31,10 +31,14 @@
                     区服：
                 </td>
                 <td>
-                    <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="server">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
                 </td>
             </tr>
@@ -43,37 +47,32 @@
                     属性：
                 </td>
                 <td>
-                    <select name="attr">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="object">
+                        <option value="1">元宝</option>
                     </select>
-                </td><td>
-                    物品：
                 </td>
                 <td>
-                    <select name="goods">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
-                    </select>
-                </td><td>
-                    增加\减少：
+                    类型：
                 </td>
                 <td>
-                    <select name="count">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="type">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($types as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['type']) && $_GET['type'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
-                </td><td>
-                    获得\消耗方式：
                 </td>
                 <td>
-                    <select name="way">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    收入支出：
+                </td>
+                <td>
+                    <select name="added">
+                        <option value="99">请选择</option>
+                        <option value="1" <?php if(isset($_GET['added']) && $_GET['added'] == 1) echo 'selected';?>>收入</option>
+                        <option value="0" <?php if(isset($_GET['added']) && $_GET['added'] == 0) echo 'selected';?>>支出</option>
                     </select>
                 </td>
                 <td>
@@ -87,11 +86,13 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>获得\消耗方式</th>
-                <th>增加\减少</th>
-                <th>操作时间</th>
-                <th>属性</th>
+                <th>角色ID</th>
+                <th>日期</th>
+                <th>区服</th>
+                <th>类型</th>
                 <th>数量</th>
+                <th>收入支出</th>
+                <th>说明</th>
             </tr>
             </thead>
             <tbody>
@@ -99,11 +100,13 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['catalog']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['roleId']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($v['type'])?$v['date']:date('Y-m-d H:i:s',$v['createTime'])?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($v['type'])?$v['serverId']:$v['server_id']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($v['type'])?($v['type']==1?'元宝兑换':($v['type']==2?'时时彩':($v['type']==3?'赠送元宝':'元宝充值'))):'元宝充值'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['money']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($v['type'])?($v['added']==1?'收入':'支出'):'收入'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($v['remark'])?$v['remark']:'元宝充值'?></span></td>
                 </tr>
                 <?php
             }
@@ -111,5 +114,17 @@
             </tbody>
         </table>
     </form>
-
+    <div class="pagination pagination-right">
+        <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
+        <?php if($count > 200){?>
+            <span style="font-size: 17px;position: relative;bottom: 5px;">
+            <a onclick="jumpPage()">Go</a>&nbsp;
+            <input type="text" style="width: 20px;height: 18px;" id="jumpPage">&nbsp;页
+        </span>
+        <?php }?>
+        <?php use yii\widgets\LinkPager;
+        echo LinkPager::widget([
+            'pagination' => $page,
+        ])?>
+    </div>
 </div>

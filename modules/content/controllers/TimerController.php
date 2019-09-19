@@ -7,6 +7,7 @@ namespace app\modules\content\controllers;
 
 
 use app\modules\content\models\ChargeMoney;
+use app\modules\content\models\CurrencyData;
 use app\modules\content\models\LoginData;
 use app\modules\content\models\LoginRole;
 use app\modules\content\models\LTV;
@@ -15,6 +16,8 @@ use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\Server;
+use app\modules\content\models\YuanbaoRole;
+use app\modules\pay\models\Recharge;
 use function GuzzleHttp\Psr7\str;
 use yii\web\Controller;
 
@@ -245,6 +248,88 @@ class TimerController extends Controller
      * type 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝
      */
     public function actionYuanbaoData(){
-        
+        $date = date('Y-m-d');
+        $servers = Server::getServers();//获取区服
+        $url = IndexDir.'/files/';
+        foreach($servers as $k => $v) {
+            $fileName = "lua_log-{$v['id']}-$date.txt";
+            $path = $url.$fileName;
+            if(file_exists($path)){
+                $content = file_get_contents($path);
+                $content = trim($content);
+                $content = explode("\n",$content);
+                foreach($content as $p => $m){
+                    $arr = explode('@',trim($m));//键值 0-时间 1-type类型 2-角色id 3-增加减少 4-金额 5-说明
+                    //记录用户消费数据
+                    $model = new YuanbaoRole();
+                    $model->date = $date;
+                    $model->serverId = $v['id'];
+                    $model->roleId = self::getData($arr[2]);
+                    $model->dateTime = $date." ".$arr[0];
+                    $model->money = self::getData($arr[4]);
+                    $model->type = self::getData($arr[1]);
+                    $model->added = self::getData($arr[3]);
+                    $model->remark = str_replace('explain:','',$arr[5]);
+                    $model->createTime = time();
+                    $model->save();
+                }
+            }
+            //统计元宝消耗
+            $arr = [1=>'元宝兑换',2=>'时时彩下注',3=>'赠送元宝'];
+            foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝
+                //增加
+                $add = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 1")->sum('money');
+                $model = new CurrencyData();
+                $model->date = $date;
+                $model->serverId = $v['id'];
+                $model->type = 1;//1-元宝
+                $model->typeObject = $t;
+                $model->number = $add?$add:0;
+                $model->added = 1;
+                $model->remark = $y;
+                $model->createTime = time();
+                $model->save();
+                //消耗
+                $reduce = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 0")->sum('money');
+                $model = new CurrencyData();
+                $model->date = $date;
+                $model->serverId = $v['id'];
+                $model->type = 1;//1-元宝
+                $model->typeObject = $t;
+                $model->number = $reduce?$reduce:0;
+                $model->added = 0;
+                $model->remark = $y;
+                $model->createTime = time();
+                $model->save();
+            }
+            //记录元宝充值  type 4
+            $number = Recharge::find()->where("server_id = {$v['id']} and status = 2 and from_unixtime(createTime,'%Y-%m-%d') = '{$date}'")->sum('yuanbao');
+            $model = new CurrencyData();
+            $model->date = $date;
+            $model->serverId = $v['id'];
+            $model->type = 1;//1-元宝
+            $model->typeObject = 4;
+            $model->number = $number?$number:0;
+            $model->added = 1;
+            $model->remark = '元宝充值';
+            $model->createTime = time();
+            $model->save();
+        }
+    }
+    /**
+     * 格式数据获取
+     */
+    public static function getData($str){
+        if($str){
+            $str = trim($str);
+            $arr = explode(':',$str);
+            if(count($arr) ==2 ){
+                return $arr[1];
+            }else{
+                return '';
+            }
+        }else{
+            return '';
+        }
     }
 }

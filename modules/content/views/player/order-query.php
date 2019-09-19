@@ -10,7 +10,7 @@
         <table class="table">
             <tr>
                 <td>
-                    uid：
+                    RoleID：
                 </td>
                 <td>
                     <input style="height: 20px" type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
@@ -27,8 +27,12 @@
                 <td>
                     <select name="server">
                         <option value="0">请选择</option>
-                        <option value="1" <?php if(isset($_GET['server']) && $_GET['server'] == 1) echo 'selected';?>>1区</option>
-                        <option value="2" <?php if(isset($_GET['server']) && $_GET['server'] == 2) echo 'selected';?>>2区</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
                 </td>
                 <td>
