@@ -22,16 +22,20 @@
                     查询日期：
                 </td>
                 <td>
-                    <input class="input-small Wdate" onclick="WdatePicker()" type="text" size="10" id="day"  name="day" value="<?php echo isset($_GET['beginTime'])?$_GET['beginTime']:''?>"/>
+                    <input class="input-small Wdate" onclick="WdatePicker()" type="text" size="10" id="day"  name="day" value="<?php echo isset($_GET['day'])?$_GET['day']:''?>"/>
                 </td>
                 <td>
                     区服：
                 </td>
                 <td>
-                    <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="server">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
                 </td>
                 <td>
@@ -48,6 +52,8 @@
             <tbody>
             <div id="container" style="width: 90%;height: 440px;"></div>
             <input type="hidden" value="<?php echo isset($series)?$series:'';?>" id="linedata"/>
+            <input type="hidden" value="<?php echo isset($day)?$day:'';?>" id="lineDay"/>
+            <input type="hidden" value="<?php echo isset($server)?$server:'';?>" id="lineServer"/>
             </tbody>
         </table>
     </form>
@@ -57,11 +63,13 @@
     var myChart = echarts.init(dom);
     var app = {};
     var ydata = $('#linedata').val();
+    var day = $('#lineDay').val();
+    var server = $('#lineServer').val();
     var arr = ydata.split(',');
     option = null;
     option = {
         title: {
-            text: '登录分布'
+            text: day+'/'+server+'服'
         },
         tooltip: {
             trigger: 'axis'

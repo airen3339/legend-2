@@ -9,12 +9,14 @@ namespace app\modules\content\controllers;
 use app\libs\AdminController;
 use app\libs\Chart;
 use app\modules\content\models\ChargeMoney;
+use app\modules\content\models\LoginData;
 use app\modules\content\models\LTV;
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\Role;
+use app\modules\content\models\Server;
 use app\modules\content\models\User;
 use Yii;
 use yii\data\Pagination;
@@ -462,12 +464,15 @@ class OperateController  extends AdminController
         if(!$day){//获取上一天的日期
             $day = date('Y-m-d',strtotime("-1day"));
         }
-        $service = Yii::$app->request->get('service');
+        $service = Yii::$app->request->get('server');
         $where = " date = '{$day}'";
         if($service){
-            $where .= " and service = '{$service}'";
+            $where .= " and serverId = '{$service}'";
         }
-        $data = ['series'=>'29,30,45,54,65,45,76,23,54,67,32,45,66,78,99,67,123,121,99,321,123,156,222,333'];
+        $data = LoginData::find()->where($where)->orderBy('id desc ')->asArray()->one();
+        $server = $data['serverId'];
+        $servers = Server::getServers();
+        $data = ['series'=>$data['data'],'day'=>$day,'server'=>$server,'servers'=>$servers];
         return $this->render('login-online-list',$data);
     }
     /**

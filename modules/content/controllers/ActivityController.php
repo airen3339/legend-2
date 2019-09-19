@@ -12,6 +12,7 @@ use app\modules\content\models\ActivityLog;
 use app\modules\content\models\ActivityPush;
 use app\modules\content\models\LTV;
 use app\modules\content\models\Role;
+use app\modules\content\models\Server;
 use app\modules\content\models\SscActivity;
 use Yii;
 use yii\data\Pagination;
@@ -52,7 +53,7 @@ class ActivityController  extends AdminController
         if($serverId){
             $where .= " and serverId = $serverId";
         }
-        $servers = LTV::getServers();
+        $servers = Server::getServers();
         $count = SscActivity::find()->where($where)->count();
         $pages = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         $data = SscActivity::find()->asArray()->where($where)->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
@@ -91,7 +92,7 @@ class ActivityController  extends AdminController
                 echo "<script>alert('添加失败');setTimeout(function(){history.go(-1)},1000)</script>";die;
             }
         }else{
-            $servers = LTV::getServers();
+            $servers = Server::getServers();
             return $this->render('ssc-add',['servers'=>$servers]);
         }
     }
@@ -102,7 +103,7 @@ class ActivityController  extends AdminController
     public function actionActivityPush(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $servers = LTV::getServers();
+        $servers = Server::getServers();
         if($_POST){
             $pushId = Yii::$app->request->post('pushId',0);
             $serverId = Yii::$app->request->post('server');//区服id
@@ -178,7 +179,7 @@ class ActivityController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         //获取区服
-        $servers = LTV::getServers();
+        $servers = Server::getServers();
         $server = Yii::$app->request->get('server');//区服
         $type = Yii::$app->request->get('type',0);//1-每日单充 2-累计充值
         $where = ' activityType = 1 ';
@@ -220,7 +221,7 @@ class ActivityController  extends AdminController
     public function actionActivityPushEdit(){
         $id = Yii::$app->request->get('id');
         $data = ActivityPush::find()->where("id = $id")->asArray()->one();
-        $servers = LTV::getServers();
+        $servers = Server::getServers();
         $data['pushContent'] = json_decode($data['pushContent'],true);
         return $this->render('activity-push-edit',['data'=>$data,'servers'=>$servers]);
     }
@@ -231,7 +232,7 @@ class ActivityController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         //获取区服
-        $servers = LTV::getServers();
+        $servers = Server::getServers();
         $server = Yii::$app->request->get('server');//区服
         if($server){
             $where = " activityType = 2 and serverId = $server ";
@@ -252,7 +253,7 @@ class ActivityController  extends AdminController
      */
     public function actionFiveActivityAdd()
     {
-        $servers = LTV::getServers();
+        $servers = Server::getServers();
         if ($_POST) {
             $pushId = Yii::$app->request->post('pushId', 0);
             $serverId = Yii::$app->request->post('server');//区服id
@@ -349,7 +350,7 @@ class ActivityController  extends AdminController
         parent::setActionId($action);
         $type = Yii::$app->request->get('type',0);//type 1-活动推送 2-五行运势
         $uid = Yii::$app->request->get('uid');
-        $where = " 1 = 1 ";
+        $where = " type in (1,2) ";//1-活动推送 2-五行运势
         if($type){
             $where .= " and type = $type";
         }
