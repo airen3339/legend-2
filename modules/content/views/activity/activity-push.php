@@ -21,20 +21,14 @@
             </div><div class="control-group">
                 <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
-                    <select name="remark" id="remark" style="width: 105px;">
+                    <select name="type" id="type" style="width: 105px;">
                         <option value="">请选择</option>
                         <option value='1'>每日单充</option>;
                         <option value='2'>累计充值</option>;
+                        <option value='3'>五行运势</option>;
                     </select>
                 </div>
             </div>
-
-<!--            <div class="control-group">-->
-<!--                <label for="modulename" class="control-label">活动类型</label>-->
-<!--                <div class="controls">-->
-<!--                    <input type="text" class="input-small" onkeyup="value = value.replace(/[^0-9]/g,'')"  name="type" id="type" value=""  >-->
-<!--                </div>-->
-<!--            </div>-->
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
@@ -129,7 +123,6 @@
     }
     function propSubmit(){
         var server = $('#server').val();
-        var remark = $('#remark').val();
         var type = $('#type').val();
         var beginTime = $('#beginTime').val();
         var endTime = $('#endTime').val();
@@ -137,9 +130,7 @@
         if(server < 1){
             alert('请选择区服');return false;
         }
-        if(!remark){
-            alert('请选择活动说明');return false;
-        }
+
         if(!type){
             alert('请填写活动类型');return false;
         }

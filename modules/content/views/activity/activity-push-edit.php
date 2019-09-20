@@ -26,20 +26,14 @@
             </div><div class="control-group">
                 <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
-                    <select name="remark" id="remark" style="width: 105px;">
+                    <select name="type" id="type" style="width: 105px;">
                         <option value="">请选择</option>
                         <option value='1' <?php if($data['type'] == '1')echo 'selected'?>>每日单充</option>;
                         <option value='2' <?php if($data['type'] == '2')echo 'selected'?>>累计充值</option>;
+                        <option value='3' <?php if($data['type'] == '3')echo 'selected'?>>五行运势</option>;
                     </select>
                 </div>
             </div>
-
-<!--            <div class="control-group">-->
-<!--                <label for="modulename" class="control-label">活动类型</label>-->
-<!--                <div class="controls">-->
-<!--                    <input type="text" class="input-small"  name="type" id="type" value="--><?php //echo $data['type'];?><!--"  >-->
-<!--                </div>-->
-<!--            </div>-->
             <div class="control-group">
                 <label for="modulename" class="control-label">开始日期</label>
                 <div class="controls">
@@ -157,9 +151,6 @@
         var condition = $('li.liCondition').html();
         if(server < 1){
             alert('请选择区服');return false;
-        }
-        if(!remark){
-            alert('请选择活动说明');return false;
         }
         if(!type){
             alert('请填写活动类型');return false;

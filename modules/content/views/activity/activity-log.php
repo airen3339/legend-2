@@ -22,8 +22,9 @@
                 <td>
                     <select name="type">
                         <option value="0">请选择</option>
-                        <option value="1" <?php if(isset($_GET['type']) && $_GET['type'] == 1) echo 'selected';?>>活动推送</option>
-                        <option value="2" <?php if(isset($_GET['type']) && $_GET['type'] == 2) echo 'selected';?>>五行运势</option>
+                        <option value="1" <?php if(isset($_GET['type']) && $_GET['type'] == 1) echo 'selected';?>>每日单充</option>
+                        <option value="2" <?php if(isset($_GET['type']) && $_GET['type'] == 2) echo 'selected';?>>累计消费</option>
+                        <option value="3" <?php if(isset($_GET['type']) && $_GET['type'] == 3) echo 'selected';?>>五行运势</option>
                     </select>
                 </td>
                 <td>
@@ -55,7 +56,7 @@
                     <td ><span style="width: 80px; "><?php echo $v['operatorId']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['remark']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['activityId']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'活动推送':'五行运势'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'每日充值':($v['type']==2?'累计消费':'五行运势')?></span></td>
                     <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
                 </tr>
                 <?php

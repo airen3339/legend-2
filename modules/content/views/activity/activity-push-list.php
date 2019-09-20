@@ -35,6 +35,7 @@
                         <option value="0">请选择</option>
                         <option value='1' <?php if(isset($_GET['type']) && $_GET['type'] == 1) echo 'selected';?>>每日单充</option>";
                         <option value='2' <?php if(isset($_GET['type']) && $_GET['type'] == 2) echo 'selected';?>>累计充值</option>";
+                        <option value='3' <?php if(isset($_GET['type']) && $_GET['type'] == 3) echo 'selected';?>>五行运势</option>";
                     </select>
                 </td>
                 <td>
@@ -54,6 +55,7 @@
                 <th>开始时间</th>
                 <th>结束时间</th>
                 <th>发放物品</th>
+                <th>操作者</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -69,6 +71,7 @@
                     <td style="width: 80px; "><span ><?php echo $v['beginTime']?></span></td>
                     <td style="width: 80px; "><span ><?php echo $v['endTime']?></span></td>
                     <td style="width: 180px;"><span><?php echo $v['pushContent']?></span></td>
+                    <td style="width: 80px; "><span><?php echo $v['operatorName']?></span></td>
                     <td  class="notSLH" style="width: 130px;">
                         <a class="btn btn-primary" href="/content/activity/activity-push-edit?id=<?php echo $v['id'] ; ?>" >修改</a>
                         <a href='#' class="btn btn-primary" onclick="javascript:if(confirm('确定删除吗？')){location.href='/content/activity/activity-push-delete?id=<?php echo $v['id']; ?>'}" >删除</a>

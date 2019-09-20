@@ -10,7 +10,6 @@ use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\ActivityLog;
 use app\modules\content\models\ActivityPush;
-use app\modules\content\models\LTV;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SscActivity;
@@ -57,7 +56,7 @@ class ActivityController  extends AdminController
         $count = SscActivity::find()->where($where)->count();
         $pages = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         $data = SscActivity::find()->asArray()->where($where)->orderBy('id desc')->offset($pages->offset)->limit($pages->limit)->all();
-        return $this->render('ssc',['data'=>$data,'servers'=>$servers]);
+        return $this->render('ssc',['data'=>$data,'servers'=>$servers,'page'=>$pages,'count'=>$count]);
     }
     /**
      * cqssc
@@ -107,8 +106,7 @@ class ActivityController  extends AdminController
         if($_POST){
             $pushId = Yii::$app->request->post('pushId',0);
             $serverId = Yii::$app->request->post('server');//区服id
-//            $remark = Yii::$app->request->post('remark');//活动说明
-            $type = Yii::$app->request->post('type');//活动类型 1-每日单冲  2-累计充值
+            $type = Yii::$app->request->post('type');//活动类型 1-每日单冲  2-累计充值 3-五行运势
             $beginTime = Yii::$app->request->post('beginTime');
             $endTime = Yii::$app->request->post('endTime');
             $conditions = Yii::$app->request->post('liConditions');//道具领取条件
@@ -118,13 +116,18 @@ class ActivityController  extends AdminController
             if(!$serverId){
                 echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-//            if(!$remark){
-//                echo "<script>alert('请选择活动说明');setTimeout(function(){history.go(-1);},1000)</script>";die;
-//            }
             if(!$type){
                 echo "<script>alert('请填写活动类型');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
-                $remark = $type==1?'每日单充':'累计充值';
+                if($type ==1){
+                    $remark = '每日单充';
+                }elseif($type ==2){
+                    $remark = '累计充值';
+                }elseif($type ==3){
+                    $remark = '五行运势';
+                }else{
+                    $remark = '';
+                }
             }
             if(!$beginTime){
                 echo "<script>alert('请选择开始时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -161,9 +164,9 @@ class ActivityController  extends AdminController
                     $target = 'activity-push';
                     $remark = '添加'.$remark.'活动';
                 }
-                ActivityLog::logAdd($remark,$model->id,1);//1-活动推送 2-五行运势
+                ActivityLog::logAdd($remark,$model->id,$type);//1-每日单充 2-累计消费 3-五行运势
                 //推送服务端 4242-活动推送
-                ActivityPush::pushActivity($serverId,$model->id,$type,$beginTime,$endTime,$pushContent);
+//                ActivityPush::pushActivity($serverId,$model->id,$type,$beginTime,$endTime,$pushContent);
 
                 echo "<script>alert('添加成功');setTimeout(function(){window.location.href='$target';},1000)</script>";die;
             }else{
@@ -181,8 +184,8 @@ class ActivityController  extends AdminController
         //获取区服
         $servers = Server::getServers();
         $server = Yii::$app->request->get('server');//区服
-        $type = Yii::$app->request->get('type',0);//1-每日单充 2-累计充值
-        $where = ' activityType = 1 ';
+        $type = Yii::$app->request->get('type',0);//1-每日单充 2-累计充值 3-五行运势
+        $where = ' 1 = 1 ';
         if($server){
             $where .= "  and serverId = $server ";
         }
@@ -192,6 +195,9 @@ class ActivityController  extends AdminController
         $count = ActivityPush::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = ActivityPush::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $data[$k]['operatorName'] = Role::find()->where("id = {$v['operator']}")->asArray()->one()['name'];
+        }
         return $this->render('activity-push-list',['data'=>$data,'servers'=>$servers]);
     }
     /**
@@ -350,7 +356,7 @@ class ActivityController  extends AdminController
         parent::setActionId($action);
         $type = Yii::$app->request->get('type',0);//type 1-活动推送 2-五行运势
         $uid = Yii::$app->request->get('uid');
-        $where = " type in (1,2) ";//1-活动推送 2-五行运势
+        $where = " type in (1,2,3) ";//1-活动推送 2-五行运势
         if($type){
             $where .= " and type = $type";
         }
