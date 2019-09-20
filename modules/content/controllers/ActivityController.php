@@ -166,7 +166,7 @@ class ActivityController  extends AdminController
                 }
                 ActivityLog::logAdd($remark,$model->id,$type);//1-每日单充 2-累计消费 3-五行运势
                 //推送服务端 4242-活动推送
-//                ActivityPush::pushActivity($serverId,$model->id,$type,$beginTime,$endTime,$pushContent);
+                ActivityPush::pushActivity($serverId,$model->id,$type,$beginTime,$endTime,$pushContent);
 
                 echo "<script>alert('添加成功');setTimeout(function(){window.location.href='$target';},1000)</script>";die;
             }else{

@@ -60,18 +60,13 @@ class PlayerController  extends AdminController
     public function actionDetailInformation(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $service = \Yii::$app->request->get('service');
         $uid = \Yii::$app->request->get('uid');
         $where = ' 1=1 ';
         $wh = ' 1=1 ';
-        if($service){
-            $where .= " and WorldID = '{$service}'";
-            $wh = " and  worldID = '{$service}'";
-        }
         if($uid){
             $where .= " and RoleID = '{$uid}' ";
             $wh .= " and roleID = '{$uid}'";
-            $data = Player::find()->select("UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle")->where($where)->asArray()->one();
+            $data = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->where($where)->asArray()->one();
             if($data){
                 $wh .= " and status = 2 ";
                 //充值金额
@@ -146,6 +141,7 @@ class PlayerController  extends AdminController
             ['id'=>2,'name'=>'时时彩'],
             ['id'=>3,'name'=>'赠送元宝'],
             ['id'=>4,'name'=>'元宝充值'],
+            ['id'=>5,'name'=>'用户送花'],
             ];
         return $this->render('money-use',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }
@@ -215,6 +211,7 @@ class PlayerController  extends AdminController
             ['id'=>2,'name'=>'时时彩'],
             ['id'=>3,'name'=>'赠送元宝'],
             ['id'=>4,'name'=>'元宝充值'],
+            ['id'=>5,'name'=>'用户送花'],
         ];
         return $this->render('log-query',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }

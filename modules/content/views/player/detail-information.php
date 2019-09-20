@@ -17,16 +17,6 @@
                     <input style="height: 20px" type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
                 </td>
                 <td>
-                    区服：
-                </td>
-                <td>
-                    <select name="service">
-                        <option value="0">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
-                    </select>
-                </td>
-                <td>
                     <button class="btn btn-primary" type="submit">提交</button>
                 </td>
                 <td></td>
@@ -48,7 +38,12 @@
                 <th >金币</th>
                 <th >血量</th>
                 <th >魔法能量</th>
+                <th >魂值</th>
+                <th >杀怪数</th>
+                <th >声望值</th>
+                <th >PK值</th>
                 <th >充值金额</th>
+                <th >其他数据</th>
             </tr>
             </thead>
             <tbody>
@@ -64,7 +59,18 @@
                     <td ><span style="width: 80px; "><?php echo isset($data['Money'])?$data['Money']:''?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($data['CurHP'])?$data['CurHP']:''?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($data['CurMP'])?$data['CurMP']:''?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($data['SoulScore'])?$data['SoulScore']:''?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($data['MonsterKillNum'])?$data['MonsterKillNum']:''?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($data['Vital'])?$data['Vital']:''?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($data['PkValue'])?$data['PkValue']:''?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($data['rechargeMoney'])?$data['rechargeMoney']:''?></span></td>
+                    <td  class="notSLH" style="width: 185px;">
+                        <?php if(isset($data['RoleID'])){?>
+                        <a class="btn" href="/content/player/player-other-message?type=1&id=<?php echo $data['RoleID'] ; ?>" >充值</a>
+                            <a class="btn " href="/content/player/player-other-message?type=2&id=<?php echo $data['RoleID'] ; ?>" >元宝</a>
+                            <a class="btn " href="/content/player/player-other-message?type=3&id=<?php echo $data['RoleID'] ; ?>" >送花</a>
+                        <?php }?>
+                    </td>
                 </tr>
             </tbody>
         </table>

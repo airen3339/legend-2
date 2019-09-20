@@ -275,21 +275,23 @@ class TimerController extends Controller
                     $model->save();
                 }
             }
-            //统计元宝消耗
-            $arr = [1=>'元宝兑换',2=>'时时彩下注',3=>'赠送元宝'];
-            foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝
-                //增加
-                $add = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 1")->sum('money');
-                $model = new CurrencyData();
-                $model->date = $date;
-                $model->serverId = $v['id'];
-                $model->type = 1;//1-元宝
-                $model->typeObject = $t;
-                $model->number = $add?$add:0;
-                $model->added = 1;
-                $model->remark = $y;
-                $model->createTime = time();
-                $model->save();
+            //统计元宝消耗 4-元宝充值
+            $arr = [1=>'元宝兑换',2=>'时时彩下注',3=>'赠送元宝',5=>'用户送花'];
+            foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花
+                if(in_array($t,[1])){//元宝兑换 可有增加
+                    //增加
+                    $add = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 1")->sum('money');
+                    $model = new CurrencyData();
+                    $model->date = $date;
+                    $model->serverId = $v['id'];
+                    $model->type = 1;//1-元宝
+                    $model->typeObject = $t;
+                    $model->number = $add?$add:0;
+                    $model->added = 1;
+                    $model->remark = $y;
+                    $model->createTime = time();
+                    $model->save();
+                }
                 //消耗
                 $reduce = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 0")->sum('money');
                 $model = new CurrencyData();
@@ -303,7 +305,7 @@ class TimerController extends Controller
                 $model->createTime = time();
                 $model->save();
             }
-            //记录元宝充值  type 4
+            //记录元宝充值 收入  type 4
             $number = Recharge::find()->where("server_id = {$v['id']} and status = 2 and from_unixtime(createTime,'%Y-%m-%d') = '{$date}'")->sum('yuanbao');
             $model = new CurrencyData();
             $model->date = $date;
