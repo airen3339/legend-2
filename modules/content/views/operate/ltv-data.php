@@ -26,9 +26,13 @@
                 </td>
                 <td>
                     <select name="channel">
-                        <option value="">请选择</option>
-                        <option value="official" <?php if(isset($_GET['channel']) && $_GET['channel'] == 'official') echo 'selected';?>>official</option>
-                        <option value="my" <?php if(isset($_GET['channel']) && $_GET['channel'] == 'my') echo 'selected';?>>my</option>
+                        <option value="99">请选择</option>
+                        <?php
+                        foreach($channel as $k => $v){ ?>
+                            <option value='<?php echo $v?>' <?php if(isset($_GET['channel']) && $_GET['channel'] == $v) echo 'selected';?>><?php echo $v?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
                 </td>
                 <td>

@@ -16,6 +16,7 @@ use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\Server;
+use app\modules\content\models\User;
 use app\modules\content\models\YuanbaoRole;
 use app\modules\pay\models\Recharge;
 use function GuzzleHttp\Psr7\str;
@@ -77,7 +78,7 @@ class TimerController extends Controller
             $tr->rollBack();
         }
         //记录当天不同渠道的留存数据
-        $channels = ['official','my','self'];
+        $channels = User::getChannel();
         foreach($channels as $l => $t){
             if($roleIds){
                 $sql = " select p.RoleID from player p inner join `user` u on u.UserID = p.UserID where u.PackageFlag = '{$t}' and p.RoleID in ($roleIds)";
@@ -117,7 +118,7 @@ class TimerController extends Controller
      * 分渠道统计
      */
     public function actionLtvData(){
-        $channel = ['official','my','self'];
+        $channel = User::getChannel();
         $today = date('Y-m-d');
         $begin = strtotime($today);
         $end = $begin + 86399;

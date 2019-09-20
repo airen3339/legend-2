@@ -41,8 +41,8 @@ class OperateController  extends AdminController
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
-        $service = Yii::$app->request->get('service');
-        $channel = Yii::$app->request->get('channel');
+        $service = Yii::$app->request->get('server',0);
+        $channel = Yii::$app->request->get('channel',99);
         $page = Yii::$app->request->get('page',1);
         $where = " 1=1 ";
         $joinWhere = ' 1=1 ';
@@ -57,7 +57,7 @@ class OperateController  extends AdminController
             $where .= " and WorldID = '{$service}'";
             $joinWhere .= " and u.WorldID = '{$service}'";
         }
-        if($channel){
+        if($channel != 99){
             $where .= " and PackageFlag = '{$channel}'";
             $joinWhere .= " and u.PackageFlag = '{$channel}'";
         }
@@ -161,7 +161,9 @@ class OperateController  extends AdminController
         $data[] = ['date'=>'总计','newRegister'=>$sumRegister,'newDevice'=>$sumDevice,'newLogin'=>$sumLogin,'deviceDau'=>$sumDeviceDau,'accountDau'=>$sumAccountDau,'oldUser'=>$sumOldUser,'payRate'=>$averPayRate,'rechargeUser'=>$sumRechUser,'rechargeCount'=>$sumRechCount,'rechargeMoney'=>$sumRechMoney,'arpu'=>$averArpu,'arppu'=>$averArppu,'newRechargeUser'=>$sumNewRechUser,'newRechargeMoney'=>$sumNewRechMoney];
         $count = $days+1;
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>31]);
-        return $this->render('data-query',['data'=>$data,'page'=>$page,'count'=>$count]);
+        $servers = Server::getServers();//获取区服
+        $channel = User::getChannel();//获取渠道
+        return $this->render('data-query',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers,'channel'=>$channel]);
     }
     /**
      * 等级分布
@@ -171,7 +173,7 @@ class OperateController  extends AdminController
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
-        $service = Yii::$app->request->get('service');
+        $service = Yii::$app->request->get('server');
         $where = " 1=1 ";
         if($beginTime){
             $begin = strtotime($beginTime);
@@ -213,7 +215,8 @@ class OperateController  extends AdminController
             $data[]= ['level'=>$i,'user_total'=>$level_num,'user_proportion'=>$user_proportion,'retention_user'=>$retention_user,'retention_proportion'=>$retention_proportion];
         }
         $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>$pageSize]);
-        return $this->render('level-list',['data'=>$data,'page'=>$page,'count'=>$levelTotal]);
+        $servers = Server::getServers();
+        return $this->render('level-list',['data'=>$data,'page'=>$page,'count'=>$levelTotal,'servers'=>$servers]);
     }
     /**
      * 留存数据
@@ -223,9 +226,8 @@ class OperateController  extends AdminController
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
-        $channel = Yii::$app->request->get('channel');
+        $channel = Yii::$app->request->get('channel',99);
         $page = Yii::$app->request->get('page',1);
-        $where = " 1=1 ";
         if($beginTime && $endTime){
             $month_begin = $beginTime;
             $month_now = $endTime;
@@ -233,9 +235,7 @@ class OperateController  extends AdminController
             $month_begin = date('Y-m-01');
             $month_now = date("Y-m-d");
         }
-        if($channel){
-            $where .= " and u.channel = '{$channel}'";
-        }//计算时期天数
+        //计算时期天数
         $monthNow = strtotime($month_now);
         $monthBegin = strtotime($month_begin);
         $days = ($monthNow-$monthBegin)/86400;
@@ -253,7 +253,7 @@ class OperateController  extends AdminController
         for($i=$first;$i<$endDays;$i++){
             $dateTime = $monthBegin + $i*86400;
             $date = date("Y-m-d",$dateTime);
-            if($channel){//获取渠道留存数据
+            if($channel != 99){//获取渠道留存数据
                 $register = PlayerChannelRegister::find()->where("date='{$date}' and channel = '{$channel}'")->asArray()->one();
             }else{//全部留存数据
                 $register = PlayerRegister::find()->where("date = '{$date}'")->asArray()->one();
@@ -286,7 +286,8 @@ class OperateController  extends AdminController
         }
         $count = $days+1;
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>31]);
-        return $this->render('retain-data',['data'=>$data,'page'=>$page,'count'=>$count]);
+        $channel = User::getChannel();
+        return $this->render('retain-data',['data'=>$data,'page'=>$page,'count'=>$count,'channel'=>$channel]);
     }
     /**
      * vip分布
@@ -317,13 +318,13 @@ class OperateController  extends AdminController
     public function actionLevelDepositList(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $service = Yii::$app->request->get('service');
-        $channel = Yii::$app->request->get('channel');
+        $service = Yii::$app->request->get('server','');
+        $channel = Yii::$app->request->get('channel',99);
         $where = ' 1=1 ';
         if($service){
-            $where .= " and u.WorldID = '{$service}'";
+            $where .= " and c.worldID = '{$service}'";
         }
-        if($channel){
+        if($channel != 99){
             $where .= " and u.PackageFlag = '{$channel}'";
         }
         $levelTotal = 70;
@@ -333,7 +334,7 @@ class OperateController  extends AdminController
         $end = $page*$pageSize;
         if($end > $levelTotal)$end = $levelTotal;
         $data = [];
-        for($i=($start+1);$i<=$end;$i++){
+        for($i=($start);$i<=$end;$i++){
             //总充值金额
             $depositData = ChargeMoney::getChargeMoney($i,$where);
             $depositMoney = $depositData['money'];
@@ -342,7 +343,9 @@ class OperateController  extends AdminController
             $data[]= ['level'=>$i,'depositMoney'=>$depositMoney,'userNum'=>$userNum];
         }
         $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>$pageSize]);
-        return $this->render('level-deposit-list',['data'=>$data,'page'=>$page,'count'=>$levelTotal]);
+        $servers = Server::getServers();//获取区服
+        $channel = User::getChannel();//获取渠道
+        return $this->render('level-deposit-list',['data'=>$data,'page'=>$page,'count'=>$levelTotal,'servers'=>$servers,'channel'=>$channel]);
     }
     /**
      * 充值排行查询
@@ -352,7 +355,7 @@ class OperateController  extends AdminController
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
-        $service = Yii::$app->request->get('service');
+        $service = Yii::$app->request->get('server');
         $page = Yii::$app->request->get('page',1);
         $where = " 1=1 ";
         if($service){
@@ -368,6 +371,8 @@ class OperateController  extends AdminController
         }
         $where .= " and c.status = 2";
         $data = ChargeMoney::getChargeRankQuery($where,$page);
+        $servers = Server::getServers();
+        $data['servers'] = $servers;
         return $this->render('deposit-rank-query',$data);
     }
     /**
@@ -377,11 +382,10 @@ class OperateController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
-        $endTime = Yii::$app->request->post('endTime');
-        $channel = Yii::$app->request->get('channel');
+        $endTime = Yii::$app->request->get('endTime');
+        $channel = Yii::$app->request->get('channel',99);
         $page = Yii::$app->request->get('page',1);
         $ltv = Yii::$app->request->get('ltv',1);//1-账号登录数  2-设备登录数
-        $where = " 1=1 ";
         if($beginTime && $endTime){
             $month_begin = $beginTime;
             $month_now = $endTime;
@@ -393,7 +397,6 @@ class OperateController  extends AdminController
         $monthNow = strtotime($month_now);
         $monthBegin = strtotime($month_begin);
         $days = ($monthNow-$monthBegin)/86400;
-        $data = [];
         if($page==1){
             $first = 0;
         } else{
@@ -411,7 +414,7 @@ class OperateController  extends AdminController
             $dateTime = $monthBegin + 86400*$i;
             $date = date('Y-m-d',$dateTime);
             //新增数
-            if($channel){//选择某个渠道
+            if($channel != 99){//选择某个渠道
                 $add = LTV::find()->where("date = '{$date}' and channel = '{$channel}'")->asArray()->one();
                 if($ltv ==1){
                     $addNum = $add['login'];//账号数
@@ -452,7 +455,8 @@ class OperateController  extends AdminController
         }
         $count = $days+1;
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
-        return $this->render('ltv-data',['data'=>$data,'page'=>$page,'count'=>$count]);
+        $channel = User::getChannel();
+        return $this->render('ltv-data',['data'=>$data,'page'=>$page,'count'=>$count,'channel'=>$channel]);
     }
     /**
      * 登录在线分布

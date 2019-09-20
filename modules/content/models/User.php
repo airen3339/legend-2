@@ -40,4 +40,16 @@ class User extends ActiveRecord
         $total = \Yii::$app->db2->createCommand($sql)->queryOne()['total'];
         return $total?$total:0;
     }
+    /**
+     * 获取版本渠道
+     * user注册表分组获取
+     */
+    public static function getChannel(){
+        $channel = [];
+        $data = self::find()->select('PackageFlag')->groupBy('PackageFlag')->asArray()->all();
+        foreach($data as $k => $v){
+            $channel[]=$v['PackageFlag'];
+        }
+        return $channel;
+    }
 }

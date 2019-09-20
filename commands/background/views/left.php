@@ -28,8 +28,8 @@
         if($(_this).children('ul.nav-child').hasClass('nav-hid')){//字内容隐藏状态
             $(_this).children("ul.nav-child").removeClass('nav-hid');//移除当前隐藏状态
             $(_this).children("a").find('span.nav-img img').css('transform','rotate(0deg)');
-            // $(_this).siblings().find('ul.nav-child').addClass('nav-hid');
-            // $(_this).siblings().find('a span.nav-img img').css('transform','rotate(180deg)');
+            $(_this).siblings().find('ul.nav-child').addClass('nav-hid');
+            $(_this).siblings().find('a span.nav-img img').css('transform','rotate(180deg)');
         }else{//显示状态
             $(_this).children("ul.nav-child").removeClass('nav-hid');
             $(_this).children("ul.nav-child").addClass('nav-hid');
