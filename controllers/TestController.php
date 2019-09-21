@@ -117,4 +117,28 @@ class TestController extends Controller
         echo '<hr/>';
 
     }
+
+    public function actionTestItem(){
+        $content = Yii::$app->db2->createCommand("select * from item limit 0,1")->queryOne()['datas'];
+        $item = new \ItemProtocol();
+
+        $itemGroup = new \PBItemGroup();
+        $itemGroup->setId(2);
+        $itemGroup->setCapacity(22);
+
+        $itempb = new \PBItem();
+        $itempb->setExp('20000');
+        $itempb->setLevel(50);
+        $itempb->setCount(20);
+
+        $itemGroup->setItems([$itempb]);
+
+        $item->setGroups([$itemGroup]);
+        $return = $item->serializeToString();
+
+        $item = new \ItemProtocol();
+//        $item->mergeFromJsonString($content);
+        $item->mergeFromString($content);
+        var_dump($item->getGroups()[0]->getId());
+    }
 }

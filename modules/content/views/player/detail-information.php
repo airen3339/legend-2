@@ -64,11 +64,12 @@
                     <td ><span style="width: 80px; "><?php echo isset($data['Vital'])?$data['Vital']:''?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($data['PkValue'])?$data['PkValue']:''?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($data['rechargeMoney'])?$data['rechargeMoney']:''?></span></td>
-                    <td  class="notSLH" style="width: 185px;">
+                    <td  class="notSLH" style="width: 230px;">
                         <?php if(isset($data['RoleID'])){?>
                         <a class="btn" href="/content/player/order-query?uid=<?php echo $data['RoleID'] ; ?>" >充值</a>
                             <a class="btn " href="/content/player/log-query?uid=<?php echo $data['RoleID'] ; ?>" >元宝</a>
                             <a class="btn " href="/content/player/log-query?type=5&uid=<?php echo $data['RoleID'] ; ?>" >送花</a>
+                            <a class="btn " href="/content/player/log-query?type=6&uid=<?php echo $data['RoleID'] ; ?>" >月卡</a>
                         <?php }?>
                     </td>
                 </tr>

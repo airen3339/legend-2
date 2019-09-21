@@ -61,7 +61,7 @@
                 ?>
                 <tr  class="text-item">
                     <td ><span style="width: 80px; "><?php echo $v['serverId']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['typeObject']==1?'元宝兑换':($v['typeObject']==2?'时时彩':($v['typeObject']==3?'赠送元宝':($v['typeObject']==4?'元宝充值':'用户送花')))?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['typeObject']==1?'元宝兑换':($v['typeObject']==2?'时时彩':($v['typeObject']==3?'赠送元宝':($v['typeObject']==4?'元宝充值':($v['typeObject']==5?'用户送花':'用户月卡'))))?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['remark']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['money']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['added']==1?'收入':'消耗'?></span></td>

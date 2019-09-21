@@ -137,13 +137,7 @@ class PlayerController  extends AdminController
         $page = new Pagination(['totalCount'=>$count]);
         $data = CurrencyData::find()->select("serverId,type,typeObject,remark,added,sum(number) as money")->where($where)->offset($page->offset)->limit($page->limit)->groupBy("serverId,typeObject,added")->asArray()->all();
         $servers = Server::getServers();
-        $types = [
-            ['id'=>1,'name'=>'元宝兑换'],
-            ['id'=>2,'name'=>'时时彩'],
-            ['id'=>3,'name'=>'赠送元宝'],
-            ['id'=>4,'name'=>'元宝充值'],
-            ['id'=>5,'name'=>'用户送花'],
-            ];
+        $types = YuanbaoRole::getTypes();
         return $this->render('money-use',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }
     /**
@@ -207,13 +201,7 @@ class PlayerController  extends AdminController
             }
         }
         $servers = Server::getServers();
-        $types = [
-            ['id'=>1,'name'=>'元宝兑换'],
-            ['id'=>2,'name'=>'时时彩'],
-            ['id'=>3,'name'=>'赠送元宝'],
-            ['id'=>4,'name'=>'元宝充值'],
-            ['id'=>5,'name'=>'用户送花'],
-        ];
+        $types = YuanbaoRole::getTypes();
         return $this->render('log-query',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }
 }

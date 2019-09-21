@@ -67,7 +67,7 @@
     function checkDelete(id){
         $.post('/content/api/check-delete',{id:id},function(re){
             if(re.code == 1){
-                if(confirm("确定删除改内容吗")){
+                if(confirm("确定删除该内容吗")){
                     location.href = "/content/rule/catalog-delete?id="+id;
                 }
             }else{

@@ -272,8 +272,8 @@ class TimerController extends Controller
                 }
             }
             //统计元宝消耗 4-元宝充值
-            $arr = [1=>'元宝兑换',2=>'时时彩下注',3=>'赠送元宝',5=>'用户送花'];
-            foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花
+            $arr = YuanbaoRole::getTypes(1);//获取元宝操作类型
+            foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花 6-用户月卡
                 if(in_array($t,[1])){//元宝兑换 可有增加
                     //增加
                     $add = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 1")->sum('money');
