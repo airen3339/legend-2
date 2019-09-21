@@ -35,7 +35,7 @@ class PlayerController  extends AdminController
     public function actionRoleInformation(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $service = \Yii::$app->request->get('service');
+        $service = \Yii::$app->request->get('server');
         $roleId = \Yii::$app->request->get('roleId');
         $page = \Yii::$app->request->get('page',1);
         $where = ' 1=1 ';
@@ -52,7 +52,8 @@ class PlayerController  extends AdminController
         $pages = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         $sql .= $limit;
         $user = \Yii::$app->db2->createCommand($sql)->queryAll();
-        return $this->render('role-information',['user'=>$user,'page'=>$pages,'count'=>$count]);
+        $servers = Server::getServers();
+        return $this->render('role-information',['user'=>$user,'page'=>$pages,'count'=>$count,'servers'=>$servers]);
     }
     /**
      * 详细信息
