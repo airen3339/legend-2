@@ -38,7 +38,7 @@
                 <th >金币</th>
                 <th >血量</th>
                 <th >魔法能量</th>
-                <th >魂值</th>
+                <th >熔炼值</th>
                 <th >杀怪数</th>
                 <th >声望值</th>
                 <th >PK值</th>

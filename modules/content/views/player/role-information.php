@@ -45,7 +45,7 @@
                 <th>区服</th>
                 <th>昵称</th>
                 <th>渠道</th>
-                <th >渠道用户编号</th>
+<!--                <th >渠道用户编号</th>-->
                 <th >注册时间</th>
                 <th >最后登录时间</th>
             </tr>
@@ -60,7 +60,7 @@
                     <td ><span style="width: 80px; "><?php echo $v['WorldID']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['Name']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['PackageFlag']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo '11'?></span></td>
+<!--                    <td ><span style="width: 80px; ">--><?php //echo '11'?><!--</span></td>-->
                     <td ><span style="width: 80px; "><?php echo $v['CreateDate']?></span></td>
                     <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i:s',$v['LastLogin']);?></span></td>
                 </tr>
