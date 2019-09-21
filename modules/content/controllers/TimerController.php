@@ -245,7 +245,7 @@ class TimerController extends Controller
      * type 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝
      */
     public function actionYuanbaoData(){
-        $date = date('Y-m-d');
+        $date = date('Y-m-19');
         $servers = Server::getServers();//获取区服
         $url = IndexDir.'/files/';
         foreach($servers as $k => $v) {
@@ -258,21 +258,34 @@ class TimerController extends Controller
                 foreach($content as $p => $m){
                     $arr = explode('@',trim($m));//键值 0-时间 1-type类型 2-角色id 3-增加减少 4-金额 5-说明
                     //记录用户消费数据
+                    $type = self::getData($arr[1]);
                     $model = new YuanbaoRole();
                     $model->date = $date;
                     $model->serverId = $v['id'];
                     $model->roleId = self::getData($arr[2]);
                     $model->dateTime = $date." ".$arr[0];
                     $model->money = self::getData($arr[4]);
-                    $model->type = self::getData($arr[1]);
+                    $model->type = $type;
                     $model->added = self::getData($arr[3]);
-                    $model->remark = str_replace('explain:','',$arr[5]);
+                    if($type == 6){//商城购买
+                        $remark = str_replace('explain:','',$arr[5]);
+                        $patterns = "/\d+/"; //第一种
+                        preg_match_all($patterns,$remark,$array);
+                        $toolId = isset($array[0][0])?$array[0][0]:0;
+                        if($toolId){
+                            $toolName = '测试商品';
+                            $remark .= '商品名称：'.$toolName;
+                        }
+                        $model->remark = $remark;
+                    }else{
+                        $model->remark = str_replace('explain:','',$arr[5]);
+                    }
                     $model->createTime = time();
                     $model->save();
                 }
             }
             //统计元宝消耗 4-元宝充值
-            $arr = YuanbaoRole::getTypes(1);//获取元宝操作类型
+            $arr = YuanbaoRole::getTypes(2);//获取元宝操作类型
             foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花 6-用户月卡
                 if(in_array($t,[1])){//元宝兑换 可有增加
                     //增加

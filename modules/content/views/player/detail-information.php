@@ -69,7 +69,7 @@
                         <a class="btn" href="/content/player/order-query?uid=<?php echo $data['RoleID'] ; ?>" >充值</a>
                             <a class="btn " href="/content/player/log-query?uid=<?php echo $data['RoleID'] ; ?>" >元宝</a>
                             <a class="btn " href="/content/player/log-query?type=5&uid=<?php echo $data['RoleID'] ; ?>" >送花</a>
-                            <a class="btn " href="/content/player/log-query?type=6&uid=<?php echo $data['RoleID'] ; ?>" >月卡</a>
+                            <a class="btn " href="/content/player/log-query?type=6&uid=<?php echo $data['RoleID'] ; ?>" >商城</a>
                         <?php }?>
                     </td>
                 </tr>
