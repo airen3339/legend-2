@@ -66,9 +66,9 @@
                     <td ><span style="width: 80px; "><?php echo isset($data['rechargeMoney'])?$data['rechargeMoney']:''?></span></td>
                     <td  class="notSLH" style="width: 185px;">
                         <?php if(isset($data['RoleID'])){?>
-                        <a class="btn" href="/content/player/player-other-message?type=1&id=<?php echo $data['RoleID'] ; ?>" >充值</a>
-                            <a class="btn " href="/content/player/player-other-message?type=2&id=<?php echo $data['RoleID'] ; ?>" >元宝</a>
-                            <a class="btn " href="/content/player/player-other-message?type=3&id=<?php echo $data['RoleID'] ; ?>" >送花</a>
+                        <a class="btn" href="/content/player/order-query?uid=<?php echo $data['RoleID'] ; ?>" >充值</a>
+                            <a class="btn " href="/content/player/log-query?uid=<?php echo $data['RoleID'] ; ?>" >元宝</a>
+                            <a class="btn " href="/content/player/log-query?type=5&uid=<?php echo $data['RoleID'] ; ?>" >送花</a>
                         <?php }?>
                     </td>
                 </tr>
