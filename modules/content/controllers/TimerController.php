@@ -34,7 +34,7 @@ class TimerController extends Controller
         $today = date('Y-m-d');
         $begin = strtotime($today);
         $end = $begin + 86399;
-        //获取今日新增的用户数据
+        //获取今日新增的用户数据 登录数据
         $user = Player::find()->select("RoleID")->where("unix_timestamp(CreateDate) between $begin and $end")->asArray()->all();
         $total = count($user);
         $time = time();
@@ -80,28 +80,24 @@ class TimerController extends Controller
         //记录当天不同渠道的留存数据
         $channels = User::getChannel();
         foreach($channels as $l => $t){
-            if($roleIds){
+            if($roleIds){//今日新增用户账号大于0
+                //今日渠道新增用户账号登录
                 $sql = " select p.RoleID from player p inner join `user` u on u.UserID = p.UserID where u.PackageFlag = '{$t}' and p.RoleID in ($roleIds)";
                 $roles = \Yii::$app->db2->createCommand($sql)->queryAll();
                 $ids = [];
+                $channel_total = 0;
                 foreach($roles as $e => $q){
                     $ids[] = $q['RoleID'];
+                    $channel_total += 1;
                 }
                 $channel_roleIds = implode(',',$ids);
             }else{
                 $channel_roleIds = '';
-            }
-            if($channel_roleIds){
-                //当前渠道今日新增账号登录数
-                $channel_user = Player::find()->select("RoleID")->where("( unix_timestamp(CreateDate) between $begin and $end )  and RoleID in ($channel_roleIds)")->asArray()->all();
-                $channel_total = count($channel_user);
-                //当前渠道今日登录用户
-                $channel_loginUser = Player::find()->select("RoleID")->where("( LastLogin between $begin and $end ) and RoleID in ($channel_roleIds)")->asArray()->all();
-                $loginTotal = count($channel_loginUser);
-            }else{
                 $channel_total = 0;
-                $loginTotal = 0;
             }
+            //当前渠道今日登录用户
+            $sql = " select count(p.RoleID) as total from player p inner join `user` u on u.UserID = p.UserID where u.PackageFlag = '{$t}' and ( p.LastLogin between $begin and $end )";
+            $loginTotal = \Yii::$app->db2->createCommand($sql)->queryOne()['total'];
             $model = new PlayerChannelRegister();
             $model->date = $today;
             $model->channel = $t;
