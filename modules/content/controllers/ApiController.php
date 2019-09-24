@@ -8,6 +8,7 @@ use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
 use app\modules\content\models\OperationLog;
 use app\modules\content\models\Role;
+use app\modules\content\models\RoleFeedback;
 use yii\web\Controller;
 use Yii;
 
@@ -114,5 +115,30 @@ class ApiController extends  Controller
     public function actionGetServiceStatus(){
         $service = Role::find()->select("qq,serviceStatus")->where("service = 1")->asArray()->all();
         die(json_encode($service));
+    }
+    /**
+     * 用户反馈
+     * 客户端请求
+     */
+    public function actionRoleFeedback(){
+        $request = Yii::$app->request;
+        $roleId = $request->post('roleId','');
+        $roleName = $request->post('roleName','');
+        $serverId  = $request->post('serverId',0);
+        $feedback = $request->post('feedback','');
+        $model = new RoleFeedback();
+        $model->roleId = $roleId;
+        $model->roleName = $roleName;
+        $model->serverId = $serverId;
+        $model->feedback = $feedback;
+        $model->feedTime = date('Y-m-d H:i:s');
+        $model->createTime = time();
+        $res = $model->save();
+        if($res){
+            $data = ['code'=>1];//成功
+        }else{
+            $data = ['code'=>0];//失败
+        }
+        die(json_encode($data));
     }
 }

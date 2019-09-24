@@ -151,3 +151,6 @@ a.desc:after {
 .tdPad td{
     padding: 3.9px !important;
 }
+.tdSpan td span {
+    height: 3.8em !important;
+}

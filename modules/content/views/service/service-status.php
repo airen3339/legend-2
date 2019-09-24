@@ -1,19 +1,19 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
-        <li><a href="/content/rule/index">权限功能</a> <span class="divider">/</span></li>
-        <li class="active">角色列表</li>
+        <li><a href="/content/service/index">客服模块</a> <span class="divider">/</span></li>
+        <li class="active">账号状态</li>
     </ul>
     <ul class="nav">
 
     </ul>
-    <form action="/content/rule/role" method="get" class="form-horizontal">
+    <form action="/content/service/service-status" method="get" class="form-horizontal">
         <table class="table">
             <tr>
             </tr>
         </table>
     </form>
-    <form action="/content/rule/role" method="post">
+    <form action="/content/service/service-status" method="post">
         <table class="table table-hover add_defined">
             <thead>
             <tr>
