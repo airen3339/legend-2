@@ -49,7 +49,7 @@
             </tr>
         </table>
     </form>
-    <form action="/content/service/role-feedback" method="post">
+    <form action="" >
         <table class="table table-hover ">
             <thead>
             <tr>
@@ -72,10 +72,10 @@
                     <td ><span><?php echo $v['roleId']?></span></td>
                     <td ><span><?php echo $v['roleName']?></span></td>
                     <td ><span><?php echo $v['serverId']?></span></td>
-                    <td ><span></span><?php echo $v['feedback']?></span></td>
-                    <td ><span><?php echo $v['replyContent']?></span></td>
-                    <td ><span><?php echo $v['replyName']?></span></td>
-                    <td ><span><?php echo $v['replyTime']?></span></td>
+                    <td ><span><?php echo $v['feedback']?></span></td>
+                    <td><span><?php echo $v['replyContent']?$v['replyContent']:"<input type='text' style='margin: 0 6px' value='' />&nbsp;<a href='#' class='btn' onclick='replyContent(this,".$v['id'].")' >回复</a>"?></span></td>
+                    <td ><span id="replyName<?php echo $v['id'];?>"><?php echo $v['replyName']?></span></td>
+                    <td ><span id="replyTime<?php echo $v['id'];?>"><?php echo $v['replyTime']?></span></td>
                 </tr>
                 <?php
             }
@@ -107,5 +107,22 @@
                 window.location.reload();
             }
         },'json')
+    }
+    function replyContent(_this,id){
+        var val = $(_this).siblings("input").val();
+        if(val){
+            $.post('/content/api/feedback-reply',{id:id,reply:val},function(e){
+                alert(e.message);
+                if(e.code==1){//修改对应的信息
+                    $(_this).parents("span").html(val);//回复内容
+                    var nameId = '#replyName'+id;
+                    var timeId = '#replyTime'+id;
+                    $(nameId).html(e.replyName);//回复人
+                    $(timeId).html(e.replyTime);//回复时间
+                }
+            },'json')
+        }else{
+            alert('请输入对应的回复内容');
+        }
     }
 </script>

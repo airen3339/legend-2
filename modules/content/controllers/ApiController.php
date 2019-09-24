@@ -141,4 +141,25 @@ class ApiController extends  Controller
         }
         die(json_encode($data));
     }
+    /**
+     * 用户反馈回复
+     */
+    public function actionFeedbackReply(){
+        $id = Yii::$app->request->post('id');
+        $reply = Yii::$app->request->post('reply');
+        if($id && $reply){
+            $replyId = Yii::$app->session->get('adminId');
+            $replyName = Yii::$app->session->get('adminName');
+            $time = date('Y-m-d H:i:s');
+            $res = RoleFeedback::updateAll(['replyContent'=>$reply,'replyId'=>$replyId,'replyTime'=>$time],"id = $id");
+            if($res){
+                $data = ['code'=>1,'message'=>'回复成功','replyName'=>$replyName,'replyTime'=>$time];
+            }else{
+                $data = ['code'=>0,'message'=>'回复失败，请重试'];
+            }
+        }else{
+            $data = ['code'=>0,'message'=>'参数错误'];
+        }
+        die(json_encode($data));
+    }
 }
