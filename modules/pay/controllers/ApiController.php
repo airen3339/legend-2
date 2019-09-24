@@ -271,7 +271,6 @@ class ApiController extends Controller
 //                    $amount = $amount/100;//换成元
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$amount,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
 //                    $url = '192.168.0.15:8080';
-                    Methods::varDumpLog('payTest.txt',json_encode($postData),'a');
                     $url = \Yii::$app->params['gameServerUrl'];
                     Methods::post($url,$postData);
                 }

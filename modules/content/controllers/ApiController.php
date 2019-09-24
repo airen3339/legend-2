@@ -4,6 +4,7 @@
 namespace app\modules\content\controllers;
 
 
+use app\libs\Methods;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
 use app\modules\content\models\OperationLog;
@@ -154,6 +155,10 @@ class ApiController extends  Controller
             $res = RoleFeedback::updateAll(['replyContent'=>$reply,'replyId'=>$replyId,'replyTime'=>$time],"id = $id");
             if($res){
                 $data = ['code'=>1,'message'=>'回复成功','replyName'=>$replyName,'replyTime'=>$time];
+                //回复成功 通知服务器
+                $model = RoleFeedback::findOne($id);
+                $content = ['MailTitle'=>'反馈回复','MailContent'=>$reply,'Hyperlink'=>'客服','HyperlinkText'=>'','RoleId'=>$model->roleId];
+                Methods::GmFileGet($content,$model->serverId,6,4113);//4113 单人邮件
             }else{
                 $data = ['code'=>0,'message'=>'回复失败，请重试'];
             }
