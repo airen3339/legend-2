@@ -5,6 +5,8 @@ namespace app\modules\content\controllers;
 
 
 use app\modules\content\models\Catalog;
+use app\modules\content\models\Item;
+use app\modules\content\models\Role;
 use yii\web\Controller;
 use Yii;
 
@@ -81,5 +83,33 @@ class ApiController extends  Controller
         $ipAddress = Yii::$app->session->get('ipAddress');
         $data = ['ipAddress'=>$ipAddress];
         die(json_encode($data));
+    }
+    /**
+     * 获取商城道具信息
+     */
+    public function actionGetItem(){
+        $name = Yii::$app->request->post('name','');
+        $data = Item::find()->where("name like '%{$name}%'")->asArray()->limit(5)->all();
+        die(json_encode($data));
+    }
+    /**
+     * 修改客服账号状态
+     */
+    public function actionAlterStatus(){
+        $id = Yii::$app->request->post('id');
+        $type = Yii::$app->request->post('type',0);//0-离线状态  1-在线状态
+        $status = $type ==1?0:1;
+        $model = Role::findOne($id);
+        $model->serviceStatus = $status;
+        $model->save();
+        die(json_encode(['code'=>1,'message'=>'修改成功']));
+    }
+    /**
+     * 客服端获取客服账号状态
+     * type  1-在线 0-离线
+     */
+    public function actionGetServiceStatus(){
+        $service = Role::find()->select("qq,serviceStatus")->where("service = 1")->asArray()->all();
+        die(json_encode($service));
     }
 }

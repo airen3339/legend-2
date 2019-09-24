@@ -8,6 +8,7 @@ namespace app\modules\content\controllers;
 
 use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\CurrencyData;
+use app\modules\content\models\Item;
 use app\modules\content\models\LoginData;
 use app\modules\content\models\LoginRole;
 use app\modules\content\models\LTV;
@@ -273,7 +274,7 @@ class TimerController extends Controller
                         preg_match_all($patterns,$remark,$array);
                         $toolId = isset($array[0][0])?$array[0][0]:0;
                         if($toolId){
-                            $toolName = '测试商品';
+                            $toolName = Item::find()->where("itemid = $toolId")->asArray()->one()['name'];
                             $remark .= '商品名称：'.$toolName;
                         }
                         $model->remark = $remark;

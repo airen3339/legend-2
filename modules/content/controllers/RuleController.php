@@ -72,6 +72,13 @@ class RuleController extends  AdminController {
             $name = Yii::$app->request->post('name');
             $createPower = Yii::$app->request->post('createPower',0);
             $catalogIds = Yii::$app->request->post('catalogIds');
+            $service = Yii::$app->request->post('service',0);//客服账号
+            $qq = Yii::$app->request->post('qq','');
+            if($service ==1){
+                if(!$qq){
+                    die('<script>alert("请填写客服QQ");history.go(-1);</script>');
+                }
+            }
             if(!$catalogIds){
                 die('<script>alert("请选择目录权限");history.go(-1);</script>');
             }
@@ -83,6 +90,8 @@ class RuleController extends  AdminController {
             $model->createUser = $createUser;
             $model->createPower = $createPower;
             $model->createTime = $time;
+            $model->service = $service;
+            $model->qq = $qq;
             $res = $model->save();
             if($res){
                 //记录用户目录权限

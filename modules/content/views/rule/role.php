@@ -45,6 +45,7 @@
                 <th>ID</th>
                 <th>角色账号</th>
                 <th>创建权限</th>
+                <th>客服账号</th>
                 <th>操作内容</th>
                 <th >操作</th>
             </tr>
@@ -60,6 +61,7 @@
                     <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['createPower']==1?'有':'无'?></span></td>
+                    <td ><span style="width: 115px; "><?php echo $v['service']==1?"是 ".$v['qq']:'否'?></span></td>
                     <td ><span style="width: 120px;height: 5.2em !important; " title="<?php echo $v['catalog'];?>"><?php echo $v['catalog']?></span></td>
 
                     <td  class="notSLH" style="width: 247px;">

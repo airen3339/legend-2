@@ -46,6 +46,30 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">客服账号</label>
+                <div class="controls">
+                    <label for="yes" style="display: inline">
+                        <input  type="radio" name="service" id="sYes" value="1" <?php if(isset($role['service']) && $role['service'] == 1) echo 'checked';?> /> 是
+                    </label> &nbsp;&nbsp;
+                    <label for="no" style="display: inline">
+                        <input  type="radio" name="service" id="sNo" value="0" <?php if(isset($role['service']) && $role['service'] == 0) echo 'checked';?>  /> 否
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">客服QQ</label>
+                <div class="controls">
+                    <select name="qq">
+                        <option value="0">请选择</option>
+                        <option value="1041411666" <?php if(isset($role['qq']) && $role['qq'] == '1041411666') echo 'selected';?>>1041411666</option>
+                        <option value="1040499666" <?php if(isset($role['qq']) && $role['qq'] == '1040499666') echo 'selected';?>>1040499666</option>
+                        <option value="1047477666" <?php if(isset($role['qq']) && $role['qq'] == '1047477666') echo 'selected';?>>1047477666</option>
+                        <option value="1072722666" <?php if(isset($role['qq']) && $role['qq'] == '1072722666') echo 'selected';?>>1072722666</option>
+                    </select>
+                    <span class="help-block">客服账号必填</span>
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="controls">
                     <input name="id" type="hidden" value="<?php echo isset($role['id'])?$role['id']:''?>">
                     <input type="submit"  class="btn btn-primary" value="提交">
