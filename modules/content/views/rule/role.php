@@ -8,7 +8,7 @@
         <?php if(Yii::$app->session->get('createPower') ==1){?>
         <li class="dropdown pull-right">
             <a class="dropdown-toggle"
-               href="/content/rule/role-add">添加角色</a>
+               href="/content/rule/role-add">添加账号</a>
         </li>
         <?php }?>
     </ul>

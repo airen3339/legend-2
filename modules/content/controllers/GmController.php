@@ -12,6 +12,7 @@ use app\modules\content\models\ActivityLog;
 use app\modules\content\models\LTV;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
+use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SscActivity;
@@ -38,9 +39,73 @@ class GmController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         if($_POST){
+            $server = Yii::$app->request->post('server');
+            $sendTime = Yii::$app->request->post('sendTime');
+            $minLevel = Yii::$app->request->post('minLevel',0);
+            $maxLevel = Yii::$app->request->post('maxLevel',70);
+            $propIds = Yii::$app->request->post('propIds');//道具id
+            $numbers = Yii::$app->request->post('numbers');//道具数量
+            $emailTitle = Yii::$app->request->post('emailTitle');
+            $emailContent = Yii::$app->request->post('emailContent');
+//            $contentOther = Yii::$app->request->post('contentOther','');
+            $contentOther = '';
+            if( count($propIds) == count($numbers) && count($propIds) > 0  ){
+                $pushContent = ['propId'=>$propIds,'number'=>$numbers];
+                $pushContent = json_encode($pushContent);
+                //统计道具物品数量
+                $ids = [];
+                $itemList = [];
+                foreach($propIds as $k => $v){
+                    if(!in_array($v,$ids)){
+                        $ids[] = $v;
+                    }
+                    $itemList[] = ['ItemId'=>$v,'ItemNum'=>$numbers[$k]];
+                }
+                $propNum = count($ids);
+            }else{
+                echo "<script>alert('发放物品数据不正确');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
 
+            if(!$minLevel)$minLevel = 0;
+            if(!$maxLevel)$maxLevel = 70;
+            if($server  && $emailContent && $emailTitle && $pushContent){
+                $model = new RewardRecord();
+                $model->type = 2;//1-玩家 2-区服
+                $model->serverId = $server;
+                $model->title = $emailTitle;
+                $model->content = $emailContent;
+                $model->contentOther = $contentOther;
+                $model->sender = '系统';
+                $model->prop = $pushContent;
+                $model->propNum = $propNum;
+                $model->sendTime = $sendTime;
+                $model->minLevel = $minLevel;
+                $model->maxLevel = $maxLevel;
+                $model->createTime = time();
+                $model->creator = Yii::$app->session->get('adminId');
+                $res = $model->save();
+                if($res){
+                    //推送服务端
+                    if($sendTime){
+                        $sendTime = strtotime($sendTime);
+                        if($sendTime < time()){//小于当前时间
+                            $sendTime = 0;
+                        }
+                    }else{
+                        $sendTime = 0;
+                    }
+                    $content = ['SendTime'=>$sendTime,'MinLevel'=>$minLevel,'MaxLevel'=>$maxLevel,'MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','ButtonContent'=>$contentOther,'ItemList'=>$itemList,'ItemList_count'=>$propNum];
+                    Methods::GmFileGet($content,$server,6,4143);//4143 区服邮件
+                    echo "<script>alert('发送奖励成功');setTimeout(function(){location.href='service-add-reward';},1000)</script>";die;
+                }else{
+                    echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }else{
+                echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
         }else{
-            return $this->render('service-add-reward',[]);
+            $servers = Server::getServers();
+            return $this->render('service-add-reward',['servers'=>$servers]);
         }
     }
     /**
@@ -50,9 +115,41 @@ class GmController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         if($_POST){
-
+            $server = Yii::$app->request->post('server');
+            $roleId = Yii::$app->request->post('roleId');
+            $emailTitle = Yii::$app->request->post('emailTitle');
+            $emailContent = Yii::$app->request->post('emailContent');
+            $contentOther = Yii::$app->request->post('contentOther');
+            $propId = Yii::$app->request->post('propId');
+            $propNum = Yii::$app->request->post('propNum');
+            if($server && $roleId && $emailContent && $emailTitle && $propId && $propNum){
+                $model = new RewardRecord();
+                $model->type = 1;//1-玩家 2-区服
+                $model->serverId = $server;
+                $model->title = $emailTitle;
+                $model->content = $emailContent;
+                $model->contentOther = $contentOther;
+                $model->sender = '系统';
+                $model->prop = $propId;
+                $model->propNum = $propNum;
+                $model->roleId = $roleId;
+                $model->createTime = time();
+                $model->creator = Yii::$app->session->get('adminId');
+                $res = $model->save();
+                if($res){
+                    //推送服务端
+                    $content = ['MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','HyperlinkText'=>$contentOther,'ItemId'=>$propId,'ItemNum'=>$propNum,'RoleId'=>$model->roleId];
+                    Methods::GmFileGet($content,$server,6,4113);//4113 单人邮件
+                    echo "<script>alert('发送奖励成功');setTimeout(function(){location.href='player-add-reward';},1000)</script>";die;
+                }else{
+                    echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }else{
+                echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
         }else{
-            return $this->render('player-add-reward',[]);
+            $servers = Server::getServers();
+            return $this->render('player-add-reward',['servers'=>$servers]);
         }
     }
     /**

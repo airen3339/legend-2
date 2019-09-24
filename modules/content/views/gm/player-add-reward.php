@@ -4,83 +4,63 @@
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
         <li class="active">区服添加奖励</li>
     </ul>
-    <form action="/content/gm/service-add-reward" method="post" class="form-horizontal">
+    <form action="/content/gm/player-add-reward" method="post" class="form-horizontal" onsubmit="return submitData()">
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">区服</label>
                 <div class="controls">
-                    <select name="content[category]">
-                        <option value="0" >对对对</option>
-                        <option value="1" >GMAT</option>
+                    <select name="server" id="server">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
                     </select>
                 </div>
             </div>
 
             <div class="control-group">
-                <label for="modulename" class="control-label">UID</label>
+                <label for="modulename" class="control-label">roleId</label>
                 <div class="controls">
-                    <input type="text"  name="content[uid]" value=""  >
+                    <input type="text" id="roleId"  name="roleId" value=""  >
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">邮件标题</label>
                 <div class="controls">
-                    <input type="text"  name="content[emailTitle]" value="" datatype="emailTitle" >
+                    <input type="text" id="emailTitle"  name="emailTitle" value=""  >
                 </div>
             </div>
             <div class="control-group">
                 <label for="modulename" class="control-label">邮件内容</label>
                 <div class="controls">
-                    <textarea name="content[emailContent]"></textarea>
+                    <textarea name="emailContent" id="emailContent"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">邮件附言</label>
+                <div class="controls">
+                    <textarea name="contentOther" ></textarea>
                 </div>
             </div>
 
             <div class="control-group">
-                <label for="modulename" class="control-label">选择发放物品</label>
+                <label for="modulename" class="control-label">发放物品</label>
                 <div class="controls">
-                    <select>
-                        <option>1</option>
-                        <option>2</option>
-                    </select>&nbsp;&nbsp;
-                    数量：<input type="text" style="width:70px" name="goodsNum" value=""/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn">确认</a>
+                    物品名称：<div style="display: inline;">
+                        <input type="text" style="width:120px" name="propId" id='propName' autocomplete="off" value="" onkeyup="getToolIds()"/>
+                        <ul  class="nav nav-child nav-child-newo nav-stacked" id="propData" >
+                        </ul>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                    物品ID：<input type="text" style="width:70px" name="propId" id='propId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    物品数量：<input type="text" style="width:70px" name="propNum" id="propNum" onkeyup="value = value.replace(/[^0-9]/g,'')" value=""/>
                 </div>
             </div>
-            <div class="control-group">
-                <label for="modulename" class="control-label">选择发放货币</label>
-                <div class="controls">
-                    <select>
-                        <option>1</option>
-                        <option>2</option>
-                    </select>&nbsp;&nbsp;
-                    数量：<input type="text" style="width:70px" name="moneyNum" value=""/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn">确认</a>
-                </div>
-            </div>
-            <hr>
-            <form action="#">
-                <div class="control-group">
-                    <ul class="reward-head controls reward-ul">
-                        <li>奖品</li>
-                        <li>数据</li>
-                        <li>是否删除</li>
-                    </ul>
-                </div>
-                <div class="control-group">
-                    <ul class="reward-child controls reward-ul">
-                        <li>1</li>
-                        <li>11</li>
-                        <li><a href="#" class="btn">删除</a></li>
-                    </ul>
-                </div>
-                <div class="control-group">
-                    <ul class="reward-child controls reward-ul">
-                        <li>1</li>
-                        <li>11</li>
-                        <li><a href="#" class="btn">删除</a></li>
-                    </ul>
-                </div>
-            </form>
+            <br/>
+            <br/>
+            <br/>
             <div class="control-group">
                 <div class="controls">
                     <input type="submit" class="btn btn-primary" value="提交">
@@ -89,3 +69,36 @@
         </fieldset>
     </form>
 </div>
+<script>
+    function submitData(){
+        if(confirm('确定给玩家推送改奖励？')){
+            var server = $('#server').val();
+            var roleId = $('#roleId').val();
+            var emailTitle = $('#emailTitle').val();
+            var emailContent = $('#emailContent').val();
+            var propId = $('#propId').val();
+            var propNum = $('#propNum').val();
+            if(server  < 1){
+                alert('请选择区服');return false;
+            }
+            if(!roleId){
+                alert('请填写角色ID');return false;
+            }
+            if(!emailTitle){
+                alert('请填写邮件标题');return false;
+            }
+            if(!emailContent){
+                alert('请填写邮件内容');return false;
+            }
+            if(!propId){
+                alert('请填写物品Id');return false;
+            }
+            if(!propNum){
+                alert('请填写物品数量');return false;
+            }
+
+        }else{
+            return false;
+        }
+    }
+</script>

@@ -167,3 +167,29 @@ a.desc:after {
     border: 0px;
     opacity: 0.8;
 }
+.nav-child-newo{
+    position: absolute;
+    width: 133px;
+    top: 438px;
+    left: 631px;
+    z-index: 99;
+}
+.nav-child-newo li{
+    height: 25px;
+    background-color: white;
+    border: 0px;
+    opacity: 0.8;
+}
+.nav-child-newt{
+    position: absolute;
+    width: 133px;
+    top: 348px;
+    left: 631px;
+    z-index: 99;
+}
+.nav-child-newt li{
+    height: 25px;
+    background-color: white;
+    border: 0px;
+    opacity: 0.8;
+}
