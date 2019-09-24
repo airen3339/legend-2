@@ -154,3 +154,16 @@ a.desc:after {
 .tdSpan td span {
     height: 3.8em !important;
 }
+.nav-child-new{
+    position: absolute;
+    width: 133px;
+    top: 348px;
+    left: 806px;
+    z-index: 99;
+}
+.nav-child-new li{
+    height: 25px;
+    background-color: white;
+    border: 0px;
+    opacity: 0.8;
+}

@@ -46,14 +46,11 @@
                 <label for="modulename" class="control-label">发放物品</label>
                 <div class="controls">
                     领取条件：<input type="text" style="width:70px" name="condition" id='condition' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
-<!--                    道具名称：<div style="display: inline;">-->
-<!--                                <input type="text" style="width:120px" name="propId" id='propName' autocomplete="off" value="" onkeyup="getToolIds()"/>-->
-<!--                                <ul style="display: inline;">-->
-<!--                                    <li>1</li>-->
-<!--                                    <li>1</li>-->
-<!--                                    <li>1</li>-->
-<!--                                </ul>-->
-<!--                            </div>&nbsp;&nbsp;&nbsp;&nbsp;-->
+                    道具名称：<div style="display: inline;">
+                                <input type="text" style="width:120px" name="propId" id='propName' autocomplete="off" value="" onkeyup="getToolIds()"/>
+                                <ul  class="nav nav-child nav-child-new nav-stacked" id="propData" >
+                                </ul>
+                            </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     道具ID：<input type="text" style="width:70px" name="propId" id='propId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
                     道具数量：<input type="text" style="width:70px" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')"  />&nbsp;&nbsp;&nbsp;&nbsp;
                     绑定状态：<select name="bind" id="bind" class="input-small">
@@ -123,6 +120,8 @@
         $('#propId').val('');
         $('#number').val('');
         $('#bind').val(0);
+        $('#propData').html('');
+        $('#propName').val('');
     }
     function deleteProp(_this){
         if(confirm('确认删除该条数据？')){
@@ -151,16 +150,5 @@
         if(!condition){
             alert('请添加发放物品');return false;
         }
-    }
-    function getToolIds(){
-        var val = $('#propName').val();
-        $.post('/content/api/get-item',{name:val},function(e){
-            var str = '<option value=0>请选择</option>';
-            for(var i=0;i<e.length;i++){
-                str += '<option value="'+e[i].itemid+'">'+e[i].name+'</option>'
-            }
-            $('#propId').html(str);
-        },'json');
-        console.log(val);
     }
 </script>

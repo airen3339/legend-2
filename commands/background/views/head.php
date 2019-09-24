@@ -57,4 +57,20 @@
     function setIp(type){
         $.post('/content/api/set-ip',{type:type},function(e){console.log(e.ipAddress)},'json');
     }
+
+    function getToolIds(){
+        var val = $('#propName').val();
+        $.post('/content/api/get-item',{name:val},function(e){
+            var str = '';
+            for(var i=0;i<e.length;i++){
+                str += '<li data-Id="'+e[i].itemid+'"  onclick="setToolId(this)">'+e[i].name+'</li>'
+            }
+            $('#propData').html(str);
+        },'json');
+    }
+    function setToolId(_this){
+        var toolId = $(_this).attr('data-Id');
+        $('#propId').val(toolId);
+        $('#propName').val($(_this).html());
+    }
 </script>
