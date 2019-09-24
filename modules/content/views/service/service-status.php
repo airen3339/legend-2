@@ -35,7 +35,7 @@
                     <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
                     <td ><span style="width: 100px; "><?php echo $v['qq']?></span></td>
-                    <td ><span style="width: 115px; " id="serviceStatus"><?php echo $v['serviceStatus']==1?"在线":'离线'?></span></td>
+                    <td ><span style="width: 115px;color: <?php echo $v['serviceStatus']==1?"blue":'red'?>;" id="serviceStatus"><?php echo $v['serviceStatus']==1?"在线":'离线'?></span></td>
                     <td  class="notSLH" style="width: 247px;">
                         <div>
                             <a class="btn" id="serviceAlter" href="#" onclick="alterStatus(<?php echo $v['id'];?>,<?php echo $v['serviceStatus'];?>)"><?php echo $v['serviceStatus']==1?"下线":'上线'?></a>
@@ -56,14 +56,7 @@
             console.log(e);
             alert(e.message);
             if(e.code ==1){
-                console.log(2);
-                if(type ==1){//改成离线
-                    $('#serviceStatus').html('离线');
-                    $('#serviceAlter').html('上线');
-                }else{
-                    $('#serviceStatus').html('在线');
-                    $('#serviceAlter').html('下线');
-                }
+                window.location.reload();
             }
         },'json')
     }

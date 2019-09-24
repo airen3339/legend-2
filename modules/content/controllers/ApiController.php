@@ -6,6 +6,7 @@ namespace app\modules\content\controllers;
 
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
+use app\modules\content\models\OperationLog;
 use app\modules\content\models\Role;
 use yii\web\Controller;
 use Yii;
@@ -102,6 +103,8 @@ class ApiController extends  Controller
         $model = Role::findOne($id);
         $model->serviceStatus = $status;
         $model->save();
+        $remark = $type==1?'修改请求客服qq状态（下线）':'修改请求客服qq状态（上线）';
+        OperationLog::logAdd($remark,$model->qq,1);
         die(json_encode(['code'=>1,'message'=>'修改成功']));
     }
     /**
