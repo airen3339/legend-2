@@ -11,7 +11,9 @@ use app\libs\Methods;
 use app\modules\content\models\ActivityLog;
 use app\modules\content\models\LTV;
 use app\modules\content\models\Notice;
+use app\modules\content\models\OperationLog;
 use app\modules\content\models\Role;
+use app\modules\content\models\Server;
 use app\modules\content\models\SscActivity;
 use Yii;
 use yii\base\Controller;
@@ -171,6 +173,39 @@ class GmController  extends AdminController
             }
         }else{
             echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
+    /**
+     * 命令推送
+     */
+    public function actionCommandPush(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $server = Yii::$app->request->post('server');
+            $roleId = Yii::$app->request->post('roleId');
+            $prefix = Yii::$app->request->post('prefix');
+            $params = Yii::$app->request->post('params');
+            if(!$server){
+                echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$prefix){
+                echo "<script>alert('请填写命令前缀');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$params){
+                echo "<script>alert('请填写命令参数');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            //记录日志并推送服务端
+            OperationLog::logAdd("推送".$server."服GM命令 $prefix $params",$roleId,2);//2-gm命令
+            $content = ['GMInstruct'=>$prefix,'GMParam'=>$params];
+            if($roleId){
+                $content['RoleId'] = $roleId;
+            }
+            Methods::GmFileGet($content,$server,6,4233);//4233 推送gm命令
+            echo "<script>alert('推送成功');setTimeout(function(){location.href='command-push';},1000)</script>";die;
+        }else{
+            $servers = Server::getServers();
+            return $this->render('command-push',['servers'=>$servers]);
         }
     }
 }
