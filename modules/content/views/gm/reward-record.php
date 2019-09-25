@@ -10,19 +10,22 @@
         <table class="table">
             <tr>
                 <td>
-                    uid：
+                    roleId：
                 </td>
                 <td>
-                    <input class="input-small "  type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
+                    <input style="height: 20px;"   type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
                 </td>
                 <td>
                     区服：
                 </td>
                 <td>
-                    <select name="service">
-                        <option value="-99">请选择</option>
-                        <option value="1" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 1) echo 'selected';?>>有</option>
-                        <option value="2" <?php if(isset($_GET['createPower']) && $_GET['createPower'] == 2) echo 'selected';?>>无</option>
+                    <select name="server" id="server" style="width: 105px;">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){
+                            echo "<option value='{$v['id']}'>{$v['name']}</option>";
+                        }
+                        ?>
                     </select>
                 </td>
                 <td>
@@ -37,28 +40,39 @@
             <thead>
             <tr>
                 <th>操作时间</th>
-                <th>账号</th>
                 <th>区服</th>
-                <th>昵称\平台</th>
                 <th >邮件标题</th>
+                <th >邮件说明</th>
                 <th >奖励内容</th>
-                <th >是否领取</th>
-                <th >处理人</th>
+                <th >操作者</th>
+<!--                <th >处理人</th>-->
             </tr>
             </thead>
             <tbody>
+                <?php foreach($data as $k => $v){?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo isset($data['id'])?$data['id']:''?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($data['name'])?$data['name']:''?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($data['catalog'])?$data['catalog']:''?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($data['catalog'])?$data['catalog']:''?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($data['catalog'])?$data['catalog']:''?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($data['catalog'])?$data['catalog']:''?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($data['catalog'])?$data['catalog']:''?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($data['catalog'])?$data['catalog']:''?></span></td>
+                    <td ><span style="width: 80px; "><?php echo date('Y-m-d',$v['createTime'])?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['serverId'];?></span></td>
+                    <td ><span style="width: 80px; "><?php echo  $v['title'];?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['content'];?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['prop'];?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['adminName'];?></span></td>
                 </tr>
+                <?php }?>
             </tbody>
         </table>
     </form>
-
+    <div class="pagination pagination-right">
+        <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
+        <?php if($count > 200){?>
+            <span style="font-size: 17px;position: relative;bottom: 5px;">
+            <a onclick="jumpPage()">Go</a>&nbsp;
+            <input type="text" style="width: 20px;height: 18px;" id="jumpPage">&nbsp;页
+        </span>
+        <?php }?>
+        <?php use yii\widgets\LinkPager;
+        echo LinkPager::widget([
+            'pagination' => $page,
+        ])?>
+    </div>
 </div>

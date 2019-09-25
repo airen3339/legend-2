@@ -105,6 +105,8 @@ class GmController  extends AdminController
                     }
                     $content = ['SendTime'=>$sendTime,'MinLevel'=>$minLevel,'MaxLevel'=>$maxLevel,'MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','ButtonContent'=>$contentOther,'ItemList'=>$itemList,'ItemList_count'=>$propNum];
                     Methods::GmFileGet($content,$server,6,4143);//4143 区服邮件
+                    //日志记录
+                    OperationLog::logAdd('推送区服奖励',$model->id,4);//3-玩家奖励 4-区服奖励
                     echo "<script>alert('发送奖励成功');setTimeout(function(){location.href='service-add-reward';},1000)</script>";die;
                 }else{
                     echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -162,6 +164,8 @@ class GmController  extends AdminController
                     $binding = $binding==1?1:0;//1-绑定 0-未绑定
                     $content = ['MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','HyperlinkText'=>$contentOther,'ItemId'=>$propId,'ItemNum'=>$propNum,'RoleId'=>$model->roleId,'binding'=>$binding];
                     Methods::GmFileGet($content,$server,6,4113);//4113 单人邮件
+                    //日志记录
+                    OperationLog::logAdd('推送玩家奖励',$model->id,3);//3-玩家奖励 4-区服奖励
                     echo "<script>alert('发送奖励成功');setTimeout(function(){location.href='player-add-reward';},1000)</script>";die;
                 }else{
                     echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -180,19 +184,23 @@ class GmController  extends AdminController
     public function actionRewardRecord(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $service = \Yii::$app->request->get('service');
+        $service = \Yii::$app->request->get('server');
         $uid = \Yii::$app->request->get('uid');
         $where = ' 1=1 ';
         if($service){
-            $where .= " and service = '{$service}'";
+            $where .= " and serverId = '{$service}'";
         }
         if($uid){
-            $where .= " and uid = $uid ";
-            $data = ['id'=>1,'name'=>'cc','createPower'=>0,'catalog'=>'dd'];
-        }else{
-            $data = [];
+            $where .= " and roleId = $uid ";
         }
-        return $this->render('reward-record',['data'=>$data]);
+        $count = RewardRecord::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = RewardRecord::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $data[$k]['adminName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
+         }
+        $servers = Server::getServers();
+        return $this->render('reward-record',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);
     }
     /**
      * 区服添加公告
@@ -226,6 +234,7 @@ class GmController  extends AdminController
         $data = Notice::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['createName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
+            $pushContent = json_decode($v['prop'],true);
         }
         $servers = LTV::getServers();
         return $this->render('notice-query',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);

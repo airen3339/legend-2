@@ -127,6 +127,10 @@ class ApiController extends  Controller
         $roleName = $request->post('roleName','');
         $serverId  = $request->post('serverId',0);
         $feedback = $request->post('feedback','');
+        $post = $request->post();
+        $post1 = $_POST;
+        $str = json_encode($post)."\n".json_encode($post1);
+        Methods::varDumpLog('reply.txt',$str,'a');
         $model = new RoleFeedback();
         $model->roleId = $roleId;
         $model->roleName = $roleName;
