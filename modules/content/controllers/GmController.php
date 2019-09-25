@@ -39,33 +39,42 @@ class GmController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         if($_POST){
+            $adminId = Yii::$app->session->get('adminId');
             $server = Yii::$app->request->post('server');
             $sendTime = Yii::$app->request->post('sendTime');
             $minLevel = Yii::$app->request->post('minLevel',0);
             $maxLevel = Yii::$app->request->post('maxLevel',70);
             $propIds = Yii::$app->request->post('propIds');//道具id
             $numbers = Yii::$app->request->post('numbers');//道具数量
+            $binds = Yii::$app->request->post('binds');//道具数量
             $emailTitle = Yii::$app->request->post('emailTitle');
             $emailContent = Yii::$app->request->post('emailContent');
 //            $contentOther = Yii::$app->request->post('contentOther','');
             $contentOther = '';
-            if( count($propIds) == count($numbers) && count($propIds) > 0  ){
-                $pushContent = ['propId'=>$propIds,'number'=>$numbers];
+            if( count($propIds) == count($numbers) && (count($numbers) == count($binds)) && count($propIds) > 0  ){
+                $pushContent = ['propId'=>$propIds,'number'=>$numbers,'bind'=>$binds];
                 $pushContent = json_encode($pushContent);
                 //统计道具物品数量
                 $ids = [];
                 $itemList = [];
                 foreach($propIds as $k => $v){
-                    if(!in_array($v,$ids)){
-                        $ids[] = $v;
+                    if(!in_array([$v,$binds[$k]],$ids)){
+                        $ids[] = [$v,$binds[$k]];
+                    }//判断是否为元宝
+                    if($v == 222222){
+                        //判断账号权限
+                        $admin = Role::findOne($adminId);
+                        if($admin->currency !=1){
+                            echo "<script>alert('你没有元宝操作权限');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                        }
                     }
-                    $itemList[] = ['ItemId'=>$v,'ItemNum'=>$numbers[$k]];
+                    $binding = $binds[$k]==1?1:0;//1-绑定 0-未绑定
+                    $itemList[] = ['ItemId'=>$v,'ItemNum'=>$numbers[$k],'binding'=>$binding];
                 }
                 $propNum = count($ids);
             }else{
                 echo "<script>alert('发放物品数据不正确');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-
             if(!$minLevel)$minLevel = 0;
             if(!$maxLevel)$maxLevel = 70;
             if($server  && $emailContent && $emailTitle && $pushContent){
@@ -82,7 +91,7 @@ class GmController  extends AdminController
                 $model->minLevel = $minLevel;
                 $model->maxLevel = $maxLevel;
                 $model->createTime = time();
-                $model->creator = Yii::$app->session->get('adminId');
+                $model->creator = $adminId;
                 $res = $model->save();
                 if($res){
                     //推送服务端
@@ -119,10 +128,22 @@ class GmController  extends AdminController
             $roleId = Yii::$app->request->post('roleId');
             $emailTitle = Yii::$app->request->post('emailTitle');
             $emailContent = Yii::$app->request->post('emailContent');
-            $contentOther = Yii::$app->request->post('contentOther');
+//            $contentOther = Yii::$app->request->post('contentOther');
+            $contentOther = '';
             $propId = Yii::$app->request->post('propId');
             $propNum = Yii::$app->request->post('propNum');
-            if($server && $roleId && $emailContent && $emailTitle && $propId && $propNum){
+            $binding = Yii::$app->request->post('bind');
+            if($server && $roleId && $emailContent && $emailTitle && $propId && $propNum && $binding){
+                $adminId = Yii::$app->session->get('adminId');
+                //判断是否为元宝
+                if($propId == 222222){
+                    //判断账号权限
+                    $admin = Role::findOne($adminId);
+                    if($admin->currency !=1){
+                        echo "<script>alert('你没有元宝操作权限');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                    }
+                }
+                $prop = ['propId'=>[$propId],'number'=>[$propNum],'bind'=>[$binding]];
                 $model = new RewardRecord();
                 $model->type = 1;//1-玩家 2-区服
                 $model->serverId = $server;
@@ -130,15 +151,16 @@ class GmController  extends AdminController
                 $model->content = $emailContent;
                 $model->contentOther = $contentOther;
                 $model->sender = '系统';
-                $model->prop = $propId;
-                $model->propNum = $propNum;
+                $model->prop = json_encode($prop);
+                $model->propNum = 1;
                 $model->roleId = $roleId;
                 $model->createTime = time();
-                $model->creator = Yii::$app->session->get('adminId');
+                $model->creator = $adminId;
                 $res = $model->save();
                 if($res){
                     //推送服务端
-                    $content = ['MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','HyperlinkText'=>$contentOther,'ItemId'=>$propId,'ItemNum'=>$propNum,'RoleId'=>$model->roleId];
+                    $binding = $binding==1?1:0;//1-绑定 0-未绑定
+                    $content = ['MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','HyperlinkText'=>$contentOther,'ItemId'=>$propId,'ItemNum'=>$propNum,'RoleId'=>$model->roleId,'binding'=>$binding];
                     Methods::GmFileGet($content,$server,6,4113);//4113 单人邮件
                     echo "<script>alert('发送奖励成功');setTimeout(function(){location.href='player-add-reward';},1000)</script>";die;
                 }else{

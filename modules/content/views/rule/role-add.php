@@ -37,6 +37,17 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">元宝权限</label>
+                <div class="controls">
+                    <label for="yes" style="display: inline">
+                        <input  type="radio" name="currency" id="cYes" value="1" <?php if(isset($role['currency']) && $role['currency'] == 1) echo 'checked';?> /> 有
+                    </label> &nbsp;&nbsp;
+                    <label for="no" style="display: inline">
+                        <input  type="radio" name="currency" id="cNo" value="0" <?php if(isset($role['currency']) && $role['currency'] == 0) echo 'checked';?>  /> 无
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">目录权限</label>
                 <div class="controls">
                     <select style="width: 222px"

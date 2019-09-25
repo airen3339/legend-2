@@ -39,12 +39,12 @@
                     <textarea name="emailContent" id="emailContent"></textarea>
                 </div>
             </div>
-            <div class="control-group">
-                <label for="modulename" class="control-label">邮件附言</label>
-                <div class="controls">
-                    <textarea name="contentOther" ></textarea>
-                </div>
-            </div>
+<!--            <div class="control-group">-->
+<!--                <label for="modulename" class="control-label">邮件附言</label>-->
+<!--                <div class="controls">-->
+<!--                    <textarea name="contentOther" ></textarea>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <div class="control-group">
                 <label for="modulename" class="control-label">发放物品</label>
@@ -55,7 +55,12 @@
                         </ul>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     物品ID：<input type="text" style="width:70px" name="propId" id='propId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
-                    物品数量：<input type="text" style="width:70px" name="propNum" id="propNum" onkeyup="value = value.replace(/[^0-9]/g,'')" value=""/>
+                    物品数量：<input type="text" style="width:70px" name="propNum" id="propNum" onkeyup="value = value.replace(/[^0-9]/g,'')" value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    绑定状态：<select name="bind" id="bind" class="input-small">
+                        <option value="0">请选择</option>
+                        <option value="1">是</option>
+                        <option value="2">否</option>
+                    </select>&nbsp;&nbsp;
                 </div>
             </div>
             <br/>
@@ -78,6 +83,7 @@
             var emailContent = $('#emailContent').val();
             var propId = $('#propId').val();
             var propNum = $('#propNum').val();
+            var bind = $('#bind').val();
             if(server  < 1){
                 alert('请选择区服');return false;
             }
@@ -96,7 +102,9 @@
             if(!propNum){
                 alert('请填写物品数量');return false;
             }
-
+            if(bind < 1){
+                alert('请选择绑定状态');return false;
+            }
         }else{
             return false;
         }

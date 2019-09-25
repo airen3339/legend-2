@@ -74,6 +74,7 @@ class RuleController extends  AdminController {
             $catalogIds = Yii::$app->request->post('catalogIds');
             $service = Yii::$app->request->post('service',0);//客服账号
             $qq = Yii::$app->request->post('qq','');
+            $currency = Yii::$app->request->post('currency',0);
             if($service ==1){
                 if(!$qq){
                     die('<script>alert("请填写客服QQ");history.go(-1);</script>');
@@ -92,6 +93,7 @@ class RuleController extends  AdminController {
             $model->createTime = $time;
             $model->service = $service;
             $model->qq = $qq;
+            $model->currency = $currency;
             $res = $model->save();
             if($res){
                 //记录用户目录权限

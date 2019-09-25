@@ -47,7 +47,12 @@
                         </ul>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;
                     物品ID：<input type="text" style="width:70px" name="propId" id='propId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
-                    物品数量：<input type="text" style="width:70px" name="propNum" id="propNum" onkeyup="value = value.replace(/[^0-9]/g,'')" value=""/>
+                    物品数量：<input type="text" style="width:70px" name="propNum" id="propNum" onkeyup="value = value.replace(/[^0-9]/g,'')" value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    绑定状态：<select name="bind" id="bind" class="input-small">
+                        <option value="0">请选择</option>
+                        <option value="1">是</option>
+                        <option value="2">否</option>
+                    </select>&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn" onclick="addProp()">添加</a>
                 </div>
             </div>
@@ -94,23 +99,35 @@
     function addProp(){
         var propId = $('#propId').val();
         var number = $('#propNum').val();
+        var bind = $('#bind').val();
         if(!propId){
             alert('请填写道具ID');return false;
         }
         if(!number){
             alert('请填写道具数量');return false;
         }
+        if(bind < 1){
+            alert('请选择绑定状态');return false;
+        }
+        var bindStr  = '';
+        if(bind == 1){
+            bindStr = '绑定';
+        }else{
+            bindStr = '未绑定';
+        }
 
         var addStr = '<div class="control-group propContent">' +
             '                    <ul class="reward-child controls reward-ul">' +
             '                        <li class="lipropId">'+propId+'<input type="hidden" value="'+propId+'" name="propIds[]"/></li>' +
             '                        <li class="liNumber">'+number+'<input type="hidden" value="'+number+'" name="numbers[]"/></li>' +
+            '                        <li class="liBind">'+bindStr+'<input type="hidden" value="'+bind+'" name="binds[]"/></li>' +
             '                        <li><a href="#" class="btn" onclick="deleteProp(this)">删除</a></li>' +
             '                    </ul>' +
             '                </div>';
         $('#addContent').append(addStr);
         $('#propId').val('');
         $('#propNum').val('');
+        $('#bind').val(0);
         $('#propData').html('');
         $('#propName').val('');
     }
