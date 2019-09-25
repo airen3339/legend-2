@@ -25,7 +25,7 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-        echo 'test';
+        die(['oathYc','余超3','余超2',['余超1','余超']]);
     }
     public function actionTest1(){
         $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];

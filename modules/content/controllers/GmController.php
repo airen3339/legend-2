@@ -430,5 +430,49 @@ class GmController  extends AdminController
             return $this->render('command-push',['servers'=>$servers]);
         }
     }
+    /**
+     * 跑马灯公告
+     */
+    public function actionRollNotice(){
+        if($_POST){
+            $server = Yii::$app->request->post('server','');
+            $beginTime = Yii::$app->request->post('beginTime',0);
+            $endTime = Yii::$app->request->post('endTime',0);
+            $intervalTime = Yii::$app->request->post('intervalTime',0);
+            $content = Yii::$app->request->post('content');
+            if(!$server){
+                echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$beginTime){
+                echo "<script>alert('请选择开始时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                $begin = strtotime($beginTime);
+            }
+            if(!$endTime){
+                echo "<script>alert('请选择结束时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                $end = strtotime($endTime);
+            }
+            if(!$intervalTime){
+                echo "<script>alert('请填写间隔时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$content){
+                echo "<script>alert('请填写公告内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $model = new Notice();
+            $model->content = $content;
+            $model->serverId = $server;
+            $model->creator = Yii::$app->session->get('adminId');
+            $model->beginTime = $beginTime;
+            $model->endTime = $endTime;
+            $model->type = 2;//1-首页  2-跑马灯
+            $model->createTime = time();
+            $model->intervalTime = $intervalTime;
+            $res = $model->save();
+        }else{
+            $servers = Server::getServers();
+            return $this->render('roll-notice',['servers'=>$servers]);
+        }
+    }
 
 }

@@ -23,7 +23,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">发送时间</label>
                 <div class="controls">
-                    <input class="input-small Wdate" style="width: 135px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" size="10" type="text" id="sendTime" name="sendTime"  value="" placeholder="默认当前时间发送" autocomplete="off"/>
+                    <input class="input-small Wdate" style="width: 145px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" size="10" type="text" id="sendTime" name="sendTime"  value="" placeholder="默认当前时间发送" autocomplete="off"/>
                 </div>
             </div>
             <div class="control-group">
