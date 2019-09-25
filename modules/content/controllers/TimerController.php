@@ -360,7 +360,7 @@ class TimerController extends Controller
             $content = '';
         }
         $path = fopen(IndexDir.'/files/notice/indexNotice.txt','w');
-        fwrite($path,$content);
+        fwrite($path, mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding($content) ));
         fclose($path);
     }
 }

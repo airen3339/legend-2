@@ -42,7 +42,7 @@ class OperationLog extends ActiveRecord
         if($today >= $beginTime && $today < $endTime){//当前时间在公告时间段内
             //写入文件
             $path = fopen(IndexDir.'/files/notice/indexNotice.txt','w');
-            fwrite($path,$content);
+            fwrite($path, mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding($content) ));
             fclose($path);
         }
     }
