@@ -12,6 +12,7 @@ use app\modules\content\models\Item;
 use app\modules\content\models\LoginData;
 use app\modules\content\models\LoginRole;
 use app\modules\content\models\LTV;
+use app\modules\content\models\Notice;
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
@@ -344,5 +345,22 @@ class TimerController extends Controller
         }else{
             return '';
         }
+    }
+    /**
+     * 公告内容判断
+     * 超出公告时间清楚公告文件内容
+     */
+    public function actionCheckIndexNotice(){
+        //查询最新公告
+        $today = strtotime(date('Y-m-d'));
+        $notice = Notice::find()->where(" unix_timestamp(beginTime) <= $today and $today <= unix_timestamp(endTime)")->orderBy('beginTime desc')->asArray()->one();
+        if($notice){
+            $content = $notice['content'];
+        }else{
+            $content = '';
+        }
+        $path = fopen(IndexDir.'/files/notice/indexNotice.txt','w');
+        fwrite($path,$content);
+        fclose($path);
     }
 }

@@ -4,6 +4,7 @@
 namespace app\modules\content\models;
 
 
+use function GuzzleHttp\Psr7\str;
 use yii\db\ActiveRecord;
 
 class OperationLog extends ActiveRecord
@@ -28,5 +29,21 @@ class OperationLog extends ActiveRecord
         $model->type = $type;
         $model->createTime = time();
         $model->save();
+    }
+    /**
+     * 设置首页公告内容
+     * 文件保存
+     * 便于客户端获取
+     */
+    public static function setNoticeLog($content,$beginTime,$endTime){
+        $today = time();//当前时间
+        $beginTime = strtotime($beginTime);
+        $endTime = strtotime($endTime) + 86399;
+        if($today >= $beginTime && $today < $endTime){//当前时间在公告时间段内
+            //写入文件
+            $path = fopen(IndexDir.'/files/notice/indexNotice.txt','w');
+            fwrite($path,$content);
+            fclose($path);
+        }
     }
 }

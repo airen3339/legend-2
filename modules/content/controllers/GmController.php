@@ -363,8 +363,8 @@ class GmController  extends AdminController
             $res = $model->save();
             if($res){
                 ActivityLog::logAdd($remark,$model->id,4);
-                //推送服务端
-//                Methods::GmFileGet($content,0,6,4243);
+                //文件记录 便于客户端获取公告内容
+                OperationLog::setNoticeLog($content,$beginTime,$endTime);
                 echo "<script>alert('操作成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
             }else{
                 echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
