@@ -137,26 +137,21 @@
         }
     }
     function submitData(){
-        if(confirm('确定给玩家推送改奖励？')){
-            var server = $('#server').val();
-            var emailTitle = $('#emailTitle').val();
-            var emailContent = $('#emailContent').val();
-            var condition = $('li.lipropId').html();
-            if(server  < 1){
-                alert('请选择区服');return false;
-            }
-            if(!condition){
-                alert('请添加发放物品');return false;
-            }
-            if(!emailTitle){
-                alert('请填写邮件标题');return false;
-            }
-            if(!emailContent){
-                alert('请填写邮件内容');return false;
-            }
-
-        }else{
-            return false;
+        var server = $('#server').val();
+        var emailTitle = $('#emailTitle').val();
+        var emailContent = $('#emailContent').val();
+        var condition = $('li.lipropId').html();
+        if(server  < 1){
+            alert('请选择区服');return false;
+        }
+        if(!condition){
+            alert('请添加发放物品');return false;
+        }
+        if(!emailTitle){
+            alert('请填写邮件标题');return false;
+        }
+        if(!emailContent){
+            alert('请填写邮件内容');return false;
         }
     }
 </script>

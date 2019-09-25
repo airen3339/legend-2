@@ -57,11 +57,11 @@ class GmController  extends AdminController
                 $pushContent = json_encode($pushContent);
                 //统计道具物品数量
                 $ids = [];
-                $itemList = [];
                 foreach($propIds as $k => $v){
                     if(!in_array([$v,$binds[$k]],$ids)){
                         $ids[] = [$v,$binds[$k]];
-                    }//判断是否为元宝
+                    }
+                    //判断是否为元宝
                     if($v == 222222){
                         //判断账号权限
                         $admin = Role::findOne($adminId);
@@ -69,8 +69,6 @@ class GmController  extends AdminController
                             echo "<script>alert('你没有元宝操作权限');setTimeout(function(){history.go(-1);},1000)</script>";die;
                         }
                     }
-                    $binding = $binds[$k]==1?1:0;//1-绑定 0-未绑定
-                    $itemList[] = ['ItemId'=>$v,'ItemNum'=>$numbers[$k],'binding'=>$binding];
                 }
                 $propNum = count($ids);
             }else{
@@ -95,20 +93,9 @@ class GmController  extends AdminController
                 $model->creator = $adminId;
                 $res = $model->save();
                 if($res){
-                    //推送服务端
-                    if($sendTime){
-                        $sendTime = strtotime($sendTime);
-                        if($sendTime < time()){//小于当前时间
-                            $sendTime = 0;
-                        }
-                    }else{
-                        $sendTime = 0;
-                    }
-                    $content = ['SendTime'=>$sendTime,'MinLevel'=>$minLevel,'MaxLevel'=>$maxLevel,'MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','ButtonContent'=>$contentOther,'ItemList'=>$itemList,'ItemList_count'=>$propNum];
-                    Methods::GmFileGet($content,$server,6,4143);//4143 区服邮件
                     //日志记录
-                    OperationLog::logAdd('推送区服奖励',$model->id,4);//3-玩家奖励 4-区服奖励
-                    echo "<script>alert('发送奖励成功');setTimeout(function(){location.href='service-add-reward';},1000)</script>";die;
+                    OperationLog::logAdd('添加区服奖励',$model->id,4);//3-玩家奖励 4-区服奖励
+                    echo "<script>alert('添加奖励成功');setTimeout(function(){location.href='service-add-reward';},1000)</script>";die;
                 }else{
                     echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
                 }
@@ -161,13 +148,9 @@ class GmController  extends AdminController
                 $model->creator = $adminId;
                 $res = $model->save();
                 if($res){
-                    //推送服务端
-                    $binding = $binding==1?1:0;//1-绑定 0-未绑定
-                    $content = ['MailTitle'=>$emailTitle,'MailContent'=>$emailContent,'Hyperlink'=>'系统','HyperlinkText'=>$contentOther,'ItemId'=>$propId,'ItemNum'=>$propNum,'RoleId'=>$model->roleId,'binding'=>$binding];
-                    Methods::GmFileGet($content,$server,6,4113);//4113 单人邮件
                     //日志记录
-                    OperationLog::logAdd('推送玩家奖励',$model->id,3);//3-玩家奖励 4-区服奖励
-                    echo "<script>alert('发送奖励成功');setTimeout(function(){location.href='player-add-reward';},1000)</script>";die;
+                    OperationLog::logAdd('添加玩家奖励',$model->id,3);//3-玩家奖励 4-区服奖励
+                    echo "<script>alert('添加奖励成功');setTimeout(function(){location.href='player-add-reward';},1000)</script>";die;
                 }else{
                     echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
                 }
@@ -177,6 +160,98 @@ class GmController  extends AdminController
         }else{
             $servers = Server::getServers();
             return $this->render('player-add-reward',['servers'=>$servers]);
+        }
+    }
+    /**
+     * 奖励审核
+     */
+    public function actionRewardCheck(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $status = Yii::$app->request->post('status');//1-通过 -1-作废
+            $adminId = Yii::$app->session->get('adminId');
+            $res = RewardRecord::updateAll(['checker'=>$adminId,'status'=>$status],"id = $id");
+            if(!$res){
+                die(json_encode(['code'=>0,'message'=>'操作失败，请刷新重试']));
+            }
+            $reward = RewardRecord::findOne($id);
+            if($status != 1){//作废
+                if($reward->type ==1){
+                    OperationLog::logAdd('审核玩家奖励（作废）',$id,3);//3-玩家 4-区服
+                }else{
+                    OperationLog::logAdd('审核区服奖励（作废）',$id,4);//3-玩家 4-区服
+                }
+                die(json_encode(['code'=>1,'message'=>'操作成功']));
+            }
+            $pushContent = json_decode($reward['prop'],true);
+            if($reward->type ==1){//玩家奖励
+                //推送服务端
+                $binding = $pushContent['bind'][0]==1?1:0;//1-绑定 0-未绑定
+                $content = ['MailTitle'=>$reward->title,'MailContent'=>$reward->content,'Hyperlink'=>$reward->sender,'HyperlinkText'=>$reward->contentOther,'ItemId'=>$pushContent['propId'][0],'ItemNum'=>$pushContent['number'][0],'RoleId'=>$reward->roleId,'binding'=>$binding];
+                Methods::GmFileGet($content,$reward->serverId,6,4113);//4113 单人邮件
+                OperationLog::logAdd('审核玩家奖励（通过并推送服务端）',$id,3);//3-玩家 4-区服
+                die(json_encode(['code'=>1,'message'=>'操作成功']));
+            }elseif($reward->type ==2){//区服奖励
+                //推送服务端
+                if($reward->sendTime){
+                    $sendTime = strtotime($reward->sendTime);
+                    if($sendTime < time()){//小于当前时间
+                        $sendTime = 0;
+                    }
+                }else{
+                    $sendTime = 0;
+                }
+                $propIds = $pushContent['propId'];
+                $numbers = $pushContent['number'];
+                $binds = $pushContent['bind'];
+                $ids = [];
+                $itemList = [];
+                foreach($propIds as $k => $v){
+                    if(!in_array([$v,$binds[$k]],$ids)){
+                        $ids[] = [$v,$binds[$k]];
+                    }
+                    $binding = $binds[$k]==1?1:0;//1-绑定 0-未绑定
+                    $itemList[] = ['ItemId'=>$v,'ItemNum'=>$numbers[$k],'binding'=>$binding];
+                }
+                $propNum = count($ids);
+                $content = ['SendTime'=>$sendTime,'MinLevel'=>$reward->minLevel,'MaxLevel'=>$reward->maxLevel,'MailTitle'=>$reward->title,'MailContent'=>$reward->content,'Hyperlink'=>$reward->sender,'ButtonContent'=>$reward->contentOther,'ItemList'=>$itemList,'ItemList_count'=>$propNum];
+                Methods::GmFileGet($content,$reward->serverId,6,4143);//4143 区服邮件
+                OperationLog::logAdd('审核区服奖励（通过并推送服务端）',$id,4);
+                die(json_encode(['code'=>1,'message'=>'操作成功']));
+            }else{
+                die(json_encode(['code'=>0,'message'=>'奖励类型错误']));
+            }
+        }else{
+            $type = Yii::$app->request->get('type',0);//1-玩家 2-区服
+            $roleId = Yii::$app->request->get('uid','');
+            $serverId = Yii::$app->request->get('server');
+            $where = " status = 0 ";//未审核
+            if($type){
+                $where .= " and type = $type";
+            }
+            if($serverId){
+                $where .= " and serverId = $serverId ";
+            }
+            if($roleId){
+                $where .= " and roleId = '{$roleId}'";
+            }
+            $count = RewardRecord::find()->where($where)->count();
+            $page = new Pagination(['totalCount'=>$count]);
+            $data = RewardRecord::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+            $servers = Server::getServers();
+            foreach($data as $k => $v){
+                $pushContent = json_decode($v['prop'],true);
+                $content = [];
+                foreach($pushContent['propId'] as $t => $r){
+                    $propName = Item::find()->where("itemid = $r")->asArray()->one()['name'];
+                    $bindStr = $pushContent['bind'][$t]==1?'绑定':'未绑定';
+                    $content[] = $propName.'-'.$r.'-'.$pushContent['number'][$t].'-'.$bindStr.'    ';
+                }
+                $data[$k]['pushContent'] = implode("\n",$content);
+            }
+            return $this->render('reward-check',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
         }
     }
     /**
@@ -198,7 +273,18 @@ class GmController  extends AdminController
         $page = new Pagination(['totalCount'=>$count]);
         $data = RewardRecord::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
+            //操作者
             $data[$k]['adminName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
+            //审核人
+            if($v['status'] != 0){
+                $checkName = Role::find()->where("id = {$v['checker']}")->asArray()->one()['name'];
+                $statusStr = $v['status']==1?'审核通过':'审核作废';
+            }else{
+                $checkName = '';
+                $statusStr = '待审核';
+            }
+            $data[$k]['statusStr'] = $statusStr;
+            $data[$k]['checkName'] = $checkName;
             $pushContent = json_decode($v['prop'],true);
             $content = [];
             foreach($pushContent['propId'] as $t => $r){
@@ -344,4 +430,5 @@ class GmController  extends AdminController
             return $this->render('command-push',['servers'=>$servers]);
         }
     }
+
 }

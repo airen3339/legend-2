@@ -128,8 +128,6 @@ class ApiController extends  Controller
         $content = get_object_vars($request);
         $key = key($content);
         $cont = json_decode($key,true);
-        $str = "\n".json_encode($cont);
-        Methods::varDumpLog('reply.txt',$str,'a');
         $model = new RoleFeedback();
         $model->roleId = $cont['roleId'];
         $model->roleName = $cont['roleName'];

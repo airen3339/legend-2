@@ -76,37 +76,33 @@
 </div>
 <script>
     function submitData(){
-        if(confirm('确定给玩家推送改奖励？')){
-            var server = $('#server').val();
-            var roleId = $('#roleId').val();
-            var emailTitle = $('#emailTitle').val();
-            var emailContent = $('#emailContent').val();
-            var propId = $('#propId').val();
-            var propNum = $('#propNum').val();
-            var bind = $('#bind').val();
-            if(server  < 1){
-                alert('请选择区服');return false;
-            }
-            if(!roleId){
-                alert('请填写角色ID');return false;
-            }
-            if(!emailTitle){
-                alert('请填写邮件标题');return false;
-            }
-            if(!emailContent){
-                alert('请填写邮件内容');return false;
-            }
-            if(!propId){
-                alert('请填写物品Id');return false;
-            }
-            if(!propNum){
-                alert('请填写物品数量');return false;
-            }
-            if(bind < 1){
-                alert('请选择绑定状态');return false;
-            }
-        }else{
-            return false;
+        var server = $('#server').val();
+        var roleId = $('#roleId').val();
+        var emailTitle = $('#emailTitle').val();
+        var emailContent = $('#emailContent').val();
+        var propId = $('#propId').val();
+        var propNum = $('#propNum').val();
+        var bind = $('#bind').val();
+        if(server  < 1){
+            alert('请选择区服');return false;
+        }
+        if(!roleId){
+            alert('请填写角色ID');return false;
+        }
+        if(!emailTitle){
+            alert('请填写邮件标题');return false;
+        }
+        if(!emailContent){
+            alert('请填写邮件内容');return false;
+        }
+        if(!propId){
+            alert('请填写物品Id');return false;
+        }
+        if(!propNum){
+            alert('请填写物品数量');return false;
+        }
+        if(bind < 1){
+            alert('请选择绑定状态');return false;
         }
     }
 </script>

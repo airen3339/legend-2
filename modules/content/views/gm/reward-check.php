@@ -2,11 +2,11 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
-        <li class="active">发奖操作记录</li>
+        <li class="active">奖励审核</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/gm/reward-record" method="get" class="form-horizontal">
+    <form action="/content/gm/reward-check" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
@@ -30,25 +30,33 @@
                     </select>
                 </td>
                 <td>
+                    类型：
+                </td>
+                <td>
+                    <select name="type" id="type" style="width: 105px;">
+                        <option value="0">请选择</option>
+                            <option value='1' <?php if(isset($_GET['type']) && $_GET['type'] ==1) echo 'selected';?>>玩家奖励</option>;
+                            <option value='2' <?php if(isset($_GET['type']) && $_GET['type'] ==2) echo 'selected';?>>区服奖励</option>;
+                    </select>
+                </td>
+                <td>
                     <button class="btn btn-primary" type="submit">提交</button>
                 </td>
                 <td></td>
             </tr>
         </table>
     </form>
-    <form action="/content/gm/reward-record" method="post">
+    <form action="/content/gm/reward-check" method="post">
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>操作时间</th>
+                <th>添加时间</th>
                 <th>奖励类型</th>
                 <th>区服</th>
                 <th >邮件标题</th>
                 <th >邮件说明</th>
                 <th >奖励内容</th>
-                <th >操作者</th>
-                <th >审核状态</th>
-                <th >审核人</th>
+                <th >审核</th>
             </tr>
             </thead>
             <tbody>
@@ -60,9 +68,12 @@
                     <td ><span style="width: 80px; "><?php echo  $v['title'];?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['content'];?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['pushContent'];?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['adminName'];?></span></td>
-                    <td ><span style="width: 80px;color: <?php if($v['status'] ==1)echo 'green';elseif($v['status'] == -1)echo 'red';else echo 'blue';?>;"><?php echo $v['statusStr'];?></span></td>
-                    <td ><span style="width: 80px;"><?php echo $v['checkName'];?></span></td>
+                    <td  class="notSLH" style="width: 247px;">
+                        <div>
+                            <a class="btn" href="#" onclick="rewardCheck(<?php echo $v['id']?>,1)">通过</a>
+                            <a class="btn" href="#"  onclick="rewardCheck(<?php echo $v['id']?>,2)">作废</a>
+                        </div>
+                    </td>
                 </tr>
                 <?php }?>
             </tbody>
@@ -82,3 +93,19 @@
         ])?>
     </div>
 </div>
+<script>
+    //type 1-通过 2-作废
+    function rewardCheck(id,type){
+        if(confirm('确定进行该操作')){
+            if(type != 1){
+                type = -1;
+            }
+            $.post('/content/gm/reward-check',{id:id,status:type},function(e){
+                alert(e.message);
+                if(e.code ==1){
+                    window.location.reload();
+                }
+            },'json');
+        }
+    }
+</script>
