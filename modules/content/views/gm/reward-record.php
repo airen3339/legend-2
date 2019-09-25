@@ -40,6 +40,7 @@
             <thead>
             <tr>
                 <th>操作时间</th>
+                <th>奖励类型</th>
                 <th>区服</th>
                 <th >邮件标题</th>
                 <th >邮件说明</th>
@@ -52,10 +53,11 @@
                 <?php foreach($data as $k => $v){?>
                 <tr  class="text-item">
                     <td ><span style="width: 80px; "><?php echo date('Y-m-d',$v['createTime'])?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'玩家奖励':'区服奖励';?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['serverId'];?></span></td>
                     <td ><span style="width: 80px; "><?php echo  $v['title'];?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['content'];?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['prop'];?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['pushContent'];?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['adminName'];?></span></td>
                 </tr>
                 <?php }?>

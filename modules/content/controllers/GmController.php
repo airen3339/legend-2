@@ -9,6 +9,7 @@ namespace app\modules\content\controllers;
 use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\ActivityLog;
+use app\modules\content\models\Item;
 use app\modules\content\models\LTV;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
@@ -198,6 +199,14 @@ class GmController  extends AdminController
         $data = RewardRecord::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['adminName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
+            $pushContent = json_decode($v['prop'],true);
+            $content = [];
+            foreach($pushContent['propId'] as $t => $r){
+                $propName = Item::find()->where("itemid = $r")->asArray()->one()['name'];
+                $bindStr = $pushContent['bind'][$t]==1?'绑定':'未绑定';
+                $content[] = $propName.'-'.$r.'-'.$pushContent['number'][$t].'-'.$bindStr.'    ';
+            }
+            $data[$k]['pushContent'] = implode("\n",$content);
          }
         $servers = Server::getServers();
         return $this->render('reward-record',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);
@@ -234,7 +243,6 @@ class GmController  extends AdminController
         $data = Notice::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['createName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
-            $pushContent = json_decode($v['prop'],true);
         }
         $servers = LTV::getServers();
         return $this->render('notice-query',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);

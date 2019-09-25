@@ -122,20 +122,19 @@ class ApiController extends  Controller
      * 客户端请求
      */
     public function actionRoleFeedback(){
-        $request = Yii::$app->request;
-        $roleId = $request->post('roleId','');
-        $roleName = $request->post('roleName','');
-        $serverId  = $request->post('serverId',0);
-        $feedback = $request->post('feedback','');
-        $post = $request->post();
-        $post1 = $_POST;
-        $str = json_encode($post)."\n".json_encode($post1);
+        $post = Yii::$app->request->post();
+        $poststr = json_encode($post);
+        $request = json_decode($poststr);
+        $content = get_object_vars($request);
+        $key = key($content);
+        $cont = json_decode($key,true);
+        $str = "\n".json_encode($cont);
         Methods::varDumpLog('reply.txt',$str,'a');
         $model = new RoleFeedback();
-        $model->roleId = $roleId;
-        $model->roleName = $roleName;
-        $model->serverId = $serverId;
-        $model->feedback = $feedback;
+        $model->roleId = $cont['roleId'];
+        $model->roleName = $cont['roleName'];
+        $model->serverId = $cont['serverId'];
+        $model->feedback = $cont['feedback'];
         $model->feedTime = date('Y-m-d H:i:s');
         $model->createTime = time();
         $res = $model->save();
