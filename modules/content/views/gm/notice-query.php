@@ -30,6 +30,7 @@
                     <select name="type">
                         <option value="0">请选择</option>
                         <option value='1' <?php if(isset($_GET['type']) && $_GET['type'] == 1) echo 'selected';?>>首页公告</option>";
+                        <option value='2' <?php if(isset($_GET['type']) && $_GET['type'] == 2) echo 'selected';?>>跑马灯公告</option>";
                     </select>
                 </td>
                 <td>
@@ -61,11 +62,11 @@
                     <td ><span style="width: 80px; "><?php echo $v['beginTime']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['endTime']?></span></td>
                     <td ><span style="display: block;width: 450px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;" title="<?php echo $v['content'];?>"><?php echo $v['content']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'首页公告':($v['type']==2?'首页公告':'跑马灯公告')?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'首页公告':($v['type']==2?'跑马灯公告':'区服公告')?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['createName']?></span></td>
                     <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
                     <td  class="notSLH" style="width: 130px;">
-                        <a class="btn" href="/content/gm/<?php echo $v['type']==1?'index-notice':'' ?>?id=<?php echo $v['id'] ; ?>" >修改</a>
+<!--                        <a class="btn" href="/content/gm/--><?php //echo $v['type']==1?'index-notice':'' ?><!--?id=--><?php //echo $v['id'] ; ?><!--" >修改</a>-->
                         <a href='#' class="btn" onclick="javascript:if(confirm('确定删除吗？')){location.href='/content/gm/notice-delete?id=<?php echo $v['id']; ?>'}" >删除</a>
                     </td>
                 </tr>
@@ -75,4 +76,17 @@
             </tbody>
         </table>
     </form>
+    <div class="pagination pagination-right">
+        <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
+        <?php if($count > 200){?>
+            <span style="font-size: 17px;position: relative;bottom: 5px;">
+            <a onclick="jumpPage()">Go</a>&nbsp;
+            <input type="text" style="width: 20px;height: 18px;" id="jumpPage">&nbsp;页
+        </span>
+        <?php }?>
+        <?php use yii\widgets\LinkPager;
+        echo LinkPager::widget([
+            'pagination' => $page,
+        ])?>
+    </div>
 </div>

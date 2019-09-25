@@ -316,7 +316,7 @@ class GmController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $serverId = Yii::$app->request->get('server',0);
-        $type = Yii::$app->request->get('type');//1-首页公告
+        $type = Yii::$app->request->get('type');//1-首页公告 2-跑马灯
         $where = " 1 = 1 ";
         if($serverId){
             $where .= " and serverId = $serverId";
@@ -330,7 +330,7 @@ class GmController  extends AdminController
         foreach($data as $k => $v){
             $data[$k]['createName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
         }
-        $servers = LTV::getServers();
+        $servers = Server::getServers();
         return $this->render('notice-query',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);
     }
     /**
