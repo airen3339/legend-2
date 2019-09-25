@@ -10,7 +10,7 @@
                 <label for="modulename" class="control-label">区服</label>
                 <div class="controls">
                     <select name="server" id="server">
-                        <option value="0">请选择</option>
+                        <option value="0">全服</option>
                         <?php
                         foreach($servers as $k => $v){ ?>
                             <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";

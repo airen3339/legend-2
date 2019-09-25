@@ -435,14 +435,12 @@ class GmController  extends AdminController
      */
     public function actionRollNotice(){
         if($_POST){
-            $server = Yii::$app->request->post('server','');
+            $server = Yii::$app->request->post('server',0);//0-区服
             $beginTime = Yii::$app->request->post('beginTime',0);
             $endTime = Yii::$app->request->post('endTime',0);
             $intervalTime = Yii::$app->request->post('intervalTime',0);
             $content = Yii::$app->request->post('content');
-            if(!$server){
-                echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
+            $server = $server?$server:0;
             if(!$beginTime){
                 echo "<script>alert('请选择开始时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
