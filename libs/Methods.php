@@ -129,7 +129,23 @@ class Methods
         $res = file_get_contents($url,true,$cxContext);
         return $res;
     }
-
+    /**
+     * 公告推送
+     * 跑马灯
+     */
+    public static function GmPushContent($param){
+        $url = Yii::$app->session->get('ipAddress');
+        if(!$url){
+            $url = Yii::$app->params['gameServerUrl'];
+        }
+        $content = json_encode($param);
+        $pushContent = ['data_packet'=>$content];
+        $post_data = http_build_query($pushContent);
+        $aContext = array('http'=>array('method' => 'POST','header' =>'Content-type: application/x-www-form-urlencoded','content' =>$post_data));
+        $cxContext = stream_context_create($aContext);
+        $res = file_get_contents($url,true,$cxContext);
+        return $res;
+    }
     /**
      * @param $filename
      * @param $content

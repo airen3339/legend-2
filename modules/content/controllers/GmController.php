@@ -469,6 +469,15 @@ class GmController  extends AdminController
             $model->createTime = time();
             $model->intervalTime = $intervalTime;
             $res = $model->save();
+            if($res){
+                OperationLog::logAdd('添加跑马灯公告并推送服务端',$model->id,5);//5-跑马灯公告
+                //推送服务端
+                $pushContent = ['head'=>['Cmdid'=>4137],'body'=>['Partition'=>intval($server),'BeginTime'=>$begin,'EndTime'=>$end,'RollingIntervalTime'=>intval($intervalTime),'NoticeContent'=>$content]];;
+                Methods::GmPushContent($pushContent);
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='roll-notice';},1000)</script>";die;
+            }else{
+                echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
         }else{
             $servers = Server::getServers();
             return $this->render('roll-notice',['servers'=>$servers]);

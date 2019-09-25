@@ -4,9 +4,7 @@
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
         <li class="active">跑马灯</li>
     </ul>
-    <form action="/content/gm/roll-notice" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定提交并推送服务端吗？')){return true}else{
-        return false;
-    }">
+    <form action="/content/gm/roll-notice" method="post" class="form-horizontal" onsubmit="return submitData();">
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">区服</label>
@@ -23,13 +21,13 @@
                 </div>
             </div>
             <div class="control-group">
-                <label for="modulename" class="control-label">开始日期</label>
+                <label for="modulename" class="control-label">开始时间</label>
                 <div class="controls">
-                    <input class="input-small Wdate"  style="width: 145px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" size="10" type="text" id="beginTime" name="beginTime"  value="" autocomplete="off"/>
+                    <input class="input-small Wdate"   style="width: 145px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" size="10" type="text" id="beginTime" name="beginTime"  value="" autocomplete="off"/>
                 </div>
             </div>
             <div class="control-group">
-                <label for="modulename" class="control-label">结束日期</label>
+                <label for="modulename" class="control-label">结束时间</label>
                 <div class="controls">
                     <input class="input-small Wdate"  style="width: 145px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" size="10" type="text" id="endTime" name="endTime"  value="" autocomplete="off"/>
                 </div>
@@ -43,7 +41,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">公告内容</label>
                 <div class="controls">
-                    <textarea name="content"></textarea>
+                    <textarea name="content" id="content"></textarea>
                 </div>
             </div>
             <div class="control-group">
@@ -54,3 +52,33 @@
         </fieldset>
     </form>
 </div>
+<script>
+    function submitData(){
+        var server = $('#server').val();
+        var beginTime = $('#beginTime').val();
+        var endTime = $('#endTime').val();
+        var intervalTime = $('#intervalTime').val();
+        var content = $('#content').val();
+        console.log(content);
+        if(server < 1){
+            alert('请选择区服');return false;
+        }
+        if(!beginTime){
+            alert('请选择开始时间');return false;
+        }
+        if(!endTime){
+            alert('请选择结束时间');return false;
+        }
+        if(!intervalTime && intervalTime < 0){
+            alert('请填写正确的间隔时间');return false;
+        }
+        if(!content){
+            alert('请填写公告内容');return false;
+        }
+        if(confirm('确定添加该公告并推送给服务端吗？')){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
