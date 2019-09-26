@@ -8,6 +8,7 @@ use app\libs\Methods;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
 use app\modules\content\models\OperationLog;
+use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
 use yii\web\Controller;
@@ -20,7 +21,7 @@ class ApiController extends  Controller
     public $enableCsrfValidation = false;
     /**
      * 获取分类
-     * cy
+     * 左边导航目录
      */
     public function actionGetCategory(){
         $model = new Catalog();
@@ -33,7 +34,7 @@ class ApiController extends  Controller
 
     /**
      * 获取分类树包括一级分类
-     * @Obelisk
+     * 左边导航目录
      */
     public function actionTree(){
         $model = new Catalog();
@@ -45,7 +46,7 @@ class ApiController extends  Controller
     }
     /**
      * 设置排序号
-     * cy
+     * 左边导航目录
      */
     public function actionSetRank(){
         $id = Yii::$app->request->post("id");
@@ -60,11 +61,69 @@ class ApiController extends  Controller
     }
     /**
      * 检查是否能够删除分类
-     * @Obelisk
+     * 左边导航目录
      */
     public function actionCheckDelete(){
         $id = Yii::$app->request->post('id');
         $rowCate = Catalog::find()->where("pid=$id")->all();
+        if(count($rowCate)>0 ){
+            $code = 0;
+        }else{
+            $code = 1;
+        }
+        die(json_encode(['code' => $code]));
+    }
+    /**
+     * 获取分类
+     * 问题分类
+     * 单据功能
+     */
+    public function actionGetQuestionCategory(){
+        $model = new QuestionCategory();
+        $pid = Yii::$app->request->get('pid','0');
+        $id = Yii::$app->request->get('id','');
+        $data = $model->getAllCate($pid,$id);
+        echo json_encode($data);
+        exit;
+    }
+
+    /**
+     * 获取分类树包括一级分类
+     * 问题分类
+     * 单据功能
+     */
+    public function actionQuestionTree(){
+        $model = new QuestionCategory();
+        $pid = Yii::$app->request->get('pid',0);
+        $id = Yii::$app->request->get('id','');
+        $data = $model->getTree($pid,$id);
+        echo json_encode($data);
+        exit;
+    }
+    /**
+     * 设置排序号
+     * 问题分类
+     * 单据功能
+     */
+    public function actionQuestionSetRank(){
+        $id = Yii::$app->request->post("id");
+        $rank = Yii::$app->request->post("rank");
+        $res = QuestionCategory::updateAll(['rank'=>$rank],"id = $id");
+        if($res){
+            $data = ['code'=>1,'message'=>'success'];
+        }else{
+            $data = ['code'=>0,'message'=>'fail'];
+        }
+        die(json_encode($data));
+    }
+    /**
+     * 检查是否能够删除分类
+     * 问题分类
+     * 单据功能
+     */
+    public function actionCheckQuestionDelete(){
+        $id = Yii::$app->request->post('id');
+        $rowCate = QuestionCategory::find()->where("pid=$id")->all();
         if(count($rowCate)>0 ){
             $code = 0;
         }else{
