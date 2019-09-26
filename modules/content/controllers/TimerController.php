@@ -160,7 +160,7 @@ class TimerController extends Controller
             $path = $url . $fileName;
             try{
                 $file = file_get_contents($path);
-                $file = str_replace(array("\n","\r"," ","\t"),'',$file);
+                $file = str_replace(array("\n","\r","\t"),'',$file);
                 preg_match_all('/PlayerLogin(\|([^\|]+))+(\|\|)([^|])((\|)([^\|]+))+(\|\|)([^|]+)(\|\|\|\|)([^|]+)((\|)([^\|]+))+MoneyFlow/', $file, $arrLogin);
                 $login = $arrLogin[0];
                 $loginTime = [];//登录时间
