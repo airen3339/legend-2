@@ -264,46 +264,42 @@ class TimerController extends Controller
             }
             var_dump($path);
             var_dump(file_exists($path));
-            if(file_exists($path)){
-                $content = file_get_contents($path);
-                $content = trim($content);
-                $content = explode("legend",$content);
-                var_dump($content);
-                foreach($content as $p => $m){
-                    var_dump($m);
-                    if(!trim($m)){
-                        continue;
-                    }
-                    $arr = explode('@',trim($m));//键值 0-时间 1-type类型 2-角色id 3-增加减少 4-金额 5-说明
-                    //记录用户消费数据
-                    $type = self::getData($arr[1]);
-                    $model = new YuanbaoRole();
-                    $model->date = $date;
-                    $model->serverId = $v['id'];
-                    $model->roleId = self::getData($arr[2]);
-                    $model->dateTime = $date." ".$arr[0];
-                    $model->money = self::getData($arr[4]);
-                    $model->type = $type;
-                    $model->added = self::getData($arr[3]);
-                    if($type == 6){//商城购买
-                        $remark = str_replace('explain:','',$arr[5]);
-                        $patterns = "/\d+/"; //第一种
-                        preg_match_all($patterns,$remark,$array);
-                        $toolId = isset($array[0][0])?$array[0][0]:0;
-                        if($toolId){
-                            $toolName = Item::find()->where("itemid = $toolId")->asArray()->one()['name'];
-                            $remark .= '商品名称：'.$toolName;
-                        }
-                        $model->remark = $remark;
-                    }else{
-                        $model->remark = str_replace('explain:','',$arr[5]);
-                    }
-                    $model->createTime = time();
-                    $model->save();
-                }
-            }else{
-                var_dump(33);
-            }
+//                $content = file_get_contents($path);
+//                $content = trim($content);
+//                $content = explode("legend",$content);
+//                var_dump($content);
+//                foreach($content as $p => $m){
+//                    var_dump($m);
+//                    if(!trim($m)){
+//                        continue;
+//                    }
+//                    $arr = explode('@',trim($m));//键值 0-时间 1-type类型 2-角色id 3-增加减少 4-金额 5-说明
+//                    //记录用户消费数据
+//                    $type = self::getData($arr[1]);
+//                    $model = new YuanbaoRole();
+//                    $model->date = $date;
+//                    $model->serverId = $v['id'];
+//                    $model->roleId = self::getData($arr[2]);
+//                    $model->dateTime = $date." ".$arr[0];
+//                    $model->money = self::getData($arr[4]);
+//                    $model->type = $type;
+//                    $model->added = self::getData($arr[3]);
+//                    if($type == 6){//商城购买
+//                        $remark = str_replace('explain:','',$arr[5]);
+//                        $patterns = "/\d+/"; //第一种
+//                        preg_match_all($patterns,$remark,$array);
+//                        $toolId = isset($array[0][0])?$array[0][0]:0;
+//                        if($toolId){
+//                            $toolName = Item::find()->where("itemid = $toolId")->asArray()->one()['name'];
+//                            $remark .= '商品名称：'.$toolName;
+//                        }
+//                        $model->remark = $remark;
+//                    }else{
+//                        $model->remark = str_replace('explain:','',$arr[5]);
+//                    }
+//                    $model->createTime = time();
+//                    $model->save();
+//                }
             //统计元宝消耗 4-元宝充值
             $arr = YuanbaoRole::getTypes(2);//获取元宝操作类型
             foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花 6-用户月卡
