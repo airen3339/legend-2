@@ -261,6 +261,7 @@ class TimerController extends Controller
             }else{
                 echo $v['id'];
             }
+            var_dump(file_exists($path));
             if(file_exists($path)){
                 $content = file_get_contents($path);
                 $content = trim($content);
