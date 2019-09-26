@@ -247,9 +247,10 @@ class TimerController extends Controller
      * type 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝
      */
     public function actionYuanbaoData(){
+        ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
         $date = date('Y-m-d');
         $servers = Server::getServers();//获取区服
-        $url = IndexDir.'/files/';
+//        $url = IndexDir.'/files/';
         $url = 'http://192.168.0.30/logs/TLog/';
         foreach($servers as $k => $v) {
             $fileName = "lua_log-{$v['id']}-$date.txt";
