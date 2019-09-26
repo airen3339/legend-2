@@ -247,7 +247,7 @@ class TimerController extends Controller
      * type 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝
      */
     public function actionYuanbaoData(){
-        $date = date('Y-m-19');
+        $date = date('Y-m-d');
         $servers = Server::getServers();//获取区服
 //        $url = IndexDir.'/files/';
         $url = 'http://192.168.0.30/logs/TLog/';

@@ -142,7 +142,14 @@ class TestController extends Controller
         var_dump($item->getGroups()[0]->getId());
     }
     public function actionTestLog(){
-        $url = "http://192.168.0.30/logs/TLog/Tlog.100.0_20190925.log";
+        $type = Yii::$app->request->get('type',1);
+        $date = Yii::$app->request->get('date',date('Y-m-d'));
+        if($type ==1){
+            $date = str_replace('-','',$date);
+            $url = "http://192.168.0.30/logs/TLog/Tlog.100.0_$date.log";
+        }else{
+            $url = "http://192.168.0.30/logs/TLog/lua_log-100-$date.txt";
+        }
         $res = file_get_contents($url);
         var_dump($res);
     }
