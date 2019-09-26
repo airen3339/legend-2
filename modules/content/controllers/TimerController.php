@@ -148,25 +148,28 @@ class TimerController extends Controller
      * 分区服
      */
     public function actionLoginData(){
+        ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
         $date = date('Y-m-d');
         $servers = Server::getServers();//获取区服
+//        $url = IndexDir.'/files/';
         $url = 'http://192.168.0.30/logs/TLog/';
         foreach($servers as $k => $v) {
             $dat = str_replace('-','',$date);
             //获取日志文件并统计
             $fileName = 'Tlog.' . $v['id'] . '.0_' . $dat . '.log';
             $path = $url . $fileName;
-            if (file_exists($path)) {
+            try{
                 $file = file_get_contents($path);
-                preg_match_all('/PlayerLogin(.*)+/', $file, $arrLogin);
+                $file = str_replace(array("\n","\r"," ","\t"),'',$file);
+                preg_match_all('/PlayerLogin(\|([^\|]+))+(\|\|)([^|])((\|)([^\|]+))+(\|\|)([^|]+)(\|\|\|\|)([^|]+)((\|)([^\|]+))+MoneyFlow/', $file, $arrLogin);
                 $login = $arrLogin[0];
-//                $loginData = [];//登录数据
                 $loginTime = [];//登录时间
-                preg_match_all('/PlayerLogout(.*)+/', $file, $arrLoginOut);
+                preg_match_all('/PlayerLogout(\|([^\|]+))+(\|\|)([^|])((\|)([^\|]+))+(\|\|)([^|]+)(\|\|\|\|)([^|]+)((\|)([^\|]+))+MoneyFlow/', $file, $arrLoginOut);
                 $loginOut = $arrLoginOut[0];
                 $loginOutData = [];//退出数据
                 //退出时间处理
                 foreach ($loginOut as $pp => $oo) {//解析退出数据统计
+                    $oo = str_replace('MoneyFlow','',$oo);
                     $loginOutArr = explode('|', $oo);//键值对应 1-区服 2-时间 6-设备号 24-角色id
                     $key = 'role' . $loginOutArr[24];
                     $loginOutData[$key][] = ['serverId' => $loginOutArr[1], 'loginOutTime' => $loginOutArr[2], 'roleId' => $loginOutArr[18]];
@@ -174,6 +177,7 @@ class TimerController extends Controller
                 $site = 0;//对应的登出位置
                 //登录数据处理 解析 对应退出 读入数据库
                 foreach ($login as $p => $o) {//解析登录数据统计
+                    $o = str_replace('MoneyFlow','',$o);
                     $loginArr = explode('|', $o);//键值对应 1-区服 2-时间 6-设备号 18-角色id 19-姓名 29-登录ip
                     $currTime = strtotime($loginArr[2]);//当前登录时间
                     $roleId = $loginArr[18];
@@ -181,13 +185,11 @@ class TimerController extends Controller
                     $code = 0;//数据库记录识别 0-不记录 1-记录
                     if (isset($loginTime[$key])) {//已有该角色id登录数据
                         if (($loginTime[$key] + 60) < $currTime) {//如果该角色下次登录时间大于上次登录时间一分钟才算
-//                            $loginData[$key][]= ['serverId'=>$loginArr[1],'loginTime'=>$loginArr[2],'device'=>$loginArr[6],'roleId'=>$loginArr[18],'name'=>$loginArr[19],'ip'=>$loginArr[29]];
                             $code = 1;
                             $site++;
                             $loginTime[$key] = $currTime;//更新登录时间 方便下次比较
                         }
                     } else {
-//                        $loginData[$key][]= ['serverId'=>$loginArr[1],'loginTime'=>$loginArr[2],'device'=>$loginArr[6],'roleId'=>$loginArr[18],'name'=>$loginArr[19],'ip'=>$loginArr[29]];
                         $code = 1;
                         $site = 0;
                         $loginTime[$key] = $currTime;//更新登录时间 方便下次比较
@@ -223,6 +225,8 @@ class TimerController extends Controller
                         }
                     }
                 }
+            }catch(\Exception $e){
+
             }
             //统计当天各个小时的在线人数
             $data = [];

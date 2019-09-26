@@ -142,24 +142,29 @@ class TestController extends Controller
         var_dump($item->getGroups()[0]->getId());
     }
     public function actionTestLog(){
-        $type = Yii::$app->request->get('type',1);
-        $date = Yii::$app->request->get('date',date('Y-m-d'));
-        if($type ==1){
-            $date = str_replace('-','',$date);
-            $url = "http://192.168.0.30/logs/TLog/Tlog.100.0_$date.log";
-        }else{
-            $url = "http://192.168.0.30/logs/TLog/lua_log-100-$date.txt";
-        }
-//        $url = IndexDir.'/files/lua_log-100-2019-09-25.txt';
-        $fp = fopen($url,"r");
-        $str = "";
-        $buffer = 1024;//每次读取 1024 字节
-        while(!feof($fp)){//循环读取，直至读取完整个文件
-            $str .= fread($fp,$buffer);
-        }
-//        $str = fread($fp,filesize($url));//指定读取大小，这里把整个文件内容读取出来
-        var_dump($str);
-        fclose($fp);
+//        $type = Yii::$app->request->get('type',1);
+//        $date = Yii::$app->request->get('date',date('Y-m-d'));
+//        if($type ==1){
+//            $date = str_replace('-','',$date);
+//            $url = "http://192.168.0.30/logs/TLog/Tlog.100.0_$date.log";
+//        }else{
+//            $url = "http://192.168.0.30/logs/TLog/lua_log-100-$date.txt";
+//        }
+////        $url = IndexDir.'/files/lua_log-100-2019-09-25.txt';
+//        $fp = fopen($url,"r");
+//        $str = "";
+//        $buffer = 1024;//每次读取 1024 字节
+//        while(!feof($fp)){//循环读取，直至读取完整个文件
+//            $str .= fread($fp,$buffer);
+//        }
+////        $str = fread($fp,filesize($url));//指定读取大小，这里把整个文件内容读取出来
+//        var_dump($str);
+//        fclose($fp);
 //        $res = file_get_contents($url);
+
+        $str = "PlayerLogin|1000|2019-09-26 09:25:32||1|1000|ffffffff-e4a2-96ad-ffff-ffffc96702e9|60|0|1.0.0.8|windows 7.0|pc|unknown|WIFI|1600|900|320.000000|0|113001392839866496|上官凌瑶||1024||||113001392839866496|387480|0|3|125.70.178.104|0|0|0 MoneyFlow|1000|2019-09-26";
+        $file = str_replace(array("\n","\r"," ","\t"),'',$str);
+        preg_match_all('/PlayerLogin(\|.*\.?.*)+\|0\|0\|0MoneyFlow/', $file, $arrLogin);
+        var_dump($arrLogin[0]);
     }
 }
