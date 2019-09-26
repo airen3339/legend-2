@@ -249,14 +249,18 @@ class TimerController extends Controller
     public function actionYuanbaoData(){
         $date = date('Y-m-d');
         $servers = Server::getServers();//获取区服
-//        $url = IndexDir.'/files/';
+        $url = IndexDir.'/files/';
         $url = 'http://192.168.0.30/logs/TLog/';
         foreach($servers as $k => $v) {
             $fileName = "lua_log-{$v['id']}-$date.txt";
             $path = $url.$fileName;
             var_dump($path);
-            $content = file_get_contents($path);
-            var_dump($content);
+            if($v['id'] ==100){
+                $content = file_get_contents($path);
+                var_dump($content);
+            }else{
+                echo $v['id'];
+            }
             if(file_exists($path)){
                 $content = file_get_contents($path);
                 $content = trim($content);
