@@ -32,6 +32,8 @@ class ServiceController extends  AdminController {
      * 客服账号状态
      */
     public function actionServiceStatus(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
         $service = Role::find()->where("service = 1")->asArray()->all();
         return $this->render('service-status',['service'=>$service]);
     }
@@ -40,6 +42,8 @@ class ServiceController extends  AdminController {
      * 用户反馈
      */
     public function actionRoleFeedback(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
         $beginTime = \Yii::$app->request->get('beginTime');
         $endTime = \Yii::$app->request->get('endTime');
         $server = \Yii::$app->request->get('serverId');

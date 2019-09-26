@@ -109,20 +109,22 @@
         },'json')
     }
     function replyContent(_this,id){
-        var val = $(_this).siblings("input").val();
-        if(val){
-            $.post('/content/api/feedback-reply',{id:id,reply:val},function(e){
-                alert(e.message);
-                if(e.code==1){//修改对应的信息
-                    $(_this).parents("span").html(val);//回复内容
-                    var nameId = '#replyName'+id;
-                    var timeId = '#replyTime'+id;
-                    $(nameId).html(e.replyName);//回复人
-                    $(timeId).html(e.replyTime);//回复时间
-                }
-            },'json')
-        }else{
-            alert('请输入对应的回复内容');
+        if(confirm('确定回复并发送邮件吗？')){
+            var val = $(_this).siblings("input").val();
+            if(val){
+                $.post('/content/api/feedback-reply',{id:id,reply:val},function(e){
+                    alert(e.message);
+                    if(e.code==1){//修改对应的信息
+                        $(_this).parents("span").html(val);//回复内容
+                        var nameId = '#replyName'+id;
+                        var timeId = '#replyTime'+id;
+                        $(nameId).html(e.replyName);//回复人
+                        $(timeId).html(e.replyTime);//回复时间
+                    }
+                },'json')
+            }else{
+                alert('请输入对应的回复内容');return false;
+            }
         }
     }
 </script>
