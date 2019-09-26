@@ -22,6 +22,7 @@ use app\modules\content\models\User;
 use app\modules\content\models\YuanbaoRole;
 use app\modules\pay\models\Recharge;
 use function GuzzleHttp\Psr7\str;
+use Think\Exception;
 use yii\web\Controller;
 
 class TimerController extends Controller
@@ -255,15 +256,13 @@ class TimerController extends Controller
         foreach($servers as $k => $v) {
             $fileName = "lua_log-{$v['id']}-$date.txt";
             $path = $url.$fileName;
-            var_dump($path);
-            if($v['id'] ==100){
+            try{
                 $content = file_get_contents($path);
-                var_dump($content);
-            }else{
-                echo $v['id'];
-                $content = file_get_contents($path);
-                var_dump($content);
+                var_dump($content);echo 222;
+            }catch(\Exception $e){
+                var_dump($v['id']);echo 3333;
             }
+            var_dump($path);
             var_dump(file_exists($path));
             if(file_exists($path)){
                 $content = file_get_contents($path);
