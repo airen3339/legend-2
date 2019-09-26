@@ -262,7 +262,6 @@ class TimerController extends Controller
             }catch(\Exception $e){
                 var_dump($v['id']);echo 3333;
             }
-            var_dump($path);
 //            var_dump(file_exists($path));
 //                $content = file_get_contents($path);
 //                $content = trim($content);
