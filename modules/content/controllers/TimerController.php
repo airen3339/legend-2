@@ -149,7 +149,7 @@ class TimerController extends Controller
     public function actionLoginData(){
         $date = date('Y-m-d');
         $servers = Server::getServers();//获取区服
-        $url = IndexDir.'/files/';
+        $url = 'http://192.168.0.30/logs/TLog/';
         foreach($servers as $k => $v) {
             $dat = str_replace('-','',$date);
             //获取日志文件并统计
@@ -249,7 +249,8 @@ class TimerController extends Controller
     public function actionYuanbaoData(){
         $date = date('Y-m-19');
         $servers = Server::getServers();//获取区服
-        $url = IndexDir.'/files/';
+//        $url = IndexDir.'/files/';
+        $url = 'http://192.168.0.30/logs/TLog/';
         foreach($servers as $k => $v) {
             $fileName = "lua_log-{$v['id']}-$date.txt";
             $path = $url.$fileName;
