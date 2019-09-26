@@ -255,6 +255,8 @@ class TimerController extends Controller
             $fileName = "lua_log-{$v['id']}-$date.txt";
             $path = $url.$fileName;
             var_dump($path);
+            $content = file_get_contents($path);
+            var_dump($content);
             if(file_exists($path)){
                 $content = file_get_contents($path);
                 $content = trim($content);
