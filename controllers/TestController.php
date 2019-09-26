@@ -150,7 +150,10 @@ class TestController extends Controller
         }else{
             $url = "http://192.168.0.30/logs/TLog/lua_log-100-$date.txt";
         }
-        $res = file_get_contents($url);
-        var_dump($res);
+        $fp = fopen($url,"r");
+        $str = fread($fp,filesize($url));//指定读取大小，这里把整个文件内容读取出来
+        var_dump($str);
+        fclose($fp);
+//        $res = file_get_contents($url);
     }
 }
