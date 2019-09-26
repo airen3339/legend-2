@@ -54,20 +54,22 @@
 </div>
 <script>
     function submitData(){
-        var server = $('#server').val();
         var beginTime = $('#beginTime').val();
         var endTime = $('#endTime').val();
         var intervalTime = $('#intervalTime').val();
         var content = $('#content').val();
-        console.log(content);
-        if(server < 1){
-            alert('请选择区服');return false;
-        }
+
         if(!beginTime){
             alert('请选择开始时间');return false;
         }
         if(!endTime){
             alert('请选择结束时间');return false;
+        }else{//判断结束时间
+            var end = (new Date(endTime)).getTime();
+            var begin = (new Date(beginTime)).getTime();
+            if(begin >= end){
+                alert('请选择正确的结束时间（结束时间必须大于开始时间）');return false;
+            }
         }
         if(!intervalTime && intervalTime < 0){
             alert('请填写正确的间隔时间');return false;

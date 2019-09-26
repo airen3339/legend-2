@@ -386,9 +386,23 @@ class GmController  extends AdminController
     public function actionNoticeDelete(){
         $id = Yii::$app->request->get('id');
         if($id){
+            $notice = Notice::findOne($id);
+            $eventId = $notice->eventId;
+            $endTime = strtotime($notice->endTime);
+            $serverId = $notice->serverId;
+            $type = $notice->type;
             $res = Notice::deleteAll("id = $id");
             if($res ){
-                ActivityLog::logAdd('删除首页公告',$id,4);
+                if($type == 2){//跑马灯公告
+                    $current = time();
+                    if($endTime > $current){//未到结束时间 需推送服务端进行公告显示删除
+                        //推送服务端
+                        $pushContent = ['head'=>['Cmdid'=>4145],'body'=>['Partition'=>intval($serverId),'Type'=>1,'EventId'=>$eventId]];
+                        Methods::GmPushContent($pushContent);
+                    }
+                }
+                $remark = $type==1?"删除首页公告":"删除跑马灯公告";
+                ActivityLog::logAdd($remark,$id,4);
                 echo "<script>alert('删除成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
             }else{
                 echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -434,6 +448,8 @@ class GmController  extends AdminController
      * 跑马灯公告
      */
     public function actionRollNotice(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
         if($_POST){
             $server = Yii::$app->request->post('server',0);//0-区服
             $beginTime = Yii::$app->request->post('beginTime',0);
@@ -450,6 +466,10 @@ class GmController  extends AdminController
                 echo "<script>alert('请选择结束时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
                 $end = strtotime($endTime);
+                $current = time();
+                if($current > $end){
+                    echo "<script>alert('结束时间必须大于当前时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
             }
             if(!$intervalTime){
                 echo "<script>alert('请填写间隔时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -470,8 +490,12 @@ class GmController  extends AdminController
             if($res){
                 OperationLog::logAdd('添加跑马灯公告并推送服务端',$model->id,5);//5-跑马灯公告
                 //推送服务端
-                $pushContent = ['head'=>['Cmdid'=>4137],'body'=>['Partition'=>intval($server),'BeginTime'=>$begin,'EndTime'=>$end,'RollingIntervalTime'=>intval($intervalTime),'NoticeContent'=>$content]];;
-                Methods::GmPushContent($pushContent);
+                $pushContent = ['head'=>['Cmdid'=>4137],'body'=>['Partition'=>intval($server),'BeginTime'=>$begin,'EndTime'=>$end,'RollingIntervalTime'=>intval($intervalTime),'NoticeContent'=>$content]];
+                $return = Methods::GmPushContent($pushContent);//服务端推送
+                //推送成功后记录对应的eventId 便于后续删除
+                $return = json_decode($return,true);
+                $eventId = $return['body']['EventId'];
+                Notice::updateAll(['eventId'=>$eventId],"id = {$model->id}");
                 echo "<script>alert('操作成功');setTimeout(function(){location.href='roll-notice';},1000)</script>";die;
             }else{
                 echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
