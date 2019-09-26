@@ -150,7 +150,7 @@ class TestController extends Controller
         }else{
             $url = "http://192.168.0.30/logs/TLog/lua_log-100-$date.txt";
         }
-        $url = IndexDir.'/files/lua_log-100-2019-09-25.txt';
+//        $url = IndexDir.'/files/lua_log-100-2019-09-25.txt';
         $fp = fopen($url,"r");
         $str = "";
         $buffer = 1024;//每次读取 1024 字节
