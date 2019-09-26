@@ -294,9 +294,7 @@ class TimerController extends Controller
                     $model->createTime = time();
                     $model->save();
                 }
-                var_dump($content);echo 222;
             }catch(\Exception $e){
-                var_dump($v['id']);echo 3333;
             }
 
             //统计元宝消耗 4-元宝充值
