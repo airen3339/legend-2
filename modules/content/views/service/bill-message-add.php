@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="control-group">
-                <label for="modulename" class="control-label">龙渊账号</label>
+                <label for="modulename" class="control-label">游戏账号</label>
                 <div class="controls">
                     <input   type="text" id="account" name="account"  value="<?php echo isset($bill['account'])?$bill['account']:''?>" autocomplete="off"/>
                 </div>
@@ -155,9 +155,9 @@
                 </div>
             </div>
             <div class="control-group">
-                <label for="modulename" class="control-label">文件附件</label>
+                <label for="modulename" class="control-label">图片文件</label>
                 <div class="controls">
-                    <input  size="10" type="text" id="email" name="email"  value="<?php echo isset($bill['email'])?$bill['email']:''?>" autocomplete="off"/>
+                    <input  size="10" type="text" id="imageFile" name="imageFile"  value="<?php echo isset($bill['email'])?$bill['email']:''?>" autocomplete="off"/>
                 </div>
             </div>
             <div class="control-group">

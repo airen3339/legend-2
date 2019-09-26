@@ -141,4 +141,9 @@ class TestController extends Controller
         $item->mergeFromString($content);
         var_dump($item->getGroups()[0]->getId());
     }
+    public function actionTestLog(){
+        $url = "http://192.168.0.30/logs/Tlog.100.0_20190925.log";
+        $res = file_get_contents($url);
+        var_dump($res);
+    }
 }
