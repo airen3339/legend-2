@@ -249,11 +249,12 @@ class TimerController extends Controller
     public function actionYuanbaoData(){
         $date = date('Y-m-d');
         $servers = Server::getServers();//获取区服
-        $url = IndexDir.'/files/';
-//        $url = 'http://192.168.0.30/logs/TLog/';
+//        $url = IndexDir.'/files/';
+        $url = 'http://192.168.0.30/logs/TLog/';
         foreach($servers as $k => $v) {
             $fileName = "lua_log-{$v['id']}-$date.txt";
             $path = $url.$fileName;
+            var_dump($path);
             if(file_exists($path)){
                 $content = file_get_contents($path);
                 $content = trim($content);
@@ -291,6 +292,8 @@ class TimerController extends Controller
                     $model->createTime = time();
                     $model->save();
                 }
+            }else{
+                var_dump(33);
             }
             //统计元宝消耗 4-元宝充值
             $arr = YuanbaoRole::getTypes(2);//获取元宝操作类型
