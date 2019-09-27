@@ -17,31 +17,52 @@
         </table>
     </form>
     <form action="/content/service/bill-message" method="post">
-        <table class="table table-hover add_defined">
+        <table class="table table-hover ">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>客服账号</th>
-                <th>客服QQ</th>
-                <th>账号状态</th>
+                <th>单据类型</th>
+                <th>单据来源</th>
+                <th>一级分类</th>
+                <th>二级分类</th>
+                <th>游戏所属</th>
+                <th>游戏账号</th>
+                <th>游戏昵称</th>
+                <th>游戏大厅</th>
+                <th>下载渠道</th>
+                <th>游戏ID</th>
+<!--                <th>系统版本</th>-->
+                <th>设备型号</th>
+                <th>联系电话</th>
+<!--                <th>联系QQ</th>-->
+<!--                <th>联系邮箱</th>-->
                 <th >操作</th>
             </tr>
             </thead>
             <tbody>
             <?php
-            foreach($service as $kss => $v) {
-                if($kss == 10){
-                    break;
-                }
+            foreach($bills as $kss => $v) {
                 ?>
-                <tr>
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 100px; "><?php echo $v['qq']?></span></td>
-                    <td ><span style="width: 115px;color: <?php echo $v['serviceStatus']==1?"blue":'red'?>;" id="serviceStatus"><?php echo $v['serviceStatus']==1?"在线":'离线'?></span></td>
-                    <td  class="notSLH" style="width: 247px;">
+                <tr class="tdBorder text-item tdSpan">
+                    <td style="width: 20px"><span ><?php echo $v['id']?></span></td>
+                    <td ><span ><?php echo $v['billType']?></span></td>
+                    <td ><span ><?php echo $v['billSource']?></span></td>
+                    <td ><span ><?php echo $v['quesParent']?></span></td>
+                    <td ><span ><?php echo $v['quesChild']?></span></td>
+                    <td ><span ><?php echo $v['billGame']?></span></td>
+                    <td ><span ><?php echo $v['account']?></span></td>
+                    <td ><span ><?php echo $v['gameName']?></span></td>
+                    <td style="width: 59px"><span ><?php echo $v['gameServer']?></span></td>
+                    <td style="width: 80px"><span ><?php echo $v['download']?></span></td>
+                    <td ><span ><?php echo $v['gameId']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['version']?><!--</span></td>-->
+                    <td ><span ><?php echo $v['device']?></span></td>
+                    <td ><span ><?php echo $v['phone']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['qq']?><!--</span></td>-->
+<!--                    <td ><span >--><?php //echo $v['email']?><!--</span></td>-->
+                    <td  class="notSLH" >
                         <div>
-                            <a class="btn" id="serviceAlter" href="#" onclick="alterStatus(<?php echo $v['id'];?>,<?php echo $v['serviceStatus'];?>)"><?php echo $v['serviceStatus']==1?"下线":'上线'?></a>
+                            <a class="btn" id="serviceAlter"  href="/content/service/bill-message-add?id=<?php echo $v['id'];?>">修改</a>
                         </div>
                     </td>
                 </tr>
@@ -51,6 +72,19 @@
             </tbody>
         </table>
     </form>
+    <div class="pagination pagination-right">
+        <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>
+        <?php if($count > 200){?>
+            <span style="font-size: 17px;position: relative;bottom: 5px;">
+            <a onclick="jumpPage()">Go</a>&nbsp;
+            <input type="text" style="width: 20px;height: 18px;" id="jumpPage">&nbsp;页
+        </span>
+        <?php }?>
+        <?php use yii\widgets\LinkPager;
+        echo LinkPager::widget([
+            'pagination' => $page,
+        ])?>
+    </div>
 </div>
 <script>
 

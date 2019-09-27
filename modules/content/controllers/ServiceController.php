@@ -10,6 +10,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
+use app\modules\content\models\BillMessage;
 use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
@@ -80,7 +81,41 @@ class ServiceController extends  AdminController {
     public function actionBillMessage(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
-        return $this->render('bill-message',['service'=>[]]);
+        $where = " 1=1 ";
+        $count = BillMessage::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $bill = BillMessage::find()->where($where)->orderBy('id desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $billTypes = BillMessage::getBillTypes();
+        $billSources = BillMessage::getBillSources();
+        $billGames = BillMessage::getBillGames();
+        foreach($bill as $k =>$v){
+            //单据类型
+            foreach($billTypes as $p => $t){
+                if($t['id'] == $v['billType']){
+                    $bill[$k]['billType'] = $t['name'];
+                    break;
+                }
+            }
+            //单据来源
+            foreach($billSources as $p => $t){
+                if($t['id'] == $v['billSource']){
+                    $bill[$k]['billSource'] = $t['name'];
+                    break;
+                }
+            }
+            //游戏所属
+            foreach($billGames as $p => $t){
+                if($t['id'] == $v['billGame']){
+                    $bill[$k]['billGame'] = $t['name'];
+                    break;
+                }
+            }
+            //一级分类
+            $bill[$k]['quesParent'] = QuestionCategory::find()->where("id = {$v['quesParent']}")->asArray()->one()['name'];
+            //二级分类
+            $bill[$k]['quesChild'] = QuestionCategory::find()->where("id = {$v['quesChild']}")->asArray()->one()['name'];
+        }
+        return $this->render('bill-message',['bills'=>$bill,'page'=>$page,'count'=>$count]);
     }
     /**
      * 单据信息编辑
@@ -88,37 +123,121 @@ class ServiceController extends  AdminController {
      */
     public function actionBillMessageAdd(){
         if($_POST){
-
+            $request = Yii::$app->request;
+            $id = $request->post('id',0);
+            $billType = $request->post('billType',0);
+            $billSource = $request->post('billSource',0);
+            $quesParent = $request->post('quesParent');
+            $quesChild = $request->post('quesChild');
+            $billGame = $request->post('billGame','');
+            $vipLevel = $request->post('vipLevel','');
+            $account = $request->post('account','');
+            $gameName = $request->post('gameName','');
+            $gameServer = $request->post('gameServer',0);
+            $download = $request->post('download','');
+            $gameId = $request->post('gameId','');
+            $version = $request->post('version','');
+            $device = $request->post('device','');
+            $email = $request->post('email','');
+            $phone = $request->post('phone','');
+            $qq = $request->post('qq','');
+            $detail = $request->post('detail');
+            $result = $request->post('result');
+            $image = $request->post('imageFile','');
+            if(!$billType){
+                echo "<script>alert('请选择单据类型！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$billSource){
+                echo "<script>alert('请选择单据来源！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$quesParent){
+                echo "<script>alert('请选择一级分类！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$quesChild){
+                echo "<script>alert('请选择二级分类！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$billGame){
+                echo "<script>alert('请选择游戏所属！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$gameServer){
+                echo "<script>alert('请选择游戏大厅！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$download){
+                echo "<script>alert('请填写下载渠道！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$gameId){
+                echo "<script>alert('请填写游戏ID！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$detail){
+                echo "<script>alert('请填写详细描述！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$result){
+                echo "<script>alert('请填写处理结果！');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($id){
+                $model = BillMessage::findOne($id);
+                $model->updateTime = time();
+            }else{
+                $model  = new BillMessage();
+                $model->createTime = time();
+            }
+            $model->billType = $billType;
+            $model->billSource = $billSource;
+            $model->billGame = $billGame;
+            $model->quesParent = $quesParent;
+            $model->quesChild = $quesChild;
+            $model->account = $account;
+            $model->vipLevel = $vipLevel;
+            $model->gameName = $gameName;
+            $model->gameServer = $gameServer;
+            $model->gameId = $gameId;
+            $model->download = $download;
+            $model->device = $device;
+            $model->version = $version;
+            $model->phone = $phone;
+            $model->qq = $qq;
+            $model->email = $email;
+            $model->imageFile = $image;
+            $model->detail = $detail;
+            $model->result = $result;
+            $model->creator = Yii::$app->session->get('adminId');
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('保存成功！');setTimeout(function(){location.href='bill-message';},1000)</script>";
+            }else{
+                echo "<script>alert('保存失败，请重试！');setTimeout(function(){history.go(-1);},1000)</script>";
+            }
         }else{
             $id = \Yii::$app->request->get('id');
             if($id){
-                $data = [];
+                $bill = BillMessage::find()->where("id = $id")->asArray()->one();
             }else{
-                $data = [];
+                $bill = [];
             }
             //单据类型
-            $billTypes = [
-                ['id'=>1,'name'=>'普通单'],
-                ['id'=>2,'name'=>'技术单'],
-                ['id'=>3,'name'=>'投诉单'],
-                ['id'=>4,'name'=>'预警单'],
-            ];
+            $billTypes = BillMessage::getBillTypes();
             //单据来源
-            $billSources = [
-                ['id'=>1,'name'=>'在线'],
-                ['id'=>2,'name'=>'热线'],
-            ];
+            $billSources = BillMessage::getBillSources();
             //游戏归属
-            $billGames = [
-                ['id'=>1,'name'=>'传奇']
-            ];
+            $billGames = BillMessage::getBillGames();
             //问题一级分类
-            $billQuesParent = [];
+            $billQuesParent = QuestionCategory::find()->where("pid = 0")->asArray()->all();
             //问题二级分级
-            $billQuesChild = [];
+            if($id){//修改页面 获取对应的二级分类
+                $billQuesChild = QuestionCategory::find()->where("pid = {$bill['quesParent']}")->asArray()->all();
+            }else{
+                if(isset($billQuesParent[0]['id'])){
+                    $billQuesChild = QuestionCategory::find()->where("pid = {$billQuesParent[0]['id']}")->asArray()->all();
+                }else{
+                    $billQuesChild = [];
+                }
+            }
+
             //VIP等级
-            $vipLevels = [];
-            $data = ['billTypes'=>$billTypes,'billSources'=>$billSources,'billGames'=>$billGames,'billQuesParent'=>$billQuesParent,'billQuesChild'=>$billQuesChild,'vipLevels'=>$vipLevels];
+            $vipLevels = BillMessage::getVipLevels();
+            //游戏大区
+            $servers = Server::getServers();
+            $data = ['billTypes'=>$billTypes,'billSources'=>$billSources,'billGames'=>$billGames,'billQuesParent'=>$billQuesParent,'billQuesChild'=>$billQuesChild,'vipLevels'=>$vipLevels,'servers'=>$servers,'bill'=>$bill];
             return $this->render('bill-message-add',$data);
         }
     }

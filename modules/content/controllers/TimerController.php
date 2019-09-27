@@ -17,6 +17,7 @@ use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
+use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\Server;
 use app\modules\content\models\User;
 use app\modules\content\models\YuanbaoRole;

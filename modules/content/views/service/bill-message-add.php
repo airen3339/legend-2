@@ -4,15 +4,13 @@
         <li><a href="/content/service/index">客户模块</a> <span class="divider">/</span></li>
         <li class="active">单据信息</li>
     </ul>
-    <form action="/content/service/bill-message-add" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定提交并推送客户端吗？')){return true}else{
-        return false;
-    }">
-        <input type="hidden" name="id" value="<?php echo isset($notice['id'])?$notice['id']:''?>">
+    <form action="/content/service/bill-message-add" method="post" class="form-horizontal" onsubmit="return billSubmit()">
+        <input type="hidden" name="id" value="<?php echo isset($bill['id'])?$bill['id']:''?>">
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label"><span style="color:red">* </span>单据类型</label>
                 <div class="controls">
-                    <select name="billType" >
+                    <select name="billType" id="billType">
                         <option value="0">请选择</option>
                         <?php
                         foreach($billTypes as $k => $v){ ?>
@@ -23,8 +21,8 @@
                     </select>
 
                     <label style="display: inline;margin-left: 180px;margin-right: 20px"><span style="color:red">* </span>单据来源</label>
-                    <select name="billSource" >
-                        <option value="0">请选择</option>
+                    <select name="billSource" id="billSource" >
+                        <option value=0>请选择</option>
                         <?php
                         foreach($billSources as $k => $v){ ?>
                             <option value='<?php echo $v['id']?>' <?php if(isset($bill['billSource']) && $bill['billSource'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
@@ -37,8 +35,8 @@
             <div class="control-group">
                 <label  for="modulename" class="control-label"><span style="color:red">* </span>一级分类</label>
                 <div class="controls">
-                    <select name="billGame">
-                        <option value="0">请选择</option>
+                    <select name="quesParent" id="quesParent" onchange="getChildCategory()">
+                        <option value=0>请选择</option>
                         <?php
                         foreach($billQuesParent as $k => $v){ ?>
                             <option value='<?php echo $v['id']?>' <?php if(isset($bill['quesParent']) && $bill['quesParent'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
@@ -48,8 +46,8 @@
                     </select>
 
                     <label style="display: inline;margin-left: 180px;margin-right: 20px"><span style="color:red">* </span>二级分类</label>
-                    <select name="billGame" >
-                        <option value="0">请选择</option>
+                    <select name="quesChild" id="quesChild">
+                        <option value=0>请选择</option>
                         <?php
                         foreach($billQuesChild as $k => $v){ ?>
                             <option value='<?php echo $v['id']?>' <?php if(isset($bill['quesChild']) && $bill['quesChild'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
@@ -63,7 +61,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label"><span style="color:red">* </span>游戏所属</label>
                 <div class="controls">
-                    <select name="billGame" >
+                    <select name="billGame" id="billGame">
                         <option value="0">请选择</option>
                         <?php
                         foreach($billGames as $k => $v){ ?>
@@ -74,7 +72,7 @@
                     </select>
 
                     <label style="display: inline;margin-left: 190px;margin-right: 26px">VIP等级</label>
-                    <select name="vipLevels" >
+                    <select name="vipLevel" id="vipLevel">
                         <option value="0">请选择</option>
                         <?php
                         foreach($vipLevels as $k => $v){ ?>
@@ -94,11 +92,18 @@
                     <input size="10" type="text" id="gameName" name="gameName"  value="<?php echo isset($bill['gameName'])?$bill['gameName']:''?>" autocomplete="off"/>
                 </div>
             </div>
-
             <div class="control-group">
                 <label for="modulename" class="control-label"><span style="color:red">* </span>游戏大区</label>
                 <div class="controls">
-                    <input  size="10" type="text" id="gameServer" name="gameServer"  value="<?php echo isset($bill['gameServer'])?$bill['gameServer']:''?>" autocomplete="off"/>
+                    <select name="gameServer" id="gameServer">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($bill['gameServer']) && $bill['gameServer'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
 
                     <label style="display: inline;margin-left: 180px;margin-right: 20px"><span style="color:red">* </span>下载渠道</label>
                     <input  size="10" type="text" id="download" name="download"  value="<?php echo isset($bill['download'])?$bill['download']:''?>" autocomplete="off"/>
@@ -158,3 +163,64 @@
         </fieldset>
     </form>
 </div>
+<script>
+    function getChildCategory(){
+        var pid = $('#quesParent').val();
+        if(pid !=0){
+            $.post('/content/api/get-question-child',{pid:pid},function(e){
+                var str = '<option value=0>请选择</option>';
+                for(var i=0;i<e.length;i++){
+                    str += '<option value="'+e[i].id+'">'+e[i].name+'</option>';
+                }
+                $('#quesChild').html(str);
+            },'json');
+        }
+    }
+    function billSubmit(){
+        var billType = $('#billType').val();
+        var billSource = $('#billSource').val();
+        var quesParent = $('#quesParent').val();
+        var quesChild = $('#quesChild').val();
+        var billGame = $('#billGame').val();
+        var gameServer = $('#gameServer').val();
+        var download = $('#download').val();
+        var gameId = $('#gameId').val();
+        var detail = $('#detail').val();
+        var result = $('#result').val();
+        if(!billType || billType < 1){
+            alert('请选择单据类型');return false;
+        }
+        if(!billSource || billSource < 1){
+            alert('请选择单据来源');return false;
+        }
+        if(!quesParent || quesParent < 1){
+            alert('请选择一级分类');return false;
+        }
+        if(!quesChild || quesChild < 1){
+            alert('请选择二级分类');return false;
+        }
+        if(!billGame){
+            alert('请选择游戏所属');return false;
+        }
+        if(!gameServer || gameServer < 1){
+            alert('请选择游戏大厅');return false;
+        }
+        if(!download){
+            alert('请填写下载渠道');return false;
+        }
+        if(!gameId){
+            alert('请选择游戏ID');return false;
+        }
+        if(!detail){
+            alert('请填写详细描述');return false;
+        }
+        if(!result){
+            alert('请填写处理结果');return false;
+        }
+        if(confirm('确定提交数据吗？')){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>

@@ -227,4 +227,17 @@ class ApiController extends  Controller
         }
         die(json_encode($data));
     }
+
+    /**
+     * 获取问题二级分类
+     */
+    public function actionGetQuestionChild(){
+        $pid = \Yii::$app->request->post('pid',0);
+        if($pid){
+            $data = QuestionCategory::find()->where("pid = $pid")->asArray()->all();
+        }else{
+            $data = [];
+        }
+        die(json_encode($data));
+    }
 }
