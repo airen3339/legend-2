@@ -125,15 +125,19 @@ class GmController  extends AdminController
             $propNum = Yii::$app->request->post('propNum');
             $binding = Yii::$app->request->post('bind');
             //获取roleID
+            $roleArr = [];
             if($name){
-                $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
-            }else{
-                $roleId = '';
+                $nameArr = explode(',',$name);
+                foreach($nameArr as $t => $y){
+                    $y = trim($y);
+                    $roleId = Player::find()->where("Name = '{$y}'")->asArray()->one()['RoleID'];
+                    if(!$roleId){
+                        echo "<script>alert('没有该玩家（".$y."）');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                    }
+                    $roleArr[] = $roleId;
+                }
             }
-            if(!$roleId){
-                echo "<script>alert('没有该玩家');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            if($server && $roleId && $emailContent && $emailTitle && $propId && $propNum && $binding){
+            if($server && $roleArr && $emailContent && $emailTitle && $propId && $propNum && $binding){
                 $adminId = Yii::$app->session->get('adminId');
                 //判断是否为元宝
                 if($propId == 222222){
@@ -144,26 +148,32 @@ class GmController  extends AdminController
                     }
                 }
                 $prop = ['propId'=>[$propId],'number'=>[$propNum],'bind'=>[$binding]];
-                $model = new RewardRecord();
-                $model->type = 1;//1-玩家 2-区服
-                $model->serverId = $server;
-                $model->title = $emailTitle;
-                $model->content = $emailContent;
-                $model->contentOther = $contentOther;
-                $model->sender = '系统';
-                $model->prop = json_encode($prop);
-                $model->propNum = 1;
-                $model->roleId = $roleId;
-                $model->createTime = time();
-                $model->creator = $adminId;
-                $res = $model->save();
-                if($res){
-                    //日志记录
-                    OperationLog::logAdd('添加玩家奖励',$model->id,3);//3-玩家奖励 4-区服奖励
-                    echo "<script>alert('添加奖励成功');setTimeout(function(){location.href='player-add-reward';},1000)</script>";die;
-                }else{
-                    echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                $saveId = [];
+                foreach($roleArr as $r => $w){
+                    $model = new RewardRecord();
+                    $model->type = 1;//1-玩家 2-区服
+                    $model->serverId = $server;
+                    $model->title = $emailTitle;
+                    $model->content = $emailContent;
+                    $model->contentOther = $contentOther;
+                    $model->sender = '系统';
+                    $model->prop = json_encode($prop);
+                    $model->propNum = 1;
+                    $model->roleId = $w;
+                    $model->createTime = time();
+                    $model->creator = $adminId;
+                    $res = $model->save();
+                    if($res) {
+                        $saveId[] = $model->id;
+                        //日志记录
+                        OperationLog::logAdd('添加玩家奖励', $model->id, 3);//3-玩家奖励 4-区服奖励
+                    }else{
+                        $saveStr = implode(',',$saveId);
+                        RewardRecord::deleteAll("id in ({$saveStr})");
+                        echo "<script>alert('保存失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                    }
                 }
+                echo "<script>alert('添加奖励成功');setTimeout(function(){location.href='player-add-reward';},1000)</script>";die;
             }else{
                 echo "<script>alert('参数错误');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }

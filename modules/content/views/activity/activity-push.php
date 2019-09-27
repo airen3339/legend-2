@@ -24,7 +24,7 @@
                     <select name="type" id="type" style="width: 105px;">
                         <option value="">请选择</option>
                         <option value='1'>每日单充</option>;
-                        <option value='2'>累计充值</option>;
+                        <option value='2'>累计消费</option>;
                         <option value='3'>五行运势</option>;
                     </select>
                 </div>
