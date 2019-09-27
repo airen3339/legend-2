@@ -25,9 +25,11 @@ class YuanbaoRole extends ActiveRecord
                 ['id'=>4,'name'=>'元宝充值'],
                 ['id'=>5,'name'=>'用户送花'],
                 ['id'=>6,'name'=>'商城购买'],
+                ['id'=>7,'name'=>'混沌空间'],
+                ['id'=>8,'name'=>'黑市商人'],
             ];
         }else{//用户定时统计 去除元宝充值
-            $arr = [1=>'元宝兑换',2=>'时时彩下注',3=>'赠送元宝',5=>'用户送花',6=>'商城购买'];
+            $arr = [1=>'元宝兑换',2=>'时时彩下注',3=>'赠送元宝',5=>'用户送花',6=>'商城购买',7=>'混沌空间',8=>'黑市商人'];
         }
         return $arr;
     }
@@ -90,8 +92,8 @@ class YuanbaoRole extends ActiveRecord
 
             //统计元宝消耗 4-元宝充值
             $arr = YuanbaoRole::getTypes(2);//获取元宝操作类型
-            foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花 6-用户月卡
-                if(in_array($t,[1])){//元宝兑换 可有增加
+            foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花 6-用户月卡 7-混沌空间 8-黑市商人
+                if(in_array($t,[1,7])){//元宝兑换 可有增加
                     //增加
                     $add = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 1")->sum('money');
                     $model = new CurrencyData();
