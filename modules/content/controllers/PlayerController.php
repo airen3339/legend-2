@@ -83,6 +83,8 @@ class PlayerController  extends AdminController
                 //充值金额
                 $money = ChargeMoney::find()->where($wh)->sum('chargenum');
                 $data['rechargeMoney'] = $money?$money:0;
+                //更新元宝消耗记录
+                YuanbaoRole::getYuanbaoData();
             }else{
                 $data = [];
             }
