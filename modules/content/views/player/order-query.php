@@ -64,7 +64,8 @@
             <tr>
                 <th>账号</th>
                 <th>区服</th>
-                <th>昵称</th>
+                <th>角色名</th>
+                <th>账号名称</th>
                 <th>渠道</th>
                 <th>订单号</th>
                 <th>金额</th>
@@ -80,8 +81,9 @@
                 <tr  class="text-item">
                     <td ><span style="width: 80px; "><?php echo $v['roleID']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['worldID']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['roleName']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['username']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['channel']?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['packageFlag']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['orderid']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['chargenum']?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['createTime']?></span></td>

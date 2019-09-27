@@ -129,10 +129,11 @@ class PlayerController  extends AdminController
         $pages = new Pagination(['totalCount'=>$total,'pageSize'=>20]);
         $data = ChargeMoney::find()->where($where)->orderBy('createTime desc')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
         foreach($data as $k => $v){
-            $sql = "select u.Username,u.PackageFlag from `user` u inner join player p on p.UserID = u.UserID inner join chargemoney c on c.roleID = p.RoleID where c.roleID = '{$v['roleID']}' ";
+            $sql = "select u.Username,u.PackageFlag,p.Name from `user` u inner join player p on p.UserID = u.UserID inner join chargemoney c on c.roleID = p.RoleID where c.roleID = '{$v['roleID']}' ";
             $da = \Yii::$app->db2->createCommand($sql)->queryOne();
-            $data[$k]['channel'] = $da['Username'];
-            $data[$k]['username'] = $da['PackageFlag'];
+            $data[$k]['username'] = $da['Username'];
+            $data[$k]['packageFlag'] = $da['PackageFlag'];
+            $data[$k]['roleName'] = $da['Name'];
         }
         $servers = Server::getServers();
         return $this->render('order-query',['data'=>$data,'page'=>$pages,'count'=>$total,'servers'=>$servers]);
