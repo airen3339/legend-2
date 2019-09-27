@@ -100,6 +100,7 @@
                 <th>数量</th>
                 <th>收入支出</th>
                 <th>说明</th>
+                <th>操作时间</th>
             </tr>
             </thead>
             <tbody>
@@ -114,6 +115,7 @@
                     <td ><span style="width: 80px; "><?php echo $v['money']?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($v['type'])?($v['added']==1?'收入':'支出'):'收入'?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($v['remark'])?$v['remark']:'元宝充值'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['dateTime']?></span></td>
                 </tr>
                 <?php
             }
