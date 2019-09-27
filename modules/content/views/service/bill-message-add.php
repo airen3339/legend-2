@@ -148,11 +148,14 @@
                     </div>
                 </div>
                 <div class="controls" id="imgDiv" data-imgNum="<?php echo isset($bill['imageFile'])?count($bill['imageFile']):0?>">
-                    <?php if(isset($bill['imageFile']) && is_array($bill['imageFile']))?>
-                    <?php foreach($bill['imageFile'] as $k => $v){?>
-                        <img width="120px" data-imgId="imgId<?php echo $k+1;?>" title="双击删除" height="90px" src="<?php echo $v;?>" ondblclick="imgDelete(this)" />&nbsp;&nbsp;
-                        <input type="hidden" name="imageFiles[]" value="<?php echo $v;?>" id="imgId<?php echo $k+1;?>"/>
-                    <?php }?>
+                    <?php if(isset($bill['imageFile']) && is_array($bill['imageFile'])) { ?>
+                        <?php foreach ($bill['imageFile'] as $k => $v) { ?>
+                            <img width="120px" data-imgId="imgId<?php echo $k + 1; ?>" title="双击删除" height="90px"
+                                 src="<?php echo $v; ?>" ondblclick="imgDelete(this)"/>&nbsp;&nbsp;
+                            <input type="hidden" name="imageFiles[]" value="<?php echo $v; ?>"
+                                   id="imgId<?php echo $k + 1; ?>"/>
+                        <?php }
+                    }?>
                 </div>
             </div>
 
