@@ -57,10 +57,10 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr  class="text-item ">
-                    <td ><span style="width: 80px; "><?php echo $v['level']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['depositMoney']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['userNum']?></span></td>
+                <tr  class="text-item tdBorder">
+                    <td ><span ><?php echo $v['level']?></span></td>
+                    <td ><span ><?php echo $v['depositMoney']?></span></td>
+                    <td ><span ><?php echo $v['userNum']?></span></td>
                 </tr>
                 <?php
             }

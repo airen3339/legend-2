@@ -61,11 +61,11 @@
                 <?php
                     foreach($data as $k => $v){
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['serverId']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['beginTime']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['endTime']?></span></td>
+                <tr  class="text-item tdBorder">
+                    <td ><span><?php echo $v['id']?></span></td>
+                    <td ><span ><?php echo $v['serverId']?></span></td>
+                    <td ><span ><?php echo $v['beginTime']?></span></td>
+                    <td ><span ><?php echo $v['endTime']?></span></td>
                     <td ><span ><?php echo $v['remark']?></span></td>
                 </tr>
                 <?php

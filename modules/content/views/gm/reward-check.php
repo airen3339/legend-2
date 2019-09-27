@@ -67,14 +67,14 @@
             </thead>
             <tbody>
                 <?php foreach($data as $k => $v){?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo date('Y-m-d',$v['createTime'])?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'玩家奖励 ('.$v['roleName'].')':'区服奖励';?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['serverId'];?></span></td>
-                    <td ><span style="width: 80px; "><?php echo  $v['title'];?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['content'];?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['pushContent'];?></span></td>
-                    <td  class="notSLH" style="width: 247px;">
+                <tr  class="text-item tdBorder">
+                    <td ><span ><?php echo date('Y-m-d',$v['createTime'])?></span></td>
+                    <td ><span ><?php echo $v['type']==1?'玩家奖励 ('.$v['roleName'].')':'区服奖励';?></span></td>
+                    <td ><span ><?php echo $v['serverId'];?></span></td>
+                    <td ><span ><?php echo  $v['title'];?></span></td>
+                    <td ><span ><?php echo $v['content'];?></span></td>
+                    <td style="width: 380px"><span ><?php echo $v['pushContent'];?></span></td>
+                    <td  class="notSLH" >
                         <div>
                             <a class="btn" href="#" onclick="rewardCheck(<?php echo $v['id']?>,1)">通过</a>
                             <a class="btn" href="#"  onclick="rewardCheck(<?php echo $v['id']?>,2)">作废</a>

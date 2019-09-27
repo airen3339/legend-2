@@ -437,7 +437,7 @@ class OperateController  extends AdminController
                 }else{
                     $endTime = $dateTime + 86399*$v;
                     //充值金额
-                    if($channel){//选择某个渠道
+                    if($channel != 99){//选择某个渠道
                         $moneySum = LTV::find()->where("( unix_timestamp(date) between $dateTime and $endTime ) and channel = '{$channel}'")->sum('money');
                     }else{//所有渠道
                         $moneySum = LTV::find()->where("unix_timestamp(date) between $dateTime and $endTime ")->sum('money');
@@ -454,7 +454,7 @@ class OperateController  extends AdminController
             $data[] = $dateData;
         }
         $count = $days+1;
-        $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>31]);
         $channel = User::getChannel();
         return $this->render('ltv-data',['data'=>$data,'page'=>$page,'count'=>$count,'channel'=>$channel]);
     }

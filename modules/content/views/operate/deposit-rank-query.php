@@ -58,13 +58,13 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['PackageFlag']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['Name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['depositMoney']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['currentYB']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['lastRechTime']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['lastLogin']?></span></td>
+                <tr  class="text-item tdBorder">
+                    <td ><span ><?php echo $v['PackageFlag']?></span></td>
+                    <td ><span ><?php echo $v['Name']?></span></td>
+                    <td ><span><?php echo $v['depositMoney']?></span></td>
+                    <td ><span ><?php echo $v['currentYB']?></span></td>
+                    <td ><span><?php echo $v['lastRechTime']?></span></td>
+                    <td ><span ><?php echo $v['lastLogin']?></span></td>
                 </tr>
                 <?php
             }

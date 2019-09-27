@@ -78,17 +78,17 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['roleID']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['worldID']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['roleName']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['username']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['packageFlag']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['orderid']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['chargenum']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['createTime']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['finishTime']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo strtotime($v['finishTime'])>0?'已完成':'未完成'?></span></td>
+                <tr  class="text-item tdBorder">
+                    <td ><span ><?php echo $v['roleID']?></span></td>
+                    <td ><span ><?php echo $v['worldID']?></span></td>
+                    <td ><span ><?php echo $v['roleName']?></span></td>
+                    <td ><span ><?php echo $v['username']?></span></td>
+                    <td ><span ><?php echo $v['packageFlag']?></span></td>
+                    <td ><span ><?php echo $v['orderid']?></span></td>
+                    <td ><span><?php echo $v['chargenum']?></span></td>
+                    <td style="width: 115px;"><span ><?php echo $v['createTime']?></span></td>
+                    <td style="width: 115px;"><span><?php echo $v['finishTime']?></span></td>
+                    <td ><span><?php echo strtotime($v['finishTime'])>0?'已完成':'未完成'?></span></td>
                 </tr>
                 <?php
             }

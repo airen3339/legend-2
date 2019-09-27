@@ -63,18 +63,18 @@
                 <?php
                     foreach($data as $k => $v){
                 ?>
-                <tr  class="">
-                    <td style="width: 80px; "><span ><?php echo $v['id']?></span></td>
-                    <td style="width: 80px; "><span ><?php echo $v['serverId']?></span></td>
-                    <td style="width: 80px; "><span ><?php echo $v['remark']?></span></td>
-                    <td style="width: 80px; "><span ><?php echo $v['type']?></span></td>
-                    <td style="width: 80px; "><span ><?php echo $v['beginTime']?></span></td>
-                    <td style="width: 80px; "><span ><?php echo $v['endTime']?></span></td>
-                    <td style="width: 180px;"><span><?php echo $v['pushContent']?></span></td>
-                    <td style="width: 80px; "><span><?php echo $v['operatorName']?></span></td>
+                <tr  class="tdBorder">
+                    <td style="width: 20px; "><span ><?php echo $v['id']?></span></td>
+                    <td style="width: 40px; "><span ><?php echo $v['serverId']?></span></td>
+                    <td ><span ><?php echo $v['remark']?></span></td>
+                    <td ><span ><?php echo $v['type']?></span></td>
+                    <td ><span ><?php echo $v['beginTime']?></span></td>
+                    <td ><span ><?php echo $v['endTime']?></span></td>
+                    <td style="width: 390px; "><span><?php echo $v['pushContent']?></span></td>
+                    <td style="width: 40px; "><span><?php echo $v['operatorName']?></span></td>
                     <td  class="notSLH" style="width: 130px;">
-                        <a class="btn btn-primary" href="/content/activity/activity-push-edit?id=<?php echo $v['id'] ; ?>" >修改</a>
-                        <a href='#' class="btn btn-primary" onclick="javascript:if(confirm('确定删除吗？')){location.href='/content/activity/activity-push-delete?id=<?php echo $v['id']; ?>'}" >删除</a>
+                        <a class="btn " href="/content/activity/activity-push-edit?id=<?php echo $v['id'] ; ?>" >修改</a>
+                        <a href='#' class="btn " onclick="javascript:if(confirm('确定删除吗？')){location.href='/content/activity/activity-push-delete?id=<?php echo $v['id']; ?>'}" >删除</a>
                     </td>
                 </tr>
                 <?php

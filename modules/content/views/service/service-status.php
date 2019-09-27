@@ -31,12 +31,12 @@
                     break;
                 }
                 ?>
-                <tr>
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['name']?></span></td>
-                    <td ><span style="width: 100px; "><?php echo $v['qq']?></span></td>
-                    <td ><span style="width: 115px;color: <?php echo $v['serviceStatus']==1?"blue":'red'?>;" id="serviceStatus"><?php echo $v['serviceStatus']==1?"在线":'离线'?></span></td>
-                    <td  class="notSLH" style="width: 247px;">
+                <tr class="tdBorder">
+                    <td ><span ><?php echo $v['id']?></span></td>
+                    <td ><span ><?php echo $v['name']?></span></td>
+                    <td ><span ><?php echo $v['qq']?></span></td>
+                    <td ><span  id="serviceStatus"><?php echo $v['serviceStatus']==1?"在线":'离线'?></span></td>
+                    <td  class="notSLH" >
                         <div>
                             <a class="btn" id="serviceAlter" href="#" onclick="alterStatus(<?php echo $v['id'];?>,<?php echo $v['serviceStatus'];?>)"><?php echo $v['serviceStatus']==1?"下线":'上线'?></a>
                         </div>

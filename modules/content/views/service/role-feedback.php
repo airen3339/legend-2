@@ -67,7 +67,7 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr class="tdSpan">
+                <tr class="tdSpan tdBorder">
                     <td ><span ><?php echo $v['feedTime']?></span></td>
                     <td ><span><?php echo $v['roleId']?></span></td>
                     <td ><span><?php echo $v['roleName']?></span></td>

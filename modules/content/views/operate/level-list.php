@@ -57,12 +57,12 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr class="text-item ">
-                    <td ><span style="width: 80px; "><?php echo $v['level']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['user_total']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['user_proportion']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['retention_user']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['retention_proportion']?></span></td>
+                <tr class="text-item tdBorder">
+                    <td ><span ><?php echo $v['level']?></span></td>
+                    <td ><span ><?php echo $v['user_total']?></span></td>
+                    <td ><span ><?php echo $v['user_proportion']?></span></td>
+                    <td ><span ><?php echo $v['retention_user']?></span></td>
+                    <td ><span ><?php echo $v['retention_proportion']?></span></td>
                 </tr>
                 <?php
             }

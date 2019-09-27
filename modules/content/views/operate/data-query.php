@@ -82,21 +82,21 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item tdPad">
-                    <td ><span style="width: 80px; "><?php echo $v['date']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['newRegister']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['newDevice']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['newLogin']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['deviceDau']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['accountDau']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['oldUser']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['payRate']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['rechargeUser']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['rechargeCount']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['rechargeMoney']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['arpu']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['arppu']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['newRechargeUser']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['newRechargeMoney']?></span></td>
+                    <td ><span ><?php echo $v['date']?></span></td>
+                    <td ><span><?php echo $v['newRegister']?></span></td>
+                    <td ><span ><?php echo $v['newDevice']?></span></td>
+                    <td ><span ><?php echo $v['newLogin']?></span></td>
+                    <td ><span ><?php echo $v['deviceDau']?></span></td>
+                    <td ><span ><?php echo $v['accountDau']?></span></td>
+                    <td ><span ><?php echo $v['oldUser']?></span></td>
+                    <td ><span ><?php echo $v['payRate']?></span></td>
+                    <td ><span ><?php echo $v['rechargeUser']?></span></td>
+                    <td ><span ><?php echo $v['rechargeCount']?></span></td>
+                    <td ><span ><?php echo $v['rechargeMoney']?></span></td>
+                    <td ><span ><?php echo $v['arpu']?></span></td>
+                    <td ><span ><?php echo $v['arppu']?></span></td>
+                    <td ><span ><?php echo $v['newRechargeUser']?></span></td>
+                    <td ><span ><?php echo $v['newRechargeMoney']?></span></td>
                 </tr>
                 <?php
             }

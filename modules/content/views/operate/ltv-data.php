@@ -70,14 +70,14 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['date']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['addNum']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['one']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['three']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['five']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['seven']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['fifteen']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['thirty']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span ><?php echo $v['date']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span><?php echo $v['addNum']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span><?php echo $v['one']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span ><?php echo $v['three']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span ><?php echo $v['five']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span ><?php echo $v['seven']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span ><?php echo $v['fifteen']?></span></td>
+                    <td style="border: 1px solid #eeeeef;width: 100px;"><span ><?php echo $v['thirty']?></span></td>
                 </tr>
                 <?php
             }

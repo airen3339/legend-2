@@ -150,6 +150,15 @@ a.desc:after {
 }
 .tdPad td{
     padding: 3.9px !important;
+    border: 1px solid #eeeeef;
+    width: 100px;
+}
+.tdBorder td{
+    border: 1px solid #eeeeef;
+    width: 100px;
+}
+.marTop{
+    margin-top: 5px;
 }
 .tdSpan td span {
     height: 3.8em !important;

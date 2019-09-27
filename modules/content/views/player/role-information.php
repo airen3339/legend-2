@@ -60,15 +60,15 @@
             <?php
             foreach($user as $kss => $v) {
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['RoleID']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['UserID']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['WorldID']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['Name']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['PackageFlag']?></span></td>
+                <tr  class="text-item tdBorder">
+                    <td ><span ><?php echo $v['RoleID']?></span></td>
+                    <td style="width:180px"><span ></span><?php echo $v['UserID']?></span></td>
+                    <td ><span ><?php echo $v['WorldID']?></span></td>
+                    <td ><span ><?php echo $v['Name']?></span></td>
+                    <td ><span ><?php echo $v['PackageFlag']?></span></td>
 <!--                    <td ><span style="width: 80px; ">--><?php //echo '11'?><!--</span></td>-->
-                    <td ><span style="width: 80px; "><?php echo $v['CreateDate']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i:s',$v['LastLogin']);?></span></td>
+                    <td ><span ><?php echo $v['CreateDate']?></span></td>
+                    <td ><span ><?php echo date('Y-m-d H:i:s',$v['LastLogin']);?></span></td>
                 </tr>
                 <?php
             }

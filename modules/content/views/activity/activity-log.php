@@ -50,14 +50,14 @@
                 <?php
                     foreach($data as $k => $v){
                 ?>
-                <tr  class="text-item">
-                    <td ><span style="width: 80px; "><?php echo $v['id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['operator']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['operatorId']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['remark']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['activityId']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'每日充值':($v['type']==2?'累计消费':'五行运势')?></span></td>
-                    <td ><span style="width: 80px; "><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
+                <tr  class="text-item tdBorder">
+                    <td ><span ><?php echo $v['id']?></span></td>
+                    <td ><span ><?php echo $v['operator']?></span></td>
+                    <td ><span ><?php echo $v['operatorId']?></span></td>
+                    <td ><span ><?php echo $v['remark']?></span></td>
+                    <td ><span ><?php echo $v['activityId']?></span></td>
+                    <td ><span ><?php echo $v['type']==1?'每日充值':($v['type']==2?'累计消费':'五行运势')?></span></td>
+                    <td ><span ><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
                 </tr>
                 <?php
                     }
