@@ -143,7 +143,7 @@ class ServiceController extends  AdminController {
             $qq = $request->post('qq','');
             $detail = $request->post('detail');
             $result = $request->post('result');
-            $image = $request->post('imageFile','');
+            $image = $request->post('imageFiles','');
             if(!$billType){
                 echo "<script>alert('请选择单据类型！');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
@@ -181,6 +181,7 @@ class ServiceController extends  AdminController {
                 $model  = new BillMessage();
                 $model->createTime = time();
             }
+            $image = json_encode($image);
             $model->billType = $billType;
             $model->billSource = $billSource;
             $model->billGame = $billGame;
@@ -211,6 +212,8 @@ class ServiceController extends  AdminController {
             $id = \Yii::$app->request->get('id');
             if($id){
                 $bill = BillMessage::find()->where("id = $id")->asArray()->one();
+                $imageFile = json_decode($bill['imageFile'],true);
+                $bill['imageFile'] = is_array($imageFile)?$imageFile:[];
             }else{
                 $bill = [];
             }

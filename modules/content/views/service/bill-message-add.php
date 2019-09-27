@@ -1,4 +1,7 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件-->
+<script type="text/javascript" src="/ueditor/ueditor.all.min.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/service/index">客户模块</a> <span class="divider">/</span></li>
@@ -139,9 +142,19 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">图片文件</label>
                 <div class="controls">
-                    <input  size="10" type="text" id="imageFile" name="imageFile"  value="<?php echo isset($bill['email'])?$bill['email']:''?>" autocomplete="off"/>
+                    <div style="margin-bottom: 10px" >
+                        
+                        <a href="#" class="btn btn-info" onclick="upFiles();">上传内容</a>
+                    </div>
+                </div>
+                <div class="controls" id="imgDiv" data-imgNum="<?php echo isset($bill['imageFile'])?count($bill['imageFile']):0?>">
+                    <?php foreach($bill['imageFile'] as $k => $v){?>
+                        <img width="120px" data-imgId="imgId<?php echo $k+1;?>" title="双击删除" height="90px" src="<?php echo $v;?>" ondblclick="imgDelete(this)" />&nbsp;&nbsp;
+                        <input type="hidden" name="imageFiles[]" value="<?php echo $v;?>" id="imgId<?php echo $k+1;?>"/>
+                    <?php }?>
                 </div>
             </div>
+
             <br/>
             <div class="control-group">
                 <label for="modulename" class="control-label"><span style="color:red">* </span>详细描述</label>
@@ -187,40 +200,106 @@
         var gameId = $('#gameId').val();
         var detail = $('#detail').val();
         var result = $('#result').val();
-        if(!billType || billType < 1){
-            alert('请选择单据类型');return false;
-        }
-        if(!billSource || billSource < 1){
-            alert('请选择单据来源');return false;
-        }
-        if(!quesParent || quesParent < 1){
-            alert('请选择一级分类');return false;
-        }
-        if(!quesChild || quesChild < 1){
-            alert('请选择二级分类');return false;
-        }
-        if(!billGame){
-            alert('请选择游戏所属');return false;
-        }
-        if(!gameServer || gameServer < 1){
-            alert('请选择游戏大厅');return false;
-        }
-        if(!download){
-            alert('请填写下载渠道');return false;
-        }
-        if(!gameId){
-            alert('请选择游戏ID');return false;
-        }
-        if(!detail){
-            alert('请填写详细描述');return false;
-        }
-        if(!result){
-            alert('请填写处理结果');return false;
-        }
-        if(confirm('确定提交数据吗？')){
-            return true;
-        }else{
-            return false;
-        }
+        // if(!billType || billType < 1){
+        //     alert('请选择单据类型');return false;
+        // }
+        // if(!billSource || billSource < 1){
+        //     alert('请选择单据来源');return false;
+        // }
+        // if(!quesParent || quesParent < 1){
+        //     alert('请选择一级分类');return false;
+        // }
+        // if(!quesChild || quesChild < 1){
+        //     alert('请选择二级分类');return false;
+        // }
+        // if(!billGame){
+        //     alert('请选择游戏所属');return false;
+        // }
+        // if(!gameServer || gameServer < 1){
+        //     alert('请选择游戏大厅');return false;
+        // }
+        // if(!download){
+        //     alert('请填写下载渠道');return false;
+        // }
+        // if(!gameId){
+        //     alert('请选择游戏ID');return false;
+        // }
+        // if(!detail){
+        //     alert('请填写详细描述');return false;
+        // }
+        // if(!result){
+        //     alert('请填写处理结果');return false;
+        // }
+        // if(confirm('确定提交数据吗？')){
+        //     return true;
+        // }else{
+        //     return false;
+        // }
+    }
+    function imgDelete(_this){
+        //删除对应的图片值
+        var imgId = $(_this).attr('data-imgId');
+        $('#'+imgId).remove();
+        //img 数量减一
+        var imgNum = $('#imgDiv').attr('data-imgNum');
+        imgNum--;
+        $('#imgDiv').attr('data-imgNum',imgNum);
+        $(_this).remove();
     }
 </script>
+
+<script>
+    //实例化编辑器
+    var o_ueditorupload = UE.getEditor('j_ueditorupload',
+        {
+            autoHeightEnabled:false
+        });
+    o_ueditorupload.ready(function ()
+    {
+
+        o_ueditorupload.hide();//隐藏编辑器
+
+        //监听图片上传
+        // o_ueditorupload.addListener('beforeInsertImage', function (t,arg)
+        // {
+        //     $('.imageFile').val(arg[0].src);
+        //
+        // });
+
+        /* 文件上传监听
+         * 需要在ueditor.all.min.js文件中找到
+         * d.execCommand("insertHtml",l)
+         * 之后插入d.fireEvent('afterUpfile',b)
+         */
+        o_ueditorupload.addListener('afterUpfile', function (t, arg)
+        {
+            var str = '';
+            var imgNum =  $('#imgDiv').attr('data-imgNum');
+            if(!imgNum){
+                imgNum = 0;
+            }
+            for(var t=0;t<arg.length;t++){
+                imgNum++;
+                str += '<img width="120px" data-imgId="imgId'+imgNum+'" title="双击删除" height="90px" src="'+arg[t].url+'" ondblclick="imgDelete(this)" />&nbsp;&nbsp;';
+                str += '<input type="hidden" name="imageFiles[]" value="'+arg[t].url+'" id="imgId'+imgNum+'"/>';
+            }
+            $('#imgDiv').attr('data-imgNum',imgNum);
+            $('#imgDiv').append(str);
+        });
+    });
+
+    //弹出图片上传的对话框
+    // function upImage()
+    // {
+    //     var myImage = o_ueditorupload.getDialog("insertimage");
+    //     myImage.open();
+    // }
+    //弹出文件上传的对话框
+       function upFiles()
+       {
+           var myFiles = o_ueditorupload.getDialog("attachment");
+           myFiles.open();
+       }
+
+</script>
+<script type="text/plain" id="j_ueditorupload"></script>
