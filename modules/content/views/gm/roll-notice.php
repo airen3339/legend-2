@@ -35,7 +35,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">间隔时间</label>
                 <div class="controls">
-                    <input class="input-small" style="width: 145px" size="10" type="text" id="intervalTime" name="intervalTime"  value="" autocomplete="off" onkeyup="value = value.replace(/[^0-9]/g,'')"/>
+                    <input class="input-small" style="width: 145px" size="10" type="text" id="intervalTime" name="intervalTime"  value="" autocomplete="off" onkeyup="value = value.replace(/[^0-9]/g,'')" placeholder="单位秒 最低间隔30秒"/>
                 </div>
             </div>
             <div class="control-group">
@@ -71,7 +71,8 @@
                 alert('请选择正确的结束时间（结束时间必须大于开始时间）');return false;
             }
         }
-        if(!intervalTime && intervalTime < 0){
+        console.log(intervalTime);
+        if(!intervalTime || intervalTime < 30){
             alert('请填写正确的间隔时间');return false;
         }
         if(!content){

@@ -10,6 +10,12 @@
         <table class="table">
             <tr>
                 <td>
+                    角色名：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
                     roleId：
                 </td>
                 <td>
@@ -55,7 +61,7 @@
                 <?php foreach($data as $k => $v){?>
                 <tr  class="text-item">
                     <td ><span style="width: 80px; "><?php echo date('Y-m-d',$v['createTime'])?></span></td>
-                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'玩家奖励':'区服奖励';?></span></td>
+                    <td ><span style="width: 80px; "><?php echo $v['type']==1?'玩家奖励 ('.$v['roleName'].')':'区服奖励';?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['serverId'];?></span></td>
                     <td ><span style="width: 80px; "><?php echo  $v['title'];?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['content'];?></span></td>

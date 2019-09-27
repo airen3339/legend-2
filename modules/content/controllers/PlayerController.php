@@ -35,10 +35,14 @@ class PlayerController  extends AdminController
     public function actionRoleInformation(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
+        $name = \Yii::$app->request->get('name','');
         $service = \Yii::$app->request->get('server');
         $roleId = \Yii::$app->request->get('roleId');
         $page = \Yii::$app->request->get('page',1);
         $where = ' 1=1 ';
+        if($name){
+            $where .= " and p.Name = '{$name}'";
+        }
         if($service){
             $where .= " and u.WorldID = '{$service}'";
         }
@@ -62,14 +66,20 @@ class PlayerController  extends AdminController
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
         $uid = \Yii::$app->request->get('uid');
+        $name = \Yii::$app->request->get('name','');
         $where = ' 1=1 ';
         $wh = ' 1=1 ';
-        if($uid){
-            $where .= " and RoleID = '{$uid}' ";
-            $wh .= " and roleID = '{$uid}'";
+        if($uid || $name){
+            if($uid){
+                $where .= " and RoleID = '{$uid}' ";
+            }
+            if($name){
+                $where .= " and Name = '{$name}' ";
+            }
             $data = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->where($where)->asArray()->one();
             if($data){
-                $wh .= " and status = 2 ";
+                $roleId = $data['RoleID'];
+                $wh .= " and status = 2 and RoleID = '{$roleId}'";
                 //充值金额
                 $money = ChargeMoney::find()->where($wh)->sum('chargenum');
                 $data['rechargeMoney'] = $money?$money:0;
@@ -91,7 +101,16 @@ class PlayerController  extends AdminController
         $uid = \Yii::$app->request->get('uid');
         $order = \Yii::$app->request->get('order');
         $status = \Yii::$app->request->get('status',0);
+        $name = \Yii::$app->request->get('name','');
         $where = ' 1=1 ';
+        if($name){
+            $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+            if($roleId){
+                $where .= " and roleId = '{$roleId}'";
+            }else{
+                $where .= " and 1 > 2";
+            }
+        }
         if($service){
             $where .= " and worldID = '{$service}'";
         }
@@ -152,6 +171,7 @@ class PlayerController  extends AdminController
         $uid = \Yii::$app->request->get('uid');
         $type = \Yii::$app->request->get('type');
         $added = \Yii::$app->request->get('added',99);
+        $name = \Yii::$app->request->get('name','');
         $where = ' 1=1 ';
         if($beginTime){
             if($type ==4){
@@ -177,7 +197,16 @@ class PlayerController  extends AdminController
             }
         }
         if($uid){
-            $where .= " and roleId = $uid ";
+            $where .= " and roleId = '{$uid}' ";
+        }
+        if($name){
+            $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+            if($roleId){
+                $where .= " and roleId = '{$roleId}'";
+            }else{
+                $where .= " and 1 > 2";
+            }
+
         }
         if($type && $type != 4){
             $where .= " and type = $type ";

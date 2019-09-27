@@ -22,9 +22,9 @@
             </div>
 
             <div class="control-group">
-                <label for="modulename" class="control-label">角色ID</label>
+                <label for="modulename" class="control-label">角色名</label>
                 <div class="controls">
-                    <input type="text"  name="roleId" value=""  >
+                    <input type="text"  name="name" value=""  >
                 </div>
             </div>
             <div class="control-group">

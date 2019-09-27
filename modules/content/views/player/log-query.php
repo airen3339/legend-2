@@ -22,11 +22,20 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
+                    角色名：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
                     RoleID：
                 </td>
                 <td>
                     <input style="height: 20px;"   type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
                 </td>
+
+            </tr>
+            <tr>
                 <td>
                     区服：
                 </td>
@@ -41,8 +50,6 @@
                         ?>
                     </select>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     属性：
                 </td>
@@ -103,7 +110,7 @@
                     <td ><span style="width: 80px; "><?php echo $v['roleId']?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($v['type'])?$v['date']:date('Y-m-d H:i:s',$v['createTime'])?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($v['type'])?$v['serverId']:$v['server_id']?></span></td>
-                    <td ><span style="width: 80px; "><?php echo isset($v['type'])?($v['type']==1?'元宝兑换':($v['type']==2?'时时彩':($v['type']==3?'赠送元宝':($v['type']==5?'用户送花':'用户月卡')))):'元宝充值'?></span></td>
+                    <td ><span style="width: 80px; "><?php echo isset($v['type'])?($v['type']==1?'元宝兑换':($v['type']==2?'时时彩':($v['type']==3?'赠送元宝':($v['type']==5?'用户送花':'商城购买')))):'元宝充值'?></span></td>
                     <td ><span style="width: 80px; "><?php echo $v['money']?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($v['type'])?($v['added']==1?'收入':'支出'):'收入'?></span></td>
                     <td ><span style="width: 80px; "><?php echo isset($v['remark'])?$v['remark']:'元宝充值'?></span></td>

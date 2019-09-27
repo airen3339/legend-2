@@ -9,7 +9,12 @@
     <form action="/content/player/detail-information" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-
+                <td>
+                    角色名：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
                 <td>
                     RoleID：
                 </td>

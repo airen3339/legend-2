@@ -10,13 +10,19 @@
         <table class="table">
             <tr>
                 <td>
+                    角色名：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
                     RoleID：
                 </td>
                 <td>
                     <input style="height: 20px" type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
                 </td>
                 <td>
-                    订单查询：
+                    订单号查询：
                 </td>
                 <td>
                     <input style="height: 20px"  type="text" size="10" id="order"  name="order" value="<?php echo isset($_GET['order'])?$_GET['order']:''?>"/>

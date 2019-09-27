@@ -13,6 +13,7 @@ use app\modules\content\models\Item;
 use app\modules\content\models\LTV;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
+use app\modules\content\models\Player;
 use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
@@ -115,7 +116,7 @@ class GmController  extends AdminController
         parent::setActionId($action);
         if($_POST){
             $server = Yii::$app->request->post('server');
-            $roleId = Yii::$app->request->post('roleId');
+            $name = Yii::$app->request->post('name','');
             $emailTitle = Yii::$app->request->post('emailTitle');
             $emailContent = Yii::$app->request->post('emailContent');
 //            $contentOther = Yii::$app->request->post('contentOther');
@@ -123,6 +124,15 @@ class GmController  extends AdminController
             $propId = Yii::$app->request->post('propId');
             $propNum = Yii::$app->request->post('propNum');
             $binding = Yii::$app->request->post('bind');
+            //获取roleID
+            if($name){
+                $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+            }else{
+                $roleId = '';
+            }
+            if(!$roleId){
+                echo "<script>alert('没有该玩家');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
             if($server && $roleId && $emailContent && $emailTitle && $propId && $propNum && $binding){
                 $adminId = Yii::$app->session->get('adminId');
                 //判断是否为元宝
@@ -227,7 +237,16 @@ class GmController  extends AdminController
             $type = Yii::$app->request->get('type',0);//1-玩家 2-区服
             $roleId = Yii::$app->request->get('uid','');
             $serverId = Yii::$app->request->get('server');
+            $name = Yii::$app->request->get('name','');
             $where = " status = 0 ";//未审核
+            if($name){
+                $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+                if($roleId){
+                    $where .= " and roleId = '{$roleId}'";
+                }else{
+                    $where .= " and 1 > 2";
+                }
+            }
             if($type){
                 $where .= " and type = $type";
             }
@@ -242,6 +261,12 @@ class GmController  extends AdminController
             $data = RewardRecord::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
             $servers = Server::getServers();
             foreach($data as $k => $v){
+                if($v['roleId']){
+                $roleName = Player::find()->where("RoleID = '{$v['roleId']}'")->asArray()->one()['Name'];
+                }else{
+                    $roleName = '';
+                }
+                $data[$k]['roleName'] = $roleName;
                 $pushContent = json_decode($v['prop'],true);
                 $content = [];
                 foreach($pushContent['propId'] as $t => $r){
@@ -262,6 +287,7 @@ class GmController  extends AdminController
         parent::setActionId($action);
         $service = \Yii::$app->request->get('server');
         $uid = \Yii::$app->request->get('uid');
+        $name = Yii::$app->request->get('name','');
         $where = ' 1=1 ';
         if($service){
             $where .= " and serverId = '{$service}'";
@@ -269,10 +295,24 @@ class GmController  extends AdminController
         if($uid){
             $where .= " and roleId = $uid ";
         }
+        if($name){
+            $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+            if($roleId){
+                $where .= " and roleId = '{$roleId}'";
+            }else{
+                $where .= " and 1 > 2";
+            }
+        }
         $count = RewardRecord::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = RewardRecord::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
+            if($v['roleId']){
+                $roleName = Player::find()->where("RoleID = '{$v['roleId']}'")->asArray()->one()['Name'];
+            }else{
+                $roleName = '';
+            }
+            $data[$k]['roleName'] = $roleName;
             //操作者
             $data[$k]['adminName'] = Role::find()->where("id = {$v['creator']}")->asArray()->one()['name'];
             //审核人
@@ -419,7 +459,8 @@ class GmController  extends AdminController
         parent::setActionId($action);
         if($_POST){
             $server = Yii::$app->request->post('server');
-            $roleId = Yii::$app->request->post('roleId');
+//            $roleId = Yii::$app->request->post('roleId');
+            $name = Yii::$app->request->post('name','');
             $prefix = Yii::$app->request->post('prefix');
             $params = Yii::$app->request->post('params');
             if(!$server){
@@ -430,6 +471,12 @@ class GmController  extends AdminController
             }
             if(!$params){
                 echo "<script>alert('请填写命令参数');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            //获取roleID
+            if($name){
+                $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+            }else{
+                $roleId = '';
             }
             //记录日志并推送服务端
             OperationLog::logAdd("推送".$server."服GM命令 $prefix $params",$roleId,2);//2-gm命令
@@ -454,7 +501,7 @@ class GmController  extends AdminController
             $server = Yii::$app->request->post('server',0);//0-区服
             $beginTime = Yii::$app->request->post('beginTime',0);
             $endTime = Yii::$app->request->post('endTime',0);
-            $intervalTime = Yii::$app->request->post('intervalTime',0);
+            $intervalTime = Yii::$app->request->post('intervalTime',30);
             $content = Yii::$app->request->post('content');
             $server = $server?$server:0;
             if(!$beginTime){
@@ -471,8 +518,8 @@ class GmController  extends AdminController
                     echo "<script>alert('结束时间必须大于当前时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
                 }
             }
-            if(!$intervalTime){
-                echo "<script>alert('请填写间隔时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            if(!$intervalTime || $intervalTime < 30){
+                echo "<script>alert('请填写正确的间隔时间（30秒起步）');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if(!$content){
                 echo "<script>alert('请填写公告内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
