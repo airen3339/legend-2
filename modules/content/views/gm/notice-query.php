@@ -61,7 +61,7 @@
                     <td style="width: 30px;"><span ><?php echo $v['id']?></span></td>
                     <td style="width: 120px;"><span ><?php echo $v['beginTime']?></span></td>
                     <td style="width: 120px;"><span ><?php echo $v['endTime']?></span></td>
-                    <td ><span title="<?php echo $v['content'];?>"><?php echo $v['content']?></span></td>
+                    <td ><span style="line-height: 1.4em !important;" title="<?php echo $v['content'];?>"><?php echo $v['content']?></span></td>
                     <td ><span><?php echo $v['type']==1?'首页公告':($v['type']==2?'跑马灯公告':'区服公告')?></span></td>
                     <td ><span><?php echo $v['createName']?></span></td>
                     <td ><span ><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
