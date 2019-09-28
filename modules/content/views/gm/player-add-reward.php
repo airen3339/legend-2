@@ -24,7 +24,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">角色名</label>
                 <div class="controls">
-                    <input type="text" id="roleId"  name="name" value="" placeholder="多个英文逗号隔开"  >
+                    <textarea type="text" id="roleId"  name="name" value="" placeholder="多个英文逗号隔开"  ></textarea>
                 </div>
             </div>
             <div class="control-group">
@@ -87,7 +87,7 @@
             alert('请选择区服');return false;
         }
         if(!roleId){
-            alert('请填写角色ID');return false;
+            alert('请填写角色名');return false;
         }
         if(!emailTitle){
             alert('请填写邮件标题');return false;
