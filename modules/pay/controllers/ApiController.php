@@ -34,7 +34,7 @@ class ApiController extends Controller
         $key = key($content);
         $cont = json_decode($key,true);
         $productName = '元宝充值';
-        $amount = $cont['amount']/1000;
+        $amount = $cont['amount'];
         if($amount <= 0){
             die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
         }
