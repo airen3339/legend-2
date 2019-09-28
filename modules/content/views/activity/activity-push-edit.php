@@ -29,7 +29,7 @@
                     <select name="type" id="type" style="width: 105px;">
                         <option value="">请选择</option>
                         <option value='1' <?php if($data['type'] == '1')echo 'selected'?>>每日单充</option>;
-                        <option value='2' <?php if($data['type'] == '2')echo 'selected'?>>累计充值</option>;
+                        <option value='2' <?php if($data['type'] == '2')echo 'selected'?>>累计消费</option>;
                         <option value='3' <?php if($data['type'] == '3')echo 'selected'?>>五行运势</option>;
                     </select>
                 </div>
@@ -75,7 +75,7 @@
                         <li>道具ID</li>
                         <li>道具数量</li>
                         <li>绑定状态</li>
-                        <li>是否删除</li>
+                        <li >操作</li>
                     </ul>
                 </div>
                 <?php if(isset($data['pushContent']['condition'])){
@@ -84,11 +84,28 @@
                         ?>
                         <div class="control-group propContent">
                             <ul class="reward-child controls reward-ul">
-                                <li class="liCondition"><?php echo $v?><input type="hidden" value="<?php echo $v?>" name="liConditions[]"/></li>
-                                <li class="lipropId"><?php echo $content['propId'][$k]?><input type="hidden" value="<?php echo $content['propId'][$k]?>" name="propIds[]"/></li>
-                                <li class="liNumber"><?php echo $content['number'][$k]?><input type="hidden" value="<?php echo $content['number'][$k]?>" name="numbers[]"/></li>
-                                <li class="liBind"><?php echo $content['bind'][$k]==1?'绑定':'未绑定';?><input type="hidden" value="<?php echo $content['bind'][$k]?>" name="binds[]"/></li>
-                                <li><a href="#" class="btn" onclick="deleteProp(this)">删除</a></li>
+                                <li class="liCondition ">
+                                    <span class=""><?php echo $v?></span>
+                                    <input class="input-small inputHid" value="<?php echo $v?>" name="liConditions[]"/>
+                                </li>
+                                <li class="lipropId">
+                                    <span><?php echo $content['propId'][$k]?></span>
+                                    <input class="input-small inputHid" value="<?php echo $content['propId'][$k]?>" name="propIds[]"/>
+                                </li>
+                                <li class="liNumber">
+                                    <span><?php echo $content['number'][$k]?></span>
+                                    <input  class="input-small inputHid" value="<?php echo $content['number'][$k]?>" name="numbers[]"/>
+                                </li>
+                                <li class="liBind">
+                                    <span><?php echo $content['bind'][$k] == 1?'是':'否'?></span>
+                                    <select name="binds[]" class="input-small inputHid" style="height: 27px">
+                                        <option value="1" <?php if($content['bind'][$k] ==1)echo 'selected';?>>是</option>
+                                        <option value="2" <?php if($content['bind'][$k] ==2)echo 'selected';?>>否</option>
+                                    </select>
+                                <li style="width: 120px;!important;height: 27px">
+                                    <a href="#" class="btn" onclick="deleteProp(this)">删除</a>
+                                    <a href="#" class="btn" onclick="editProp(this)">修改</a>
+                                </li>
                             </ul>
                         </div>
                 <?php
@@ -122,22 +139,33 @@
             alert('请选择绑定状态');return false;
         }
         var bindStr  = '';
+        var binYes = '';
+        var binNo = '';
         if(bind == 1){
-            bindStr = '绑定';
+            bindStr = '是';
+            binYes = 'selected';
         }else{
-            bindStr = '未绑定';
+            bindStr = '否';
+            binNo = 'selected';
         }
         var addStr = '<div class="control-group propContent">' +
-            '                    <ul class="reward-child controls reward-ul">' +
-            '                        <li class="liCondition">'+condition+'<input type="hidden" value="'+condition+'" name="liConditions[]"/></li>' +
-            '                        <li class="lipropId">'+propId+'<input type="hidden" value="'+propId+'" name="propIds[]"/></li>' +
-            '                        <li class="liNumber">'+number+'<input type="hidden" value="'+number+'" name="numbers[]"/></li>' +
-            '                        <li class="liBind">'+bindStr+'<input type="hidden" value="'+bind+'" name="binds[]"/></li>' +
-            '                        <li><a href="#" class="btn" onclick="deleteProp(this)">删除</a></li>' +
-            '                    </ul>' +
-            '                </div>';
+    '                    <ul class="reward-child controls reward-ul">' +
+    '                        <li class="liCondition"><span>'+condition+'</span><input class="input-small inputHid" value="'+condition+'" name="liConditions[]"/></li>' +
+    '                        <li class="lipropId"><span>'+propId+'</span><input class="input-small inputHid" value="'+propId+'" name="propIds[]"/></li>' +
+    '                        <li class="liNumber"><span>'+number+'</span><input class="input-small inputHid" value="'+number+'" name="numbers[]"/></li>' +
+    '                        <li class="liBind"><span>'+bindStr+'</span>' +
+    '                           <select name="binds[]" class="input-small inputHid" style="height: 27px">'+
+    '                               <option value="1" '+binYes+' >是</option>'+
+    '                               <option value="2"  '+binNo+'>否</option>'+
+    '                           </select>' +
+    '                        <li style="width: 120px;!important;height: 27px">' +
+    '                           <a href="#" class="btn" onclick="deleteProp(this)">删除</a>' +
+    '                           <a href="#" class="btn" onclick="editProp(this)">修改</a>' +
+    '                           </li>' +
+    '                    </ul>' +
+    '                </div>';
         $('#addContent').append(addStr);
-        $('#condition').val('');
+        // $('#condition').val('');
         $('#propId').val('');
         $('#number').val('');
         $('#bind').val(0);
@@ -149,9 +177,14 @@
             $(_this).parents('div.propContent:first').remove();
         }
     }
+    function editProp(_this){
+        console.log($(_this).parents("li").siblings('li').find("span"));
+        $(_this).parents("li").siblings('li').find("span").addClass('spanHid');
+        $(_this).parents("li").siblings('li').find("input").removeClass('inputHid');
+        $(_this).parents("li").siblings('li').find("select").removeClass('inputHid');
+    }
     function propSubmit(){
         var server = $('#server').val();
-        var remark = $('#remark').val();
         var type = $('#type').val();
         var beginTime = $('#beginTime').val();
         var endTime = $('#endTime').val();
@@ -170,6 +203,11 @@
         }
         if(!condition){
             alert('请添加发放物品');return false;
+        }
+        if(confirm('确定修改并推送服务器？')){
+            return true;
+        }else{
+            return false;
         }
     }
 </script>

@@ -10,6 +10,7 @@ use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\ActivityLog;
 use app\modules\content\models\ActivityPush;
+use app\modules\content\models\Item;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SscActivity;
@@ -166,7 +167,7 @@ class ActivityController  extends AdminController
                 }
                 ActivityLog::logAdd($remark,$model->id,$type);//1-每日单充 2-累计消费 3-五行运势
                 //推送服务端 4242-活动推送
-                ActivityPush::pushActivity($serverId,$model->id,$type,$beginTime,$endTime,$pushContent);
+//                ActivityPush::pushActivity($serverId,$model->id,$type,$beginTime,$endTime,$pushContent);
 
                 echo "<script>alert('添加成功');setTimeout(function(){window.location.href='$target';},1000)</script>";die;
             }else{
@@ -197,6 +198,15 @@ class ActivityController  extends AdminController
         $data = ActivityPush::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['operatorName'] = Role::find()->where("id = {$v['operator']}")->asArray()->one()['name'];
+            $pushContent = json_decode($v['pushContent'],true);
+            $pushStr = '';
+            foreach($pushContent['condition'] as $t => $y){
+                $bind = $pushContent['bind'][$t]==1?'是':'否';
+                $propId = $pushContent['propId'][$t];
+                $propName = Item::find()->where("itemid = $propId")->asArray()->one()['name'];
+                $pushStr .= "条件：{$y}  道具：{$propName}-{$propId} 数量：{$pushContent['number'][$t]} 绑定：{$bind} ； ";
+            }
+            $data[$k]['pushContent'] = $pushStr;
         }
         return $this->render('activity-push-list',['data'=>$data,'servers'=>$servers]);
     }

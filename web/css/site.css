@@ -144,7 +144,7 @@ a.desc:after {
 }
 .reward-ul li {
     float: left;
-    margin:1px 29px 1px 0;
+    margin:1px 50px 1px 0;
     font-weight: bold;
     width: 62px;
 }
@@ -204,4 +204,10 @@ a.desc:after {
 }
 .btnPad{
     padding: 1px 5px !important;
+}
+.inputHid{
+    display: none !important;
+}
+.spanHid{
+    display: none !important;
 }
