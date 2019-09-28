@@ -149,7 +149,7 @@ class OperateController  extends AdminController
             //新增充值金额
             $newRechargeMoney = $rechargeData['rechargeMoney'];
             $sumNewRechMoney += $newRechargeMoney;
-            $data[] = ['date'=>$date,'newRegister'=>$newRegister,'newDevice'=>$newDevice,'newLogin'=>$newLogin,'deviceDau'=>$deviceDau,'accountDau'=>$accountDau,'oldUser'=>$oldUser,'payRate'=>$payRate,'rechargeUser'=>$rechargeUser,'rechargeCount'=>$rechargeCount,'rechargeMoney'=>$rechargeMoney,'arpu'=>$arpu,'arppu'=>$arppu,'newRechargeUser'=>$newRechargeUser,'newRechargeMoney'=>$newRechargeMoney];
+            $data[] = ['date'=>$date,'newRegister'=>$newRegister,'newDevice'=>$newDevice,'newLogin'=>$newLogin,'deviceDau'=>$deviceDau,'accountDau'=>$accountDau,'oldUser'=>$oldUser,'payRate'=>$payRate,'rechargeUser'=>$rechargeUser,'rechargeCount'=>$rechargeCount,'rechargeMoney'=>$rechargeMoney,'arpu'=>round($arpu,2),'arppu'=>round($arppu,2),'newRechargeUser'=>$newRechargeUser,'newRechargeMoney'=>$newRechargeMoney];
         }
         $count = $endDays-$first;
         //平均付费率
