@@ -120,7 +120,6 @@ class TimerController extends Controller
     public function actionLtvData(){
         $channel = User::getChannel();
         $today = date('Y-m-d');
-        $today = \Yii::$app->request->get('date','2019-09-15');
         $begin = strtotime($today);
         $end = $begin + 86399;
         foreach($channel as $k => $v){
