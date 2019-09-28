@@ -414,7 +414,7 @@ class GmController  extends AdminController
             if($res){
                 ActivityLog::logAdd($remark,$model->id,4);
                 //文件记录 便于客户端获取公告内容
-                OperationLog::setNoticeLog($content,$beginTime,$endTime);
+                OperationLog::setNoticeLog($content,$beginTime,$endTime,$model->id);
                 echo "<script>alert('操作成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
             }else{
                 echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -423,10 +423,10 @@ class GmController  extends AdminController
             $id = Yii::$app->request->get('id',0);
             if($id){
                 $notice = Notice::find()->where("id = $id")->asArray()->one();
-                $data = ['notice'=>$notice];
             }else{
-                $data  = [];
+                $notice = Notice::find()->where("type = 1 and current = 1")->asArray()->one();
             }
+            $data = ['notice'=>$notice];
             return $this->render('index-notice',$data);
         }
     }

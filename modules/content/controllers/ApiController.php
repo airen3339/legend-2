@@ -7,6 +7,7 @@ namespace app\modules\content\controllers;
 use app\libs\Methods;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
+use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
 use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\RewardRecord;
@@ -306,6 +307,26 @@ class ApiController extends  Controller
                 }
             }
             $data = ['code'=>1,'message'=>'操作成功'];
+        }
+        die(json_encode($data));
+    }
+    /**
+     *清除当前公告
+     */
+    public function actionDeleteCurrentNotice(){
+        $current = Notice::find()->where("type = 1 and current = 1")->one();
+        if($current){
+            $res = Notice::deleteAll("type = 1 and current = 1");
+            if($res){
+                $path = fopen(IndexDir.'/files/notice/indexNotice.txt','w');
+                fwrite($path, '');
+                fclose($path);
+                $data = ['code'=>1,'message'=>'清除成功'];
+            }else{
+                $data = ['code'=>0,'message'=>'清除失败，请重试'];
+            }
+        }else{
+            $data  = ['code'=>1,'message'=>'没有当前公告'];
         }
         die(json_encode($data));
     }

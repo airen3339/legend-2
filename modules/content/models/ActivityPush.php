@@ -43,7 +43,7 @@ class ActivityPush extends ActiveRecord
             }
             $push = [
                 'MainID' => $activityId,
-                'ActivityType' => $type,
+                'ActivityType' => intval($type),
                 'BeginTime' => $beginTime,
                 'EndTime' => $endTime,
                 'AwardList'=> $AwardList,

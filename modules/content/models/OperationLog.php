@@ -35,11 +35,14 @@ class OperationLog extends ActiveRecord
      * 文件保存
      * 便于客户端获取
      */
-    public static function setNoticeLog($content,$beginTime,$endTime){
+    public static function setNoticeLog($content,$beginTime,$endTime,$noticeId){
         $today = time();//当前时间
         $beginTime = strtotime($beginTime);
         $endTime = strtotime($endTime) + 86399;
         if($today >= $beginTime && $today < $endTime){//当前时间在公告时间段内
+            //记录状态
+            Notice::updateAll(['current'=>0],"type = 1 and current = 1");//清除当前公告状态
+            Notice::updateAll(['current'=>1]," id = $noticeId");//添加当前公告状态
             //写入文件
             $path = fopen(IndexDir.'/files/notice/indexNotice.txt','w');
             fwrite($path, mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding($content) ));

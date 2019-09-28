@@ -27,11 +27,25 @@
                     <textarea name="content"><?php echo isset($notice['content'])?$notice['content']:''?></textarea>
                 </div>
             </div>
+            <br/>
             <div class="control-group">
                 <div class="controls">
-                    <input type="submit" class="btn btn-primary" value="提交">
+                    <input type="submit" class="btn " value="提交">&nbsp;&nbsp;&nbsp;
+                    <a href="#" class="btn" onclick="deleteCurrent()">清除公告</a>
                 </div>
             </div>
         </fieldset>
     </form>
 </div>
+<script>
+    function deleteCurrent(){
+        if(confirm('确定清除当前公告')){
+            $.post('/content/api/delete-current-notice',{},function(e){
+                alert(e.message);
+                if(e.code==1){
+                    window.location.reload();
+                }
+            },'json');
+        }
+    }
+</script>
