@@ -25,6 +25,12 @@ class TestController extends Controller
 
     public function actionIndex()
     {
+        $arr = ["10","10","28","28","68","68","68","98","98","98","328","648","648","648","999","999","999","2999","2999","2999","2999"];
+        foreach($arr as $k => $v){
+            $str = intval($v)*500;
+            $arr[$k] = $str;
+        }
+        die(json_encode($arr));
         echo ('oathYc余超3余超2');
     }
     public function actionTest1(){

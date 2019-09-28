@@ -202,3 +202,6 @@ a.desc:after {
     border: 0px;
     opacity: 0.8;
 }
+.btnPad{
+    padding: 1px 5px !important;
+}

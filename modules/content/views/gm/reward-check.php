@@ -55,7 +55,13 @@
     <form action="/content/gm/reward-check" method="post">
         <table class="table table-hover">
             <thead>
+            <a class="btn" href="#"  onclick="checkAllAction(1)" style="padding: 1px 5px">全选</a>&nbsp;
+            <a class="btn" href="#"  onclick="checkAllAction(2)" style="padding: 1px 5px">取消</a>&nbsp;
+            <a class="btn" href="#"  onclick="checkAllAction(3)" style="padding: 1px 5px">通过</a>&nbsp;
+            <a class="btn" href="#"  onclick="checkAllAction(4)" style="padding: 1px 5px">作废</a>
             <tr>
+                <th></th>
+                <th>ID</th>
                 <th>添加时间</th>
                 <th>奖励类型</th>
                 <th>区服</th>
@@ -67,20 +73,22 @@
             </thead>
             <tbody>
                 <?php foreach($data as $k => $v){?>
-                <tr  class="text-item tdBorder">
-                    <td ><span ><?php echo date('Y-m-d',$v['createTime'])?></span></td>
-                    <td ><span ><?php echo $v['type']==1?'玩家奖励 ('.$v['roleName'].')':'区服奖励';?></span></td>
-                    <td ><span ><?php echo $v['serverId'];?></span></td>
-                    <td ><span ><?php echo  $v['title'];?></span></td>
-                    <td ><span ><?php echo $v['content'];?></span></td>
-                    <td style="width: 380px"><span ><?php echo $v['pushContent'];?></span></td>
-                    <td  class="notSLH" >
-                        <div>
-                            <a class="btn" href="#" onclick="rewardCheck(<?php echo $v['id']?>,1)">通过</a>
-                            <a class="btn" href="#"  onclick="rewardCheck(<?php echo $v['id']?>,2)">作废</a>
-                        </div>
-                    </td>
-                </tr>
+                    <tr  class="text-item tdBorder">
+                        <td style="width: 10px;"><span ><input type="checkbox" class="checkReward" name="checkReward[]" value="<?php echo $v['id'];?>" /></span></td>
+                        <td style="width: 25px;"><span ><?php echo $v['id'];?></span></td>
+                        <td ><span ><?php echo date('Y-m-d',$v['createTime'])?></span></td>
+                        <td ><span ><?php echo $v['type']==1?'玩家奖励 ('.$v['roleName'].')':'区服奖励';?></span></td>
+                        <td ><span ><?php echo $v['serverId'];?></span></td>
+                        <td ><span ><?php echo  $v['title'];?></span></td>
+                        <td ><span ><?php echo $v['content'];?></span></td>
+                        <td style="width: 380px"><span ><?php echo $v['pushContent'];?></span></td>
+                        <td  class="notSLH" >
+                            <div>
+                                <a class="btn" href="#" onclick="rewardCheck(<?php echo $v['id']?>,1)" style="padding: 1px 5px">通过</a>
+                                <a class="btn" href="#"  onclick="rewardCheck(<?php echo $v['id']?>,2)" style="padding: 1px 5px">作废</a>
+                            </div>
+                        </td>
+                    </tr>
                 <?php }?>
             </tbody>
         </table>
@@ -112,6 +120,40 @@
                     window.location.reload();
                 }
             },'json');
+        }
+    }
+    function checkAllAction(type){
+        //type 1-全选 2-选中取消 3-通过 4-作废
+        if(type ==1){
+            $("input[class='checkReward']").each(function(inde,ele){
+                $(ele).prop('checked','checked');
+            });
+        }
+        if(type ==2){
+            $("input[class='checkReward']").each(function(inde,ele){
+                $(ele).prop('checked','');
+            });
+        }
+        if(type == 3 || type == 4){
+            var ids = '';
+            $("input[class='checkReward']:checked").each(function(inde,ele){
+                var val = $(ele).val();
+                console.log(val);
+                ids += val+'=';
+            });
+            if(!ids){
+                alert('请勾选操作内容');return false;
+            }
+            if(confirm('确定进行该操作吗？')){
+                $.post('/content/api/reward-check',{type:type,ids:ids},function(e){
+                    alert(e.message);
+                    if(e.code == 1){
+                        window.location.reload();
+                    }
+                },'json');
+            }else{
+                return false;
+            }
         }
     }
 </script>

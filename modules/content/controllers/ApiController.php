@@ -9,8 +9,10 @@ use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
 use app\modules\content\models\OperationLog;
 use app\modules\content\models\QuestionCategory;
+use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
+use yii\base\Exception;
 use yii\web\Controller;
 use Yii;
 
@@ -237,6 +239,72 @@ class ApiController extends  Controller
             $data = QuestionCategory::find()->where("pid = $pid")->asArray()->all();
         }else{
             $data = [];
+        }
+        die(json_encode($data));
+    }
+    /**
+     * 批量审核奖励
+     */
+    public function actionRewardCheck(){
+        $type = Yii::$app->request->post('type',3);//3-通过 4-作废
+        $ids = Yii::$app->request->post('ids','');
+        $status = $type == 3 ? 1:-1;//1-通过 -1-作废
+        $adminId = Yii::$app->session->get('adminId');
+        if(!$ids){
+            $data = ['code'=>0,'message'=>'操作id不能为空'];
+        }else{
+            $ids = trim($ids,'=');
+            $idArr = explode('=',$ids);
+            foreach($idArr as $k => $v){
+                $res = RewardRecord::updateAll(['checker'=>$adminId,'status'=>$status],"id = $v");
+                if(!$res){
+                    $data = ['code'=>0,'message'=>'部分操作失败，请刷新重试'];
+                    die(json_encode($data));
+                }
+                $reward = RewardRecord::findOne($v);
+                if($status != 1){//作废
+                    if($reward->type ==1){
+                        OperationLog::logAdd('审核玩家奖励（作废）',$v,3);//3-玩家 4-区服
+                    }else{
+                        OperationLog::logAdd('审核区服奖励（作废）',$v,4);//3-玩家 4-区服
+                    }
+                }
+                $pushContent = json_decode($reward['prop'],true);
+                if($reward->type ==1){//玩家奖励
+                    //推送服务端
+                    $binding = $pushContent['bind'][0]==1?1:0;//1-绑定 0-未绑定
+                    $content = ['MailTitle'=>$reward->title,'MailContent'=>$reward->content,'Hyperlink'=>$reward->sender,'HyperlinkText'=>$reward->contentOther,'ItemId'=>$pushContent['propId'][0],'ItemNum'=>$pushContent['number'][0],'RoleId'=>$reward->roleId,'binding'=>$binding];
+                    Methods::GmFileGet($content,$reward->serverId,6,4113);//4113 单人邮件
+                    OperationLog::logAdd('审核玩家奖励（通过并推送服务端）',$v,3);//3-玩家 4-区服
+                }else{//区服奖励
+                    //推送服务端
+                    if($reward->sendTime){
+                        $sendTime = strtotime($reward->sendTime);
+                        if($sendTime < time()){//小于当前时间
+                            $sendTime = 0;
+                        }
+                    }else{
+                        $sendTime = 0;
+                    }
+                    $propIds = $pushContent['propId'];
+                    $numbers = $pushContent['number'];
+                    $binds = $pushContent['bind'];
+                    $idss = [];
+                    $itemList = [];
+                    foreach($propIds as $kk => $vk){
+                        if(!in_array([$vk,$binds[$kk]],$idss)){
+                            $idss[] = [$vk,$binds[$kk]];
+                        }
+                        $binding = $binds[$kk]==1?1:0;//1-绑定 0-未绑定
+                        $itemList[] = ['ItemId'=>$vk,'ItemNum'=>$numbers[$kk],'binding'=>$binding];
+                    }
+                    $propNum = count($idss);
+                    $content = ['SendTime'=>$sendTime,'MinLevel'=>$reward->minLevel,'MaxLevel'=>$reward->maxLevel,'MailTitle'=>$reward->title,'MailContent'=>$reward->content,'Hyperlink'=>$reward->sender,'ButtonContent'=>$reward->contentOther,'ItemList'=>$itemList,'ItemList_count'=>$propNum];
+                    Methods::GmFileGet($content,$reward->serverId,6,4143);//4143 区服邮件
+                    OperationLog::logAdd('审核区服奖励（通过并推送服务端）',$v,4);
+                }
+            }
+            $data = ['code'=>1,'message'=>'操作成功'];
         }
         die(json_encode($data));
     }
