@@ -119,28 +119,40 @@ class TimerController extends Controller
      */
     public function actionLtvData(){
         $channel = User::getChannel();
-        $today = date('Y-m-d');
+        $today = date('Y-m-12');
         $begin = strtotime($today);
         $end = $begin + 86399;
         foreach($channel as $k => $v){
             //渠道今日新增账号数
-            $sql = "select p.* from `user` u inner join `player` p on p.UserID = u.UserID where u.PackageFlag = '{$v}' and ( unix_timestamp(u.CreateDate) between $begin and $end ) ";
+            $sql = "select p.RoleID from `user` u inner join `player` p on p.UserID = u.UserID where u.PackageFlag = '{$v}' and ( unix_timestamp(u.CreateDate) between $begin and $end ) ";
             $amount = \Yii::$app->db2->createCommand($sql)->queryAll();
             $login = count($amount);
+            $loginMsg = '';//新增账号信息
+            foreach($amount as $y => $p){
+                $loginMsg .= $p['RoleID'].',';
+            }
+            $loginMsg = trim($loginMsg,',');
             //新增设备数
-            $sql .= " group by u.DevString";
+            $sql = " select u.DevString from `user` u inner join `player` p on p.UserID = u.UserID where u.PackageFlag = '{$v}' and ( unix_timestamp(u.CreateDate) between $begin and $end )  group by u.DevString";
             $device = \Yii::$app->db2->createCommand($sql)->queryAll();
             $deviceCount = count($device);
+            $deviceMsg = '';//新增设备信息
+            foreach($device as $t => $g){
+                $deviceMsg .= $g['DevString'].',';
+            }
+            $deviceMsg = trim($deviceMsg,',');
             //渠道今日充值金额
-            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID and u.PackageFlag = '{$v}' and ( unix_timestamp(c.finishTime) between $begin and $end )  and c.status = 2 ";
-            $money = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
+//            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID and u.PackageFlag = '{$v}' and ( unix_timestamp(c.finishTime) between $begin and $end )  and c.status = 2 ";
+//            $money = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
             $model = new LTV();
             $model->date = $today;
-            $model->money = $money?$money:0;
+//            $model->money = $money?$money:0;
             $model->device = $deviceCount;
             $model->login = $login;
             $model->createTime = time();
             $model->channel = $v;
+            $model->deviceMsg = $deviceMsg;
+            $model->loginMsg = $loginMsg;
             $model->save();
         }
     }

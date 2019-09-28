@@ -418,14 +418,20 @@ class OperateController  extends AdminController
                 $add = LTV::find()->where("date = '{$date}' and channel = '{$channel}'")->asArray()->one();
                 if($ltv ==1){
                     $addNum = $add['login'];//账号数
+                    $objectRoleId  = $add['loginMsg'];
                 }else{
                     $addNum = $add['device'];//设备数
+                    $objectDevice = $add['deviceMsg'];//计算对象
+                    $objectRoleId = LTV::deviceGetRoleId($objectDevice);
                 }
             }else{//所有渠道
                 if($ltv ==1){
                     $addNum = LTV::find()->where("date = '{$date}' ")->asArray()->sum('login');
+                    $objectRoleId = LTV::getAllMsg($date,1);//获取当前所有渠道的新增账号信息
                 }else{
                     $addNum = LTV::find()->where("date = '{$date}' ")->asArray()->sum('device');
+                    $objectDevice = LTV::getAllMsg($date,2);//获取当前所有渠道的新增设备信息
+                    $objectRoleId = LTV::deviceGetRoleId($objectDevice);
                 }
             }
             $addNum = $addNum?$addNum:0;
@@ -437,10 +443,16 @@ class OperateController  extends AdminController
                 }else{
                     $endTime = $dateTime + 86399*$v;
                     //充值金额
-                    if($channel != 99){//选择某个渠道
-                        $moneySum = LTV::find()->where("( unix_timestamp(date) between $dateTime and $endTime ) and channel = '{$channel}'")->sum('money');
-                    }else{//所有渠道
-                        $moneySum = LTV::find()->where("unix_timestamp(date) between $dateTime and $endTime ")->sum('money');
+                    if($objectRoleId){
+                        if($channel != 99){//选择某个渠道
+                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID and u.PackageFlag = '{$channel}' and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
+                        }else{//所有渠道
+                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID  and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
+                        }
+                        $moneySum = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
+                        $moneySum = $moneySum?$moneySum:0;
+                    }else{
+                        $moneySum = 0;
                     }
                     //总充值/新增数
                     if($moneySum ==0){
