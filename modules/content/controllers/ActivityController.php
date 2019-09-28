@@ -122,7 +122,7 @@ class ActivityController  extends AdminController
                 if($type ==1){
                     $remark = '每日单充';
                 }elseif($type ==2){
-                    $remark = '累计充值';
+                    $remark = '累计消费';
                 }elseif($type ==3){
                     $remark = '五行运势';
                 }else{
