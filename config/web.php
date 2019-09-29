@@ -119,7 +119,7 @@ $config = [
              //'suffix' => '.html',
 
              'rules' => [
-                 ''=>'/cn/index/index',  //首页
+//                 ''=>'/cn/index/index',  //首页
                  'legend'=>'/content/login/login',//后台登录页
                  'ycj.php'=>'/content/login/login',
              ],
