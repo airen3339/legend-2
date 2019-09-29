@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\libs\Methods;
 use Yii;
 use yii\web\Controller;
 
@@ -25,6 +26,8 @@ class TestController extends Controller
 
     public function actionIndex()
     {
+
+        Methods::varDumpLog('pay.txt',json_encode('www'),'a');
         $arr = ["10","10","28","28","68","68","68","98","98","98","328","648","648","648","999","999","999","2999","2999","2999","2999"];
         foreach($arr as $k => $v){
             $str = intval($v)*500;
