@@ -21,8 +21,7 @@ class MailReceive extends ActiveRecord
         //删除当天的数据记录
         self::deleteAll("date = '{$date}'");
         $servers = Server::getServers();//获取区服
-//        $url = IndexDir.'/files/';
-        $url = 'http://192.168.0.30/logs/TLog/';
+        $url = \Yii::$app->params['legendLogUrl'];
         foreach($servers as $k => $v) {
             $dat = str_replace('-','',$date);
             //获取日志文件并统计

@@ -44,8 +44,7 @@ class YuanbaoRole extends ActiveRecord
         YuanbaoRole::deleteAll("date = '{$date}'");
         CurrencyData::deleteAll("date = '{$date}'");
         $servers = Server::getServers();//获取区服
-//        $url = IndexDir.'/files/';
-        $url = 'http://192.168.0.30/logs/TLog/';
+        $url = \Yii::$app->params['legendLogUrl'];
         foreach($servers as $k => $v) {
             $fileName = "lua_log-{$v['id']}-$date.txt";
             $path = $url.$fileName;
