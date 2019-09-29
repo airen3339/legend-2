@@ -17,7 +17,7 @@ class LTVMoney extends ActiveRecord
 //        $today = date('Y-m-d');
         $beginTime = strtotime($today);
         $endTime = $beginTime + 86399;
-        $dates = LTV::find()->where("date='{$today}'")->asArray()->all();
+        $dates = LTV::find()->asArray()->all();
         foreach($dates as $k => $v){
             $ltvId = $v['id'];
             $deviceMsg = $v['deviceMsg'];
