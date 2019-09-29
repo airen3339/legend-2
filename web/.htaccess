@@ -4,11 +4,6 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 #RewriteRule . index.php
-<Files ~ "^.(htaccess|htpasswd)$">
-deny from all
-</Files>
-DirectoryIndex index.html index.php
-order deny,allow
 RewriteRule ^(.*)$ index.php?/$1 [QSA,PT,L]
 # Otherwise forward it to index.php
 </IfModule>
