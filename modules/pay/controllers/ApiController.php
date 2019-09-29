@@ -274,8 +274,8 @@ class ApiController extends Controller
 //                    $url = '192.168.0.15:8080';
                     $url = \Yii::$app->params['gameServerUrl'];
                     $res = Methods::post($url,$postData);
-//                    Methods::varDumpLog('pay.txt',json_encode($postData),'a');
-//                    Methods::varDumpLog('pay.txt',json_encode($res),'a');
+                    Methods::varDumpLog('pay.txt',json_encode($postData),'a');
+                    Methods::varDumpLog('pay.txt',json_encode($res),'a');
                 }
                 echo 'SUCCESS';
             }else{
