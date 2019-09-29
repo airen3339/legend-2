@@ -27,11 +27,7 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-        $date = Yii::$app->request->get('date','2019-09-13');
-        for($i=11;$i<29;$i++){
-            $date = '2019-09-'.$i;
-            LTVMoney::recordLtvMoneyData($date);
-        }
+        
     }
     public function actionTest1(){
         $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];

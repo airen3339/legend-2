@@ -13,8 +13,8 @@ class LTVMoney extends ActiveRecord
         return '{{%ltv_money_data}}';
     }
     //统计ltv充值数据
-    public static function recordLtvMoneyData($today){
-//        $today = date('Y-m-d');
+    public static function recordLtvMoneyData(){
+        $today = date('Y-m-d');
         $beginTime = strtotime($today);
         $endTime = $beginTime + 86399;
         $dates = LTV::find()->where("unix_timestamp(date) <= $beginTime")->asArray()->all();
