@@ -13,6 +13,7 @@ use app\modules\content\models\LoginData;
 use app\modules\content\models\LoginRole;
 use app\modules\content\models\LTV;
 use app\modules\content\models\LTVMoney;
+use app\modules\content\models\MailReceive;
 use app\modules\content\models\Notice;
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
@@ -289,5 +290,11 @@ class TimerController extends Controller
         $path = fopen(IndexDir.'/files/notice/indexNotice.txt','w');
         fwrite($path, mb_convert_encoding( $content, 'UTF-8', mb_detect_encoding($content) ));
         fclose($path);
+    }
+    /**
+     * 定时记录用户邮件接收日志
+     */
+    public function actionRoleMailReceive(){
+        MailReceive::getMailLog();
     }
 }

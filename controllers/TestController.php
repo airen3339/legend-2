@@ -27,7 +27,7 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-        
+
     }
     public function actionTest1(){
         $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];

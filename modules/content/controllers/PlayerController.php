@@ -10,6 +10,7 @@ use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\CurrencyData;
+use app\modules\content\models\MailReceive;
 use app\modules\content\models\Player;
 use app\modules\content\models\Server;
 use app\modules\content\models\User;
@@ -235,5 +236,36 @@ class PlayerController  extends AdminController
         $servers = Server::getServers();
         $types = YuanbaoRole::getTypes();
         return $this->render('log-query',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
+    }
+
+    /**
+     * 角色邮件领取
+     */
+    public function actionMailReceive(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $name = \Yii::$app->request->get('name','');
+        $serverId = \Yii::$app->request->get('server','');
+        $where = " 1=1";
+        if($serverId || $name){
+            //获取实时日志记录
+            MailReceive::getMailLog();
+        }
+        if($serverId){
+            $where .= " and serverId = $serverId ";
+        }
+        if($name){
+            $roleId = Player::find()->where("Name='{$name}'")->asArray()->one()['Name'];
+            if($roleId){
+                $where .= " and roleId = '{$roleId}'";
+            }else{
+                $where .= " and 1 > 2";
+            }
+        }
+        $count = MailReceive::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = MailReceive::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        $servers = Server::getServers();
+        return $this->render('mail-receive',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
     }
 }
