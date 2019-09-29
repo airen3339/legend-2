@@ -15,6 +15,7 @@ use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
 use app\modules\content\models\Server;
+use Project\Command\YourCustomCommand;
 use yii\data\Pagination;
 use Yii;
 
@@ -81,7 +82,53 @@ class ServiceController extends  AdminController {
     public function actionBillMessage(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        $name = Yii::$app->request->get('name');
+        $account = Yii::$app->request->get('account');
+        $server = Yii::$app->request->get('server');
+        $billType = Yii::$app->request->get('billType');
+        $billScource = Yii::$app->request->get('billSource');
+        $quesParent = Yii::$app->request->get('quesParent');
+        $phone = Yii::$app->request->get('phone');
+        $qq = Yii::$app->request->get('qq');
+        $email = Yii::$app->request->get('email');
         $where = " 1=1 ";
+        if($beginTime){
+            $begin = strtotime($beginTime);
+            $where .= " and createTime >= $begin";
+        }
+        if($endTime){
+            $end = strtotime($endTime) + 86399;
+            $where .= " and createTime <= $end";
+        }
+        if($name){
+            $where .= " and gameName = '{$name}'";
+        }
+        if($account){
+            $where .= " and account = '{$account}'";
+        }
+        if($server){
+            $where .= " and gameServer = '{$server}'";
+        }
+        if($billType){
+            $where .= " and billType = $billType";
+        }
+        if($billScource){
+            $where .= " and billSource = $billScource";
+        }
+        if($quesParent){
+            $where .= " and quesParent = $quesParent";
+        }
+        if($phone){
+            $where .= " and phone = '{$phone}'";
+        }
+        if($email){
+            $where .= " and email = '{$email}'";
+        }
+        if($qq){
+            $where .= " and qq = '{$qq}'";
+        }
         $count = BillMessage::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $bill = BillMessage::find()->where($where)->orderBy('id desc')->asArray()->offset($page->offset)->limit($page->limit)->all();
@@ -115,7 +162,9 @@ class ServiceController extends  AdminController {
             //二级分类
             $bill[$k]['quesChild'] = QuestionCategory::find()->where("id = {$v['quesChild']}")->asArray()->one()['name'];
         }
-        return $this->render('bill-message',['bills'=>$bill,'page'=>$page,'count'=>$count]);
+        $servers = Server::getServers();//区服
+        $quesParent = QuestionCategory::find()->where("pid =0")->asArray()->all();
+        return $this->render('bill-message',['bills'=>$bill,'page'=>$page,'count'=>$count,'servers'=>$servers,'billTypes'=>$billTypes,'billSources'=>$billSources,'quesParent'=>$quesParent]);
     }
     /**
      * 单据信息编辑

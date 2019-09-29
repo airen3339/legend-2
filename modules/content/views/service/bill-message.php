@@ -13,7 +13,113 @@
     <form action="/content/service/bill-message" method="get" class="form-horizontal">
         <table class="table">
             <tr>
+                <td>
+                    开始日期：
+                </td>
+                <td>
+                    <input class="input-small Wdate" onclick="WdatePicker()" type="text" size="10" id="beginTime"  name="beginTime" value="<?php echo isset($_GET['beginTime'])?$_GET['beginTime']:''?>"/>
+                </td>
+                <td>
+                    结束日期：
+                </td>
+                <td>
+                    <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
+                </td>
+                <td>
+                    游戏昵称：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="name" name="name"  value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
+                    游戏账号：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="account" name="account"  value="<?php echo isset($_GET['account'])?$_GET['account']:''?>"/>
+                </td>
             </tr>
+            <tr>
+                <td>
+                    区服：
+                </td>
+                <td>
+                    <select name="serverId" style="width: 100px">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['serverId']) && $_GET['serverId'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    单据类型：
+                </td>
+                <td>
+                    <select name="billType" style="width: 100px">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($billTypes as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['billType']) && $_GET['billType'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    单据来源：
+                </td>
+                <td>
+                    <select name="billSource" style="width: 100px">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($billSources as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['billSource']) && $_GET['billSource'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    一级分类：
+                </td>
+                <td>
+                    <select name="quesParent" style="width: 100px">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($quesParent as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['quesParent']) && $_GET['quesParent'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    联系电话：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="phone" name="phone"  value="<?php echo isset($_GET['phone'])?$_GET['phone']:''?>"/>
+                </td>
+                <td>
+                    联系QQ：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="qq" name="qq"  value="<?php echo isset($_GET['qq'])?$_GET['qq']:''?>"/>
+                </td>
+                <td>
+                    联系邮箱：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="email" name="email"  value="<?php echo isset($_GET['email'])?$_GET['email']:''?>"/>
+                </td>
+            </tr>
+
         </table>
     </form>
     <form action="/content/service/bill-message" method="post">
