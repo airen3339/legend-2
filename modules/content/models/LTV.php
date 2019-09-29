@@ -52,7 +52,8 @@ class LTV extends ActiveRecord
             $deviceArr = explode(',',$objectDevice);
             $ids = [];
             foreach($deviceArr as $e => $t){
-                $sql = "select p.RoleID from `user` u inner join player p on p.UserID = u.UserID where u.DevString = '{$objectDevice}'";
+                $t = trim($t);
+                $sql = "select p.RoleID from `user` u inner join player p on p.UserID = u.UserID where u.DevString = '{$t}'";
                 $arr = \Yii::$app->db2->createCommand($sql)->queryAll();
                 foreach($arr as $k => $v){
                     if($v['RoleID']){
