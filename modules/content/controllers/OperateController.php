@@ -11,6 +11,7 @@ use app\libs\Chart;
 use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\LoginData;
 use app\modules\content\models\LTV;
+use app\modules\content\models\LTVMoney;
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
@@ -418,21 +419,23 @@ class OperateController  extends AdminController
                 $add = LTV::find()->where("date = '{$date}' and channel = '{$channel}'")->asArray()->one();
                 if($ltv ==1){
                     $addNum = $add['login'];//账号数
-                    $objectRoleId  = $add['loginMsg'];
+//                    $objectRoleId  = $add['loginMsg'];
                 }else{
                     $addNum = $add['device'];//设备数
-                    $objectDevice = $add['deviceMsg'];//计算对象
-                    $objectRoleId = LTV::deviceGetRoleId($objectDevice);
+//                    $objectDevice = $add['deviceMsg'];//计算对象
+//                    $objectRoleId = LTV::deviceGetRoleId($objectDevice);
                 }
+                $ltvId = $add['id'];
             }else{//所有渠道
                 if($ltv ==1){
                     $addNum = LTV::find()->where("date = '{$date}' ")->asArray()->sum('login');
-                    $objectRoleId = LTV::getAllMsg($date,1);//获取当前所有渠道的新增账号信息
+//                    $objectRoleId = LTV::getAllMsg($date,1);//获取当前所有渠道的新增账号信息
                 }else{
                     $addNum = LTV::find()->where("date = '{$date}' ")->asArray()->sum('device');
-                    $objectDevice = LTV::getAllMsg($date,2);//获取当前所有渠道的新增设备信息
-                    $objectRoleId = LTV::deviceGetRoleId($objectDevice);
+//                    $objectDevice = LTV::getAllMsg($date,2);//获取当前所有渠道的新增设备信息
+//                    $objectRoleId = LTV::deviceGetRoleId($objectDevice);
                 }
+                $ltvId = LTV::find()->select("group_concat(id) as ids")->where("date = '{$date}'")->asArray()->one()['ids'];
             }
             $addNum = $addNum?$addNum:0;
             $dateData['date'] = $date;
@@ -443,13 +446,17 @@ class OperateController  extends AdminController
                 }else{
                     $endTime = $dateTime + 86399*$v;
                     //充值金额
-                    if($objectRoleId){
+                    if($ltvId){
                         if($channel != 99){//选择某个渠道
-                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID and u.PackageFlag = '{$channel}' and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
+
+//                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID and u.PackageFlag = '{$channel}' and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
                         }else{//所有渠道
-                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID  and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
+//                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID  and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
                         }
-                        $moneySum = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
+
+//                        $moneySum = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
+                        $str = $ltv==1?'loginMoney':'deviceMoney';
+                        $moneySum = LTVMoney::find()->where("ltvId in ($ltvId) and ( unix_timestamp(date) between $dateTime and $endTime )")->asArray()->sum($str);
                         $moneySum = $moneySum?$moneySum:0;
                     }else{
                         $moneySum = 0;

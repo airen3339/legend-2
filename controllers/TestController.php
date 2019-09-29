@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\libs\Methods;
+use app\modules\content\models\LTVMoney;
 use Yii;
 use yii\web\Controller;
 
@@ -26,15 +27,9 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-
-        Methods::varDumpLog('pay.txt',json_encode('www'),'a');
-        $arr = ["10","10","28","28","68","68","68","98","98","98","328","648","648","648","999","999","999","2999","2999","2999","2999"];
-        foreach($arr as $k => $v){
-            $str = intval($v)*500;
-            $arr[$k] = $str;
-        }
-        die(json_encode($arr));
-        echo ('oathYc余超3余超2');
+        $date = Yii::$app->request->get('date','2019-09-11');
+        var_dump($date);
+        LTVMoney::recordLtvMoneyData($date);
     }
     public function actionTest1(){
         $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];

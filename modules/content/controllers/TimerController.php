@@ -12,6 +12,7 @@ use app\modules\content\models\Item;
 use app\modules\content\models\LoginData;
 use app\modules\content\models\LoginRole;
 use app\modules\content\models\LTV;
+use app\modules\content\models\LTVMoney;
 use app\modules\content\models\Notice;
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
@@ -155,6 +156,8 @@ class TimerController extends Controller
             $model->loginMsg = $loginMsg;
             $model->save();
         }
+        //统计当日的充值数据
+        LTVMoney::recordLtvMoneyData();
     }
     /**
      * 角色登录日志数据记录
