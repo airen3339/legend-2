@@ -13,5 +13,7 @@ class IndexController  extends AdminController
         \Yii::$app->session->set('contentId',0);
         return $this->render('index');
     }
-
+    public function actionShow(){
+        return $this->renderPartial('show');
+    }
 }

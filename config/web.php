@@ -19,7 +19,6 @@ $config = [
     'basePath' => dirname(__DIR__),
 
     'bootstrap' => ['log'],
-    'defaultRoute' => 'index',
     'modules' => [
 
         'content' => [
@@ -119,7 +118,7 @@ $config = [
              //'suffix' => '.html',
 
              'rules' => [
-//                 ''=>'/cn/index/index',  //首页
+                 ''=>'/content/index/show',  //首页
                  'legend'=>'/content/login/login',//后台登录页
                  'ycj.php'=>'/content/login/login',
              ],
