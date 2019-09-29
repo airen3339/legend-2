@@ -19,7 +19,7 @@ $config = [
     'basePath' => dirname(__DIR__),
 
     'bootstrap' => ['log'],
-
+    'defaultRoute' => 'index',
     'modules' => [
 
         'content' => [
