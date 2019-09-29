@@ -6,12 +6,12 @@
 <!--    --><?php //}?>
 </ul>
 <ul class="nav pull-right">
-    <li>
-        <a href="#" class="download" role="button" onclick="setIp(1)"   data-toggle="modal" >外网</a>
-    </li>
-    <li>
-        <a href="#" class="download" role="button" onclick="setIp(2)"   data-toggle="modal" >内网</a>
-    </li>
+<!--    <li>-->
+<!--        <a href="#" class="download" role="button" onclick="setIp(1)"   data-toggle="modal" >外网</a>-->
+<!--    </li>-->
+<!--    <li>-->
+<!--        <a href="#" class="download" role="button" onclick="setIp(2)"   data-toggle="modal" >内网</a>-->
+<!--    </li>-->
     <li>
         <a href="#" class="download" role="button" onclick="showPassFrame()"   data-toggle="modal" >修改密码</a>
     </li>
