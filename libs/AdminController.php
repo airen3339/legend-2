@@ -5,6 +5,7 @@
  */
 	namespace app\libs;
     use app\modules\content\models\Catalog;
+    use app\modules\content\models\RoleCatalog;
     use yii;
     use yii\web\Controller;
 	class AdminController extends Controller {
@@ -22,7 +23,14 @@
         //设置actionId
         public function setActionId($action){
             $actionId = Catalog::find()->where("rule='{$action}'")->asArray()->one()['id'];
-            Yii::$app->session->set('actionId',$actionId);
+            //判断是否有改目录权限
+            $adminId = $this->adminId;
+            $res = RoleCatalog::find()->where("roleId = $adminId and cataId = $actionId")->one();
+            if($res){
+                Yii::$app->session->set('actionId',$actionId);
+            }else{
+                die('<script>alert("您没有此访问权限");history.go(-1);</script>');
+            }
         }
         //设置contentId
         public function setContentId($action){
