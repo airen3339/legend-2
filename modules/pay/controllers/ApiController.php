@@ -264,12 +264,13 @@ class ApiController extends Controller
         $result = self::checkAlipaySign($orderNo,$appId);
         if($result){
             if($resultcode == '0000'){
-                $orderData = Recharge::find()->where("orderNumber = '{$orderNo}'")->asArray()->one();
+                $amount = $amount/100;//换成元
+                $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
                     Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
 //                    $amount = $amount/100;//换成元
-                    $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$amount*1000,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
+                    $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money']*1000,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
 //                    $url = '192.168.0.15:8080';
                     $url = \Yii::$app->params['gameServerUrl'];
                     $res = Methods::post($url,$postData);
