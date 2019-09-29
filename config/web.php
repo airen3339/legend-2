@@ -121,7 +121,7 @@ $config = [
              'rules' => [
                  ''=>'/cn/index/index',  //首页
                  'legend'=>'/content/login/login',//后台登录页
-                 'admin.php'=>'/content/login/login',
+                 'ycj.php'=>'/content/login/login',
              ],
 
          ],
