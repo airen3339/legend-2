@@ -386,7 +386,7 @@ class GmController  extends AdminController
     /**
      * 首页公告
      */
-    public function actionIndexNotice(){
+    public function actionHomeNotice(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         if($_POST){
