@@ -21,6 +21,7 @@ class LoginController extends  Controller{
      *
      */
     public function actionLogin(){
+        var_dump($_SERVER);die;
         return $this->renderPartial('login');
     }
     /**
