@@ -17,7 +17,7 @@
                 $this->adminId = $adminId;
                 $this->createPower = Yii::$app->session->get('createPower');
             }else{
-                die('<script>alert("您没有此访问权限");history.go(-1);</script>');
+                die('<script>alert("您没有此访问权限!");history.go(-1);</script>');
             }
         }
         //设置actionId

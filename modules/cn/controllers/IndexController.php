@@ -18,7 +18,7 @@ class IndexController extends yii\web\Controller {
      * cy
      */
     public function actionIndex(){
-        return $this->renderPartial("login");
+        return $this->renderPartial("index");
     }
     /**
      * 退出

@@ -5,5 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 #RewriteRule . index.php
 RewriteRule ^(.*)$ index.php?/$1 [QSA,PT,L]
+#RewriteCond %{QUERY_STRING} ^[ ]{0,1}$ [NC]
+#RewriteRule ^$ index.php [R=301,L]
 # Otherwise forward it to index.php
 </IfModule>

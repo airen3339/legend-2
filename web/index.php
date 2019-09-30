@@ -11,8 +11,6 @@ require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 
 require_once(__DIR__ . '/../libs/protobuf/out/GPBMetadata/Dbbuff.php');
 
-
-
 $config = require(__DIR__ . '/../config/web.php');
 //error_reporting(E_ALL);
 (new yii\web\Application($config))->run();

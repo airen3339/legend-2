@@ -151,7 +151,7 @@
                     <?php if(isset($bill['imageFile']) && is_array($bill['imageFile'])) { ?>
                         <?php foreach ($bill['imageFile'] as $k => $v) { ?>
                             <img width="120px" data-imgId="imgId<?php echo $k + 1; ?>" title="双击删除" height="90px"
-                                 src="<?php echo $v; ?>" ondblclick="imgDelete(this)"/>&nbsp;&nbsp;
+                                 src="<?php echo $v; ?>" ondblclick="imgDelete(this)" />&nbsp;&nbsp;
                             <input type="hidden" name="imageFiles[]" value="<?php echo $v; ?>"
                                    id="imgId<?php echo $k + 1; ?>"/>
                         <?php }
@@ -204,41 +204,41 @@
         var gameId = $('#gameId').val();
         var detail = $('#detail').val();
         var result = $('#result').val();
-        // if(!billType || billType < 1){
-        //     alert('请选择单据类型');return false;
-        // }
-        // if(!billSource || billSource < 1){
-        //     alert('请选择单据来源');return false;
-        // }
-        // if(!quesParent || quesParent < 1){
-        //     alert('请选择一级分类');return false;
-        // }
-        // if(!quesChild || quesChild < 1){
-        //     alert('请选择二级分类');return false;
-        // }
-        // if(!billGame){
-        //     alert('请选择游戏所属');return false;
-        // }
-        // if(!gameServer || gameServer < 1){
-        //     alert('请选择游戏大厅');return false;
-        // }
-        // if(!download){
-        //     alert('请填写下载渠道');return false;
-        // }
-        // if(!gameId){
-        //     alert('请选择游戏ID');return false;
-        // }
-        // if(!detail){
-        //     alert('请填写详细描述');return false;
-        // }
-        // if(!result){
-        //     alert('请填写处理结果');return false;
-        // }
-        // if(confirm('确定提交数据吗？')){
-        //     return true;
-        // }else{
-        //     return false;
-        // }
+        if(!billType || billType < 1){
+            alert('请选择单据类型');return false;
+        }
+        if(!billSource || billSource < 1){
+            alert('请选择单据来源');return false;
+        }
+        if(!quesParent || quesParent < 1){
+            alert('请选择一级分类');return false;
+        }
+        if(!quesChild || quesChild < 1){
+            alert('请选择二级分类');return false;
+        }
+        if(!billGame){
+            alert('请选择游戏所属');return false;
+        }
+        if(!gameServer || gameServer < 1){
+            alert('请选择游戏大厅');return false;
+        }
+        if(!download){
+            alert('请填写下载渠道');return false;
+        }
+        if(!gameId){
+            alert('请选择游戏ID');return false;
+        }
+        if(!detail){
+            alert('请填写详细描述');return false;
+        }
+        if(!result){
+            alert('请填写处理结果');return false;
+        }
+        if(confirm('确定提交数据吗？')){
+            return true;
+        }else{
+            return false;
+        }
     }
     function imgDelete(_this){
         //删除对应的图片值
@@ -249,6 +249,9 @@
         imgNum--;
         $('#imgDiv').attr('data-imgNum',imgNum);
         $(_this).remove();
+    }
+    function lookImg(){
+        alert();
     }
 </script>
 
