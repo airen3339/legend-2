@@ -10,6 +10,7 @@ use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\CurrencyData;
+use app\modules\content\models\Item;
 use app\modules\content\models\MailReceive;
 use app\modules\content\models\Player;
 use app\modules\content\models\Server;
@@ -265,6 +266,10 @@ class PlayerController  extends AdminController
         $count = MailReceive::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = MailReceive::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $content = Item::find()->where("itemid = {$v['content']}")->asArray()->one()['name'];
+            $data[$k]['content'] = $content.' '.$v['content'];
+        }
         $servers = Server::getServers();
         return $this->render('mail-receive',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
     }
