@@ -12,6 +12,8 @@
 	    public $adminId;
 	    public $createPower;//编辑角色权限能力 1-有 0-无
         public function init() {
+            echo 2;
+            var_dump($_SERVER);die;
             $adminId = Yii::$app->session->get('adminId');
             if($adminId){
                 $this->adminId = $adminId;
