@@ -10,8 +10,9 @@ require(__DIR__ . '/../vendor/autoload.php');
 require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 
 require_once(__DIR__ . '/../libs/protobuf/out/GPBMetadata/Dbbuff.php');
-
-
+echo 1;
+//header("Location:http://www.baidu.com");
+var_dump($_SERVER);die;
 
 $config = require(__DIR__ . '/../config/web.php');
 //error_reporting(E_ALL);
