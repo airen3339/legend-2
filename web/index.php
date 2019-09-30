@@ -1,5 +1,4 @@
 <?php
-opcache_reset();
 //header("Content-Type:text/html;charset=utf-8");
 //// comment out the following two lines when deployed to production28
 defined('YII_DEBUG') or define('YII_DEBUG', 1);
