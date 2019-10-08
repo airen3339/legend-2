@@ -14,7 +14,7 @@
     <link href="/css/coreCss/bootstrap-combined.min.css" rel="stylesheet">
     <link href="/css/coreCss/layoutit.css" rel="stylesheet">
     <link href="/css/coreCss/plugin.css" rel="stylesheet">
-    <link href="/css/site.css?v=1.1" rel="stylesheet">
+    <link href="/css/site.css?v=1.1" rel="stylesheet"> 
     <style>
         .choose_download {
             padding-top: 20px;
