@@ -33,7 +33,7 @@
         </li>
     </ul>
     <table id="filegrid"  width="100%" class="table table-hover easyui-treegrid" title="分类表" data-options="
-				url: '/content/api/get-category',
+				url: '/content/api/get-category?rand=<?php echo rand(1,1000000);?>',
 				method: 'get',
 				idField: 'id',
 				treeField: 'name'
