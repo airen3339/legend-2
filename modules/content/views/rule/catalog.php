@@ -34,7 +34,7 @@
     </ul>
     <table id="filegrid"  width="100%" class="table table-hover easyui-treegrid" title="分类表" data-options="
 				url: '/content/api/get-category',
-				method: 'get',
+				method: 'post',
 				idField: 'id',
 				treeField: 'name'
 			">
@@ -59,7 +59,6 @@
 </div>
 
 <script type="text/javascript">
-    $('#filegrid').treegrid('loadData', { total: 0, rows: [] });
 
     function addId(id) {
         $("#excelId").attr("value",id);
