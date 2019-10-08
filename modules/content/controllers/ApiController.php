@@ -31,6 +31,7 @@ class ApiController extends  Controller
         $pid = Yii::$app->request->get('pid','0');
         $id = Yii::$app->request->get('id','');
         $data = $model->getAllCate($pid,$id);
+//        var_dump($data);
         echo json_encode($data);
         exit;
     }
@@ -108,7 +109,7 @@ class ApiController extends  Controller
      * 问题分类
      * 单据功能
      */
-    public function actionQuestionSetRank(){
+    public function actionSetQuestionRank(){
         $id = Yii::$app->request->post("id");
         $rank = Yii::$app->request->post("rank");
         $res = QuestionCategory::updateAll(['rank'=>$rank],"id = $id");

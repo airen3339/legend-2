@@ -61,11 +61,11 @@
                 <?php foreach($data as $k => $v){?>
                 <tr  class="text-item tdBorder">
                     <td style="width: 60px"><span ><?php echo date('Y-m-d',$v['createTime'])?></span></td>
-                    <td style="width: 80px"><span ><?php echo $v['type']==1?'玩家奖励 ('.$v['roleName'].')':'区服奖励';?></span></td>
+                    <td style="width: 80px;"><span style="line-height: 1.4em !important;"><?php echo $v['type']==1?'玩家奖励 ('.$v['roleName'].')':'区服奖励';?></span></td>
                     <td style="width: 40px"><span ><?php echo $v['serverId'];?></span></td>
-                    <td ><span ><?php echo  $v['title'];?></span></td>
-                    <td ><span ><?php echo $v['content'];?></span></td>
-                    <td style="width: 320px"><span ><?php echo $v['pushContent'];?></span></td>
+                    <td ><span style="line-height: 1.4em !important;"><?php echo  $v['title'];?></span></td>
+                    <td ><span style="line-height: 1.4em !important;"><?php echo $v['content'];?></span></td>
+                    <td style="width: 320px;"><span style="line-height: 1.4em !important;"><?php echo $v['pushContent'];?></span></td>
                     <td style="width: 40px"><span ><?php echo $v['adminName'];?></span></td>
                     <td style="width: 40px"><span ><?php echo $v['statusStr'];?></span></td>
                     <td style="width: 40px"><span ><?php echo $v['checkName'];?></span></td>

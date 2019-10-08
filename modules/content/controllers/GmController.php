@@ -8,18 +8,14 @@ namespace app\modules\content\controllers;
 
 use app\libs\AdminController;
 use app\libs\Methods;
-use app\modules\content\models\ActivityLog;
 use app\modules\content\models\Item;
-use app\modules\content\models\LTV;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
 use app\modules\content\models\Player;
 use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
-use app\modules\content\models\SscActivity;
 use Yii;
-use yii\base\Controller;
 use yii\data\Pagination;
 
 class GmController  extends AdminController
@@ -412,7 +408,7 @@ class GmController  extends AdminController
             $model->createTime = time();
             $res = $model->save();
             if($res){
-                ActivityLog::logAdd($remark,$model->id,4);
+                OperationLog::logAdd($remark,$model->id,6);//6-首页公告
                 //文件记录 便于客户端获取公告内容
                 OperationLog::setNoticeLog($content,$beginTime,$endTime,$model->id);
                 echo "<script>alert('操作成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
@@ -452,7 +448,8 @@ class GmController  extends AdminController
                     }
                 }
                 $remark = $type==1?"删除首页公告":"删除跑马灯公告";
-                ActivityLog::logAdd($remark,$id,4);
+                $logType = $type==1?6:5;//5-跑马灯 6-首页
+                OperationLog::logAdd($remark,$id,$logType);
                 echo "<script>alert('删除成功');setTimeout(function(){location.href='notice-query';},1000)</script>";die;
             }else{
                 echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;

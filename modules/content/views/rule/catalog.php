@@ -32,8 +32,8 @@
             <a href="/content/rule/catalog-add">添加分类</a>
         </li>
     </ul>
-    <table width="100%" class="table table-hover easyui-treegrid" title="分类表" data-options="
-				url: '/content/api/get-category',
+    <table id="filegrid"  width="100%" class="table table-hover easyui-treegrid" title="分类表" data-options="
+				url: '/content/api/get-category?rand=<?php echo rand(1,1000000);?>',
 				method: 'get',
 				idField: 'id',
 				treeField: 'name'

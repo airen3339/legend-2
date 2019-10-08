@@ -6,6 +6,7 @@
     <meta name="title" content="传奇后台">
     <meta name="description" content="传奇后台">
     <meta name="keywords" content="传奇后台">
+    <meta http-equiv="pragma" content="no-cache">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>传奇后台</title>
     <!-- Le styles -->
