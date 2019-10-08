@@ -154,4 +154,51 @@ class Methods
         fwrite($path,$content);
         fclose($path);
     }
+    /**
+     * excel 数据生成
+     * 数据导出
+     * cy
+     */
+    public static function excelDownload($data,$title,$th){
+        ini_set("memory_limit",-1);
+        set_time_limit(0);
+        date_default_timezone_set('PRC');
+        header("Content-type: text/html; charset=utf-8");
+        include_once "PHPExcel.class.php";//引入phpexcel
+        $objPHPExcel = new \PHPExcel();//实例化PHPExcel类，
+        $objSheet = $objPHPExcel->getActiveSheet(0);//获取当前活动sheet
+        $objSheet->setTitle($title); //給sheet 标题命名
+        foreach($th as $o => $r){
+            $objSheet->setCellValue($r['column'].'1',$r['title']);//设定标题
+        }
+        $j = 2;
+        foreach($data as $t => $r){
+            foreach($th as $e => $q){
+                if(preg_match('/=/',$r[$q['key']])){//特殊字符处理
+                    $objSheet->setCellValue($q['column'].$j,' '.$r[$q['key']]);
+                }else{
+                    $objSheet->setCellValue($q['column'].$j,$r[$q['key']]);
+                }
+                $objSheet->getStyle($q['column'].$j)->getAlignment()->setWrapText(true);
+            }
+            $j++;
+        }
+        $objWriter=\PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5'); //设定输出文件格式
+//              $objWriter->save($dir."/export_1.xls");                             //保存文件
+#输出到浏览器
+        self::browser_export('Excel',$title.'.xls');//输出到浏览器
+        $objWriter->save('php://output'); //输出excel 文件到浏览器
+    }
+
+    public static function browser_export($type,$filename){
+        if($type=="Excel5"){
+            header('Content-Type: application/vnd.ms-excel'); //告诉浏览器将要输出excel03文件
+
+        }else{
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');//告诉浏览器数据excel07文件
+
+        }
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //告诉浏览器将输出文件的名称
+        header('Cache-Control: max-age=0'); //禁止缓存
+    }
 }

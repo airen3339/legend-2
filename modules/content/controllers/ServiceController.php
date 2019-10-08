@@ -90,9 +90,12 @@ class ServiceController extends  AdminController {
         $billType = Yii::$app->request->get('billType');
         $billScource = Yii::$app->request->get('billSource');
         $quesParent = Yii::$app->request->get('quesParent');
+        $quesChild = Yii::$app->request->get('quesChild');
         $phone = Yii::$app->request->get('phone');
         $qq = Yii::$app->request->get('qq');
         $email = Yii::$app->request->get('email');
+        $creator = Yii::$app->request->get('creator');
+        $download = Yii::$app->request->get('download');
         $where = " 1=1 ";
         if($beginTime){
             $begin = strtotime($beginTime);
@@ -120,6 +123,9 @@ class ServiceController extends  AdminController {
         if($quesParent){
             $where .= " and quesParent = $quesParent";
         }
+        if($quesChild){
+            $where .= " and quesChild = $quesChild";
+        }
         if($phone){
             $where .= " and phone = '{$phone}'";
         }
@@ -128,6 +134,21 @@ class ServiceController extends  AdminController {
         }
         if($qq){
             $where .= " and qq = '{$qq}'";
+        }
+        if($creator){
+            $createId = Role::find()->where("name = '{$creator}'")->asArray()->one()['id'];
+            if($createId){
+                $where .= " and creator = $createId";
+            }else{
+                $where .= ' and 1 > 2 ';
+            }
+        }
+        if($download){
+            $where .= " and download = '{$download}'";
+        }
+        $excel = Yii::$app->request->get('excel',0);//0-搜索 1-excel导出
+        if($excel){//Excel数据导出
+            BillMessage::downloadExcel($where);die;
         }
         $count = BillMessage::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
@@ -163,8 +184,15 @@ class ServiceController extends  AdminController {
             $bill[$k]['quesChild'] = QuestionCategory::find()->where("id = {$v['quesChild']}")->asArray()->one()['name'];
         }
         $servers = Server::getServers();//区服
-        $quesParent = QuestionCategory::find()->where("pid =0")->asArray()->all();
-        return $this->render('bill-message',['bills'=>$bill,'page'=>$page,'count'=>$count,'servers'=>$servers,'billTypes'=>$billTypes,'billSources'=>$billSources,'quesParent'=>$quesParent]);
+        $quesParents = QuestionCategory::find()->where("pid =0")->asArray()->all();
+        if($quesChild){
+            $quesChilds = QuestionCategory::find()->where("pid = {$quesParent}")->asArray()->all();
+        }else{
+            $quesChilds = QuestionCategory::find()->where("pid = {$quesParents[0]['id']}")->asArray()->all();
+        }
+        $url = Yii::$app->request->getUrl();
+        Yii::$app->session->set('billUrl',$url);
+        return $this->render('bill-message',['bills'=>$bill,'page'=>$page,'count'=>$count,'servers'=>$servers,'billTypes'=>$billTypes,'billSources'=>$billSources,'quesParent'=>$quesParents,'quesChild'=>$quesChilds]);
     }
     /**
      * 单据信息编辑
@@ -253,7 +281,8 @@ class ServiceController extends  AdminController {
             $model->creator = Yii::$app->session->get('adminId');
             $res = $model->save();
             if($res){
-                echo "<script>alert('保存成功！');setTimeout(function(){location.href='bill-message';},1000)</script>";
+                $billUrl = Yii::$app->session->get('billUrl');
+                echo "<script>alert('保存成功！');setTimeout(function(){location.href='$billUrl';},1000)</script>";
             }else{
                 echo "<script>alert('保存失败，请重试！');setTimeout(function(){history.go(-1);},1000)</script>";
             }
