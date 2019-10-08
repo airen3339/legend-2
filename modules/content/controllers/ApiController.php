@@ -31,7 +31,6 @@ class ApiController extends  Controller
         $pid = Yii::$app->request->get('pid','0');
         $id = Yii::$app->request->get('id','');
         $data = $model->getAllCate($pid,$id);
-        var_dump($data);
         echo json_encode($data);
         exit;
     }
