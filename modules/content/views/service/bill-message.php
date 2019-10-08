@@ -10,7 +10,7 @@
                href="/content/service/bill-message-add">添加单据</a>
         </li>
     </ul>
-    <form action="/content/service/bill-message" method="get" class="form-horizontal">
+    <form action="/content/service/bill-message" method="get" class="form-horizontal" id="excel-form">
         <table class="table">
             <tr>
                 <td>
@@ -26,28 +26,50 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
                 </td>
                 <td>
-                    游戏昵称：
+                    一级分类：
                 </td>
                 <td>
-                    <input style="width: 100px" size="10" type="text" id="name" name="name"  value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                    <select name="quesParent" id="quesParent" style="width: 100px" onchange="getChildCategory()">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($quesParent as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['quesParent']) && $_GET['quesParent'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
                 </td>
                 <td>
-                    游戏账号：
+                    二级分类：
                 </td>
                 <td>
-                    <input style="width: 100px" size="10" type="text" id="account" name="account"  value="<?php echo isset($_GET['account'])?$_GET['account']:''?>"/>
+                    <select name="quesChild" id="quesChild" style="width: 100px">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($quesChild as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['quesChild']) && $_GET['quesChild'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
                 </td>
             </tr>
             <tr>
                 <td>
+                    下载渠道：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="download" name="download"  value="<?php echo isset($_GET['download'])?$_GET['download']:''?>"/>
+                </td>
+                <td>
                     区服：
                 </td>
                 <td>
-                    <select name="serverId" style="width: 100px">
+                    <select name="server" style="width: 100px">
                         <option value="0">请选择</option>
                         <?php
                         foreach($servers as $k => $v){ ?>
-                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['serverId']) && $_GET['serverId'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
                             <?php
                         }
                         ?>
@@ -81,25 +103,21 @@
                         ?>
                     </select>
                 </td>
-                <td>
-                    一级分类：
-                </td>
-                <td>
-                    <select name="quesParent" style="width: 100px">
-                        <option value="0">请选择</option>
-                        <?php
-                        foreach($quesParent as $k => $v){ ?>
-                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['quesParent']) && $_GET['quesParent'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
-                            <?php
-                        }
-                        ?>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn btn-primary" type="submit">提交</button>
-                </td>
+
             </tr>
             <tr>
+                <td>
+                    游戏昵称：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="name" name="name"  value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
+                    游戏账号：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="account" name="account"  value="<?php echo isset($_GET['account'])?$_GET['account']:''?>"/>
+                </td>
                 <td>
                     联系电话：
                 </td>
@@ -112,14 +130,26 @@
                 <td>
                     <input style="width: 100px" size="10" type="text" id="qq" name="qq"  value="<?php echo isset($_GET['qq'])?$_GET['qq']:''?>"/>
                 </td>
+            </tr>
+            <tr>
                 <td>
                     联系邮箱：
                 </td>
                 <td>
                     <input style="width: 100px" size="10" type="text" id="email" name="email"  value="<?php echo isset($_GET['email'])?$_GET['email']:''?>"/>
                 </td>
+                <td>
+                    操作人员：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="creator" name="creator"  value="<?php echo isset($_GET['creator'])?$_GET['creator']:''?>"/>
+                </td>
+                <td>
+                    <input type="hidden" value='0' name="excel" id="excel" />
+                    <button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;
+                    <a href="#" class="btn btn-primary" onclick="excelDownload()">导出</a>
+                </td>
             </tr>
-
         </table>
     </form>
     <form action="/content/service/bill-message" method="post">
@@ -193,7 +223,18 @@
     </div>
 </div>
 <script>
-
+    function getChildCategory(){
+        var pid = $('#quesParent').val();
+        if(pid !=0){
+            $.post('/content/api/get-question-child',{pid:pid},function(e){
+                var str = '<option value=0>请选择</option>';
+                for(var i=0;i<e.length;i++){
+                    str += '<option value="'+e[i].id+'">'+e[i].name+'</option>';
+                }
+                $('#quesChild').html(str);
+            },'json');
+        }
+    }
     function alterStatus(id,type){//type 1-上线状态  0-离线状态
         $.post('/content/api/alter-status',{id:id,type:type},function(e){
             console.log(e);
@@ -202,5 +243,11 @@
                 window.location.reload();
             }
         },'json')
+    }
+    function excelDownload(){
+        if(confirm('确定导出数据吗？')){
+            $('#excel').val(1);
+            $('#excel-form').submit();
+        }
     }
 </script>
