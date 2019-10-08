@@ -56,7 +56,7 @@
                 <th >审核状态</th>
                 <th >审核人</th>
             </tr>
-            </thead> 
+            </thead>
             <tbody>
                 <?php foreach($data as $k => $v){?>
                 <tr  class="text-item tdBorder">
