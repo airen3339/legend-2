@@ -167,7 +167,7 @@ a.desc:after {
     position: absolute;
     width: 133px;
     top: 348px;
-    left: 806px;
+    left: 768px;
     z-index: 99;
 }
 .nav-child-new li{
@@ -179,8 +179,8 @@ a.desc:after {
 .nav-child-newo{
     position: absolute;
     width: 133px;
-    top: 367px;
-    left: 631px;
+    top: 387px;
+    left: 594px;
     z-index: 99;
 }
 .nav-child-newo li{
@@ -193,7 +193,7 @@ a.desc:after {
     position: absolute;
     width: 133px;
     top: 348px;
-    left: 631px;
+    left: 594px;
     z-index: 99;
 }
 .nav-child-newt li{
