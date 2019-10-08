@@ -10,6 +10,7 @@ use app\libs\AdminController;
 use app\libs\Methods;
 use app\modules\content\models\ActivityLog;
 use app\modules\content\models\ActivityPush;
+use app\modules\content\models\ActivityType;
 use app\modules\content\models\Item;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
@@ -107,7 +108,7 @@ class ActivityController  extends AdminController
         if($_POST){
             $pushId = Yii::$app->request->post('pushId',0);
             $serverId = Yii::$app->request->post('server');//区服id
-            $type = Yii::$app->request->post('type');//活动类型 1-每日单冲  2-累计充值 3-五行运势
+            $type = Yii::$app->request->post('type');//活动类型
             $beginTime = Yii::$app->request->post('beginTime');
             $endTime = Yii::$app->request->post('endTime');
             $conditions = Yii::$app->request->post('liConditions');//道具领取条件
@@ -120,15 +121,7 @@ class ActivityController  extends AdminController
             if(!$type){
                 echo "<script>alert('请填写活动类型');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
-                if($type ==1){
-                    $remark = '每日单充';
-                }elseif($type ==2){
-                    $remark = '累计消费';
-                }elseif($type ==3){
-                    $remark = '五行运势';
-                }else{
-                    $remark = '';
-                }
+                $remark = ActivityType::find()->where("type = $type")->asArray()->one()['name'];
             }
             if(!$beginTime){
                 echo "<script>alert('请选择开始时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -174,7 +167,8 @@ class ActivityController  extends AdminController
                 echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
         }
-        return $this->render('activity-push',['servers'=>$servers]);
+        $types = ActivityType::find()->asArray()->orderBy('rank desc')->all();
+        return $this->render('activity-push',['servers'=>$servers,'types'=>$types]);
     }
     /**
      * 活动推送列表
@@ -208,7 +202,8 @@ class ActivityController  extends AdminController
             }
             $data[$k]['pushContent'] = $pushStr;
         }
-        return $this->render('activity-push-list',['data'=>$data,'servers'=>$servers]);
+        $types = ActivityType::find()->asArray()->orderBy('rank desc')->all();
+        return $this->render('activity-push-list',['data'=>$data,'servers'=>$servers,'types'=>$types]);
     }
     /**
      * 活动推送列表
@@ -239,7 +234,8 @@ class ActivityController  extends AdminController
         $data = ActivityPush::find()->where("id = $id")->asArray()->one();
         $servers = Server::getServers();
         $data['pushContent'] = json_decode($data['pushContent'],true);
-        return $this->render('activity-push-edit',['data'=>$data,'servers'=>$servers]);
+        $types = ActivityType::find()->asArray()->orderBy('rank desc')->all();
+        return $this->render('activity-push-edit',['data'=>$data,'servers'=>$servers,'types'=>$types]);
     }
     /**
      * 五行运势活动列表
@@ -366,7 +362,8 @@ class ActivityController  extends AdminController
         parent::setActionId($action);
         $type = Yii::$app->request->get('type',0);//type 1-活动推送 2-五行运势
         $uid = Yii::$app->request->get('uid');
-        $where = " type in (1,2,3) ";//1-活动推送 2-五行运势
+        $types = ActivityType::find()->select('group_concat(type) as ids')->asArray()->one()['ids'];
+        $where = " type in ($types) ";//1-活动推送 2-五行运势
         if($type){
             $where .= " and type = $type";
         }
@@ -376,7 +373,86 @@ class ActivityController  extends AdminController
         $count = ActivityLog::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = ActivityLog::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
-        return $this->render('activity-log',['data'=>$data,'page'=>$page,'count'=>$count]);
+        $types = ActivityType::find()->asArray()->orderBy('rank desc')->all();
+        return $this->render('activity-log',['data'=>$data,'page'=>$page,'count'=>$count,'types'=>$types]);
     }
-
+    /**
+     * 活动类型
+     */
+    public function actionActivityType(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $types = ActivityType::find()->asArray()->orderBy("rank desc")->all();
+        return $this->render('activity-type',['types'=>$types]);
+    }
+    /**
+     * 类型编辑修改
+     * 活动类型
+     */
+    public function actionActivityTypeEdit(){
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $name = Yii::$app->request->post('name');
+            $rank = Yii::$app->request->post('rank');
+            $type = Yii::$app->request->post('type');
+            if($id){
+                $model = ActivityType::findOne($id);
+                $had = ActivityType::find()->where("name = '{$name}' and id != $id")->one();
+            }else{
+                $model = new ActivityType();
+                $had = ActivityType::find()->where("name = '{$name}'")->one();
+            }
+            if($had){
+                echo "<script>alert('该类型名称已存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$type){
+                echo "<script>alert('请填写对应的活动类型');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if($id ){
+                    $where = " and id != $id";
+                }else{
+                    $where = '';
+                }
+                $had = ActivityType::find()->where("type = $type $where")->one();
+                if($had){
+                    echo "<script>alert('该活动类型已存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }
+            $model->name = $name;
+            $model->rank = $rank?$rank:0;
+            $model->type = $type;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='activity-type';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $id= Yii::$app->request->get('id');
+            if($id){
+                $type = ActivityType::find()->where("id = $id")->asArray()->one();
+            }else{
+                $type = [];
+            }
+            return $this->render('type-edit',['type'=>$type]);
+        }
+    }
+    /**
+     * 活动类型
+     * 删除
+     */
+    public function actionActivityTypeDelete(){
+        $id = Yii::$app->request->get('id');
+        if($id){
+            $res = ActivityType::deleteAll("id = $id");
+            if($res ){
+                echo "<script>alert('删除成功');setTimeout(function(){location.href='activity-type';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
+    }
 }

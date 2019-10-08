@@ -18,14 +18,15 @@
                         ?>
                     </select>
                 </div>
-            </div><div class="control-group">
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
                     <select name="type" id="type" style="width: 105px;">
                         <option value="">请选择</option>
-                        <option value='1'>每日单充</option>;
-                        <option value='2'>累计消费</option>;
-                        <option value='3'>五行运势</option>;
+                        <?php foreach($types as $k => $v){?>
+                            <option value='<?php echo $v['type'];?>' ><?php echo $v['name'];?></option>
+                        <?php }?>
                     </select>
                 </div>
             </div>

@@ -28,9 +28,9 @@
                 <div class="controls">
                     <select name="type" id="type" style="width: 105px;">
                         <option value="">请选择</option>
-                        <option value='1' <?php if($data['type'] == '1')echo 'selected'?>>每日单充</option>;
-                        <option value='2' <?php if($data['type'] == '2')echo 'selected'?>>累计消费</option>;
-                        <option value='3' <?php if($data['type'] == '3')echo 'selected'?>>五行运势</option>;
+                        <?php foreach($types as $k => $v){?>
+                            <option value='<?php echo $v['type'];?>' <?php if( $data['type'] == $v['type']) echo 'selected';?>><?php echo $v['name'];?></option>
+                        <?php }?>
                     </select>
                 </div>
             </div>
