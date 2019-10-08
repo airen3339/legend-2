@@ -108,7 +108,7 @@ class ApiController extends  Controller
      * 问题分类
      * 单据功能
      */
-    public function actionQuestionSetRank(){
+    public function actionSetQuestionRank(){
         $id = Yii::$app->request->post("id");
         $rank = Yii::$app->request->post("rank");
         $res = QuestionCategory::updateAll(['rank'=>$rank],"id = $id");
