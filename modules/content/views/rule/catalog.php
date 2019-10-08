@@ -32,7 +32,7 @@
             <a href="/content/rule/catalog-add">添加分类</a>
         </li>
     </ul>
-    <table width="100%" class="table table-hover easyui-treegrid" title="分类表" data-options="
+    <table id="filegrid"  width="100%" class="table table-hover easyui-treegrid" title="分类表" data-options="
 				url: '/content/api/get-category',
 				method: 'get',
 				idField: 'id',
@@ -59,6 +59,7 @@
 </div>
 
 <script type="text/javascript">
+    $('#filegrid').treegrid('loadData', { total: 0, rows: [] });
 
     function addId(id) {
         $("#excelId").attr("value",id);
