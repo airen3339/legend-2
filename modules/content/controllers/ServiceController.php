@@ -96,6 +96,7 @@ class ServiceController extends  AdminController {
         $email = Yii::$app->request->get('email');
         $creator = Yii::$app->request->get('creator');
         $download = Yii::$app->request->get('download');
+        $gameId = Yii::$app->request->get('gameId');
         $where = " 1=1 ";
         if($beginTime){
             $begin = strtotime($beginTime);
@@ -134,6 +135,9 @@ class ServiceController extends  AdminController {
         }
         if($qq){
             $where .= " and qq = '{$qq}'";
+        }
+        if($gameId){
+            $where .= " and gameId = '{$gameId}'";
         }
         if($creator){
             $createId = Role::find()->where("name = '{$creator}'")->asArray()->one()['id'];
