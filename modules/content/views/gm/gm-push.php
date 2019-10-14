@@ -4,7 +4,7 @@
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
         <li class="active">命令推送</li>
     </ul>
-    <form action="/content/gm/command-push" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定推送该命令吗？')){return true;}else{return false;}">
+    <form action="/content/gm/gm-push" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定推送该命令吗？')){return true;}else{return false;}">
         <fieldset>
             <div class="control-group">
                 <label for="modulename" class="control-label">区服</label>

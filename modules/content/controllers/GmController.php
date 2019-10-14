@@ -492,10 +492,10 @@ class GmController  extends AdminController
                 $content['RoleId'] = $roleId;
             }
             Methods::GmFileGet($content,$server,6,4233);//4233 推送gm命令
-            echo "<script>alert('推送成功');setTimeout(function(){location.href='command-push';},1000)</script>";die;
+            echo "<script>alert('推送成功');setTimeout(function(){location.href='gm-push';},1000)</script>";die;
         }else{
             $servers = Server::getServers();
-            return $this->render('command-push',['servers'=>$servers]);
+            return $this->render('gm-push',['servers'=>$servers]);
         }
     }
     /**

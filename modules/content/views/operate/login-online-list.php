@@ -22,7 +22,7 @@
                     查询日期：
                 </td>
                 <td>
-                    <input class="input-small Wdate" onclick="WdatePicker()" type="text" size="10" id="day"  name="day" value="<?php echo isset($_GET['day'])?$_GET['day']:''?>"/>
+                    <input class="input-small Wdate" autocomplete="off" onclick="WdatePicker()" type="text" size="10" id="day"  name="day" value="<?php echo isset($_GET['day'])?$_GET['day']:''?>"/>
                 </td>
                 <td>
                     区服：
