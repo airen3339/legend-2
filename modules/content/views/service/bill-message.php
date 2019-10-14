@@ -119,19 +119,25 @@
                     <input style="width: 100px" size="10" type="text" id="account" name="account"  value="<?php echo isset($_GET['account'])?$_GET['account']:''?>"/>
                 </td>
                 <td>
+                    游戏ID：
+                </td>
+                <td>
+                    <input style="width: 100px" size="10" type="text" id="gameId" name="gameId"  value="<?php echo isset($_GET['gameId'])?$_GET['gameId']:''?>"/>
+                </td>
+                <td>
                     联系电话：
                 </td>
                 <td>
                     <input style="width: 100px" size="10" type="text" id="phone" name="phone"  value="<?php echo isset($_GET['phone'])?$_GET['phone']:''?>"/>
                 </td>
+            </tr>
+            <tr>
                 <td>
                     联系QQ：
                 </td>
                 <td>
                     <input style="width: 100px" size="10" type="text" id="qq" name="qq"  value="<?php echo isset($_GET['qq'])?$_GET['qq']:''?>"/>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     联系邮箱：
                 </td>
