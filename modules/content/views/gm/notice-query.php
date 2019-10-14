@@ -17,7 +17,7 @@
                         <option value="0">请选择</option>
                         <?php
                         foreach($servers as $k => $v){ ?>
-                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>
                             <?php
                         }
                         ?>
@@ -29,8 +29,9 @@
                 <td>
                     <select name="type">
                         <option value="0">请选择</option>
-                        <option value='1' <?php if(isset($_GET['type']) && $_GET['type'] == 1) echo 'selected';?>>首页公告</option>";
-                        <option value='2' <?php if(isset($_GET['type']) && $_GET['type'] == 2) echo 'selected';?>>跑马灯公告</option>";
+                        <option value='1' <?php if(isset($_GET['type']) && $_GET['type'] == 1) echo 'selected';?>>首页公告</option>
+                        <option value='2' <?php if(isset($_GET['type']) && $_GET['type'] == 2) echo 'selected';?>>跑马灯公告</option>
+                        <option value='3' <?php if(isset($_GET['type']) && $_GET['type'] == 3) echo 'selected';?>>服务器关服</option>
                     </select>
                 </td>
                 <td>
@@ -62,7 +63,7 @@
                     <td style="width: 120px;"><span ><?php echo $v['beginTime']?></span></td>
                     <td style="width: 120px;"><span ><?php echo $v['endTime']?></span></td>
                     <td ><span style="line-height: 1.4em !important;" title="<?php echo $v['content'];?>"><?php echo $v['content']?></span></td>
-                    <td ><span><?php echo $v['type']==1?'首页公告':($v['type']==2?'跑马灯公告':'区服公告')?></span></td>
+                    <td ><span><?php echo $v['type']==1?'首页公告':($v['type']==2?'跑马灯公告':'服务器关服')?></span></td>
                     <td ><span><?php echo $v['createName']?></span></td>
                     <td ><span ><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
                     <td  class="notSLH" style="width: 130px;">

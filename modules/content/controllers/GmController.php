@@ -559,5 +559,38 @@ class GmController  extends AdminController
             return $this->render('roll-notice',['servers'=>$servers]);
         }
     }
+/**
+     * 跑马灯公告
+     */
+    public function actionServerClose(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $server = Yii::$app->request->post('server',0);//0-区服
+            $content = Yii::$app->request->post('content');
+            $server = $server?$server:0;
+            if(!$content){
+                echo "<script>alert('请填写关服通知');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $model = new Notice();
+            $model->content = $content;
+            $model->serverId = $server;
+            $model->creator = Yii::$app->session->get('adminId');
+            $model->type = 3;//1-首页  2-跑马灯 3-服务器关服
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                OperationLog::logAdd('添加服务器关服通知并推送服务端',$model->id,5);//5-跑马灯公告
+                //推送服务端
+                Methods::GmFileGet($content,$server,6,4243);//4243 服务器关服
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='server-close';},1000)</script>";die;
+            }else{
+                echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $servers = Server::getServers();
+            return $this->render('server-close',['servers'=>$servers]);
+        }
+    }
 
 }
