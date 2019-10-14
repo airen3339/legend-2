@@ -73,7 +73,7 @@
                     <td ><span><?php echo $v['roleName']?></span></td>
                     <td ><span><?php echo $v['serverId']?></span></td>
                     <td ><span><?php echo $v['feedback']?></span></td>
-                    <td><span><?php echo $v['replyContent']?$v['replyContent']:"<input type='text' style='margin: 0 6px' value='' />&nbsp;<a href='#' class='btn' onclick='replyContent(this,".$v['id'].")' >回复</a>"?></span></td>
+                    <td><span><?php echo $v['replyContent']?$v['replyContent']:"<textarea type='text' style='margin: 0 6px' ></textarea>&nbsp;<a href='#' class='btn' onclick='replyContent(this,".$v['id'].")' >回复</a>"?></span></td>
                     <td ><span id="replyName<?php echo $v['id'];?>"><?php echo $v['replyName']?></span></td>
                     <td ><span id="replyTime<?php echo $v['id'];?>"><?php echo $v['replyTime']?></span></td>
                 </tr>
@@ -110,7 +110,7 @@
     }
     function replyContent(_this,id){
         if(confirm('确定回复并发送邮件吗？')){
-            var val = $(_this).siblings("input").val();
+            var val = $(_this).siblings("textarea").val();
             if(val){
                 $.post('/content/api/feedback-reply',{id:id,reply:val},function(e){
                     alert(e.message);
