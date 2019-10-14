@@ -152,7 +152,7 @@
                 </td>
                 <td>
                     <input type="hidden" value='0' name="excel" id="excel" />
-                    <button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;
+                    <button class="btn btn-primary" type="submit">查询</button>&nbsp;&nbsp;
                     <a href="#" class="btn btn-primary" onclick="excelDownload()">导出</a>
                 </td>
             </tr>

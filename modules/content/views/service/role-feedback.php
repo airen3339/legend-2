@@ -43,7 +43,7 @@
                     <input style="width: 100px" size="10" type="text" id="content" name="content"  value="<?php echo isset($_GET['content'])?$_GET['content']:''?>"/>
                 </td>
                 <td>
-                    <button class="btn btn-primary" type="submit">提交</button>
+                    <button class="btn btn-primary" type="submit">查询</button>
                 </td>
                 <td></td>
             </tr>

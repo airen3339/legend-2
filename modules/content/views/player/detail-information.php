@@ -22,7 +22,7 @@
                     <input style="height: 20px" type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
                 </td>
                 <td>
-                    <button class="btn btn-primary" type="submit">提交</button>
+                    <button class="btn btn-primary" type="submit">查询</button>
                 </td>
                 <td></td>
             </tr>

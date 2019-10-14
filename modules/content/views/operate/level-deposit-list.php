@@ -38,7 +38,7 @@
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-primary" type="submit">提交</button>
+                    <button class="btn btn-primary" type="submit">查询</button>
                 </td>
                 <td></td>
             </tr>
