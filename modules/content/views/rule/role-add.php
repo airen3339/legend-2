@@ -26,6 +26,13 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">使用者</label>
+                <div class="controls">
+                    <input type="text" id="getName" name="getName" value="<?php echo isset($role['getName'])?$role['getName']:''?>">
+                    <span class="help-block">请输入使用者姓名</span>
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">创建权限</label>
                 <div class="controls">
                     <label for="yes" style="display: inline">
@@ -133,8 +140,13 @@ if(isset($_GET['pid'])) {
 <script>
     function dataSubmit(){
         var name = $('#name').val();
+        var getName = $('#getName').val();
         if(!name){
             alert('请填写角色账号名称');
+            return false;
+        }
+        if(!getName){
+            alert('请填写使用者姓名');
             return false;
         }
     }

@@ -70,6 +70,7 @@ class RuleController extends  AdminController {
             $time = time();
             $createUser = $this->adminId;
             $name = Yii::$app->request->post('name');
+            $getName = Yii::$app->request->post('getName');
             $createPower = Yii::$app->request->post('createPower',0);
             $catalogIds = Yii::$app->request->post('catalogIds');
             $service = Yii::$app->request->post('service',0);//客服账号
@@ -88,6 +89,7 @@ class RuleController extends  AdminController {
                 die('<script>alert("已有该角色账号，请勿重复添加");history.go(-1);</script>');
             }
             $model->name = $name;
+            $model->getName = $getName;
             $model->createUser = $createUser;
             $model->createPower = $createPower;
             $model->createTime = $time;
