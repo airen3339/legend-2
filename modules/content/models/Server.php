@@ -21,8 +21,6 @@ class Server extends ActiveRecord
         foreach($servers as $k => $v){
             $data[] = ['id'=>$v['game_id'],'realId'=>$v['game_real'],'name'=>$v['game_id'].'服'];
         }
-        $data[] = ['id'=>'903','realId'=>'9030','name'=>'903服'];
-        $data[] = ['id'=>'900','realId'=>'9000','name'=>'900服'];
         return $data;
     }
 }
