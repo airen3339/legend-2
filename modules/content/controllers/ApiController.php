@@ -343,6 +343,7 @@ class ApiController extends  Controller
             //通知服务端
             $content = ['roleID'=>$roleId,'contact'=>$contact];
             $host = $_SERVER['HTTP_HOST'];
+            var_dump($host);
             if($host == 'www.6p39k.cn' || $host == '6p39k.cn'){
                 $serverId = 1;
             }else{
