@@ -211,3 +211,14 @@ a.desc:after {
 .spanHid{
     display: none !important;
 }
+.tdBorder td span input{
+    height: 20px;
+}
+.tdBorder td {
+    padding: 2px;
+}
+.tdBorder td span a {
+    padding: 3px 9px;
+    margin-left: 3px;
+    margin-top: -10px;
+}

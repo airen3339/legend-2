@@ -331,4 +331,20 @@ class ApiController extends  Controller
         }
         die(json_encode($data));
     }
+    /**
+     * 添加银商联系
+     */
+    public function actionAddContact(){
+        $roleId = Yii::$app->request->post('roleId');
+        $contact = Yii::$app->request->post('contact');
+        if(!$roleId || !$contact){
+            $data = ['code'=>0,'message'=>'参数错误'];
+        }else{
+            //通知服务端
+            $content = ['roleID'=>$roleId,'contact'=>$contact];
+            Methods::GmFileGet($content,999,6,4244);//4244 添加银商联系方式
+            $data = ['code'=>1,'message'=>'添加成功'];
+        }
+        die(json_encode($data));
+    }
 }

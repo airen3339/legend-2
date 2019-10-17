@@ -15,6 +15,7 @@ use app\modules\content\models\Player;
 use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
+use app\modules\content\models\SliverMerchant;
 use Yii;
 use yii\data\Pagination;
 
@@ -591,6 +592,20 @@ class GmController  extends AdminController
             $servers = Server::getServers();
             return $this->render('server-close',['servers'=>$servers]);
         }
+    }
+    /**
+     * 银商数据
+     */
+    public function actionSilverMerchant(){
+        $name  = Yii::$app->request->get('name');
+        $page = Yii::$app->request->get('page',1);
+        $where = ' 1 = 1 ';
+        if($name){
+            $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+            $where = $roleId?" and roleID = '{$roleId}'":" and 1 > 2 ";
+        }
+        $relation = SliverMerchant::getSliverMerchantMsg($where,$page);
+        return $this->render('silver-merchant',$relation);
     }
 
 }
