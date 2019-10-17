@@ -41,7 +41,7 @@
                     <td ><span><?php echo $v['roleID']?></span></td>
                     <td ><span><?php echo $v['Name']?></span></td>
                     <td ><span><?php echo $v['Ingot']?></span></td>
-                    <td><span><input type='text' value='<?php echo $v['contact']?>' />&nbsp;<a href='#' class='btn' onclick='addContact(this,<?php echo $v['roleID']?>)' >添加</a></span></td>
+                    <td><span><input type='text' value='<?php echo $v['contact']?>' data-roleId="<?php echo $v['roleID']?>" />&nbsp;<a href='#' class='btn' onclick='addContact(this)' >添加</a></span></td>
                 </tr>
                 <?php
             }
@@ -65,9 +65,10 @@
 </div>
 <script>
 
-    function addContact(_this,roleId){
+    function addContact(_this){
         if(confirm('确定添加该联系方式？')){
             var val = $(_this).siblings("input").val();
+            var roleId = $(_this).siblings("input").attr('data-roleId');
             if(val){
                 $.post('/content/api/add-contact',{roleId:roleId,contact:val},function(e){
                     alert(e.message);
