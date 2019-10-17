@@ -7,16 +7,16 @@
     <ul class="nav">
 
     </ul>
-    <form action="/content/service/role-feedback" method="get" class="form-horizontal">
+    <form action="/content/gm/silver-merchant" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-                <td>
-                    检索内容：
+                <td width="70px">
+                    角色名：
                 </td>
                 <td>
-                    <input style="width: 100px" size="10" type="text" id="name" name="name"  value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                    <input style="width: 140px" size="10" type="text" id="name" name="name"  value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
                 </td>
-                <td>
+                <td style="float: right">
                     <button class="btn btn-primary" type="submit">查询</button>
                 </td>
                 <td></td>

@@ -21,10 +21,12 @@ class SliverMerchant extends ActiveRecord
      * 获取对应的银商数据信息
      */
     public static function getSliverMerchantMsg($where,$page=1,$pageSize = 20){
-        $count = self::find()->where($where)->count();
+        $sql = " select sm.*,p.Name from {{%test}} sm left join {{%player}} p on p.RoleID = sm.roleID where $where ";
+        $total = \Yii::$app->db2->createCommand($sql)->queryAll();
+        $count = count($total);
         $pages = new Pagination(['totalCount'=>$count]);
         $limit = " limit ".($page-1)*$pageSize.",".$pageSize;
-        $sql = " select sm.*,p.Name from {{%test}} sm left join {{%player}} p on p.RoleID = sm.roleID where $where $limit";
+        $sql .=  $limit;
         $data = \Yii::$app->db2->createCommand($sql)->queryAll();
         return ['data'=>$data,'count'=>$count,'page'=>$pages];
     }
