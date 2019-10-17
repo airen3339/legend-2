@@ -342,7 +342,13 @@ class ApiController extends  Controller
         }else{
             //通知服务端
             $content = ['roleID'=>$roleId,'contact'=>$contact];
-            Methods::GmFileGet($content,999,6,4244);//4244 添加银商联系方式
+            $host = $_SERVER['HTTP_HOST'];
+            if($host == 'www.6p39k.cn' || $host == '6p39k.cn'){
+                $serverId = 1;
+            }else{
+                $serverId = 903;
+            }
+            Methods::GmFileGet($content,$serverId,6,4244);//4244 添加银商联系方式
             $data = ['code'=>1,'message'=>'添加成功'];
         }
         die(json_encode($data));
