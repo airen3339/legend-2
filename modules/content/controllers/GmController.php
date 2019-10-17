@@ -602,7 +602,7 @@ class GmController  extends AdminController
         $where = ' 1 = 1 ';
         if($name){
             $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
-            $where = $roleId?" and roleID = '{$roleId}'":" and 1 > 2 ";
+            $where .= $roleId?" and sm.roleID = '{$roleId}'":" and 1 > 2 ";
         }
         $relation = SliverMerchant::getSliverMerchantMsg($where,$page);
         return $this->render('silver-merchant',$relation);
