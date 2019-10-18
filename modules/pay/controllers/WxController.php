@@ -79,7 +79,8 @@ class WxController extends yii\web\Controller {
         die(json_encode($return));
     }
      public function actionTest(){
-        self::WxOrder(time(),'测试',0.01,2);
+        $res = self::WxOrder(time(),'测试',0.01,2);
+        die(json_encode($res));
     }
     /**
      * 微信支付请求发起
@@ -125,8 +126,7 @@ class WxController extends yii\web\Controller {
 
         $return = Methods::post($url,$post_data);
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
-//        var_dump($return);die;
-        if($return['return_code'] == 'SUCCESS'){
+        if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
             $payUrl = $return['mweb_url'];
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
             //记录签名
