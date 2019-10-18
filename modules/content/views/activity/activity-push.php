@@ -92,22 +92,22 @@
         if(!condition){
             alert('请填写领取条件');return false;
         }
-        if(!propId){
-            alert('请填写道具ID');return false;
-        }
-        if(!number){
-            alert('请填写道具数量');return false;
-        }
-        if(bind < 1){
-            alert('请选择绑定状态');return false;
-        }
+        // if(!propId){
+        //     alert('请填写道具ID');return false;
+        // }
+        // if(!number){
+        //     alert('请填写道具数量');return false;
+        // }
+        // if(bind < 1){
+        //     alert('请选择绑定状态');return false;
+        // }
         var bindStr  = '';
         var binYes = '';
         var binNo = '';
         if(bind == 1){
             bindStr = '是';
             binYes = 'selected';
-        }else{
+        }else if(bind == 2){
             bindStr = '否';
             binNo = 'selected';
         }
@@ -118,6 +118,7 @@
             '                        <li class="liNumber"><span>'+number+'</span><input class="input-small inputHid" value="'+number+'" name="numbers[]"/></li>' +
             '                        <li class="liBind"><span>'+bindStr+'</span>' +
             '                           <select name="binds[]" class="input-small inputHid" style="height: 27px">'+
+            '                               <option value="0"  ></option>'+
             '                               <option value="1" '+binYes+' >是</option>'+
             '                               <option value="2"  '+binNo+'>否</option>'+
             '                           </select>' +

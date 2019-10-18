@@ -195,9 +195,13 @@ class ActivityController  extends AdminController
             $pushContent = json_decode($v['pushContent'],true);
             $pushStr = '';
             foreach($pushContent['condition'] as $t => $y){
-                $bind = $pushContent['bind'][$t]==1?'是':'否';
+                $bind = $pushContent['bind'][$t]==1?'是':($pushContent['bind'][$t]==2?'否':'');
                 $propId = $pushContent['propId'][$t];
-                $propName = Item::find()->where("itemid = $propId")->asArray()->one()['name'];
+                if($propId){
+                    $propName = Item::find()->where("itemid = $propId")->asArray()->one()['name'];
+                }else{
+                    $propName = '';
+                }
                 $pushStr .= "条件：{$y}  道具：{$propName}-{$propId} 数量：{$pushContent['number'][$t]} 绑定：{$bind} ； ";
             }
             $data[$k]['pushContent'] = $pushStr;
