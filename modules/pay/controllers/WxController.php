@@ -78,7 +78,7 @@ class WxController extends yii\web\Controller {
         $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
         die(json_encode($return));
     }
-     public function actionTest(){
+     public function actionTest1(){
         $res = self::WxOrder(time(),'测试',0.01,2);
         die(json_encode($res));
     }
