@@ -34,7 +34,9 @@ class ActivityPush extends ActiveRecord
                 if($propId>0){
                     $data[$key][] = ['id'=>intval($pushContent['propId'][$k]),'count'=>intval($pushContent['number'][$k]),'binding'=>intval($pushContent['bind'][$k])];
                 }else{
-                    $data[$key][] = [];
+                    if( !isset($data[$key])){
+                        $data[$key] = '';
+                    }
                 }
             }
             //构造推送数据
