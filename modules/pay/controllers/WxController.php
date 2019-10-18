@@ -31,7 +31,6 @@ class WxController extends yii\web\Controller {
         $request = json_decode($poststr);
         $content = get_object_vars($request);
         $key = key($content);
-        Methods::varDumpLog('wxPay.txt',json_encode($key),'a');
         $cont = json_decode($key,true);
         $productName = '元宝充值';
         $amount = $cont['amount'];
@@ -77,8 +76,6 @@ class WxController extends yii\web\Controller {
         $model->yuanbao = $ratio*$amount+$luckNum;
         $model->save();
         $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
-        $da = json_encode($return);
-        Methods::varDumpLog('wxPay.txt',"\n$da",'a');
         die(json_encode($return));
     }
      public function actionTest1(){
@@ -107,7 +104,6 @@ class WxController extends yii\web\Controller {
         $key = \Yii::$app->params['wxMchKey'];
         //生成签名
         ksort($paramArr);
-        Methods::varDumpLog('wxPay.txt',json_encode($paramArr),'a');
         $sign = self::signWxpay($paramArr,$key);
         $paramArr['sign'] = $sign;//签名
         //请求支付
@@ -130,7 +126,6 @@ class WxController extends yii\web\Controller {
           </xml>";
 
         $return = Methods::post($url,$post_data);
-        Methods::varDumpLog('wxPay.txt',$return,'a');
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
             $payUrl = $return['mweb_url'];

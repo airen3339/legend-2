@@ -99,7 +99,7 @@
                                 <li class="liBind">
                                     <span><?php echo $content['bind'][$k] == 1?'是':($content['bind'][$k] == 2?'否':'')?></span>
                                     <select name="binds[]" class="input-small inputHid" style="height: 27px">
-                                        <option value="0"></option>
+                                        <option value=""></option>
                                         <option value="1" <?php if($content['bind'][$k] ==1)echo 'selected';?>>是</option>
                                         <option value="2" <?php if($content['bind'][$k] ==2)echo 'selected';?>>否</option>
                                     </select>
@@ -156,7 +156,7 @@
     '                        <li class="liNumber"><span>'+number+'</span><input class="input-small inputHid" value="'+number+'" name="numbers[]"/></li>' +
     '                        <li class="liBind"><span>'+bindStr+'</span>' +
     '                           <select name="binds[]" class="input-small inputHid" style="height: 27px">'+
-    '                               <option value="0"  ></option>'+
+    '                               <option value=""  ></option>'+
     '                               <option value="1" '+binYes+' >是</option>'+
     '                               <option value="2"  '+binNo+'>否</option>'+
     '                           </select>' +
