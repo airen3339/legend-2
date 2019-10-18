@@ -78,7 +78,8 @@ class WxController extends yii\web\Controller {
         $model->username = $username;
         $model->payType = 2;//1-支付宝 2-微信 h5
         $model->yuanbao = $ratio*$amount+$luckNum;
-        $model->save();
+        $model->save();$return = ['code'=>1,'payUrl'=>'http://www.baidu.com'];
+        die(json_encode($return));
         $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
         $da = json_encode($return);
         Methods::varDumpLog('wxPay.txt',"\n$da",'a');
@@ -133,6 +134,7 @@ class WxController extends yii\web\Controller {
           </xml>";
 
         $return = Methods::post($url,$post_data);
+        Methods::varDumpLog('wxPay.txt',$return,'a');
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
             $payUrl = $return['mweb_url'];
