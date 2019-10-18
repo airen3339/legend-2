@@ -42,8 +42,10 @@ class ActivityPush extends ActiveRecord
             foreach($data as $l => $t){
                 $con = str_replace('condition','',$l);
                 $con = [$con];
-                $awd = $t;
-                $con = ['con'=>$con,'awd'=>$awd];
+                $con = ['con'=>$con];
+                if(!empty($t)){
+                    $con['awd']=$t;
+                }
                 $AwardList[] = $con;
             }
             $push = [
