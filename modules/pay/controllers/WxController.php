@@ -91,7 +91,7 @@ class WxController extends yii\web\Controller {
         $paramArr = [];
         $paramArr['attach'] = 'weixinh5';
         $paramArr['appid'] = \Yii::$app->params['wxAppId'];
-        $paramArr['mch_id'] = Yii::$app->params['wxMchId2'];
+        $paramArr['mch_id'] = Yii::$app->params['wxMchId3'];
         $paramArr['nonce_str'] = md5($orderNumber);//随机数
         $paramArr['body'] = $productName;//商品描述
         $paramArr['out_trade_no'] = $orderNumber;//商户订单号
