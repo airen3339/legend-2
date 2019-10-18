@@ -208,7 +208,7 @@ class ApiController extends Controller
      * 支付宝签名
      * 签名生成
      * @param $signArr
-     * md5算法加密
+     * md5算法加密 转小写
      */
     public static function signAlipay($signArr,$key){
         $signStr = '';
@@ -271,11 +271,8 @@ class ApiController extends Controller
                     //通知服务器处理后续
 //                    $amount = $amount/100;//换成元
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
-//                    $url = '192.168.0.15:8080';
                     $url = \Yii::$app->params['gameServerUrl'];
-                    $res = Methods::post($url,$postData);
-                    Methods::varDumpLog('pay.txt',json_encode($postData),'a');
-                    Methods::varDumpLog('pay.txt',json_encode($res),'a');
+                    Methods::post($url,$postData);
                 }
                 echo 'SUCCESS';
             }else{

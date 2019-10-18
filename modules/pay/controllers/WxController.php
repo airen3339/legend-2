@@ -1,0 +1,296 @@
+<?php
+/**
+ * 首页
+ * Created by PhpStorm.
+ * User: obelisk
+ */
+namespace app\modules\pay\controllers;
+
+use app\libs\Methods;
+use app\modules\pay\models\Recharge;
+use yii;
+
+class WxController extends yii\web\Controller {
+    public $enableCsrfValidation = false;
+
+    /**
+     * 微信制度
+     * 支付数据获取
+     * 客户端请求
+     * 请求参数
+     * amount 金额
+     * productName 商品名称
+     * detail  支付详情数据
+     * 支付逻辑  客户端发送订单数据  ==》 PHP接受数据 ==》将订单数据发送给服务端 ==》调用对应的支付接口获取支付二维码 ==》将二维码返给客户端
+     * 支付成功  回调地址中 验证支付结果  ==》通知服务端
+     * code返回类型 1 成功 -1 支付金额不能为零 -2 订单号不存在 -3  角色id不存在 -4 服务器id不存在  -5 用户名不存在 -6 支付请求错误
+     */
+    public function actionWxOrder(){
+        $request = \Yii::$app->request->post();
+        $poststr = json_encode($request);
+        $request = json_decode($poststr);
+        $content = get_object_vars($request);
+        $key = key($content);
+        $cont = json_decode($key,true);
+        $productName = '元宝充值';
+        $amount = $cont['amount'];
+        if($amount <= 0){
+            die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
+        }
+        $time = time();
+        $orderNumber = $cont['orderNumber'];
+        if(!$orderNumber){
+            die(json_encode(['code'=>-2]));//,'msg'=>'订单号不存在'
+        }
+        $roleId = $cont['roleId'];//用户角色id
+        if(!$roleId){
+            die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
+        }
+        $ratio = 500;//元宝比例
+        $luckNum = 0;
+        $extInfo = $cont['ext_info'];//其他扩展数据
+        $server_id = $cont['server_id'];//服务器id
+        if(!$server_id){
+            die(json_encode(['code'=>-4]));//,'msg'=>'服务器id不存在'
+        }
+        $username = $cont['username'];
+        if(!$username){
+            die(json_encode(['code'=>-5]));//,'msg'=>'用户名不存在'
+        }
+        $sign = $cont['sign'];//验证签名字段
+        //订单数据生成记录
+        $model = new Recharge();
+        $model->roleId = $roleId;
+        $model->orderNumber = $orderNumber;
+        $model->product = $productName;
+        $model->money = $amount;
+        $model->ratio = $ratio;
+        $model->lucknum = $luckNum;
+        $model->sign = $sign;
+        $model->extInfo = $extInfo;
+        $model->status = 0;
+        $model->server_id = $server_id;
+        $model->createTime = $time;
+        $model->username = $username;
+        $model->payType = 2;//1-支付宝 2-微信 h5
+        $model->yuanbao = $ratio*$amount+$luckNum;
+        $model->save();
+        $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
+        die(json_encode($return));
+    }
+     public function actionTest(){
+        self::WxOrder(time(),'测试',0.01,2);
+    }
+    /**
+     * 微信支付请求发起
+     * H5
+     */
+    public static  function WxOrder($orderNumber,$productName,$amount,$orderId){
+        $paramArr = [];
+        $paramArr['attach'] = 'weixinh5';
+        $paramArr['appid'] = \Yii::$app->params['wxAppId'];
+        $paramArr['mch_id'] = Yii::$app->params['wxMchId'];
+        $paramArr['nonce_str'] = md5($orderNumber);//随机数
+        $paramArr['body'] = $productName;//商品描述
+        $paramArr['out_trade_no'] = $orderNumber;//商户订单号
+        $paramArr['total_fee'] = $amount*100;;//总金额 金额处理 单位为分
+        $paramArr['spbill_create_ip'] = self::getIP();//终端ip
+        $paramArr['notify_url'] = Yii::$app->params['wxNotify'];;//回调地址
+        $paramArr['trade_type'] = 'MWEB';//交易类型 h5支付 MWEB
+        $paramArr['product_id'] = 1;//商品id
+        $paramArr['scene_info'] = json_encode(['h5_info'=>['type'=>'Wap','wap_url'=>'http://www.6p39k.cn/ycj.php','wap_name'=>'夺宝传奇']]);//场景信息
+        $key = \Yii::$app->params['wxMchKey'];
+        //生成签名
+        ksort($paramArr);
+        $sign = self::signWxpay($paramArr,$key);
+        $paramArr['sign'] = $sign;//签名
+        //请求支付
+        $url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+        //5.拼接成所需XML格式
+        $post_data = "<xml> 
+            <appid>{$paramArr['appid']}</appid>
+            <attach>{$paramArr['attach']}</attach>
+            <body>{$paramArr['body']}</body>
+            <mch_id>{$paramArr['mch_id']}</mch_id>
+            <nonce_str>{$paramArr['nonce_str']}</nonce_str>
+            <notify_url>{$paramArr['notify_url']}</notify_url>
+            <out_trade_no>{$paramArr['out_trade_no']}</out_trade_no>
+            <spbill_create_ip>{$paramArr['spbill_create_ip']}</spbill_create_ip>
+            <total_fee>{$paramArr['total_fee']}</total_fee>
+            <trade_type>{$paramArr['trade_type']}</trade_type>
+            <scene_info>{$paramArr['scene_info']}</scene_info>
+            <sign>{$paramArr['sign']}</sign>
+            <product_id>{$paramArr['product_id']}</product_id>
+          </xml>";
+
+        var_dump($post_data);
+        $return = self::httpRequest($url,'POST',$post_data);
+        var_dump($return);die;
+        if($return['return_code'] == 'success'){
+            $returnData = json_decode($return['data'],true);
+            $payUrl = $returnData['payUrl'];
+            $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
+            //记录签名
+            Recharge::updateAll(['paySign'=>$sign],"id = $orderId");
+        }else{
+            $data = ['code'=>-6];//,'msg'=>$return['message'] 支付请求错误
+        }
+        return $data;
+    }
+
+    public static function getIP(){
+        if($_SERVER['REMOTE_ADDR'])
+            $ip = $_SERVER['REMOTE_ADDR'];
+        else $ip = "Unknow";
+        return $ip;
+    }
+    /**
+     * 支付宝签名
+     * 签名生成
+     * @param $signArr
+     * md5算法加密 转大写
+     */
+    public static function signWxpay($signArr,$key){
+        $signStr = '';
+        foreach($signArr as $k => $v){
+            if($v != ''){
+                $signStr .= $k.'='.$v.'&';
+            }
+        }
+        $signStr.='key='.$key;
+        $signStr = md5($signStr);
+        $signStr = strtoupper($signStr);
+        return $signStr;
+    }
+
+    /**
+     * 支付宝回调
+     * 支付结果通知处理
+     * 支付宝
+     * POST方式
+     */
+    public function actionWxpayNotify(){
+        $data = $_POST['data'];
+        if(!$data){
+            echo 'fail';die;
+        }else{
+            $data = json_decode($data,true);
+        }
+        $resultcode = $data['resultcode'];//支付状态
+        $resultmessage = $data['resultmessage'];//支付信息
+        $orderNo = $data['orderNo'];//商户订单号
+        $payTrxNo = $data['payTrxNo'];//平台流水号
+        $amount = $data['amount'];//支付金额 单位为分
+        $paySign = $data['paySign'];//签名信息
+        $appId = $data['appId'];
+        //验证签名
+        $result = self::checkAlipaySign($orderNo,$appId);
+        if($result){
+            if($resultcode == '0000'){
+                $amount = $amount/100;//换成元
+                $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = $amount")->asArray()->one();
+                if($orderData['status'] != 1){//订单未完成
+                    Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
+                    //通知服务器处理后续
+//                    $amount = $amount/100;//换成元
+                    $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
+//                    $url = '192.168.0.15:8080';
+                    $url = \Yii::$app->params['gameServerUrl'];
+                    $res = Methods::post($url,$postData);
+                    Methods::varDumpLog('pay.txt',json_encode($postData),'a');
+                    Methods::varDumpLog('pay.txt',json_encode($res),'a');
+                }
+                echo 'SUCCESS';
+            }else{
+                echo 'fail';
+            }
+        }else{
+            echo 'fail,sign error';
+        }
+        die;
+    }
+
+    /**
+     * 支付宝
+     * 签名验证
+     * 回调地址
+     * 签名方式
+     * 第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
+    第二步，在stringA最后拼接上应用key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为小写，得到sign值signValue。
+     */
+    public static function checkAlipaySign($orderNumber,$appid){
+        $key = \Yii::$app->params['alipayKey'];
+        $province = \Yii::$app->params['province'];
+        $city = \Yii::$app->params['city'];
+        $area = \Yii::$app->params['area'];
+        $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
+        $payType = 'SCANPAY_ALIPAY';
+        //查询数据库数据生成签名进行验证
+        $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
+        $dateTime = date('YmdHis',$orderData['createTime']);
+        $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
+        ksort($postData);//生成签名
+        $sign = self::signAlipay($postData,$key);
+        $paySign = $orderData['paySign'];
+        if($sign ==$paySign){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    /**
+     * CURL请求
+     * @param $url 请求url地址
+     * @param $method 请求方法 get post
+     * @param null $postfields post数据数组
+     * @param array $headers 请求header信息
+     * @param bool|false $debug 调试开启 默认false
+     * @return mixed
+     */
+    public static function httpRequest($url, $method, $postfields = null, $headers = array(), $debug = false) {
+        $method = strtoupper($method);
+        $ci = curl_init();
+        /* Curl settings */
+        curl_setopt($ci, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+        curl_setopt($ci, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0");
+        curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, 60); /* 在发起连接前等待的时间，如果设置为0，则无限等待 */
+        curl_setopt($ci, CURLOPT_TIMEOUT, 7); /* 设置cURL允许执行的最长秒数 */
+        curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
+        switch ($method) {
+            case "POST":
+                curl_setopt($ci, CURLOPT_POST, true);
+                if (!empty($postfields)) {
+                    $tmpdatastr = is_array($postfields) ? http_build_query($postfields) : $postfields;
+                    curl_setopt($ci, CURLOPT_POSTFIELDS, $tmpdatastr);
+                }
+                break;
+            default:
+                curl_setopt($ci, CURLOPT_CUSTOMREQUEST, $method); /* //设置请求方式 */
+                break;
+        }
+        $ssl = preg_match('/^https:\/\//i',$url) ? TRUE : FALSE;
+        curl_setopt($ci, CURLOPT_URL, $url);
+        if($ssl){
+            curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
+            curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, FALSE); // 不从证书中检查SSL加密算法是否存在
+        }
+        curl_setopt($ci, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ci, CURLOPT_MAXREDIRS, 2);/*指定最多的HTTP重定向的数量，这个选项是和CURLOPT_FOLLOWLOCATION一起使用的*/
+        curl_setopt($ci, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ci, CURLINFO_HEADER_OUT, true);
+        $response = curl_exec($ci);
+        $requestinfo = curl_getinfo($ci);
+        if ($debug) {
+            echo "=====post data======\r\n";
+            var_dump($postfields);
+            echo "=====info===== \r\n";
+            print_r($requestinfo);
+            echo "=====response=====\r\n";
+            print_r($response);
+        }
+        curl_close($ci);
+        return $response;
+    }
+}
