@@ -37,27 +37,27 @@ class WxController extends yii\web\Controller {
         $cont = json_decode($key,true);
         $productName = '元宝充值';
         $amount = $cont['amount'];
-        if($amount <= 0){
+        if($amount <= 0){Methods::varDumpLog('wxPay.txt',"\n$amount",'a');
             die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
         }
         $time = time();
         $orderNumber = $cont['orderNumber'];
-        if(!$orderNumber){
+        if(!$orderNumber){Methods::varDumpLog('wxPay.txt',"\n$orderNumber",'a');
             die(json_encode(['code'=>-2]));//,'msg'=>'订单号不存在'
         }
         $roleId = $cont['roleId'];//用户角色id
-        if(!$roleId){
+        if(!$roleId){Methods::varDumpLog('wxPay.txt',"\n$roleId",'a');
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
         }
         $ratio = 500;//元宝比例
         $luckNum = 0;
         $extInfo = $cont['ext_info'];//其他扩展数据
         $server_id = $cont['server_id'];//服务器id
-        if(!$server_id){
+        if(!$server_id){Methods::varDumpLog('wxPay.txt',"\n$server_id",'a');
             die(json_encode(['code'=>-4]));//,'msg'=>'服务器id不存在'
         }
         $username = $cont['username'];
-        if(!$username){
+        if(!$username){Methods::varDumpLog('wxPay.txt',"\n$username",'a');
             die(json_encode(['code'=>-5]));//,'msg'=>'用户名不存在'
         }
         Methods::varDumpLog('wxPay.txt',22222,'a');
@@ -80,6 +80,8 @@ class WxController extends yii\web\Controller {
         $model->yuanbao = $ratio*$amount+$luckNum;
         $model->save();
         $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
+        $da = json_encode($return);
+        Methods::varDumpLog('wxPay.txt',"\n$da",'a');
         die(json_encode($return));
     }
      public function actionTest1(){
