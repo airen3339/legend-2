@@ -79,6 +79,7 @@ class WxController extends yii\web\Controller {
         die(json_encode($return));
     }
      public function actionTest1(){
+        var_dump($_SERVER);die;
         $res = self::WxOrder(time(),'测试',0.01,2);
         die(json_encode($res));
     }
@@ -170,11 +171,12 @@ class WxController extends yii\web\Controller {
      * POST方式
      */
     public function actionWxpayNotify(){
-        $data = $_POST['data'];
-        if(!$data){
+        //获取通知的数据
+        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+        if(!$xml){
             echo 'fail';die;
         }else{
-            $data = json_decode($data,true);
+            $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         }
         $resultcode = $data['resultcode'];//支付状态
         $resultmessage = $data['resultmessage'];//支付信息
@@ -239,5 +241,26 @@ class WxController extends yii\web\Controller {
         }
     }
 
-
+    /**
+     * 输出xml字符
+     * @param   $params     参数名称
+     * return   string      返回组装的xml
+     **/
+    public function data_to_xml( $params ){
+        if(!is_array($params)|| count($params) <= 0)
+        {
+            return false;
+        }
+        $xml = "<xml>";
+        foreach ($params as $key=>$val)
+        {
+            if (is_numeric($val)){
+                $xml.="<".$key.">".$val."</".$key.">";
+            }else{
+                $xml.="<".$key."><![CDATA[".$val."]]></".$key.">";
+            }
+        }
+        $xml.="</xml>";
+        return $xml;
+    }
 }
