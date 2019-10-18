@@ -131,6 +131,7 @@ class WxController extends yii\web\Controller {
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
             //记录签名
             Recharge::updateAll(['paySign'=>$sign],"id = $orderId");
+            header("Location:$payUrl");
         }else{
             $data = ['code'=>-6];//,'msg'=>$return['message'] 支付请求错误
         }
