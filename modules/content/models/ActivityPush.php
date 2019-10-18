@@ -33,6 +33,8 @@ class ActivityPush extends ActiveRecord
                 $propId = intval($pushContent['propId'][$k]);
                 if($propId>0){
                     $data[$key][] = ['id'=>intval($pushContent['propId'][$k]),'count'=>intval($pushContent['number'][$k]),'binding'=>intval($pushContent['bind'][$k])];
+                }else{
+                    $data[$key][] = [];
                 }
             }
             //构造推送数据
@@ -40,8 +42,10 @@ class ActivityPush extends ActiveRecord
             foreach($data as $l => $t){
                 $con = str_replace('condition','',$l);
                 $con = [$con];
-                $awd = $t;
-                $con = ['con'=>$con,'awd'=>$awd];
+                $con = ['con'=>$con];
+                if(!empty($t)){
+                    $con['awd']=$t;
+                }
                 $AwardList[] = $con;
             }
             $push = [
