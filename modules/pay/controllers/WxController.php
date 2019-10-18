@@ -109,8 +109,6 @@ class WxController extends yii\web\Controller {
         //生成签名
         ksort($paramArr);
         Methods::varDumpLog('wxPay.txt',json_encode($paramArr),'a');
-        $return = ['code'=>1,'payUrl'=>'http://www.baidu.com'];
-        die(json_encode($return));
         $sign = self::signWxpay($paramArr,$key);
         $paramArr['sign'] = $sign;//签名
         //请求支付
@@ -140,7 +138,6 @@ class WxController extends yii\web\Controller {
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
             //记录签名
             Recharge::updateAll(['paySign'=>$sign],"id = $orderId");
-            header("Location:$payUrl");
         }else{
             $data = ['code'=>-6];//,'msg'=>$return['message'] 支付请求错误
         }
