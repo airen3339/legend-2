@@ -28,39 +28,36 @@ class WxController extends yii\web\Controller {
     public function actionWxOrder(){
         $request = \Yii::$app->request->post();
         $poststr = json_encode($request);
-        Methods::varDumpLog('wxPay.txt',$poststr,'a');
         $request = json_decode($poststr);
         $content = get_object_vars($request);
-        Methods::varDumpLog('wxPay.txt',json_encode($content),'a');
         $key = key($content);
         Methods::varDumpLog('wxPay.txt',json_encode($key),'a');
         $cont = json_decode($key,true);
         $productName = '元宝充值';
         $amount = $cont['amount'];
-        if($amount <= 0){Methods::varDumpLog('wxPay.txt',"\n$amount",'a');
+        if($amount <= 0){
             die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
         }
         $time = time();
         $orderNumber = $cont['orderNumber'];
-        if(!$orderNumber){Methods::varDumpLog('wxPay.txt',"\n$orderNumber",'a');
+        if(!$orderNumber){
             die(json_encode(['code'=>-2]));//,'msg'=>'订单号不存在'
         }
         $roleId = $cont['roleId'];//用户角色id
-        if(!$roleId){Methods::varDumpLog('wxPay.txt',"\n$roleId",'a');
+        if(!$roleId){
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
         }
         $ratio = 500;//元宝比例
         $luckNum = 0;
         $extInfo = $cont['ext_info'];//其他扩展数据
         $server_id = $cont['server_id'];//服务器id
-        if(!$server_id){Methods::varDumpLog('wxPay.txt',"\n$server_id",'a');
+        if(!$server_id){
             die(json_encode(['code'=>-4]));//,'msg'=>'服务器id不存在'
         }
         $username = $cont['username'];
-        if(!$username){Methods::varDumpLog('wxPay.txt',"\n$username",'a');
+        if(!$username){
             die(json_encode(['code'=>-5]));//,'msg'=>'用户名不存在'
         }
-        Methods::varDumpLog('wxPay.txt',22222,'a');
         $sign = $cont['sign'];//验证签名字段
         //订单数据生成记录
         $model = new Recharge();
@@ -78,8 +75,7 @@ class WxController extends yii\web\Controller {
         $model->username = $username;
         $model->payType = 2;//1-支付宝 2-微信 h5
         $model->yuanbao = $ratio*$amount+$luckNum;
-        $model->save();$return = ['code'=>1,'payUrl'=>'http://www.baidu.com'];
-        die(json_encode($return));
+        $model->save();
         $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
         $da = json_encode($return);
         Methods::varDumpLog('wxPay.txt',"\n$da",'a');
@@ -112,6 +108,9 @@ class WxController extends yii\web\Controller {
         $key = \Yii::$app->params['wxMchKey'];
         //生成签名
         ksort($paramArr);
+        Methods::varDumpLog('wxPay.txt',json_encode($paramArr),'a');
+        $return = ['code'=>1,'payUrl'=>'http://www.baidu.com'];
+        die(json_encode($return));
         $sign = self::signWxpay($paramArr,$key);
         $paramArr['sign'] = $sign;//签名
         //请求支付
