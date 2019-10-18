@@ -31,7 +31,9 @@ class WxController extends yii\web\Controller {
         Methods::varDumpLog('wxPay.txt',$poststr,'a');
         $request = json_decode($poststr);
         $content = get_object_vars($request);
+        Methods::varDumpLog('wxPay.txt',json_encode($content),'a');
         $key = key($content);
+        Methods::varDumpLog('wxPay.txt',json_encode($key),'a');
         $cont = json_decode($key,true);
         $productName = '元宝充值';
         $amount = $cont['amount'];
@@ -58,6 +60,7 @@ class WxController extends yii\web\Controller {
         if(!$username){
             die(json_encode(['code'=>-5]));//,'msg'=>'用户名不存在'
         }
+        Methods::varDumpLog('wxPay.txt',22222,'a');
         $sign = $cont['sign'];//验证签名字段
         //订单数据生成记录
         $model = new Recharge();
