@@ -121,6 +121,7 @@ $config = [
                  ''=>'/cn/index/show',  //首页
                  'legend.php'=>'/content/login/login',//后台登录页
                  'ycj.php'=>'/content/login/login',
+                 'pay/wx/order.php'=>'pay/wx/wx-order'
              ],
 
          ],

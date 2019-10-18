@@ -2,8 +2,8 @@
 RewriteEngine on
 # If a directory or a file exists, use it directly
 
-RewriteCond %{SERVER_PORT} !^443$
-RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
+#RewriteCond %{SERVER_PORT} !^443$
+#RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 #RewriteRule . index.php
