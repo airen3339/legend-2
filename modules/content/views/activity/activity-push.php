@@ -55,7 +55,7 @@
                     道具ID：<input type="text" style="width:70px" name="propId" id='propId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
                     道具数量：<input type="text" style="width:70px" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')"  />&nbsp;&nbsp;&nbsp;&nbsp;
                     绑定状态：<select name="bind" id="bind" class="input-small">
-                                <option value="0">请选择</option>
+                                <option value="">请选择</option>
                                 <option value="1">是</option>
                                 <option value="2">否</option>
                             </select>&nbsp;&nbsp;
@@ -118,7 +118,7 @@
             '                        <li class="liNumber"><span>'+number+'</span><input class="input-small inputHid" value="'+number+'" name="numbers[]"/></li>' +
             '                        <li class="liBind"><span>'+bindStr+'</span>' +
             '                           <select name="binds[]" class="input-small inputHid" style="height: 27px">'+
-            '                               <option value="0"  ></option>'+
+            '                               <option value=""  ></option>'+
             '                               <option value="1" '+binYes+' >是</option>'+
             '                               <option value="2"  '+binNo+'>否</option>'+
             '                           </select>' +
