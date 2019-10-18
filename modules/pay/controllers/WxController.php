@@ -79,7 +79,6 @@ class WxController extends yii\web\Controller {
         $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
         $da = json_encode($return);
         Methods::varDumpLog('wxPay.txt',"\n$da",'a');
-        $return = ['code'=>1,'payUrl'=>'http://www.baidu.com'];
         die(json_encode($return));
     }
      public function actionTest1(){
