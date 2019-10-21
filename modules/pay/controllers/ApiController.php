@@ -165,13 +165,19 @@ class ApiController extends Controller
             $payUrl = $returnData['payUrl'];
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
             //记录签名
-            Recharge::updateAll(['paySign'=>$sign],"id = $orderId");
+            $ip = self::getIp();
+            Recharge::updateAll(['paySign'=>$sign,'ip'=>$ip],"id = $orderId");
         }else{
             $data = ['code'=>-6];//,'msg'=>$return['message'] 支付请求错误
         }
         return $data;
     }
-
+    public static function getIP(){
+        if($_SERVER['REMOTE_ADDR'])
+            $ip = $_SERVER['REMOTE_ADDR'];
+        else $ip = "Unknow";
+        return $ip;
+    }
     /**
      * 清逸支付
      * @param $orderNumber  订单号
