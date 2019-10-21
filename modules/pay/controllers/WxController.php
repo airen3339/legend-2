@@ -130,7 +130,7 @@ class WxController extends yii\web\Controller {
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
             $payUrl = $return['mweb_url'];
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
-            echo "<script>window.location.href = '$payUrl'</script>";
+            echo "<script>window.location.href = '$payUrl'</script>";die;
             //记录签名
             Recharge::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
         }else{
