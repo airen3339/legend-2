@@ -78,8 +78,7 @@ class WxController extends yii\web\Controller {
         $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
         die(json_encode($return));
     }
-     public function actionTest1(){
-        var_dump($_SERVER);die;
+     public function actionTest2(){
         $res = self::WxOrder(time(),'测试',0.01,2);
         die(json_encode($res));
     }
@@ -126,12 +125,13 @@ class WxController extends yii\web\Controller {
           </xml>";
 
         $return = Methods::post($url,$post_data);
+        Methods::varDumpLog('wxPay.txt',$return,'a');
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
             $payUrl = $return['mweb_url'];
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
             //记录签名
-            Recharge::updateAll(['paySign'=>$sign],"id = $orderId");
+            Recharge::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
         }else{
             $data = ['code'=>-6];//,'msg'=>$return['message'] 支付请求错误
         }
@@ -178,38 +178,36 @@ class WxController extends yii\web\Controller {
         }else{
             $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         }
-        $resultcode = $data['resultcode'];//支付状态
-        $resultmessage = $data['resultmessage'];//支付信息
-        $orderNo = $data['orderNo'];//商户订单号
-        $payTrxNo = $data['payTrxNo'];//平台流水号
-        $amount = $data['amount'];//支付金额 单位为分
-        $paySign = $data['paySign'];//签名信息
-        $appId = $data['appId'];
-        //验证签名
-        $result = self::checkAlipaySign($orderNo,$appId);
-        if($result){
-            if($resultcode == '0000'){
+        $returnCode = $data['return_code'];//支付状态
+        $returnMsg = $data['return_msg'];//支付信息
+        if($returnCode == 'SUCCESS'){
+            $amount = $data['total_fee'];//支付金额 单位为分
+            $orderNo = $data['out_trade_no'];//商户订单号//验证签名
+            $result = self::checkWxpaySign($orderNo);
+            if($result){
                 $amount = $amount/100;//换成元
                 $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
                     Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
-//                    $amount = $amount/100;//换成元
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
-//                    $url = '192.168.0.15:8080';
                     $url = \Yii::$app->params['gameServerUrl'];
                     $res = Methods::post($url,$postData);
                     Methods::varDumpLog('pay.txt',json_encode($postData),'a');
                     Methods::varDumpLog('pay.txt',json_encode($res),'a');
                 }
-                echo 'SUCCESS';
+                $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{
-                echo 'fail';
+                $returnArr = ['return_code'=>'fail','return_msg'=>'pay sign error'];
             }
         }else{
-            echo 'fail,sign error';
+            $returnArr = ['return_code'=>'fail','return_msg'=>'no data return'];
         }
-        die;
+        $xml = "<xml>
+                    <return_code><![CDATA[".$returnArr['return_code']."]]></return_code>
+                    <return_msg><![CDATA[".$returnArr['return_msg']."]]></return_msg>
+                </xml>";
+        return $xml;
     }
 
     /**
@@ -220,19 +218,25 @@ class WxController extends yii\web\Controller {
      * 第一步，设所有发送或者接收到的数据为集合M，将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串。
     第二步，在stringA最后拼接上应用key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为小写，得到sign值signValue。
      */
-    public static function checkAlipaySign($orderNumber,$appid){
-        $key = \Yii::$app->params['alipayKey'];
-        $province = \Yii::$app->params['province'];
-        $city = \Yii::$app->params['city'];
-        $area = \Yii::$app->params['area'];
-        $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
-        $payType = 'SCANPAY_ALIPAY';
+    public static function checkWxpaySign($orderNumber){
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
-        $dateTime = date('YmdHis',$orderData['createTime']);
-        $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
-        ksort($postData);//生成签名
-        $sign = self::signAlipay($postData,$key);
+        $paramArr['attach'] = 'weixinh5';
+        $paramArr['appid'] = \Yii::$app->params['wxAppId'];
+        $paramArr['mch_id'] = Yii::$app->params['wxMchId'];
+        $paramArr['nonce_str'] = md5($orderNumber);//随机数
+        $paramArr['body'] = $orderData['product'];//商品描述
+        $paramArr['out_trade_no'] = $orderNumber;//商户订单号
+        $paramArr['total_fee'] = $orderData['money']*100;;//总金额 金额处理 单位为分
+        $paramArr['spbill_create_ip'] = $orderData['ip'];//终端ip
+        $paramArr['notify_url'] = Yii::$app->params['wxNotify'];;//回调地址
+        $paramArr['trade_type'] = 'MWEB';//交易类型 h5支付 MWEB
+        $paramArr['product_id'] = 1;//商品id
+        $paramArr['scene_info'] = json_encode(['h5_info'=>['type'=>'Wap','wap_url'=>'http://www.6p39k.cn/ycj.php','wap_name'=>'夺宝传奇']]);//场景信息
+        $key = \Yii::$app->params['wxMchKey'];
+        //生成签名
+        ksort($paramArr);
+        $sign = self::signWxpay($paramArr,$key);
         $paySign = $orderData['paySign'];
         if($sign ==$paySign){
             return true;
