@@ -335,13 +335,13 @@ class ApiController extends  Controller
      * 添加银商联系
      */
     public function actionAddContact(){
-        $roleId = Yii::$app->request->post('roleId');
+        $userId = Yii::$app->request->post('userId');
         $contact = Yii::$app->request->post('contact');
-        if(!$roleId || !$contact){
+        if(!$userId || !$contact){
             $data = ['code'=>0,'message'=>'参数错误'];
         }else{
             //通知服务端
-            $content = ['roleID'=>$roleId,'contact'=>$contact];
+            $content = ['UserID'=>$userId,'contact'=>$contact];
             $host = $_SERVER['HTTP_HOST'];
             if($host == 'www.6p39k.cn' || $host == '6p39k.cn'){
                 $serverId = 1;

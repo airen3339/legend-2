@@ -597,12 +597,11 @@ class GmController  extends AdminController
      * 银商数据
      */
     public function actionSilverMerchant(){
-        $name  = Yii::$app->request->get('name');
+        $userId  = Yii::$app->request->get('userId');
         $page = Yii::$app->request->get('page',1);
         $where = ' 1 = 1 ';
-        if($name){
-            $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
-            $where .= $roleId?" and sm.roleID = '{$roleId}'":" and 1 > 2 ";
+        if($userId){
+            $where .=" and sm.UserID = '{$userId}'";
         }
         $relation = SliverMerchant::getSliverMerchantMsg($where,$page);
         return $this->render('silver-merchant',$relation);
