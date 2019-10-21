@@ -15,16 +15,16 @@ class SliverMerchant extends ActiveRecord
     }
 
     public static  function tableName(){
-        return '{{%test}}';
+        return '{{%yin_shang_user}}';
     }
     /**
      * 获取对应的银商数据信息
      */
     public static function getSliverMerchantMsg($where,$page=1,$pageSize = 20){
-        $sql = " select sm.*,p.Name from {{%test}} sm left join {{%player}} p on p.RoleID = sm.roleID where $where ";
+        $sql = " select sm.*,p.Name from {{%yin_shang_user}} sm left join {{%player}} p on p.UserID = sm.UserID where $where ";
         $total = \Yii::$app->db2->createCommand($sql)->queryAll();
         $count = count($total);
-        $pages = new Pagination(['totalCount'=>$count]);
+        $pages = new Pagination(['totalCount'=>$count,'pageSize'=>$pageSize]);
         $limit = " limit ".($page-1)*$pageSize.",".$pageSize;
         $sql .=  $limit;
         $data = \Yii::$app->db2->createCommand($sql)->queryAll();

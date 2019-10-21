@@ -11,10 +11,10 @@
         <table class="table">
             <tr>
                 <td width="70px">
-                    角色名：
+                    角色账号：
                 </td>
                 <td>
-                    <input style="width: 140px" size="10" type="text" id="name" name="name"  value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                    <input style="width: 140px" size="10" type="text" id="userId" name="userId"  value="<?php echo isset($_GET['userId'])?$_GET['userId']:''?>"/>
                 </td>
                 <td style="float: right">
                     <button class="btn btn-primary" type="submit">查询</button>
@@ -27,9 +27,7 @@
         <table class="table table-hover ">
             <thead>
             <tr>
-                <th>角色ID</th>
-                <th>角色名</th>
-                <th >元宝数</th>
+                <th>角色账号</th>
                 <th >联系方式</th>
             </tr>
             </thead>
@@ -38,10 +36,8 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr class="tdSpan tdBorder">
-                    <td ><span><?php echo $v['roleID']?></span></td>
-                    <td ><span><?php echo $v['Name']?></span></td>
-                    <td ><span><?php echo $v['Ingot']?></span></td>
-                    <td><span><input type='text' value='<?php echo $v['contact']?>' data-roleId="<?php echo $v['roleID']?>" />&nbsp;<a href='#' class='btn' onclick='addContact(this)' >添加</a></span></td>
+                    <td ><span><?php echo $v['UserID']?></span></td>
+                    <td><span><input type='text' value='<?php echo $v['contact']?>' data-userId="<?php echo $v['UserID']?>" />&nbsp;<a href='#' class='btn' onclick='addContact(this)' >添加</a></span></td>
                 </tr>
                 <?php
             }
@@ -68,9 +64,9 @@
     function addContact(_this){
         if(confirm('确定添加该联系方式？')){
             var val = $(_this).siblings("input").val();
-            var roleId = $(_this).siblings("input").attr('data-roleId');
+            var userId = $(_this).siblings("input").attr('data-userId');
             if(val){
-                $.post('/content/api/add-contact',{roleId:roleId,contact:val},function(e){
+                $.post('/content/api/add-contact',{userId:userId,contact:val},function(e){
                     alert(e.message);
                     if(e.code !=1){//去掉添加的联系信息
                         $(_this).siblings("input").val('');
