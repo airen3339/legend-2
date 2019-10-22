@@ -62,7 +62,7 @@
         $.post('/pay/wx/wx-pay',{orderId:orderId},function(e){
             if(e.code ==1){
                 // console.log(e.payUrl);return false;
-                location.href=e.payUrl
+                location.href="https://"+e.payUrl
             }else{
                 alert(e.code);
             }
