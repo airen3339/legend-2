@@ -9,7 +9,7 @@
     <style>
         .wxBtn{
             background: rgba(55, 188, 133, 1);
-            width: 77px;
+            width: 85px;
             height: 43px;
             border-radius: 9px;
             position: relative;
@@ -58,7 +58,7 @@
     function getWxpayUrl(orderId){
         $.post('/pay/wx/wx-pay',{orderId:orderId},function(e){
             if(e.code ==1){
-                location.href=e.payUrl
+                location.href="https://"+e.payUrl
             }else{
                 alert(e.code);
             }
