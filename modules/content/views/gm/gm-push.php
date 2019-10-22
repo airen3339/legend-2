@@ -2,7 +2,7 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
-        <li class="active">命令推送</li> <button onclick="getUrl()">ceshi</button>
+        <li class="active">命令推送</li>
     </ul>
     <form action="/content/gm/gm-push" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定推送该命令吗？')){return true;}else{return false;}">
         <fieldset>
@@ -47,8 +47,3 @@
         </fieldset>
     </form>
 </div>
-<script>
-    function getUrl(){
-        $.post('/pay/wx/test2',{},function(e){location.href=e.payUrl},'json');
-    }
-</script>

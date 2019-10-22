@@ -273,4 +273,18 @@ class PlayerController  extends AdminController
         $servers = Server::getServers();
         return $this->render('mail-receive',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
     }
+    /**
+     * 用户订单页面
+     * h5
+     * 微信支付
+     */
+    public function actionWxH5(){
+        $orderId = \Yii::$app->request->get('orderId',0);
+        if($orderId){
+            $order = Recharge::find()->where("id = $orderId")->asArray()->one();
+        }else{
+            $order = [];
+        }
+        return $this->renderPartial('h5-pay',['order'=>$order]);
+    }
 }
