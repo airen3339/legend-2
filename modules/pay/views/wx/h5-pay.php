@@ -12,8 +12,8 @@
             width: 85px;
             height: 43px;
             border-radius: 9px;
-            position: relative;
-            left: 35%;
+            display: block;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -46,9 +46,9 @@
 
         </p>
 
-        <p>
+        <div>
             <button class="wxBtn" onclick="getWxpayUrl(<?php echo isset($order['id'])?$order['id']:'0';?>)">立即支付</button>
-        </p>
+        </div>
         <br/>
         <p>
 
