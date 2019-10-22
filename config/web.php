@@ -122,7 +122,7 @@ $config = [
                  'legend.php'=>'/content/login/login',//后台登录页
                  'ycj.php'=>'/content/login/login',
                  'pay/wx/order.php'=>'pay/wx/wx-order',
-                 'h5<orderId:\d+>.php'=>'/content/player/wx-h5',//微信h5支付页面链接
+                 'h5<orderId:\d+>.php'=>'/pay/wx/wx-h5',//微信h5支付页面链接
              ],
 
          ],

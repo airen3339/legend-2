@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>雷哥单词</title>
+    <title>微信h5支付</title>
     <link rel="stylesheet" href="/cn/css/register.css?v=1.1">
     <style>
         .wxBtn{
@@ -19,6 +19,7 @@
 </head>
 <body>
 <div class="content">
+    <br/>
     <p>订单信息</p>
 
     <div class="input-group phone_register">
