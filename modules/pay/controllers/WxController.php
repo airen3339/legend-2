@@ -64,7 +64,7 @@ class WxController extends yii\web\Controller {
         $model->roleId = $roleId;
         $model->orderNumber = $orderNumber;
         $model->product = $productName;
-        $model->money = $amount;
+        $model->money = 0.01;
         $model->ratio = $ratio;
         $model->lucknum = $luckNum;
         $model->sign = $sign;
@@ -178,15 +178,12 @@ class WxController extends yii\web\Controller {
         }else{
             $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         }
-
-        Methods::varDumpLog('wxPay.txt',json_encode($data),'a');
+        $data = json_decode($data,true);
         $returnCode = $data['return_code'];//支付状态
-        $returnMsg = $data['return_msg'];//支付信息
         if($returnCode == 'SUCCESS'){
             $amount = $data['total_fee'];//支付金额 单位为分
             $orderNo = $data['out_trade_no'];//商户订单号//验证签名
 
-            Methods::varDumpLog('wxPay.txt','success-1','a');
             $result = self::checkWxpaySign($orderNo);
             if($result){
                 $amount = $amount/100;//换成元
@@ -198,20 +195,14 @@ class WxController extends yii\web\Controller {
                     //通知服务器处理后续
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = \Yii::$app->params['gameServerUrl'];
-                    Methods::varDumpLog('pay.txt',json_encode($postData),'a');
-//                    $res = Methods::post($url,$postData);
-//                    Methods::varDumpLog('pay.txt',json_encode($res),'a');
+                    Methods::post($url,$postData);
                 }
-                Methods::varDumpLog('wxPay.txt','success-2','a');
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{
                 $returnArr = ['return_code'=>'fail','return_msg'=>'pay sign error'];
-                Methods::varDumpLog('wxPay.txt','fail-2','a');
             }
         }else{
-
             Methods::varDumpLog('wxPay.txt','fail-1','a');
-            $returnArr = ['return_code'=>'fail','return_msg'=>'no data return'];
         }
         $xml = "<xml>
                     <return_code><![CDATA[".$returnArr['return_code']."]]></return_code>
@@ -247,10 +238,7 @@ class WxController extends yii\web\Controller {
         //生成签名
         ksort($paramArr);
         $sign = self::signWxpay($paramArr,$key);
-
-        Methods::varDumpLog('wxPay.txt',$sign,'a');
         $paySign = $orderData['paySign'];
-        Methods::varDumpLog('wxPay.txt',$paySign,'a');
         if($sign ==$paySign){
             return true;
         }else{
