@@ -179,7 +179,6 @@ class WxController extends yii\web\Controller {
         }else{
             $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         }
-        $data = json_decode($data,true);
         $returnCode = $data['return_code'];//支付状态
         if($returnCode == 'SUCCESS'){
             $amount = $data['total_fee'];//支付金额 单位为分
