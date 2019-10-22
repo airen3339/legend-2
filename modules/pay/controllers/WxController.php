@@ -7,6 +7,7 @@
 namespace app\modules\pay\controllers;
 
 use app\libs\Methods;
+use app\modules\content\models\Order;
 use app\modules\pay\models\Recharge;
 use yii;
 
@@ -74,8 +75,13 @@ class WxController extends yii\web\Controller {
         $model->username = $username;
         $model->payType = 2;//1-支付宝 2-微信 h5
         $model->yuanbao = $ratio*$amount+$luckNum;
-        $model->save();
-        $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
+        $res = $model->save();
+        if($res){
+            $payUrl = 'https://www.6p39k.cn/h5'.$model->id.'.php';
+            $return = ['code'=>1,'payUrl'=>$payUrl];
+        }else{
+            $return = ['code'=>-7];//-7订单错误
+        }
         die(json_encode($return));
     }
      public function actionTest2(){
@@ -281,5 +287,22 @@ class WxController extends yii\web\Controller {
             $order = [];
         }
         return $this->renderPartial('h5-pay',['order'=>$order]);
+    }
+    /**
+     * 微信下单
+     */
+    public function actionWxPay(){
+        $orderId = Yii::$app->request->post('orderId',0);
+        if($orderId){
+            $order = Recharge::findOne($orderId);
+            if($order){
+                $data = self::WxOrder($order->orderNumber,$order->product,$order->money,$orderId);
+            }else{
+                $data = ['code'=>0,'message'=>'订单不存在'];
+            }
+        }else{
+            $data = ['code'=>0,'message'=>'参数错误'];
+        }
+        die(json_encode($data));
     }
 }

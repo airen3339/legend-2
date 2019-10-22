@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>微信h5支付</title>
-    <link rel="stylesheet" href="/cn/css/register.css?v=1.1">
+    <link rel="stylesheet" href="/cn/css/register.css?v=1.2">
     <style>
         .wxBtn{
             background: rgba(55, 188, 133, 1);
@@ -47,7 +47,7 @@
         </p>
 
         <p>
-            <button class="wxBtn" onclick="getWxpayUrl()">立即支付</button>
+            <button class="wxBtn" onclick="getWxpayUrl(<?php echo isset($order['id'])?$order['id']:'0';?>)">立即支付</button>
         </p>
 
     </div>
@@ -55,8 +55,8 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-    function getWxpayUrl(){
-        $.post('/pay/wx/test2',{},function(e){
+    function getWxpayUrl(orderId){
+        $.post('/pay/wx/wx-pay',{orderId:orderId},function(e){
             if(e.code ==1){
                 location.href=e.payUrl
             }else{
