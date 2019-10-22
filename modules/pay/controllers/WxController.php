@@ -128,8 +128,9 @@ class WxController extends yii\web\Controller {
 
         $return = Methods::post($url,$post_data);
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
+        Methods::varDumpLog('logPay.txt',$return,'a');
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
-            var_dump($return);
+            Methods::varDumpLog('logPay.txt',json_encode($return),'a');
             $payUrl = $return['mweb_url'];
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
             //记录签名
