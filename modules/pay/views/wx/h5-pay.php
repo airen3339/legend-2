@@ -49,7 +49,10 @@
         <p>
             <button class="wxBtn" onclick="getWxpayUrl(<?php echo isset($order['id'])?$order['id']:'0';?>)">立即支付</button>
         </p>
-
+        <br/>
+        <p>
+            
+        </p>
     </div>
 </div>
 
