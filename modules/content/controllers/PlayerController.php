@@ -273,4 +273,5 @@ class PlayerController  extends AdminController
         $servers = Server::getServers();
         return $this->render('mail-receive',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
     }
+
 }

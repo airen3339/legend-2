@@ -1,0 +1,159 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: #fff;
+}
+
+header img {
+    width: 100%;
+}
+
+.content {
+    padding: 0 30px;
+}
+
+.method-nav span {
+    padding: 0 10px;
+
+}
+
+.method-nav span.on {
+    color: #37BC85;
+}
+
+.method-nav span:first-child {
+    border-right: 1px solid #ddd;
+    padding-left: 0;
+}
+
+.email_register {
+    display: none;
+}
+
+.input-item:first-child {
+    margin-top: 30px;
+}
+
+.input-item {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.input-item label {
+    padding-right: 20px;
+    padding-left: 20px;
+    border-right: 1px solid #ddd;
+    height: 30px;
+    display: block;
+    float: left;
+}
+
+.input-item img {
+    width: 20px;
+}
+
+.input-item input {
+    border: none;
+    height: 30px;
+    padding-left: 20px;
+}
+
+.get_msg input.input {
+    width: 40%;
+}
+
+.get_msg .get_msg_btn {
+    color: #37BC85;
+    float: right;
+    width: 70px;
+    padding: 0;
+}
+
+.input-item .btn {
+    float: right;
+}
+
+.register-button {
+    padding: 0 30px;
+    position: absolute;
+    bottom: 30px;
+    width: calc(100% - 60px);
+}
+
+.register-button button {
+    width: 100%;
+    height: 50px;
+    background: rgba(55, 188, 133, 1);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 5px;
+}
+
+.succeed {
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.succeed .modal-body {
+    background: #fff;
+    width: 90%;
+    height: 150px;
+    margin: 0 auto;
+    position: absolute;
+    top: calc((100% - 150px) / 2);
+    left: 5%;
+    box-shadow: 0px 0px 18px 0px rgba(2, 40, 20, 0.2);
+    border-radius: 20px;
+}
+
+.succeed .modal-body img {
+    width: 50px;
+    position: absolute;
+    left: calc((100% - 50px) / 2);
+    top: -25px;
+}
+
+.succeed .modal-body p {
+    text-align: center;
+    font-size: 16px;
+    font-family: PingFang-SC-Bold;
+    font-weight: bold;
+    color: rgba(8, 205, 112, 1);
+    line-height: 30px;
+    margin-top: 50px;
+}
+
+.succeed .modal-body .modal-group {
+    text-align: center;
+}
+
+.succeed .modal-body .modal-group button {
+    padding: 0 30px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.succeed .modal-body .modal-group button:first-child {
+    border: 1px solid rgba(8, 205, 112, 1);
+    color: #08CD70;
+    background: #fff;
+}
+
+.succeed .modal-body .modal-group button:last-child {
+    background: rgba(53, 213, 128, 1);
+    border: 1px solid rgba(8, 205, 112, 1);
+    color: #fff;
+}

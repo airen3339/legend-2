@@ -74,13 +74,14 @@ class WxController extends yii\web\Controller {
         $model->username = $username;
         $model->payType = 2;//1-支付宝 2-微信 h5
         $model->yuanbao = $ratio*$amount+$luckNum;
-        $model->save();
-        $return = self::WxOrder($orderNumber,$productName,$amount,$model->id);
+        $res = $model->save();
+        if($res){
+            $payUrl = 'https://www.6p39k.cn/h5'.$model->id.'.php';
+            $return = ['code'=>1,'payUrl'=>$payUrl];
+        }else{
+            $return = ['code'=>-7];//-7订单错误
+        }
         die(json_encode($return));
-    }
-     public function actionTest2(){
-        $res = self::WxOrder(time(),'测试',0.01,2);
-        die(json_encode($res));
     }
     /**
      * 微信支付请求发起
@@ -125,10 +126,12 @@ class WxController extends yii\web\Controller {
           </xml>";
 
         $return = Methods::post($url,$post_data);
-        Methods::varDumpLog('wxPay.txt',$return,'a');
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
-        if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
+        if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS'){
             $payUrl = $return['mweb_url'];
+            $redirectUrl = Yii::$app->params['redirect_url'];
+            $redirectUrl =urlencode($redirectUrl);
+            $payUrl = $payUrl.'&redirect_url='.$redirectUrl."?orderId=".$orderId;
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
             //记录签名
             Recharge::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
@@ -171,18 +174,17 @@ class WxController extends yii\web\Controller {
      */
     public function actionWxpayNotify(){
         //获取通知的数据
-        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
-        Methods::varDumpLog('wxPay.txt',$xml,'a');
+        $xml = file_get_contents("php://input");
         if(!$xml){
             echo 'fail';die;
         }else{
             $data = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         }
         $returnCode = $data['return_code'];//支付状态
-        $returnMsg = $data['return_msg'];//支付信息
         if($returnCode == 'SUCCESS'){
             $amount = $data['total_fee'];//支付金额 单位为分
             $orderNo = $data['out_trade_no'];//商户订单号//验证签名
+
             $result = self::checkWxpaySign($orderNo);
             if($result){
                 $amount = $amount/100;//换成元
@@ -192,9 +194,7 @@ class WxController extends yii\web\Controller {
                     //通知服务器处理后续
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = \Yii::$app->params['gameServerUrl'];
-                    $res = Methods::post($url,$postData);
-                    Methods::varDumpLog('pay.txt',json_encode($postData),'a');
-                    Methods::varDumpLog('pay.txt',json_encode($res),'a');
+                    Methods::post($url,$postData);
                 }
                 $returnArr = ['return_code'=>'SUCCESS','return_msg'=>'OK'];
             }else{
@@ -266,5 +266,48 @@ class WxController extends yii\web\Controller {
         }
         $xml.="</xml>";
         return $xml;
+    }
+    /**
+     * 用户订单页面
+     * h5
+     * 微信支付
+     */
+    public function actionWxH5(){
+        $orderId = \Yii::$app->request->get('orderId',0);
+        if($orderId){
+            $order = Recharge::find()->where("id = $orderId")->asArray()->one();
+        }else{
+            $order = [];
+        }
+        return $this->renderPartial('h5-pay',['order'=>$order]);
+    }
+    /**
+     * 微信下单
+     */
+    public function actionWxPay(){
+        $orderId = Yii::$app->request->post('orderId',0);
+        if($orderId){
+            $order = Recharge::findOne($orderId);
+            if($order){
+                $data = self::WxOrder($order->orderNumber,$order->product,$order->money,$orderId);
+            }else{
+                $data = ['code'=>0,'message'=>'订单不存在'];
+            }
+        }else{
+            $data = ['code'=>0,'message'=>'参数错误'];
+        }
+        die(json_encode($data));
+    }
+    /**
+     * 微信支付成功跳转页面
+     */
+    public function actionH5Success(){
+        $orderId = Yii::$app->request->get('orderId',0);
+        if($orderId){
+            $order = Recharge::find()->where("id = $orderId")->asArray()->one();
+        }else{
+            $order = [];
+        }
+        return $this->renderPartial('h5-success',['order'=>$order]);
     }
 }
