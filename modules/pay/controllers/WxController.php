@@ -60,11 +60,12 @@ class WxController extends yii\web\Controller {
         }
         $sign = $cont['sign'];//验证签名字段
         //订单数据生成记录
+        $amount = 0.01;
         $model = new Recharge();
         $model->roleId = $roleId;
         $model->orderNumber = $orderNumber;
         $model->product = $productName;
-        $model->money = 0.01;
+        $model->money = $amount;
         $model->ratio = $ratio;
         $model->lucknum = $luckNum;
         $model->sign = $sign;
