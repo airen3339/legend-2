@@ -135,8 +135,8 @@ class WxController extends yii\web\Controller {
         $return = (array)simplexml_load_string($return, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
         if(isset($return['return_code']) && $return['return_code'] == 'SUCCESS'){
             $payUrl = $return['mweb_url'];
+            $payUrl = str_replace('https://','',$payUrl);
             $data = ['code'=>1,'payUrl'=>$payUrl];//,'msg'=>'支付请求成功'
-//            echo "<script>window.location.href = '$payUrl'</script>";die;
             //记录签名
             Recharge::updateAll(['paySign'=>$sign,'ip'=>$paramArr['spbill_create_ip']],"id = $orderId");
         }else{
