@@ -7,7 +7,6 @@
 namespace app\modules\pay\controllers;
 
 use app\libs\Methods;
-use app\modules\content\models\Order;
 use app\modules\pay\models\Recharge;
 use yii;
 
@@ -34,7 +33,7 @@ class WxController extends yii\web\Controller {
         $key = key($content);
         $cont = json_decode($key,true);
         $productName = '元宝充值';
-        $amount = $cont['amount'];
+        $amount = $cont['amount']/100;
         if($amount <= 0){
             die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
         }
@@ -60,7 +59,6 @@ class WxController extends yii\web\Controller {
         }
         $sign = $cont['sign'];//验证签名字段
         //订单数据生成记录
-        $amount = 0.01;
         $model = new Recharge();
         $model->roleId = $roleId;
         $model->orderNumber = $orderNumber;
@@ -193,7 +191,7 @@ class WxController extends yii\web\Controller {
                 if($orderData['status'] != 1){//订单未完成
                     Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
-                    $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
+                    $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money']*100,'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = \Yii::$app->params['gameServerUrl'];
                     Methods::post($url,$postData);
                 }Methods::varDumpLog('wxPay.txt','2222','a');
