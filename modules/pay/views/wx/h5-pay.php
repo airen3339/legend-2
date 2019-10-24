@@ -59,13 +59,15 @@
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
     function getWxpayUrl(orderId){
-        $.post('/pay/wx/wx-pay',{orderId:orderId},function(e){
-            if(e.code ==1){
-                location.href=e.payUrl
-            }else{
-                alert(e.code);
-            }
-        },'json');
+        if(confirm('确定安装了微信？')){
+            $.post('/pay/wx/wx-pay',{orderId:orderId},function(e){
+                if(e.code ==1){
+                    location.href=e.payUrl
+                }else{
+                    alert(e.code);
+                }
+            },'json');
+        }
     }
 </script>
 
