@@ -64,7 +64,10 @@
        setTimeout(function () {
              if (!hasApp) {
                      //没有安装微信
-                     alert("您没有安装微信，请先安装微信!");
+                      var r=confirm("您没有安装微信，请先安装微信!");
+                      if (r==true){
+                              location.href="http://weixin.qq.com/"
+                          }
                  }else{
                  alert(3);
                  // $.post('/pay/wx/wx-pay',{orderId:orderId},function(e){
