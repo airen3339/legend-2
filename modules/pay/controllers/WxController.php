@@ -281,6 +281,15 @@ class WxController extends yii\web\Controller {
         }
         return $this->renderPartial('h5-pay',['order'=>$order]);
     }
+    public function actionWxH51(){
+        $orderId = \Yii::$app->request->get('orderId',0);
+        if($orderId){
+            $order = Recharge::find()->where("id = $orderId")->asArray()->one();
+        }else{
+            $order = [];
+        }
+        return $this->renderPartial('h5-pay1',['order'=>$order]);
+    }
     /**
      * 微信下单
      */
