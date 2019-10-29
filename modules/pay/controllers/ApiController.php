@@ -84,13 +84,6 @@ class ApiController extends Controller
         $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id);
         die(json_encode($return));
     }
-    public function actionTest(){
-        //签名地区参数 省 市 区
-        $province = \Yii::$app->params['province'];
-        $city = \Yii::$app->params['city'];
-        $area = \Yii::$app->params['area'];
-        self::AliOrder('ycj'.time(),'下单测试','0.01','20191029',$province,$city,$area,12);
-    }
 
     /**
      * 支付宝支付请求发起
@@ -101,7 +94,8 @@ class ApiController extends Controller
         $appid = \Yii::$app->params['alipayAppid'];
         $key = \Yii::$app->params['alipayKey'];
         $dateTime = $time;
-        $payType = 'SCANPAY_ALIPAY';
+//        $payType = 'SCANPAY_ALIPAY';
+        $payType = 'JSAPI_ALIPAY';
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];//商户异步通知地址
         $returnUrl = '';//商户前端返回页面地址
         $amount = $amount*100;//金额处理 单位为分
@@ -117,7 +111,6 @@ class ApiController extends Controller
         $return = Methods::post($url,$postData);
         Methods::varDumpLog('aliPay.txt',$return,'a');
         $return = json_decode($return,true);
-        var_dump($return);die;
         if($return['code'] == 'success'){
             $returnData = json_decode($return['data'],true);
             $payUrl = $returnData['payUrl'];
