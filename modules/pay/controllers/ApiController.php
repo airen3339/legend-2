@@ -208,7 +208,8 @@ class ApiController extends Controller
         $city = \Yii::$app->params['city'];
         $area = \Yii::$app->params['area'];
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
-        $payType = 'SCANPAY_ALIPAY';
+//        $payType = 'SCANPAY_ALIPAY';
+        $payType = 'JSAPI_ALIPAY';
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
         $dateTime = date('YmdHis',$orderData['createTime']);
