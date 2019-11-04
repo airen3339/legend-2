@@ -103,7 +103,7 @@
                                         <option value="1" <?php if($content['bind'][$k] ==1)echo 'selected';?>>是</option>
                                         <option value="2" <?php if($content['bind'][$k] ==2)echo 'selected';?>>否</option>
                                     </select>
-                                <li style="width: 120px;!important;height: 27px">
+                                <li style="width: 120px;!important;height: 27px">  
                                     <a href="#" class="btn" onclick="deleteProp(this)">删除</a>
                                     <a href="#" class="btn" onclick="editProp(this)">修改</a>
                                 </li>
