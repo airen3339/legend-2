@@ -46,6 +46,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">发放物品</label>
                 <div class="controls">
+                    条件说明：<textarea type="text" style="width:120px;margin: 0;height: 20px;" name="conRemark" id='conRemark' value=""></textarea>&nbsp;&nbsp;&nbsp;&nbsp;
                     领取条件：<input type="text" style="width:70px" name="condition" id='condition' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
                     道具名称：<div style="display: inline;">
                                 <input type="text" style="width:120px" name="propId" id='propName' autocomplete="off" value="" onkeyup="getToolIds()"/>
@@ -71,7 +72,8 @@
                         <li>道具ID</li>
                         <li>道具数量</li>
                         <li>绑定状态</li>
-                        <li>是否删除</li>
+                        <li>条件说明</li>
+                        <li  style="margin-left: 80px;">操作</li>
                     </ul>
                 </div>
             </table>
@@ -89,6 +91,7 @@
         var propId = $('#propId').val();
         var number = $('#number').val();
         var bind = $('#bind').val();
+        var conRemark = $('#conRemark').val();
         if(!condition){
             alert('请填写领取条件');return false;
         }
@@ -121,8 +124,9 @@
             '                               <option value=""  ></option>'+
             '                               <option value="1" '+binYes+' >是</option>'+
             '                               <option value="2"  '+binNo+'>否</option>'+
-            '                           </select>' +
-            '                        <li style="width: 120px;!important;height: 27px">' +
+            '                           </select></li>' +
+            '                        <li class="liRemark"><span>'+conRemark+'</span><textarea class="inputHid"  name="remarks[]">'+conRemark+'</textarea></li>' +
+            '                        <li style="width: 120px;!important;height: 27px;margin-left: 80px;">' +
             '                           <a href="#" class="btn" onclick="deleteProp(this)">删除</a>' +
             '                           <a href="#" class="btn" onclick="editProp(this)">修改</a>' +
             '                           </li>' +
@@ -145,6 +149,7 @@
         $(_this).parents("li").siblings('li').find("span").addClass('spanHid');
         $(_this).parents("li").siblings('li').find("input").removeClass('inputHid');
         $(_this).parents("li").siblings('li').find("select").removeClass('inputHid');
+        $(_this).parents("li").siblings('li').find("textarea").removeClass('inputHid');
     }
     function propSubmit(){
         var server = $('#server').val();
