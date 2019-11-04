@@ -46,13 +46,12 @@
                     <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="endTime" name="endTime"  value="<?php echo $data['endTime'];?>"/>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" id="divRemark" <?php if(!$data['conRemark']){?>style="display: none"<?php }?> >
                 <label for="modulename" class="control-label">条件说明</label>
                 <div class="controls">
                     <textarea  id="remark" readonly><?php echo $data['conRemark'];?></textarea>
                 </div>
             </div>
-
             <div class="control-group">
                 <label for="modulename" class="control-label">发放物品</label>
                 <div class="controls">
@@ -224,7 +223,14 @@
             return false;
         }
         $.post('/content/api/type-remark',{id:type},function(e){
-            $('#remark').val(e);
+            if(e){
+                console.log(1);
+                $('#divRemark').css('display','');
+                $('#remark').val(e);
+            }else{
+                console.log(2);
+                $('#divRemark').css('display','none');
+            }
         },'json');
     }
 </script>
