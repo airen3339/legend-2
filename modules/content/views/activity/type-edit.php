@@ -26,6 +26,12 @@
                 </div>
             </div>
             <div class="control-group">
+                <label for="modulename" class="control-label">条件说明</label>
+                <div class="controls">
+                    <textarea name="remark"><?php echo isset($type['remark'])?$type['remark']:''?></textarea>
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="controls">
                     <input type="submit" class="btn " value="提交">
                 </div>

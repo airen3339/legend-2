@@ -25,6 +25,7 @@
                 <th>名称</th>
                 <th>游戏类型</th>
                 <th>排序</th>
+                <th>条件说明</th>
                 <th>创建时间</th>
                 <th>操作</th>
             </tr>
@@ -38,6 +39,7 @@
                     <td ><span ><?php echo $v['name']?></span></td>
                     <td ><span ><?php echo $v['type']?></span></td>
                     <td ><span ><?php echo $v['rank']?></span></td>
+                    <td ><span ><?php echo $v['remark']?></span></td>
                     <td ><span ><?php echo date('Y-m-d H:i:s',$v['createTime']);?></span></td>
                     <td  class="notSLH" style="width: 130px;">
                         <a class="btn " href="/content/activity/activity-type-edit?id=<?php echo $v['id'] ; ?>" >修改</a>

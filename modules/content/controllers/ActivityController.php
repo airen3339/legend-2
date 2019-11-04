@@ -115,7 +115,6 @@ class ActivityController  extends AdminController
             $propIds = Yii::$app->request->post('propIds');//道具id
             $numbers = Yii::$app->request->post('numbers');//道具数量
             $binds = Yii::$app->request->post('binds');//绑定状态
-            $remarks = Yii::$app->request->post('remarks');//条件说明
             if(!$serverId){
                 echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
@@ -131,7 +130,7 @@ class ActivityController  extends AdminController
                 echo "<script>alert('请选择截止时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if((count($conditions) == count($propIds)) == (count($numbers) == count($binds)) && count($conditions) > 0){
-                $pushContent = ['condition'=>$conditions,'propId'=>$propIds,'number'=>$numbers,'bind'=>$binds,'conRemark'=>$remarks];
+                $pushContent = ['condition'=>$conditions,'propId'=>$propIds,'number'=>$numbers,'bind'=>$binds];
                 $pushContent = json_encode($pushContent);
             }else{
                 echo "<script>alert('发放物品数据不正确');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -240,6 +239,7 @@ class ActivityController  extends AdminController
         $servers = Server::getServers();
         $data['pushContent'] = json_decode($data['pushContent'],true);
         $types = ActivityType::find()->asArray()->orderBy('rank desc')->all();
+        $data['conRemark'] = ActivityType::find()->where(" type = '{$data['type']}'")->asArray()->one()['remark'];
         return $this->render('activity-push-edit',['data'=>$data,'servers'=>$servers,'types'=>$types]);
     }
     /**
@@ -400,6 +400,7 @@ class ActivityController  extends AdminController
             $name = Yii::$app->request->post('name');
             $rank = Yii::$app->request->post('rank');
             $type = Yii::$app->request->post('type');
+            $remark = Yii::$app->request->post('remark');
             if($id){
                 $model = ActivityType::findOne($id);
                 $had = ActivityType::find()->where("name = '{$name}' and id != $id")->one();
@@ -426,6 +427,7 @@ class ActivityController  extends AdminController
             $model->name = $name;
             $model->rank = $rank?$rank:0;
             $model->type = $type;
+            $model->remark = $remark;
             $model->createTime = time();
             $res = $model->save();
             if($res){

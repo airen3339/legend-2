@@ -5,6 +5,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\Methods;
+use app\modules\content\models\ActivityType;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
 use app\modules\content\models\Notice;
@@ -352,5 +353,17 @@ class ApiController extends  Controller
             $data = ['code'=>1,'message'=>'添加成功'];
         }
         die(json_encode($data));
+    }
+    /**
+     * 活动类型条件说明获取
+     */
+    public function actionTypeRemark(){
+        $type  = Yii::$app->request->post('id');
+        if($type){
+            $remark =ActivityType::find()->where("type = $type")->asArray()->one()['remark'];
+        }else{
+            $remark = '';
+        }
+        die(json_encode($remark));
     }
 }
