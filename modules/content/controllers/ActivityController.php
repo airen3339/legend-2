@@ -115,6 +115,7 @@ class ActivityController  extends AdminController
             $propIds = Yii::$app->request->post('propIds');//道具id
             $numbers = Yii::$app->request->post('numbers');//道具数量
             $binds = Yii::$app->request->post('binds');//绑定状态
+            $remarks = Yii::$app->request->post('remarks');//条件说明
             if(!$serverId){
                 echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
@@ -130,7 +131,7 @@ class ActivityController  extends AdminController
                 echo "<script>alert('请选择截止时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
             if((count($conditions) == count($propIds)) == (count($numbers) == count($binds)) && count($conditions) > 0){
-                $pushContent = ['condition'=>$conditions,'propId'=>$propIds,'number'=>$numbers,'bind'=>$binds];
+                $pushContent = ['condition'=>$conditions,'propId'=>$propIds,'number'=>$numbers,'bind'=>$binds,'conRemark'=>$remarks];
                 $pushContent = json_encode($pushContent);
             }else{
                 echo "<script>alert('发放物品数据不正确');setTimeout(function(){history.go(-1);},1000)</script>";die;
