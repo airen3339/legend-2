@@ -50,7 +50,6 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">发放物品</label>
                 <div class="controls">
-                    条件说明：<textarea type="text" style="width:120px;margin: 0;height: 20px;" name="conRemark" id='conRemark' value=""></textarea>&nbsp;&nbsp;&nbsp;&nbsp;
                     领取条件：<input type="text" style="width:70px" name="condition" id='condition' value=""/>&nbsp;&nbsp;&nbsp;&nbsp;
                     道具名称：<div style="display: inline;">
                         <input type="text" style="width:120px" name="propId" id='propName' autocomplete="off" value="" onkeyup="getToolIds()"/>
@@ -60,10 +59,10 @@
                     道具ID：<input type="text" style="width:70px" name="propId" id='propId' value="" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;&nbsp;&nbsp;&nbsp;
                     道具数量：<input type="text" style="width:70px" name="number" id="number" value="" onkeyup="value = value.replace(/[^0-9]/g,'')"  />&nbsp;&nbsp;&nbsp;&nbsp;
                     绑定状态：<select name="bind" id="bind" class="input-small">
-                                <option value="0">请选择</option>
-                                <option value="1">是</option>
-                                <option value="2">否</option>
-                            </select>&nbsp;&nbsp;
+                        <option value="0">请选择</option>
+                        <option value="1">是</option>
+                        <option value="2">否</option>
+                    </select>&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="btn" onclick="addProp()">添加</a>
                 </div>
             </div>
@@ -76,8 +75,7 @@
                         <li>道具ID</li>
                         <li>道具数量</li>
                         <li>绑定状态</li>
-                        <li>条件说明</li>
-                        <li style="margin-left: 80px;">操作</li>
+                        <li >操作</li>
                     </ul>
                 </div>
                 <?php if(isset($data['pushContent']['condition'])){
@@ -105,18 +103,13 @@
                                         <option value="1" <?php if($content['bind'][$k] ==1)echo 'selected';?>>是</option>
                                         <option value="2" <?php if($content['bind'][$k] ==2)echo 'selected';?>>否</option>
                                     </select>
-                                </li>
-                                <li>
-                                    <span><?php echo isset($content['conRemark'][$k])?$content['conRemark'][$k]:'';?></span>
-                                    <textarea class="inputHid"  name="remarks[]"><?php echo isset($content['conRemark'][$k])?$content['conRemark'][$k]:'';?></textarea>
-                                </li>
-                                <li style="width: 120px;!important;height: 27px;margin-left: 80px;">
+                                <li style="width: 120px;!important;height: 27px">
                                     <a href="#" class="btn" onclick="deleteProp(this)">删除</a>
                                     <a href="#" class="btn" onclick="editProp(this)">修改</a>
                                 </li>
                             </ul>
                         </div>
-                <?php
+                        <?php
                     }
                 }?>
             </table>
@@ -134,7 +127,6 @@
         var propId = $('#propId').val();
         var number = $('#number').val();
         var bind = $('#bind').val();
-        var conRemark = $('#conRemark').val();
         if(!condition){
             alert('请填写领取条件');return false;
         }
@@ -158,23 +150,22 @@
             binNo = 'selected';
         }
         var addStr = '<div class="control-group propContent">' +
-    '                    <ul class="reward-child controls reward-ul">' +
-    '                        <li class="liCondition"><span>'+condition+'</span><input class="input-small inputHid" value="'+condition+'" name="liConditions[]"/></li>' +
-    '                        <li class="lipropId"><span>'+propId+'</span><input class="input-small inputHid" value="'+propId+'" name="propIds[]"/></li>' +
-    '                        <li class="liNumber"><span>'+number+'</span><input class="input-small inputHid" value="'+number+'" name="numbers[]"/></li>' +
-    '                        <li class="liBind"><span>'+bindStr+'</span>' +
-    '                           <select name="binds[]" class="input-small inputHid" style="height: 27px">'+
-    '                               <option value=""  ></option>'+
-    '                               <option value="1" '+binYes+' >是</option>'+
-    '                               <option value="2"  '+binNo+'>否</option>'+
-    '                           </select></li>' +
-    '                        <li class="liRemark"><span>'+conRemark+'</span><textarea class="inputHid"  name="remarks[]">'+conRemark+'</textarea></li>' +
-    '                        <li style="width: 120px;!important;height: 27px;margin-left: 80px;">' +
-    '                           <a href="#" class="btn" onclick="deleteProp(this)">删除</a>' +
-    '                           <a href="#" class="btn" onclick="editProp(this)">修改</a>' +
-    '                           </li>' +
-    '                    </ul>' +
-    '                </div>';
+            '                    <ul class="reward-child controls reward-ul">' +
+            '                        <li class="liCondition"><span>'+condition+'</span><input class="input-small inputHid" value="'+condition+'" name="liConditions[]"/></li>' +
+            '                        <li class="lipropId"><span>'+propId+'</span><input class="input-small inputHid" value="'+propId+'" name="propIds[]"/></li>' +
+            '                        <li class="liNumber"><span>'+number+'</span><input class="input-small inputHid" value="'+number+'" name="numbers[]"/></li>' +
+            '                        <li class="liBind"><span>'+bindStr+'</span>' +
+            '                           <select name="binds[]" class="input-small inputHid" style="height: 27px">'+
+            '                               <option value=""  ></option>'+
+            '                               <option value="1" '+binYes+' >是</option>'+
+            '                               <option value="2"  '+binNo+'>否</option>'+
+            '                           </select>' +
+            '                        <li style="width: 120px;!important;height: 27px">' +
+            '                           <a href="#" class="btn" onclick="deleteProp(this)">删除</a>' +
+            '                           <a href="#" class="btn" onclick="editProp(this)">修改</a>' +
+            '                           </li>' +
+            '                    </ul>' +
+            '                </div>';
         $('#addContent').append(addStr);
         // $('#condition').val('');
         $('#propId').val('');
@@ -193,7 +184,6 @@
         $(_this).parents("li").siblings('li').find("span").addClass('spanHid');
         $(_this).parents("li").siblings('li').find("input").removeClass('inputHid');
         $(_this).parents("li").siblings('li').find("select").removeClass('inputHid');
-        $(_this).parents("li").siblings('li').find("textarea").removeClass('inputHid');
     }
     function propSubmit(){
         var server = $('#server').val();
