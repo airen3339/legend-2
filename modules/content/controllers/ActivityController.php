@@ -239,6 +239,7 @@ class ActivityController  extends AdminController
         $servers = Server::getServers();
         $data['pushContent'] = json_decode($data['pushContent'],true);
         $types = ActivityType::find()->asArray()->orderBy('rank desc')->all();
+        $data['conRemark'] = ActivityType::find()->where(" type = '{$data['type']}'")->asArray()->one()['remark'];
         return $this->render('activity-push-edit',['data'=>$data,'servers'=>$servers,'types'=>$types]);
     }
     /**
@@ -399,6 +400,7 @@ class ActivityController  extends AdminController
             $name = Yii::$app->request->post('name');
             $rank = Yii::$app->request->post('rank');
             $type = Yii::$app->request->post('type');
+            $remark = Yii::$app->request->post('remark');
             if($id){
                 $model = ActivityType::findOne($id);
                 $had = ActivityType::find()->where("name = '{$name}' and id != $id")->one();
@@ -425,6 +427,7 @@ class ActivityController  extends AdminController
             $model->name = $name;
             $model->rank = $rank?$rank:0;
             $model->type = $type;
+            $model->remark = $remark;
             $model->createTime = time();
             $res = $model->save();
             if($res){

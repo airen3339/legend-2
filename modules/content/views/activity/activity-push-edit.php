@@ -26,7 +26,7 @@
             </div><div class="control-group">
                 <label for="modulename" class="control-label">活动类型</label>
                 <div class="controls">
-                    <select name="type" id="type" style="width: 105px;">
+                    <select name="type" id="type" style="width: 105px;" onchange="getTypeRemark()">
                         <option value="">请选择</option>
                         <?php foreach($types as $k => $v){?>
                             <option value='<?php echo $v['type'];?>' <?php if( $data['type'] == $v['type']) echo 'selected';?>><?php echo $v['name'];?></option>
@@ -44,6 +44,12 @@
                 <label for="modulename" class="control-label">截止日期</label>
                 <div class="controls">
                     <input class="input-small Wdate" onclick="WdatePicker()" size="10" type="text" id="endTime" name="endTime"  value="<?php echo $data['endTime'];?>"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">条件说明</label>
+                <div class="controls">
+                    <textarea  id="remark" readonly><?php echo $data['conRemark'];?></textarea>
                 </div>
             </div>
 
@@ -211,5 +217,14 @@
         }else{
             return false;
         }
+    }
+    function getTypeRemark(){
+        var type = $('#type').val();
+        if(!type || type < 1){
+            return false;
+        }
+        $.post('/content/api/type-remark',{id:type},function(e){
+            $('#remark').val(e);
+        },'json');
     }
 </script>
