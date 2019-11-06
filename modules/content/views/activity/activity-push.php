@@ -42,10 +42,10 @@
                     <input class="input-small Wdate" onclick="WdatePicker()"  autocomplete="off" size="10" type="text" id="endTime" name="endTime"  value=""/>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" id="divRemark" style="display: none">
                 <label for="modulename" class="control-label">条件说明</label>
                 <div class="controls">
-                    <textarea  id="remark" readonly></textarea>
+                    <textarea  id="remark" readonly style="min-height: 97px;min-width: 387px"></textarea>
                 </div>
             </div>
 
@@ -187,7 +187,12 @@
             return false;
         }
         $.post('/content/api/type-remark',{id:type},function(e){
-            $('#remark').val(e);
+            if(e){
+                $('#divRemark').css('display','block');
+                $('#remark').val(e);
+            }else{
+                $('#divRemark').css('display','none');
+            }
         },'json');
     }
 </script>
