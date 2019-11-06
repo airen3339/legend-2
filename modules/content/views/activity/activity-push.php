@@ -45,7 +45,7 @@
             <div class="control-group" id="divRemark" style="display: none">
                 <label for="modulename" class="control-label">条件说明</label>
                 <div class="controls">
-                    <textarea  id="remark" readonly></textarea>
+                    <textarea  id="remark" readonly style="min-height: 97px;min-width: 387px"></textarea>
                 </div>
             </div>
 

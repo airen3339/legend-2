@@ -49,7 +49,7 @@
             <div class="control-group" id="divRemark" <?php if(!$data['conRemark']){?>style="display: none"<?php }?> >
                 <label for="modulename" class="control-label">条件说明</label>
                 <div class="controls">
-                    <textarea  id="remark" readonly><?php echo $data['conRemark'];?></textarea>
+                    <textarea  id="remark" readonly style="min-height: 97px;min-width: 387px"><?php echo $data['conRemark'];?></textarea>
                 </div>
             </div>
             <div class="control-group">
