@@ -597,6 +597,8 @@ class GmController  extends AdminController
      * 银商数据
      */
     public function actionSilverMerchant(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
         $userId  = Yii::$app->request->get('userId');
         $page = Yii::$app->request->get('page',1);
         $where = ' 1 = 1 ';
