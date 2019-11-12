@@ -22,6 +22,8 @@
                         }
                         ?>
                     </select>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="btn" href="#" onclick="dataSave(<?php echo $data['id'];?>)">复制</a>
                 </div>
             </div><div class="control-group">
                 <label for="modulename" class="control-label">活动类型</label>
@@ -232,5 +234,17 @@
                 $('#divRemark').css('display','none');
             }
         },'json');
+    }
+    function dataSave(id){
+        if(confirm('确定复制该条内容？')){
+            $.post('/content/api/data-save',{id:id},function(e){
+                if(e.code ==1){
+                    alert('复制成功，请进行修改');
+                    location.href='/content/activity/activity-push-edit?id='+e.id;
+                }else{
+                    alert(e.message);
+                }
+            },'json');
+        }
     }
 </script>
