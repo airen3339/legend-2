@@ -5,6 +5,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\Methods;
+use app\modules\content\models\ActivityPush;
 use app\modules\content\models\ActivityType;
 use app\modules\content\models\Catalog;
 use app\modules\content\models\Item;
@@ -365,5 +366,37 @@ class ApiController extends  Controller
             $remark = '';
         }
         die(json_encode($remark));
+    }
+    /**
+     * 活动内容
+     * 复制数据
+     */
+    public function actionDataSave(){
+        $id = Yii::$app->request->post('id');
+        if($id){
+            $content = ActivityPush::findOne($id);
+            if($content){
+                $model = new ActivityPush();
+                $model->serverId = 0;
+                $model->beginTime = $content->beginTime;
+                $model->endTime = $content->endTime;
+                $model->pushContent = $content->pushContent;
+                $model->createTime = time();
+                $model->type = $content->type;
+                $model->remark = $content->remark;
+                $model->operator = $content->operator;
+                $res = $model->save();
+                if($res){
+                    $data = ['code'=>1,'id'=>$model->id];
+                }else{
+                    $data = ['code'=>0,'message'=>'复制失败'];
+                }
+            }else{
+                $data = ['code'=>0,'message'=>'活动不存在'];
+            }
+        }else{
+            $data = ['code'=>0,'message'=>'参数错误'];
+        }
+        die(json_encode($data));
     }
 }

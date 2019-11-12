@@ -148,7 +148,7 @@ class WxController extends yii\web\Controller {
         return $ip;
     }
     /**
-     * 支付宝签名
+     * 微信签名
      * 签名生成
      * @param $signArr
      * md5算法加密 转大写
@@ -167,7 +167,7 @@ class WxController extends yii\web\Controller {
     }
 
     /**
-     * 支付宝回调
+     * 微信回调
      * 支付结果通知处理
      * 支付宝
      * POST方式
@@ -211,7 +211,7 @@ class WxController extends yii\web\Controller {
     }
 
     /**
-     * 支付宝
+     * 微信
      * 签名验证
      * 回调地址
      * 签名方式
