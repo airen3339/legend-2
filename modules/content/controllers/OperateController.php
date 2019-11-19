@@ -67,16 +67,16 @@ class OperateController  extends AdminController
         $monthBegin = strtotime($month_begin);
         $days = ($monthNow-$monthBegin)/86400;
         $data = [];
-        if($page==1){
-            $first = 0;
-        } else{
-            $first = ($page-1)*31;
-        }
-        if($days <= (31*$page)){
-            $endDays = $days+1;
-        }else{
-            $endDays = $page*31;
-        }
+//        if($page==1){
+//            $first = 0;
+//        } else{
+//            $first = ($page-1)*31;
+//        }
+//        if($days <= (31*$page)){
+//            $endDays = $days+1;
+//        }else{
+//            $endDays = $page*31;
+//        }
         $sumRegister = 0;
         $sumDevice = 0;
         $sumLogin = 0;
@@ -91,7 +91,7 @@ class OperateController  extends AdminController
         $sumArppu = 0;
         $sumNewRechUser = 0;
         $sumNewRechMoney = 0;
-        for($i=$first;$i<$endDays;$i++){
+        for($i=$days;$i>=0;$i--){
             $dateTime = $monthBegin + 86400*$i;
             $date = date('Y-m-d',$dateTime);
             $end = $dateTime + 86399;
@@ -152,7 +152,8 @@ class OperateController  extends AdminController
             $sumNewRechMoney += $newRechargeMoney;
             $data[] = ['date'=>$date,'newRegister'=>$newRegister,'newDevice'=>$newDevice,'newLogin'=>$newLogin,'deviceDau'=>$deviceDau,'accountDau'=>$accountDau,'oldUser'=>$oldUser,'payRate'=>$payRate,'rechargeUser'=>$rechargeUser,'rechargeCount'=>$rechargeCount,'rechargeMoney'=>$rechargeMoney,'arpu'=>round($arpu,2),'arppu'=>round($arppu,2),'newRechargeUser'=>$newRechargeUser,'newRechargeMoney'=>$newRechargeMoney];
         }
-        $count = $endDays-$first;
+//        $count = $endDays-$first;
+        $count = $days;
         //平均付费率
         $averPayRate = floor($sumPayRate/$count);
         $averPayRate .= '%';
@@ -160,8 +161,7 @@ class OperateController  extends AdminController
         $averArpu = floor(100*($sumArpu/$count))/100;
         $averArppu = floor(100*($sumArppu/$count))/100;
         $data[] = ['date'=>'总计','newRegister'=>$sumRegister,'newDevice'=>$sumDevice,'newLogin'=>$sumLogin,'deviceDau'=>$sumDeviceDau,'accountDau'=>$sumAccountDau,'oldUser'=>$sumOldUser,'payRate'=>$averPayRate,'rechargeUser'=>$sumRechUser,'rechargeCount'=>$sumRechCount,'rechargeMoney'=>$sumRechMoney,'arpu'=>$averArpu,'arppu'=>$averArppu,'newRechargeUser'=>$sumNewRechUser,'newRechargeMoney'=>$sumNewRechMoney];
-        $count = $days+1;
-        $page = new Pagination(['totalCount'=>$count,'pageSize'=>31]);
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>$days]);
         $servers = Server::getServers();//获取区服
         $channel = User::getChannel();//获取渠道
         return $this->render('data-query',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers,'channel'=>$channel]);
