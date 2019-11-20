@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\libs\Methods;
 use app\modules\content\models\LTVMoney;
+use app\modules\content\models\Server;
 use Yii;
 use yii\web\Controller;
 
@@ -27,7 +28,19 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-
+        ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
+        $date = date('Y-m-d');
+        $servers = Server::getServers();//获取区服
+        $url = 'http://192.168.0.30/logs/TLog/';
+        foreach($servers as $k => $v) {
+            $dat = str_replace('-', '', $date);
+            //获取日志文件并统计
+            $fileName = 'Tlog.' . $v['id'] . '.0_' . $dat . '.log';
+            $path = $url . $fileName;
+            var_dump($path);
+            $file = file_get_contents($path);
+            var_dump($file);
+        }
     }
     public function actionTest1(){
         $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];
