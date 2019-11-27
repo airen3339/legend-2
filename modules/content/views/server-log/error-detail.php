@@ -8,6 +8,12 @@
         <input type="hidden" name="id" value="<?php echo isset($data['id'])?$data['id']:''?>">
         <fieldset>
             <div class="control-group">
+                <label for="modulename" class="control-label">报错次数</label>
+                <div class="controls">
+                    <input readonly value="<?php echo isset($data['total'])?$data['total']:''?>" />
+                </div>
+            </div>
+            <div class="control-group">
                 <label for="modulename" class="control-label">报错内容</label>
                 <div class="controls">
                     <textarea name="content" style="margin: 0;width: 645px;height: 320px;"><?php echo isset($data['content'])?$data['content']:''?></textarea>

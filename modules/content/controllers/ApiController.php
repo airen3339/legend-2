@@ -408,9 +408,18 @@ class ApiController extends  Controller
         if(!is_string($content)){
             $content = json_encode($content);
         }
-        $model = new GameError();
-        $model->content = $content;
-        $model->createTime = time();
-        $model->save();
+        $md5 = md5($content);
+        $had = GameError::find()->where("md = '{$md5}'")->one();
+        if($had){
+            $had->total = isset($had->total)?(1+$had->total):1;
+            $had->save();
+        }else{
+            $model = new GameError();
+            $model->content = $content;
+            $model->createTime = time();
+            $model->md = $md5;
+            $model->total = 1;
+            $model->save();
+        }
     }
 }
