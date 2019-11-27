@@ -411,8 +411,6 @@ class ApiController extends  Controller
         $poststr = json_encode($request);
         Methods::varDumpLog('error.txt',$poststr,'a');
         Methods::varDumpLog('error.txt',"\n",'a');
-        $request = json_decode($poststr);
-        Methods::varDumpLog('error.txt',$request,'a');
-        Methods::varDumpLog('error.txt',"\n",'a');
+//        $request = json_decode($poststr);
     }
 }
