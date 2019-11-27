@@ -8,6 +8,7 @@ use app\libs\Methods;
 use app\modules\content\models\ActivityPush;
 use app\modules\content\models\ActivityType;
 use app\modules\content\models\Catalog;
+use app\modules\content\models\GameError;
 use app\modules\content\models\Item;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
@@ -403,19 +404,13 @@ class ApiController extends  Controller
      * 报错日志记录
      */
     public function actionGameError(){
-        $req = \Yii::$app->request->post();
-        $request = file_get_contents('php://input');
-        if(is_string($request)){
-            Methods::varDumpLog('error.txt',$request,'a');
-            Methods::varDumpLog('error.txt',"\n",'a');
-            Methods::varDumpLog('error.txt',"222222========================",'a');
-            Methods::varDumpLog('error.txt',"\n",'a');
-        }else{
-            $poststr = json_encode($request);
-            Methods::varDumpLog('error.txt',$poststr,'a');
-            Methods::varDumpLog('error.txt',"\n",'a');
-            Methods::varDumpLog('error.txt',"1========================",'a');
-            Methods::varDumpLog('error.txt',"\n",'a');
+        $content = file_get_contents('php://input');
+        if(!is_string($content)){
+            $content = json_encode($content);
         }
+        $model = new GameError();
+        $model->content = $content;
+        $model->createTime = time();
+        $model->save();
     }
 }
