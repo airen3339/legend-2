@@ -8,6 +8,7 @@ use app\libs\Methods;
 use app\modules\content\models\ActivityPush;
 use app\modules\content\models\ActivityType;
 use app\modules\content\models\Catalog;
+use app\modules\content\models\GameError;
 use app\modules\content\models\Item;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
@@ -398,5 +399,18 @@ class ApiController extends  Controller
             $data = ['code'=>0,'message'=>'参数错误'];
         }
         die(json_encode($data));
+    }
+    /**
+     * 报错日志记录
+     */
+    public function actionGameError(){
+        $content = file_get_contents('php://input');
+        if(!is_string($content)){
+            $content = json_encode($content);
+        }
+        $model = new GameError();
+        $model->content = $content;
+        $model->createTime = time();
+        $model->save();
     }
 }

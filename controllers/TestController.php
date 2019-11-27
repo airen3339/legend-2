@@ -3,7 +3,14 @@
 namespace app\controllers;
 
 use app\libs\Methods;
+use app\modules\content\models\CurrencyData;
+use app\modules\content\models\Item;
+use app\modules\content\models\LoginData;
+use app\modules\content\models\LoginRole;
 use app\modules\content\models\LTVMoney;
+use app\modules\content\models\Server;
+use app\modules\content\models\YuanbaoRole;
+use app\modules\pay\models\Recharge;
 use Yii;
 use yii\web\Controller;
 
@@ -27,7 +34,104 @@ class TestController extends Controller
 
     public function actionIndex()
     {
+        ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
+        $date = date('Y-m-d');
+        $servers = Server::getServers();//获取区服
+        $url = 'http://192.168.0.30/logs/TLog/';
+        foreach($servers as $k => $v) {
+            $dat = str_replace('-','',$date);
+            //获取日志文件并统计
+            $fileName = 'Tlog.' . $v['id'] . '.0_' . $dat . '.log';
+            $path = $url . $fileName;
+            try{
+                $file = file_get_contents($path);
+                $file = str_replace(array("\n","\r","\t"),'',$file);
+                preg_match_all('/PlayerLogin(\|([^\|]+))+(\|\|)([^|])((\|)([^\|]+))+(\|\|)([^|]+)(\|\|\|\|)([^|]+)((\|)([^\|]+))+MoneyFlow/', $file, $arrLogin);
+                $login = $arrLogin[0];
+                $loginTime = [];//登录时间
+                preg_match_all('/PlayerLogout(\|([^\|]+))+(\|\|)([^|])((\|)([^\|]+))+(\|\|)([^|]+)(\|\|\|\|)([^|]+)((\|)([^\|]+))+MoneyFlow/', $file, $arrLoginOut);
+                $loginOut = $arrLoginOut[0];
+                $loginOutData = [];//退出数据
+                var_dump($login);
+                var_dump($loginOut);die;
+                //退出时间处理
+                foreach ($loginOut as $pp => $oo) {//解析退出数据统计
+                    $oo = str_replace('MoneyFlow','',$oo);
+                    $loginOutArr = explode('|', $oo);//键值对应 1-区服 2-时间 6-设备号 24-角色id
+                    $key = 'role' . $loginOutArr[24];
+                    $loginOutData[$key][] = ['serverId' => $loginOutArr[1], 'loginOutTime' => $loginOutArr[2], 'roleId' => $loginOutArr[18]];
+                }
+                $site = 0;//对应的登出位置
+                //登录数据处理 解析 对应退出 读入数据库
+                foreach ($login as $p => $o) {//解析登录数据统计
+                    $o = str_replace('MoneyFlow','',$o);
+                    $loginArr = explode('|', $o);//键值对应 1-区服 2-时间 6-设备号 18-角色id 19-姓名 29-登录ip
+                    $currTime = strtotime($loginArr[2]);//当前登录时间
+                    $roleId = $loginArr[18];
+                    $key = 'role' . $roleId;
+                    $code = 0;//数据库记录识别 0-不记录 1-记录
+                    if (isset($loginTime[$key])) {//已有该角色id登录数据
+                        if (($loginTime[$key] + 60) < $currTime) {//如果该角色下次登录时间大于上次登录时间一分钟才算
+                            $code = 1;
+                            $site++;
+                            $loginTime[$key] = $currTime;//更新登录时间 方便下次比较
+                        }
+                    } else {
+                        $code = 1;
+                        $site = 0;
+                        $loginTime[$key] = $currTime;//更新登录时间 方便下次比较
+                    }
+                    //数据记录
+                    if ($code == 1) {
+                        $loginOutTime = '';
+                        //获取对应的登出时间
+                        if (isset($loginOutData[$key][$site])) {//是否有对应位置的登出时间
+                            $loginOutTime = $loginOutData[$key][$site]['loginOutTime'];
+                            $begin = strtotime($loginArr[2]);
+                            $end = strtotime($loginOutTime);
+                            if ($begin > $end) {//对应的登录时间小于于登出时间 记录该条数据
+                                $loginOutTime = '';
+                            }
+                        } else {//没有默认一直在线到第二天
+                            if (isset($loginOutData[$key][$site - 1])) {//对应的登出记录是否有上一条
+                                $loginOutTime = date("Y-m-d 23:59:59");//有上一条可记录 没有的话上一条的登出时间已记录到凌晨 不需要再记录
+                            }
+                        }
+                        if ($loginOutTime) {
+                            $model = new LoginRole();
+                            $model->roleId = $roleId;
+                            $model->date = $date;
+                            $model->loginTime = $loginArr[2];
+                            $model->loginOutTime = $loginOutTime;
+                            $model->serverId = $loginArr[1]/10;
+                            $model->device = $loginArr[6];
+                            $model->ip = $loginArr[29];
+                            $model->name = $loginArr[19];
+                            $model->createTime = time();
+                            $model->save();
+                        }
+                    }
+                }
+            }catch(\Exception $e){
 
+            }
+            //统计当天各个小时的在线人数
+            $data = [];
+            for($i=1;$i<=24;$i++){
+                $beginTime = strtotime($date)+($i-1)*3600;
+                $endTime = $beginTime + 3600;
+                //登录时间在时间段内 或者 退出时间在此时间段内 或者 登录退出时间在此时间段外
+                $where = " date = '{$date}' and serverId = {$v['id']} and ( ( unix_timestamp(loginTime) between $beginTime and $endTime ) or ( unix_timestamp(loginOutTime) between $beginTime and $endTime ) or ( unix_timestamp(loginTime) < $beginTime and unix_timestamp(loginOutTime) > $endTime ) )";
+                $number = LoginRole::find()->where($where)->groupBy('roleId')->count();
+                $data[] = $number?$number:0;
+            }
+            $model = new LoginData();
+            $model->serverId = $v['id'];
+            $model->date = $date;
+            $model->data = implode(',',$data);
+            $model->createTime = time();
+            $model->save();
+        }
     }
     public function actionTest1(){
         $strTest = Yii::$app->db2->createCommand("select * from digmine limit 0,1")->queryOne()['datas'];
