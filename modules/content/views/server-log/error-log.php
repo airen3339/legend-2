@@ -18,7 +18,7 @@
             <tr>
                 <th>ID</th>
                 <th style="width: 460px;">报错内容</th>
-                <th style="width: 460px;">次数</th>
+                <th >次数</th>
                 <th>记录时间</th>
                 <th >操作</th>
             </tr>
@@ -30,7 +30,7 @@
                 <tr  class="text-item tdBorder">
                     <td style="width: 30px;"><span ><?php echo $v['id']?></span></td>
                     <td ><span><?php echo $v['content']?></span></td>
-                    <td ><span><?php echo $v['total']?></span></td>
+                    <td style="width: 30px;" ><span><?php echo $v['total']?></span></td>
                     <td ><span ><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
                     <td  class="notSLH" style="width: 130px;">
                         <a class="btn" href="/content/server-log/error-detail?id=<?php echo $v['id'] ; ?>" >详情</a>
