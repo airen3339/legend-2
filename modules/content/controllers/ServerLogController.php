@@ -31,7 +31,7 @@ class ServerLogController extends  AdminController {
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $count = GameError::find()->count();
-        $page = new yii\data\Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $page = new yii\data\Pagination(['totalCount'=>$count,'pageSize'=>8]);
         $data = GameError::find()->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         return $this->render('error-log',['count'=>$count,'page'=>$page,'data'=>$data]);
     }
