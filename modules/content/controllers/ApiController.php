@@ -403,15 +403,26 @@ class ApiController extends  Controller
      * 报错日志记录
      */
     public function actionGameError(){
-//        $request = \Yii::$app->request->post();
+        $req = \Yii::$app->request->post();
         $request = file_get_contents('php://input');
         if(is_string($request)){
             Methods::varDumpLog('error.txt',$request,'a');
             Methods::varDumpLog('error.txt',"\n",'a');
+        }else{
+            $poststr = json_encode($request);
+            Methods::varDumpLog('error.txt',$poststr,'a');
+            Methods::varDumpLog('error.txt',"\n",'a');
+            Methods::varDumpLog('error.txt',"1========================",'a');
+            Methods::varDumpLog('error.txt',"\n",'a');
         }
-        $poststr = json_encode($request);
-        Methods::varDumpLog('error.txt',$poststr,'a');
-        Methods::varDumpLog('error.txt',"\n",'a');
+        if(is_string($req)){
+            Methods::varDumpLog('error.txt',$req,'a');
+            Methods::varDumpLog('error.txt',"\n",'a');
+        }else{
+            $posts = json_encode($req);
+            Methods::varDumpLog('error.txt',$posts,'a');
+            Methods::varDumpLog('error.txt',"\n",'a');
+        }
 //        $request = json_decode($poststr);
     }
 }
