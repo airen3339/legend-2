@@ -404,8 +404,10 @@ class ApiController extends  Controller
      */
     public function actionGameError(){
         $request = \Yii::$app->request->post();
-        Methods::varDumpLog('error.txt',$request,'a');
-        Methods::varDumpLog('error.txt',"\n",'a');
+        if(is_string($request)){
+            Methods::varDumpLog('error.txt',$request,'a');
+            Methods::varDumpLog('error.txt',"\n",'a');
+        }
         $poststr = json_encode($request);
         Methods::varDumpLog('error.txt',$poststr,'a');
         Methods::varDumpLog('error.txt',"\n",'a');
