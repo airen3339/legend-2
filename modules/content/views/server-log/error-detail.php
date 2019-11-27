@@ -10,7 +10,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">报错内容</label>
                 <div class="controls">
-                    <textarea name="content"><?php echo isset($data['content'])?$data['content']:''?></textarea>
+                    <textarea name="content" style="margin: 0;width: 645px;height: 320px;"><?php echo isset($data['content'])?$data['content']:''?></textarea>
                 </div>
             </div>
             <br/>
