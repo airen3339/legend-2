@@ -465,39 +465,39 @@ class GmController  extends AdminController
     public function actionGmPush(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        if($_POST){
-            $server = Yii::$app->request->post('server');
-//            $roleId = Yii::$app->request->post('roleId');
-            $name = Yii::$app->request->post('name','');
-            $prefix = Yii::$app->request->post('prefix');
-            $params = Yii::$app->request->post('params');
-            if(!$server){
-                echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            if(!$prefix){
-                echo "<script>alert('请填写命令前缀');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            if(!$params){
-                echo "<script>alert('请填写命令参数');setTimeout(function(){history.go(-1);},1000)</script>";die;
-            }
-            //获取roleID
-            if($name){
-                $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
-            }else{
-                $roleId = '';
-            }
-            //记录日志并推送服务端
-            OperationLog::logAdd("推送".$server."服GM命令 $prefix $params",$roleId,2);//2-gm命令
-            $content = ['GMInstruct'=>$prefix,'GMParam'=>$params];
-            if($roleId){
-                $content['RoleId'] = $roleId;
-            }
-            Methods::GmFileGet($content,$server,6,4233);//4233 推送gm命令
-            echo "<script>alert('推送成功');setTimeout(function(){location.href='gm-push';},1000)</script>";die;
-        }else{
-            $servers = Server::getServers();
-            return $this->render('gm-push',['servers'=>$servers]);
-        }
+//        if($_POST){
+//            $server = Yii::$app->request->post('server');
+////            $roleId = Yii::$app->request->post('roleId');
+//            $name = Yii::$app->request->post('name','');
+//            $prefix = Yii::$app->request->post('prefix');
+//            $params = Yii::$app->request->post('params');
+//            if(!$server){
+//                echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+//            if(!$prefix){
+//                echo "<script>alert('请填写命令前缀');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+//            if(!$params){
+//                echo "<script>alert('请填写命令参数');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//            }
+//            //获取roleID
+//            if($name){
+//                $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+//            }else{
+//                $roleId = '';
+//            }
+//            //记录日志并推送服务端
+//            OperationLog::logAdd("推送".$server."服GM命令 $prefix $params",$roleId,2);//2-gm命令
+//            $content = ['GMInstruct'=>$prefix,'GMParam'=>$params];
+//            if($roleId){
+//                $content['RoleId'] = $roleId;
+//            }
+//            Methods::GmFileGet($content,$server,6,4233);//4233 推送gm命令
+//            echo "<script>alert('推送成功');setTimeout(function(){location.href='gm-push';},1000)</script>";die;
+//        }else{
+//            $servers = Server::getServers();
+//            return $this->render('gm-push',['servers'=>$servers]);
+//        }
     }
     /**
      * 跑马灯公告
