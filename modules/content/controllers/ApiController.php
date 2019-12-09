@@ -16,6 +16,7 @@ use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
+use Hyperbolaa\Wechatpay\Facades\Jsapi;
 use yii\base\Exception;
 use yii\web\Controller;
 use Yii;
@@ -420,6 +421,22 @@ class ApiController extends  Controller
             $model->md = $md5;
             $model->total = 1;
             $model->save();
+        }
+    }
+    /**
+     * 错误问题描述
+     */
+    public function actionSaveDescribe(){
+        $describe = Yii::$app->request->post('descri');
+        $id = Yii::$app->request->post('id');
+        if(!$id){
+            Methods::jsonData(0,'id不存在');
+        }
+        $res = GameError::updateAll(['describe'=>$describe]," id = $id");
+        if($res){
+            Methods::jsonData(1,'保存成功');
+        }else{
+            Methods::jsonData(0,'保存失败');
         }
     }
 }
