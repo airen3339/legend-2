@@ -17,6 +17,11 @@ use yii;
 use yii\data\Pagination;
 class Methods
 {
+    public static function jsonData($code,$message,$data=[]){
+        $data = ['code'=>$code,'message'=>$message,'data'=>$data];
+        $data = json_encode($data);
+        die($data);
+    }
     /**
      * 分页函数
      * @param array $config 分页配置

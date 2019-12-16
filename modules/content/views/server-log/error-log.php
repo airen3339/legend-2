@@ -20,6 +20,7 @@
                 <th style="width: 460px;">报错内容</th>
                 <th >次数</th>
                 <th>记录时间</th>
+                <th>错误描述</th>
                 <th >操作</th>
             </tr>
             </thead>
@@ -30,10 +31,14 @@
                 <tr  class="text-item tdBorder">
                     <td style="width: 30px;"><span ><?php echo $v['id']?></span></td>
                     <td ><span><?php echo $v['content']?></span></td>
-                    <td style="width: 30px;" ><span><?php echo $v['total']?></span></td>
-                    <td ><span ><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
+                    <td style="width: 15px;" ><span><?php echo $v['total']?></span></td>
+                    <td style="width: 70px;" ><span ><?php echo date('Y-m-d H:i',$v['createTime'])?></span></td>
+                    <td style="width: 150px;" ><span>
+                            <textarea style="margin-top: 10px;"><?php echo $v['describe']?></textarea>
+                            <a href="#" class="btn" onclick="saveDescribe(this,<?php echo $v['id']?>,'<?php echo $v['describe']?>')">保存</a>
+                        </span></td>
                     <td  class="notSLH" style="width: 130px;">
-                        <a class="btn" href="/content/server-log/error-detail?id=<?php echo $v['id'] ; ?>" >详情</a>
+                        <a class="btn" style="margin-top: 10px;" href="/content/server-log/error-detail?id=<?php echo $v['id'] ; ?>" >详情</a>
                     </td>
                 </tr>
                 <?php
@@ -56,3 +61,19 @@
         ])?>
     </div>
 </div>
+<script>
+    function saveDescribe(_this,id,old){
+        var val = $(_this).siblings("textarea").val();
+        if(val == old){
+            alert('内容没有修改');return false;
+        }
+        if(confirm('确定保存吗？')){
+            $.post('/content/api/save-describe',{id:id,descri:val},function(e){
+                alert(e.message);
+                if(e.code != 1){
+                    $(_this).siblings("textarea").val(old);
+                }
+            },'json');
+        }
+    }
+</script>

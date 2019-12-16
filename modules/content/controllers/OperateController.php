@@ -188,7 +188,17 @@ class OperateController  extends AdminController
             $where .= " and WorldID = '{$service}'";
         }
         $data = [];
-        $levelTotal = 70;
+        //计算等级数 等级人数不为0的才算
+        $levelTotal = 0;
+        $levels = [];
+        for($i=1;$i<71;$i++){
+            $number = Player::find()->where($where."  and Level = $i")->count();
+            if($number > 0){
+                $levelTotal += 1;
+                $levels[] = $i;
+            }
+        }
+//        $levelTotal = 70;
         $pageSize = 20;
         $page = Yii::$app->request->get('page',1);
         $start = ($page-1)*$pageSize;
@@ -196,7 +206,8 @@ class OperateController  extends AdminController
         if($end > $levelTotal)$end = $levelTotal;
         $userTotal = Player::find()->count();
         for($i=($start+1);$i<=$end;$i++){
-            $level_num = Player::find()->where($where."  and Level = $i")->count();
+            $level = $levels[$i-1];
+            $level_num = Player::find()->where($where."  and Level = $level")->count();
             if($userTotal == 0 || $level_num ==0){
                 $user_proportion = '0%';//用户占比
             }else{
@@ -213,7 +224,7 @@ class OperateController  extends AdminController
             }else{
                 $retention_proportion = (floor(10000*($retention_user/$level_num))/100).'%';
             }
-            $data[]= ['level'=>$i,'user_total'=>$level_num,'user_proportion'=>$user_proportion,'retention_user'=>$retention_user,'retention_proportion'=>$retention_proportion];
+            $data[]= ['level'=>$level,'user_total'=>$level_num,'user_proportion'=>$user_proportion,'retention_user'=>$retention_user,'retention_proportion'=>$retention_proportion];
         }
         $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>$pageSize]);
         $servers = Server::getServers();
@@ -534,5 +545,90 @@ class OperateController  extends AdminController
         $count = 20;
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         return $this->render('roll-data',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 账号新增数量
+     */
+    public function actionAddNumber(){$action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        $page = Yii::$app->request->get('page',1);
+        $data = [];
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+            //计算时期天数
+            $monthNow = strtotime($month_now);
+            $monthBegin = strtotime($month_begin);
+            $days = ($monthNow-$monthBegin)/86400;
+            if($page==1){
+                $first = 0;
+            } else{
+                $first = ($page-1)*31;
+            }
+            if($days <= (31*$page)){
+                $endDays = $days+1;
+            }else{
+                $endDays = $page*31;
+            }
+            for($i=$first;$i<$endDays;$i++){
+                $dateTime = $monthBegin + 86400 * $i;
+                $date = date('Y-m-d', $dateTime);
+                $end = $dateTime + 86399;
+                //当日注册数
+                $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
+                $data[] = ['date'=>$date,'register'=> $register?$register:0];
+            }
+            $count = $days;
+        }else{
+            $today = date('Y-m-d');
+            $begin = time();
+            $end = $begin + 86399;
+            //当日注册数
+            $register = User::find()->where("  unix_timestamp(CreateDate) between $begin and $end")->count();
+            $data[] = ['date'=>$today,'register'=> $register?$register:0];
+            $count = 1;
+        }
+
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>30]);
+        return $this->render('add-number',['data'=>$data,'count'=>$count,'page'=>$page]);
+    }
+    /**
+     * 新增数量图
+     * 默认当前月
+     */
+    public function actionAddNumberImg(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+        }else{
+            $month_begin = date('Y-m-01');
+            $month_now = date("Y-m-d");
+        }
+        //计算时期天数
+        $monthNow = strtotime($month_now);
+        $monthBegin = strtotime($month_begin);
+        $days = ($monthNow-$monthBegin)/86400;
+        $data = [];
+        $series = [];
+        for($i=0;$i<$days;$i++){
+            $dateTime = $monthBegin + 86400*$i;
+            $date = date('Y-m-d',$dateTime);
+            $end = $dateTime + 86399;
+            $date = str_replace('-','',$date);
+            $series[] = $date;
+            //当日注册数
+            $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
+            $data[] = $register?$register:0;
+        }
+        $series = implode(',',$series);
+        $data = implode(',',$data);
+        $data = ['series'=>$series,'data'=>$data,'date'=>$beginTime.'至'.$endTime];
+        return $this->render('add-number-img',$data);
     }
 }

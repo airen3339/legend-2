@@ -19,6 +19,12 @@
                     <textarea name="content" style="margin: 0;width: 645px;height: 320px;"><?php echo isset($data['content'])?$data['content']:''?></textarea>
                 </div>
             </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">解决描述</label>
+                <div class="controls">
+                    <textarea name="content" style="margin: 0;width: 645px;height: 120px;"><?php echo isset($data['describe'])?$data['describe']:''?></textarea>
+                </div>
+            </div>
             <br/>
             <div class="control-group">
                 <div class="controls">

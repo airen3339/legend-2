@@ -51,7 +51,7 @@ class PlayerController  extends AdminController
         if($roleId){
             $where .= " and p.RoleID = '{$roleId}' ";
         }
-        $sql = "select p.RoleID,p.UserID,p.LastLogin,p.CreateDate,u.PackageFlag,u.WorldID,p.Name from `user` u inner join player p on p.UserID = u.UserID where $where";
+        $sql = "select p.RoleID,p.UserID,p.LastLogin,p.CreateDate,u.PackageFlag,p.WorldID,p.Name from `user` u inner join player p on p.UserID = u.UserID where $where";
         $count = \Yii::$app->db2->createCommand($sql)->queryAll();
         $count = count($count);
         $limit = " limit ".(20*($page-1)).",20";

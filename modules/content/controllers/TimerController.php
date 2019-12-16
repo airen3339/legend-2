@@ -279,7 +279,7 @@ class TimerController extends Controller
     public function actionCheckIndexNotice(){
         //查询最新公告
         $today = strtotime(date('Y-m-d'));
-        $notice = Notice::find()->where(" unix_timestamp(beginTime) <= $today and $today <= unix_timestamp(endTime)")->orderBy('beginTime desc')->asArray()->one();
+        $notice = Notice::find()->where(" unix_timestamp(beginTime) <= $today and $today <= unix_timestamp(endTime) and type = 1 ")->orderBy('beginTime desc')->asArray()->one();
         Notice::updateAll(['current'=>0],"type = 1 and current = 1");//清除当前公告状态
         if($notice){
             $content = $notice['content'];

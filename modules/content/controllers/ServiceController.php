@@ -67,8 +67,8 @@ class ServiceController extends  AdminController {
             $where .= " and (  feedback like '%{$content}%'  or replyContent like '%{$content}%' )" ;
         }
         $count = RoleFeedback::find()->where($where)->count();
-        $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
-        $data = RoleFeedback::find()->where($where)->offset($page->offset)->limit($page->limit)->asArray()->all();
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $data = RoleFeedback::find()->where($where)->orderBy('createTime desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['replyName'] = Role::find()->where("id = {$v['replyId']}")->asArray()->one()['name'];
         }
