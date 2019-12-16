@@ -594,4 +594,41 @@ class OperateController  extends AdminController
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>30]);
         return $this->render('add-number',['data'=>$data,'count'=>$count,'page'=>$page]);
     }
+    /**
+     * 新增数量图
+     * 默认当前月
+     */
+    public function actionAddNumberImg(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+        }else{
+            $month_begin = date('Y-m-01');
+            $month_now = date("Y-m-d");
+        }
+        //计算时期天数
+        $monthNow = strtotime($month_now);
+        $monthBegin = strtotime($month_begin);
+        $days = ($monthNow-$monthBegin)/86400;
+        $data = [];
+        $series = [];
+        for($i=0;$i<$days;$i++){
+            $dateTime = $monthBegin + 86400*$i;
+            $date = date('Y-m-d',$dateTime);
+            $end = $dateTime + 86399;
+            $date = str_replace('-','',$date);
+            $series[] = $date;
+            //当日注册数
+            $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
+            $data[] = $register?$register:0;
+        }
+        $series = implode(',',$series);
+        $data = implode(',',$data);
+        $data = ['series'=>$series,'data'=>$data,'date'=>$beginTime.'至'.$endTime];
+        return $this->render('add-number-img',$data);
+    }
 }
