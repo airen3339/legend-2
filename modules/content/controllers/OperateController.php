@@ -188,7 +188,17 @@ class OperateController  extends AdminController
             $where .= " and WorldID = '{$service}'";
         }
         $data = [];
-        $levelTotal = 70;
+        //计算等级数 等级人数不为0的才算
+        $levelTotal = 0;
+        $levels = [];
+        for($i=1;$i<71;$i++){
+            $number = Player::find()->where($where."  and Level = $i")->count();
+            if($number > 0){
+                $levelTotal += 1;
+                $levels[] = $i;
+            }
+        }
+//        $levelTotal = 70;
         $pageSize = 20;
         $page = Yii::$app->request->get('page',1);
         $start = ($page-1)*$pageSize;
@@ -196,7 +206,8 @@ class OperateController  extends AdminController
         if($end > $levelTotal)$end = $levelTotal;
         $userTotal = Player::find()->count();
         for($i=($start+1);$i<=$end;$i++){
-            $level_num = Player::find()->where($where."  and Level = $i")->count();
+            $level = $levels[$i-1];
+            $level_num = Player::find()->where($where."  and Level = $level")->count();
             if($userTotal == 0 || $level_num ==0){
                 $user_proportion = '0%';//用户占比
             }else{
@@ -213,7 +224,7 @@ class OperateController  extends AdminController
             }else{
                 $retention_proportion = (floor(10000*($retention_user/$level_num))/100).'%';
             }
-            $data[]= ['level'=>$i,'user_total'=>$level_num,'user_proportion'=>$user_proportion,'retention_user'=>$retention_user,'retention_proportion'=>$retention_proportion];
+            $data[]= ['level'=>$level,'user_total'=>$level_num,'user_proportion'=>$user_proportion,'retention_user'=>$retention_user,'retention_proportion'=>$retention_proportion];
         }
         $page = new Pagination(['totalCount'=>$levelTotal,'pageSize'=>$pageSize]);
         $servers = Server::getServers();
@@ -534,5 +545,42 @@ class OperateController  extends AdminController
         $count = 20;
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         return $this->render('roll-data',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 账号新增数量
+     */
+    public function actionAddNumber(){$action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        $data = [];
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+            //计算时期天数
+            $monthNow = strtotime($month_now);
+            $monthBegin = strtotime($month_begin);
+            $days = ($monthNow-$monthBegin)/86400;
+            for($i=$days;$i>=0;$i--) {
+                $dateTime = $monthBegin + 86400 * $i;
+                $date = date('Y-m-d', $dateTime);
+                $end = $dateTime + 86399;
+                //当日注册数
+                $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
+                $data[] = ['date'=>$date,'register'=> $register?$register:0];
+            }
+            $count = $days;
+        }else{
+            $today = date('Y-m-d');
+            $begin = time();
+            $end = $begin + 86399;
+            //当日注册数
+            $register = User::find()->where("  unix_timestamp(CreateDate) between $begin and $end")->count();
+            $data[] = ['date'=>$today,'register'=> $register?$register:0];
+            $count = 1;
+        }
+
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>30]);
+        return $this->render('add-number',['data'=>$data,'count'=>$count,'page'=>$page]);
     }
 }
