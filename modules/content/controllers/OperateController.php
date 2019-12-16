@@ -553,7 +553,7 @@ class OperateController  extends AdminController
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
-        $page = Yii::$app->request->get('page',1);
+//        $page = Yii::$app->request->get('page',1);
         $data = [];
         if($beginTime && $endTime){
             $month_begin = $beginTime;
@@ -562,17 +562,17 @@ class OperateController  extends AdminController
             $monthNow = strtotime($month_now);
             $monthBegin = strtotime($month_begin);
             $days = ($monthNow-$monthBegin)/86400;
-            if($page==1){
-                $first = 0;
-            } else{
-                $first = ($page-1)*31;
-            }
-            if($days <= (31*$page)){
-                $endDays = $days+1;
-            }else{
-                $endDays = $page*31;
-            }
-            for($i=$first;$i<$endDays;$i++){
+//            if($page==1){
+//                $first = 0;
+//            } else{
+//                $first = ($page-1)*31;
+//            }
+//            if($days <= (31*$page)){
+//                $endDays = $days+1;
+//            }else{
+//                $endDays = $page*31;
+//            }
+            for($i=$days;$i>=0;$i--){
                 $dateTime = $monthBegin + 86400 * $i;
                 $date = date('Y-m-d', $dateTime);
                 $end = $dateTime + 86399;
