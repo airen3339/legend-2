@@ -42,6 +42,7 @@
             ?>
             </tbody>
         </table>
+        <a href="Javascript:history.go(-1)" class="btn">返回</a>
     </form>
     <div class="pagination pagination-right" style="margin: 10px !important;">
         <span style="font-size: 17px;position: relative;bottom: 7px;">共<?php echo $count;?>条&nbsp;</span>

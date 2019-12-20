@@ -38,7 +38,7 @@
                     </td>
                     <td >
                         <span ><?php echo $v['in']?></span>
-                        <?php if($v['out'] > 0){?>
+                        <?php if($v['in'] > 0){?>
                             <a href="/content/operate/ys-count-detail?type=2&userId=<?php echo $v['UserID']?>">收入详情</a>
                         <?php }?>
                     </td>

@@ -668,11 +668,11 @@ class OperateController  extends AdminController
      */
     public function actionYsCountDetail(){
         $type = Yii::$app->request->get('type',1);//1-赠送 2-接收
-        $userId = Yii::$app->request->post('userId','');
+        $userId = Yii::$app->request->get('userId','');
         $where = ' 1= 1 ';
         $count = 0;
         if($userId){
-            $roleIds = Player::find()->select("group_concat(UserID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
+            $roleIds = Player::find()->select("group_concat(RoleID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
             if($roleIds){//获取账号的赠送元宝和收入元宝统计
                 if($type ==1){
                     $where .= " and roleId in ({$roleIds}) and added = 0 and type = 3";
@@ -686,7 +686,7 @@ class OperateController  extends AdminController
         }else{
             $where = ' 1 != 1';
         }
-        $page = new Pagination(['totalCount'=>$count]);
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         $data = YuanbaoRole::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
         return $this->render('ys-count-detail',['page'=>$page,'count'=>$count,'data'=>$data,'userId'=>$userId,'type'=>$type]);
     }
