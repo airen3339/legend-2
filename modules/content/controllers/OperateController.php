@@ -640,14 +640,23 @@ class OperateController  extends AdminController
     public function actionYsCount(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $sql = " select us.* from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID order by us.UserID";
+        $userId = Yii::$app->request->get('userId');
+        $name = Yii::$app->request->get('name');
+        $where = "where 1 = 1";
+        if($userId){
+            $where.= " and us.UserID = '{$userId}'";
+        }
+        if($name){
+            $where .= " and p.Name = '{$name}'";
+        }
+        $sql = " select us.* from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID $where order by us.UserID";
         $total = Yii::$app->db2->createCommand($sql)->queryAll();
         $count = count($total);
         $pages = new Pagination(['totalCount'=>$count]);
         $page = Yii::$app->request->get('page',1);
         if(!$page)$page=1;
         $limit = " limit ".(20*($page-1)).',20';
-        $sql = " select us.*,p.Name,p.Ingot,p.RoleID from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID order by us.UserID $limit";
+        $sql = " select us.*,p.Name,p.Ingot,p.RoleID from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID $where order by us.UserID $limit";
         $data = Yii::$app->db2->createCommand($sql)->queryAll();
         foreach($data as $k => $v){
             $roleId = $v['RoleID'];

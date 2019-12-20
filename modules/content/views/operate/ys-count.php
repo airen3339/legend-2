@@ -9,6 +9,21 @@
     <form action="/content/operate/ys-count" method="get" class="form-horizontal">
         <table class="table">
             <tr>
+                <td>
+                    角色账号：
+                </td>
+                <td>
+                    <input  style="height: 20px;width: 92px;"  type="text"  id="userId"  name="userId" value="<?php echo isset($_GET['userId'])?$_GET['userId']:''?>"/>
+                </td>
+                <td>
+                    角色名：
+                </td>
+                <td>
+                    <input style="height: 20px" type="text" size="10" id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">查询</button>
+                </td>
                 <td></td>
             </tr>
         </table>
@@ -19,7 +34,7 @@
             <tr>
                 <th>角色账号</th>
                 <th>角色名</th>
-                <th>账号元宝</th>
+                <th>当前元宝数</th>
                 <th>赠送元宝</th>
                 <th>收入元宝</th>
             </tr>
