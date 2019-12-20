@@ -18,7 +18,9 @@ use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
+use app\modules\content\models\SliverMerchant;
 use app\modules\content\models\User;
+use app\modules\content\models\YuanbaoRole;
 use Yii;
 use yii\data\Pagination;
 
@@ -630,5 +632,58 @@ class OperateController  extends AdminController
         $data = implode(',',$data);
         $data = ['series'=>$series,'data'=>$data,'date'=>$beginTime.'至'.$endTime];
         return $this->render('add-number-img',$data);
+    }
+    /**
+     * 银商统计
+     *
+     */
+    public function actionYsCount(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = SliverMerchant::find()->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = SliverMerchant::find()->offset($page->offset)->limit($page->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $userId = $v['UserID'];
+            $roleIds = Player::find()->select("group_concat(UserID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
+            if($roleIds){//获取账号的赠送元宝和收入元宝统计
+                $out = YuanbaoRole::find()->where("roleId in ({$roleIds}) and added = 0 and type = 3")->sum('money');
+                $in = YuanbaoRole::find()->where("roleId in ({$roleIds}) and added = 1 and type = 3")->sum('money');
+                $out = $out?$out:0;
+                $in = $in?$in:0;
+            }else{
+                $out = 0;
+                $in = 0;
+            }
+            $data[$k]['roleIds'] = $roleIds;
+            $data[$k]['out'] = $out;
+            $data[$k]['in'] = $in;
+            $data[$k]['name'] = User::find()->where("UserID = '{$userId}'")->asArray()->one()['Username'];
+        }
+        return $this->render('ys-count',['page'=>$page,'count'=>$count,'data'=>$data]);
+    }
+    /**
+     * 商人赠送数据
+     * 数据详情
+     */
+    public function actionYsCountDetail(){
+        $type = Yii::$app->request->get('type',1);//1-赠送 2-接收
+        $userId = Yii::$app->request->post('userId','');
+        $where = '';
+        $count = 0;
+        if($userId){
+            $roleIds = Player::find()->select("group_concat(UserID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
+            if($roleIds){//获取账号的赠送元宝和收入元宝统计
+                if($type ==1){
+                    $where = "roleId in ({$roleIds}) and added = 0 and type = 3";
+                }else{
+                    $where = "roleId in ({$roleIds}) and added = 1 and type = 3";
+                }
+                $count = YuanbaoRole::find()->where($where)->count();
+            }
+        }
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = YuanbaoRole::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('ys-count-detail',['page'=>$page,'count'=>$count,'data'=>$data,'userId'=>$userId,'type'=>$type]);
     }
 }
