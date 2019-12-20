@@ -30,7 +30,7 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr class="text-item tdBorder">
-                    <td ><span ><?php echo $userId?></span></td>
+                    <td ><span ><?php echo $v['roleId']?></span></td>
                     <td ><span ><?php echo $v['serverId']?></span></td>
                     <td ><span ><?php echo $v['roleId']?></span></td>
                     <td ><span ><?php echo $v['money']?></span></td>

@@ -19,6 +19,7 @@
             <tr>
                 <th>角色账号</th>
                 <th>账号名</th>
+                <th>账号元宝</th>
                 <th>赠送元宝</th>
                 <th>收入元宝</th>
             </tr>
@@ -29,17 +30,18 @@
                 ?>
                 <tr class="text-item tdBorder">
                     <td ><span ><?php echo $v['UserID']?></span></td>
-                    <td ><span ><?php echo $v['name']?></span></td>
+                    <td ><span ><?php echo $v['Name']?></span></td>
+                    <td ><span ><?php echo $v['Ingot']?></span></td>
                     <td >
                         <span ><?php echo $v['out']?></span>
                         <?php if($v['out'] > 0){?>
-                            <a style="margin-left: 15px;" href="/content/operate/ys-count-detail?type=1&userId=<?php echo $v['UserID']?>">赠送详情</a>
+                            <a style="float: right; position: relative;right: 10px;" href="/content/operate/ys-count-detail?type=1&roleId=<?php echo $v['RoleID']?>">赠送详情</a>
                         <?php }?>
                     </td>
                     <td >
                         <span ><?php echo $v['in']?></span>
                         <?php if($v['in'] > 0){?>
-                            <a href="/content/operate/ys-count-detail?type=2&userId=<?php echo $v['UserID']?>">收入详情</a>
+                            <a style="float: right; position: relative;right: 10px;" href="/content/operate/ys-count-detail?type=2&roleId=<?php echo $v['RoleID']?>">收入详情</a>
                         <?php }?>
                     </td>
                 </tr>

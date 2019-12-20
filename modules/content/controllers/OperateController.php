@@ -640,27 +640,30 @@ class OperateController  extends AdminController
     public function actionYsCount(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $count = SliverMerchant::find()->count();
-        $page = new Pagination(['totalCount'=>$count]);
-        $data = SliverMerchant::find()->offset($page->offset)->limit($page->limit)->asArray()->all();
+        $sql = " select us.* from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID order by us.UserID";
+        $total = Yii::$app->db2->createCommand($sql)->queryAll();
+        $count = count($total);
+        $pages = new Pagination(['totalCount'=>$count]);
+        $page = Yii::$app->request->get('page',1);
+        if(!$page)$page=1;
+        $limit = " limit ".(20*($page-1)).',20';
+        $sql = " select us.*,p.Name,p.Ingot,p.RoleID from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID order by us.UserID $limit";
+        $data = Yii::$app->db2->createCommand($sql)->queryAll();
         foreach($data as $k => $v){
-            $userId = $v['UserID'];
-            $roleIds = Player::find()->select("group_concat(RoleID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
-            if($roleIds){//获取账号的赠送元宝和收入元宝统计
-                $out = YuanbaoRole::find()->where("roleId in ({$roleIds}) and added = 0 and type = 3")->sum('money');
-                $in = YuanbaoRole::find()->where("roleId in ({$roleIds}) and added = 1 and type = 3")->sum('money');
+            $roleId = $v['RoleID'];
+            if($roleId){//获取账号的赠送元宝和收入元宝统计
+                $out = YuanbaoRole::find()->where("roleId = '{$roleId}' and added = 0 and type = 3")->sum('money');
+                $in = YuanbaoRole::find()->where("roleId = '{$roleId}' and added = 1 and type = 3")->sum('money');
                 $out = $out?$out:0;
                 $in = $in?$in:0;
             }else{
                 $out = 0;
                 $in = 0;
             }
-            $data[$k]['roleIds'] = $roleIds;
             $data[$k]['out'] = $out;
             $data[$k]['in'] = $in;
-            $data[$k]['name'] = User::find()->where("UserID = '{$userId}'")->asArray()->one()['Username'];
         }
-        return $this->render('ys-count',['page'=>$page,'count'=>$count,'data'=>$data]);
+        return $this->render('ys-count',['page'=>$pages,'count'=>$count,'data'=>$data]);
     }
     /**
      * 商人赠送数据
@@ -668,26 +671,21 @@ class OperateController  extends AdminController
      */
     public function actionYsCountDetail(){
         $type = Yii::$app->request->get('type',1);//1-赠送 2-接收
-        $userId = Yii::$app->request->get('userId','');
+        $roleId = Yii::$app->request->get('roleId','');
         $where = ' 1= 1 ';
         $count = 0;
-        if($userId){
-            $roleIds = Player::find()->select("group_concat(RoleID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
-            if($roleIds){//获取账号的赠送元宝和收入元宝统计
-                if($type ==1){
-                    $where .= " and roleId in ({$roleIds}) and added = 0 and type = 3";
-                }else{
-                    $where .= " and roleId in ({$roleIds}) and added = 1 and type = 3";
-                }
-                $count = YuanbaoRole::find()->where($where)->count();
+        if($roleId){//获取账号的赠送元宝和收入元宝统计
+            if($type ==1){
+                $where .= " and roleId = '{$roleId}' and added = 0 and type = 3";
             }else{
-                $where = ' 1 != 1';
+                $where .= " and roleId = '{$roleId}' and added = 1 and type = 3";
             }
+            $count = YuanbaoRole::find()->where($where)->count();
         }else{
             $where = ' 1 != 1';
         }
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         $data = YuanbaoRole::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
-        return $this->render('ys-count-detail',['page'=>$page,'count'=>$count,'data'=>$data,'userId'=>$userId,'type'=>$type]);
+        return $this->render('ys-count-detail',['page'=>$page,'count'=>$count,'data'=>$data,'roleId'=>$roleId,'type'=>$type]);
     }
 }
