@@ -34,7 +34,7 @@
                     <td ><span ><?php echo $v['serverId']?></span></td>
                     <td ><span ><?php echo $v['roleId']?></span></td>
                     <td ><span ><?php echo $v['money']?></span></td>
-                    <td ><span ><?php echo $v['remark']?></span></td>
+                    <td width="300px"><span ><?php echo $v['remark']?></span></td>
                     <td ><span ><?php echo $v['dateTime']?></span></td>
                 </tr>
                 <?php
