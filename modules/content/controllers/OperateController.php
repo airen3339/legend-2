@@ -645,7 +645,7 @@ class OperateController  extends AdminController
         $data = SliverMerchant::find()->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $userId = $v['UserID'];
-            $roleIds = Player::find()->select("group_concat(UserID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
+            $roleIds = Player::find()->select("group_concat(RoleID) as roleIds")->where("UserID = '{$userId}'")->asArray()->one()['roleIds'];
             if($roleIds){//获取账号的赠送元宝和收入元宝统计
                 $out = YuanbaoRole::find()->where("roleId in ({$roleIds}) and added = 0 and type = 3")->sum('money');
                 $in = YuanbaoRole::find()->where("roleId in ({$roleIds}) and added = 1 and type = 3")->sum('money');
