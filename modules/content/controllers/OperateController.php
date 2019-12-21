@@ -578,14 +578,17 @@ class OperateController  extends AdminController
                 $dateTime = $monthBegin + 86400 * $i;
                 $date = date('Y-m-d', $dateTime);
                 $end = $dateTime + 86399;
+
+                //新增账号登录 当日注册账号中的登录数
+                $register = User::getTodayRegisterLogin($dateTime,$end,"1=1");
                 //当日注册数
-                $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
+//                $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
                 $data[] = ['date'=>$date,'register'=> $register?$register:0];
             }
             $count = $days;
         }else{
             $today = date('Y-m-d');
-            $begin = time();
+            $begin = strtotime($today);
             $end = $begin + 86399;
             //新增账号登录 当日注册账号中的登录数
             $register = User::getTodayRegisterLogin($begin,$end,"1=1");
