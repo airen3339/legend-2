@@ -16,6 +16,7 @@ use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
+use app\modules\content\models\Server;
 use Hyperbolaa\Wechatpay\Facades\Jsapi;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -49,6 +50,16 @@ class ApiController extends  Controller
         $pid = Yii::$app->request->get('pid',0);
         $id = Yii::$app->request->get('id','');
         $data = $model->getTree($pid,$id);
+        echo json_encode($data);
+        exit;
+    }
+    /**
+     * 获取分类树包括一级分类
+     * 游戏区服数据
+     */
+    public function actionServer(){
+        $id = Yii::$app->request->get('id');
+        $data = Server::getServerData($id);
         echo json_encode($data);
         exit;
     }

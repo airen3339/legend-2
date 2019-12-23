@@ -1,4 +1,8 @@
 <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
+<!-- 树形菜单选择 -->
+<link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
@@ -9,14 +13,9 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">区服</label>
                 <div class="controls">
-                    <select name="server" id="server">
-                        <option value="0">全服</option>
-                        <?php
-                        foreach($servers as $k => $v){ ?>
-                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
-                            <?php
-                        }
-                        ?>
+                    <select style="width: 222px"
+                            data-options="url:'/content/api/server?id=<?php echo isset($_GET['serverIds']) ? $_GET['serverIds'] : ''?>',method:'get',cascadeCheck:false"
+                            multiple class="vice easyui-combotree" id="serverIds" name="serverIds[]">
                     </select>
                 </div>
             </div>
@@ -84,4 +83,45 @@
             return false;
         }
     }
+</script>
+
+<?php
+if(isset($id)){
+    ?>
+    <script>
+        $('.main').tree({
+            onLoadSuccess: function (newValue, oldValue) {
+                $('.main').combotree('setValue', <?php echo isset($data['pid'])?$data['pid']:''?>);
+            }
+        })
+    </script>
+    <?php
+}
+?>
+<?php
+if(isset($_GET['pid'])) {
+    ?>
+    <script>
+        $('.main').tree({
+            onLoadSuccess: function (newValue, oldValue) {
+                $('.main').combotree('setValue', <?php echo isset($_GET['pid'])?$_GET['pid']:''?>);
+            }
+        })
+    </script>
+    <?php
+}
+?>
+<script>
+    $('.main').combotree({
+        onClick: function (node) {
+            $("input[name='category[pid]']").val(node.id);
+        }
+    })
+
+    $('.vice').combotree({
+        onCheck:function(newValue,oldValue){
+            var nodes = $('.vice').combotree('getValues');
+            $("input[name='category[secondClass]']").val(nodes);
+        }
+    });
 </script>

@@ -18,7 +18,9 @@ use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
+use app\modules\content\models\SliverMerchant;
 use app\modules\content\models\User;
+use app\modules\content\models\YuanbaoRole;
 use Yii;
 use yii\data\Pagination;
 
@@ -576,17 +578,22 @@ class OperateController  extends AdminController
                 $dateTime = $monthBegin + 86400 * $i;
                 $date = date('Y-m-d', $dateTime);
                 $end = $dateTime + 86399;
+
+                //新增账号登录 当日注册账号中的登录数
+                $register = User::getTodayRegisterLogin($dateTime,$end,"1=1");
                 //当日注册数
-                $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
+//                $register = User::find()->where( "  unix_timestamp(CreateDate) between $dateTime and $end")->count();
                 $data[] = ['date'=>$date,'register'=> $register?$register:0];
             }
             $count = $days;
         }else{
             $today = date('Y-m-d');
-            $begin = time();
+            $begin = strtotime($today);
             $end = $begin + 86399;
+            //新增账号登录 当日注册账号中的登录数
+            $register = User::getTodayRegisterLogin($begin,$end,"1=1");
             //当日注册数
-            $register = User::find()->where("  unix_timestamp(CreateDate) between $begin and $end")->count();
+//            $register = User::find()->where("  unix_timestamp(CreateDate) between $begin and $end")->count();
             $data[] = ['date'=>$today,'register'=> $register?$register:0];
             $count = 1;
         }
@@ -630,5 +637,112 @@ class OperateController  extends AdminController
         $data = implode(',',$data);
         $data = ['series'=>$series,'data'=>$data,'date'=>$beginTime.'至'.$endTime];
         return $this->render('add-number-img',$data);
+    }
+    /**
+     * 银商统计
+     *
+     */
+    public function actionYsCount(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $userId = Yii::$app->request->get('userId');
+        $name = Yii::$app->request->get('name');
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        $where = "where 1 = 1";
+        $ycWhere = " and type = 3 ";
+        if($userId){
+            $where.= " and us.UserID = '{$userId}'";
+        }
+        if($name){
+            $where .= " and p.Name = '{$name}'";
+        }
+        if($beginTime){
+            $begin = strtotime($beginTime);
+            $ycWhere .= " and unix_timestamp(dateTime) >= $begin";
+        }
+        if($endTime){
+            $end = strtotime($endTime);
+            $ycWhere .= " and unix_timestamp(dateTime) <= $end";
+        }
+        $sql = " select us.* from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID $where order by us.UserID";
+        $total = Yii::$app->db2->createCommand($sql)->queryAll();
+        $count = count($total);
+        $pages = new Pagination(['totalCount'=>$count]);
+        $page = Yii::$app->request->get('page',1);
+        if(!$page)$page=1;
+        $limit = " limit ".(20*($page-1)).',20';
+        $sql = " select us.*,p.Name,p.Ingot,p.RoleID from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID $where order by us.UserID $limit";
+        $data = Yii::$app->db2->createCommand($sql)->queryAll();
+        foreach($data as $k => $v){
+            $roleId = $v['RoleID'];
+            if($roleId){//获取账号的赠送元宝和收入元宝统计
+                $out = YuanbaoRole::find()->where("roleId = '{$roleId}' and added = 0 $ycWhere ")->sum('money');
+                $in = YuanbaoRole::find()->where("roleId = '{$roleId}' and added = 1 $ycWhere")->sum('money');
+                $out = $out?$out:0;
+                $in = $in?$in:0;
+            }else{
+                $out = 0;
+                $in = 0;
+            }
+            $data[$k]['out'] = $out;
+            $data[$k]['in'] = $in;
+        }
+        $sql = "select p.RoleID  from {{%yin_shang_user}} us inner join {{%player}} p on p.UserID = us.UserID $where";
+        $roleData = Yii::$app->db2->createCommand($sql)->queryAll();
+        $roles = [];
+        foreach($roleData as $r => $t){
+            $roles[]= $t['RoleID'];
+        }
+        $roleIds = implode(',',$roles);
+        if($roleIds){
+            //账号总的赠送元宝数
+            $outTotal = YuanbaoRole::find()->where(" roleId in ({$roleIds}) and added = 0 $ycWhere")->sum('money');
+            //账号总的收入元宝数
+            $inTotal = YuanbaoRole::find()->where(" roleId in ({$roleIds}) and added = 1 $ycWhere")->sum('money');
+        }else{
+            $outTotal = 0;
+            $inTotal = 0;
+        }
+        //账号总数
+        $sql = "select us.UserID  from {{%yin_shang_user}} us left join {{%player}} p on p.UserID = us.UserID $where group by us.UserID";
+        $userIdData = Yii::$app->db2->createCommand($sql)->queryAll();
+        $countTotal = count($userIdData);
+        //账号角色总数
+        $roleTotal = count($roles);
+        return $this->render('ys-count',['page'=>$pages,'count'=>$count,'data'=>$data,'inTotal'=>$inTotal?$inTotal:0,'outTotal'=>$outTotal?$outTotal:0,'countTotal'=>$countTotal?$countTotal:0,'roleTotal'=>$roleTotal?$roleTotal:0]);
+    }
+    /**
+     * 商人赠送数据
+     * 数据详情
+     */
+    public function actionYsCountDetail(){
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        $type = Yii::$app->request->get('type',1);//1-赠送 2-接收
+        $roleId = Yii::$app->request->get('roleId','');
+        $where = ' 1= 1 ';
+        $count = 0;
+        if($roleId){//获取账号的赠送元宝和收入元宝统计
+            if($type ==1){
+                $where .= " and roleId = '{$roleId}' and added = 0 and type = 3";
+            }else{
+                $where .= " and roleId = '{$roleId}' and added = 1 and type = 3";
+            }
+            if($beginTime){
+                $begin = strtotime($beginTime);
+                $where .= " and unix_timestamp(dateTime) >= $begin";
+            }
+            if($endTime){
+                $end = strtotime($endTime);
+                $where .= " and unix_timestamp(dateTime) <= $end";
+            }
+            $count = YuanbaoRole::find()->where($where)->count();
+        }else{
+            $where = ' 1 != 1';
+        }
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
+        $data = YuanbaoRole::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('ys-count-detail',['page'=>$page,'count'=>$count,'data'=>$data,'roleId'=>$roleId,'type'=>$type]);
     }
 }
