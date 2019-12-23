@@ -506,12 +506,15 @@ class GmController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         if($_POST){
-            $server = Yii::$app->request->post('server',0);//0-区服
+//            $server = Yii::$app->request->post('server',0);//0-区服
+            $servers = Yii::$app->request->post('serverIds',0);//0-区服
             $beginTime = Yii::$app->request->post('beginTime',0);
             $endTime = Yii::$app->request->post('endTime',0);
             $intervalTime = Yii::$app->request->post('intervalTime',30);
             $content = Yii::$app->request->post('content');
-            $server = $server?$server:0;
+            if(!$servers){
+                $servers = [0];
+            }
             if(!$beginTime){
                 echo "<script>alert('请选择开始时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
@@ -532,25 +535,31 @@ class GmController  extends AdminController
             if(!$content){
                 echo "<script>alert('请填写公告内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-            $model = new Notice();
-            $model->content = $content;
-            $model->serverId = $server;
-            $model->creator = Yii::$app->session->get('adminId');
-            $model->beginTime = $beginTime;
-            $model->endTime = $endTime;
-            $model->type = 2;//1-首页  2-跑马灯
-            $model->createTime = time();
-            $model->intervalTime = $intervalTime;
-            $res = $model->save();
-            if($res){
-                OperationLog::logAdd('添加跑马灯公告并推送服务端',$model->id,5);//5-跑马灯公告
-                //推送服务端
-                $pushContent = ['head'=>['Cmdid'=>4137],'body'=>['Partition'=>intval($server),'BeginTime'=>$begin,'EndTime'=>$end,'RollingIntervalTime'=>intval($intervalTime),'NoticeContent'=>$content]];
-                $return = Methods::GmPushContent($pushContent);//服务端推送
-                //推送成功后记录对应的eventId 便于后续删除
-                $return = json_decode($return,true);
-                $eventId = $return['body']['EventId'];
-                Notice::updateAll(['eventId'=>$eventId],"id = {$model->id}");
+            $count = 0;
+            foreach($servers as $t => $y){
+                $model = new Notice();
+                $model->content = $content;
+                $model->serverId = $y;
+                $model->creator = Yii::$app->session->get('adminId');
+                $model->beginTime = $beginTime;
+                $model->endTime = $endTime;
+                $model->type = 2;//1-首页  2-跑马灯
+                $model->createTime = time();
+                $model->intervalTime = $intervalTime;
+                $res = $model->save();
+                if($res){
+                    $count += 1;
+                    OperationLog::logAdd('添加跑马灯公告并推送服务端',$model->id,5);//5-跑马灯公告
+                    //推送服务端
+                    $pushContent = ['head'=>['Cmdid'=>4137],'body'=>['Partition'=>intval($y),'BeginTime'=>$begin,'EndTime'=>$end,'RollingIntervalTime'=>intval($intervalTime),'NoticeContent'=>$content]];
+                    $return = Methods::GmPushContent($pushContent);//服务端推送
+                    //推送成功后记录对应的eventId 便于后续删除
+                    $return = json_decode($return,true);
+                    $eventId = $return['body']['EventId'];
+                    Notice::updateAll(['eventId'=>$eventId],"id = {$model->id}");
+                }
+            }
+            if($count){
                 echo "<script>alert('操作成功');setTimeout(function(){location.href='roll-notice';},1000)</script>";die;
             }else{
                 echo "<script>alert('添加失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
