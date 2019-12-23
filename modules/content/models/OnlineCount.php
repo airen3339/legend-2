@@ -10,6 +10,6 @@ class OnlineCount extends ActiveRecord
 {
 
     public static  function tableName(){
-        return '{{%online_Count}}';
+        return '{{%online_count}}';
     }
 }

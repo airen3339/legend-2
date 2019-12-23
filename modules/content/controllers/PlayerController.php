@@ -273,5 +273,44 @@ class PlayerController  extends AdminController
         $servers = Server::getServers();
         return $this->render('mail-receive',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
     }
-
+    /**
+     * 等级排行
+     * 前20名
+     */
+    public function actionLevelOrder(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        //等级前20名 等级一样以经验排
+        $player = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->orderBy("Level desc,Exp desc")->limit(20)->asArray()->all();
+        foreach($player as $k => $v){
+            $roleId = $v['RoleID'];
+            $wh = " status = 2 and RoleID = '{$roleId}'";
+            //充值金额
+            $money = ChargeMoney::find()->where($wh)->sum('chargenum');
+            $player[$k]['rechargeMoney'] = $money?$money:0;
+            //更新元宝消耗记录
+            YuanbaoRole::getYuanbaoData();
+        }
+        return $this->render('level-order',['data'=>$player]);
+    }
+    /**
+     * 战力排行
+     * 前20名
+     */
+    public function actionZlOrder(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        //等级前20名 等级一样以经验排
+        $player = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->orderBy("Battle  desc")->limit(20)->asArray()->all();
+        foreach($player as $k => $v){
+            $roleId = $v['RoleID'];
+            $wh = " status = 2 and RoleID = '{$roleId}'";
+            //充值金额
+            $money = ChargeMoney::find()->where($wh)->sum('chargenum');
+            $player[$k]['rechargeMoney'] = $money?$money:0;
+            //更新元宝消耗记录
+            YuanbaoRole::getYuanbaoData();
+        }
+        return $this->render('zl-order',['data'=>$player]);
+    }
 }

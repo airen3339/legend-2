@@ -455,31 +455,36 @@ class OperateController  extends AdminController
             $dateData['date'] = $date;
             $dateData['addNum'] = $addNum;
             foreach($arrDay as $k => $v){
-                if($addNum == 0){
-                    $rate = 0;
+                $endTime = $dateTime + 86399*$v;
+                $time = time();
+                if($endTime > $time){
+                    $rate = '';
                 }else{
-                    $endTime = $dateTime + 86399*$v;
-                    //充值金额
-                    if($ltvId){
-                        if($channel != 99){//选择某个渠道
-
-//                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID and u.PackageFlag = '{$channel}' and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
-                        }else{//所有渠道
-//                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID  and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
-                        }
-
-//                        $moneySum = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
-                        $str = $ltv==1?'loginMoney':'deviceMoney';
-                        $moneySum = LTVMoney::find()->where("ltvId in ($ltvId) and ( unix_timestamp(date) between $dateTime and $endTime )")->asArray()->sum($str);
-                        $moneySum = $moneySum?$moneySum:0;
-                    }else{
-                        $moneySum = 0;
-                    }
-                    //总充值/新增数
-                    if($moneySum ==0){
+                    if($addNum == 0){
                         $rate = 0;
                     }else{
-                        $rate = round($moneySum/$addNum,2);
+                        //充值金额
+                        if($ltvId){
+                            if($channel != 99){//选择某个渠道
+
+//                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID and u.PackageFlag = '{$channel}' and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
+                            }else{//所有渠道
+//                            $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID  and ( unix_timestamp(c.finishTime) between $dateTime and $endTime )  and c.status = 2 and c.roleId in ($objectRoleId)";
+                            }
+
+//                        $moneySum = \Yii::$app->db2->createCommand($sql)->queryOne()['money'];
+                            $str = $ltv==1?'loginMoney':'deviceMoney';
+                            $moneySum = LTVMoney::find()->where("ltvId in ($ltvId) and ( unix_timestamp(date) between $dateTime and $endTime )")->asArray()->sum($str);
+                            $moneySum = $moneySum?$moneySum:0;
+                        }else{
+                            $moneySum = 0;
+                        }
+                        //总充值/新增数
+                        if($moneySum ==0){
+                            $rate = 0;
+                        }else{
+                            $rate = round($moneySum/$addNum,2);
+                        }
                     }
                 }
                 $dateData[$k] = $rate;
