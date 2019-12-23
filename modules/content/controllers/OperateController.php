@@ -12,6 +12,7 @@ use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\LoginData;
 use app\modules\content\models\LTV;
 use app\modules\content\models\LTVMoney;
+use app\modules\content\models\OnlineCount;
 use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
@@ -492,8 +493,9 @@ class OperateController  extends AdminController
     }
     /**
      * 登录在线分布
+     * 日志读取
      */
-    public function actionLoginOnlineList(){
+    public function actionLoginOnlineListOld(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $day = Yii::$app->request->get('day');
@@ -509,6 +511,53 @@ class OperateController  extends AdminController
         $server = $data['serverId'];
         $servers = Server::getServers();
         $data = ['series'=>$data['data'],'day'=>$day,'server'=>$server,'servers'=>$servers];
+        return $this->render('login-online-list',$data);
+    }
+    /**
+     * 登录在线分布
+     * 实时读取
+     */
+    public function actionLoginOnlineList(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $day = Yii::$app->request->get('day');
+        $serverId = Yii::$app->request->get('server');
+        $today = date('Y-m-d');
+        $todayTime = strtotime($today);
+        if(!$day){//获取当前时间
+            $date = $today;
+            $day = $today;
+        }elseif(strtotime($day) >= $todayTime){//大于等于今天
+            $date = $today;
+        }else{
+            $date = $day;
+        }
+        $dateTime = strtotime($date);
+        if($dateTime >= $todayTime){//当前小时数据
+            $time = time();
+            $reduceTime = $time-$dateTime;
+            $number = ceil(($reduceTime/3600));
+        }else{//全天数据
+            $number = 24;
+        }
+        //获取区服
+        if(!$serverId){
+            $serverId = Server::find()->orderBy('game_id asc')->asArray()->one()['game_id'];
+        }
+        $hour = [];
+        $data = [];
+        for($i=0;$i<$number;$i++){
+            $beginTime = $dateTime + $i*3600;
+            $endTime = $beginTime + 3599;
+            $count = OnlineCount::find()->where("WorldID = '{$serverId}' and upTime between $beginTime and $endTime")->orderBy('Count desc')->asArray()->one()['Count'];
+            $count = $count?$count:0;
+            $hour[]= $i+1;
+            $data[]= $count;
+        }
+        $series = implode(',',$data);
+        $hour = implode(',',$hour);
+        $servers = Server::getServers();
+        $data = ['series'=>$series,'day'=>$day,'server'=>$serverId,'servers'=>$servers,'hour'=>$hour];
         return $this->render('login-online-list',$data);
     }
     /**
@@ -747,5 +796,34 @@ class OperateController  extends AdminController
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
         $data = YuanbaoRole::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
         return $this->render('ys-count-detail',['page'=>$page,'count'=>$count,'data'=>$data,'roleId'=>$roleId,'type'=>$type]);
+    }
+    /**
+     * 在线实时人数
+     */
+    public function actionOnlineNumber(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $servers = Server::getServers();
+        $time = Yii::$app->request->get('beginTime');
+        $serverId = Yii::$app->request->get('server');
+        if(!$time){
+            $time = time();
+        }else{
+            $time = strtotime($time);
+        }
+        $data = [];
+        if($serverId){
+            $count = OnlineCount::find()->where("WorldID = {$serverId} and upTime <= $time")->asArray()->orderBy('upTime desc')->one()['Count'];
+            $count = $count?$count:0;
+            $data[]= ['name'=>$serverId.'服','count'=>$count];
+        }else{
+            foreach($servers as $k => $v){
+                $serverId = $v['id'];
+                $count = OnlineCount::find()->where("WorldID = {$serverId} and upTime <= $time")->asArray()->orderBy('upTime desc')->one()['Count'];
+                $count = $count?$count:0;
+                $data[]= ['name'=>$v['name'],'count'=>$count];
+            }
+        }
+        return $this->render('online-number',['data'=>$data,'servers'=>$servers]);
     }
 }
