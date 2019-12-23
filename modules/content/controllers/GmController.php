@@ -569,7 +569,7 @@ class GmController  extends AdminController
             return $this->render('roll-notice',['servers'=>$servers]);
         }
     }
-/**
+    /**
      * 跑马灯公告
      */
     public function actionServerClose(){
@@ -617,5 +617,56 @@ class GmController  extends AdminController
         $relation = SliverMerchant::getSliverMerchantMsg($where,$page);
         return $this->render('silver-merchant',$relation);
     }
-
+    /**
+     * 代码推送
+     * id 4246
+     */
+    public function actionCodePush(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $server = Yii::$app->request->post('server');
+            $info = Yii::$app->request->post('info');
+            if(!$server){
+                echo "<script>alert('请选择区服');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }elseif($server == -99){
+                $server = 0;
+            }
+            if(!$info){
+                echo "<script>alert('请填写内容');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            //记录日志并推送服务端
+            OperationLog::logAdd("推送".$server."服代码命令：$info",$server,7);//7-代码推送
+            $content = ['info'=>$info];
+            Methods::GmFileGet($content,intval($server),6,4246);//4246 推送代码命令
+            echo "<script>alert('推送成功');setTimeout(function(){location.href='code-push';},1000)</script>";die;
+        }else{
+            $servers = Server::getServers();
+            return $this->render('code-push',['servers'=>$servers]);
+        }
+    }
+    /**
+     * 公告查询
+     * 代码推送日志
+     */
+    public function actionCodePushLog(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $serverId = Yii::$app->request->get('server',0);
+        $where = " type = 7 ";//代码推送日志
+        if($serverId){
+            $where .= " and object = $serverId";
+        }
+        $count = OperationLog::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = OperationLog::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $data[$k]['createName'] = Role::find()->where("id = {$v['adminId']}")->asArray()->one()['name'];
+            $data[$k]['createTime'] = date('Y-m-d H:i:s',$v['createTime']);
+            $content = explode('服代码命令：',$v['remark']);
+            $data[$k]['content'] = isset($content[1])?$content[1]:'';
+        }
+        $servers = Server::getServers();
+        return $this->render('code-push-log',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);
+    }
 }
