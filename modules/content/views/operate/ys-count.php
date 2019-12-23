@@ -10,6 +10,18 @@
         <table class="table">
             <tr>
                 <td>
+                    开始日期：
+                </td>
+                <td>
+                    <input class="input-small Wdate" style="width: 145px;" autocomplete="off" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" type="text" size="10" id="beginTime"  name="beginTime" value="<?php echo isset($_GET['beginTime'])?$_GET['beginTime']:''?>"/>
+                </td>
+                <td>
+                    结束日期：
+                </td>
+                <td>
+                    <input class="input-small Wdate" style="width: 145px;" autocomplete="off" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
+                </td>
+                <td>
                     角色账号：
                 </td>
                 <td>
@@ -31,6 +43,12 @@
     <form action="/content/operate/ys-count" method="post">
         <table class="table table-hover">
             <thead>
+                <span><b>账号总数：</b><?php echo $countTotal;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span><b>角色总数：</b><?php echo $roleTotal;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span><b>赠送元宝总数：</b><?php echo $outTotal;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span><b>接收元宝总数：</b><?php echo $inTotal;?></span>
+                <br/>
+                <br/>
             <tr>
                 <th>角色账号</th>
                 <th>角色名</th>
@@ -50,13 +68,13 @@
                     <td >
                         <span ><?php echo $v['out']?></span>
                         <?php if($v['out'] > 0){?>
-                            <a style="float: right; position: relative;right: 10px;" href="/content/operate/ys-count-detail?type=1&roleId=<?php echo $v['RoleID']?>">赠送详情</a>
+                            <a style="float: right; position: relative;right: 10px;" href="/content/operate/ys-count-detail?type=1&roleId=<?php echo $v['RoleID']?>&beginTime=<?php echo isset($_GET['beginTime'])?$_GET['beginTime']:''?>&endTime=<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>">赠送详情</a>
                         <?php }?>
                     </td>
                     <td >
                         <span ><?php echo $v['in']?></span>
                         <?php if($v['in'] > 0){?>
-                            <a style="float: right; position: relative;right: 10px;" href="/content/operate/ys-count-detail?type=2&roleId=<?php echo $v['RoleID']?>">收入详情</a>
+                            <a style="float: right; position: relative;right: 10px;" href="/content/operate/ys-count-detail?type=2&roleId=<?php echo $v['RoleID']?>&beginTime=<?php echo isset($_GET['beginTime'])?$_GET['beginTime']:''?>&endTime=<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>">收入详情</a>
                         <?php }?>
                     </td>
                 </tr>
