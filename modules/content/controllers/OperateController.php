@@ -649,6 +649,9 @@ class OperateController  extends AdminController
         $name = Yii::$app->request->get('name');
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
+        if($userId || $name || $beginTime || $endTime){//有一个搜索存在更新日志
+            YuanbaoRole::getYuanbaoData();
+        }
         $where = "where 1 = 1";
         $ycWhere = " and type = 3 ";
         if($userId){
