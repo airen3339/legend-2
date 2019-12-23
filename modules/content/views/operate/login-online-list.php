@@ -44,6 +44,7 @@
             <tbody>
             <div id="container" style="width: 90%;height: 440px;"></div>
             <input type="hidden" value="<?php echo isset($series)?$series:'';?>" id="linedata"/>
+            <input type="hidden" value="<?php echo isset($hour)?$hour:'';?>" id="hour"/>
             <input type="hidden" value="<?php echo isset($day)?$day:'';?>" id="lineDay"/>
             <input type="hidden" value="<?php echo isset($server)?$server:'';?>" id="lineServer"/>
             </tbody>
@@ -58,6 +59,8 @@
     var day = $('#lineDay').val();
     var server = $('#lineServer').val();
     var arr = ydata.split(',');
+    var hour = $('#hour').val();
+    var hourArr = hour.split(',');
     option = null;
     option = {
         title: {
@@ -84,7 +87,8 @@
             name:'小时',
             type: 'category',
             // boundaryGap: false,
-            data: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+            // data: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+            data: hourArr,
         },
         yAxis: {
             name:'人数',
