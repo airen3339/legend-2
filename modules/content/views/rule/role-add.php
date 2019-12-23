@@ -58,7 +58,7 @@
                 <label for="modulename" class="control-label">目录权限</label>
                 <div class="controls">
                     <select style="width: 222px"
-                            data-options="url:'/content/api/tree?id=<?php echo isset($role['catalogIds']) ? $role['catalogIds'] : ''?>',method:'get',cascadeCheck:false"
+                            data-options="url:'/content/api/tree?rand=<?php echo rand(1,1000000);?>&id=<?php echo isset($role['catalogIds']) ? $role['catalogIds'] : ''?>',method:'get',cascadeCheck:false"
                             multiple class="vice easyui-combotree" id="catalogIds" name="catalogIds[]">
                     </select>
                 </div>
