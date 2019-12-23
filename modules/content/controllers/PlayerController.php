@@ -289,7 +289,7 @@ class PlayerController  extends AdminController
             $money = ChargeMoney::find()->where($wh)->sum('chargenum');
             $player[$k]['rechargeMoney'] = $money?$money:0;
             //更新元宝消耗记录
-            YuanbaoRole::getYuanbaoData();
+//            YuanbaoRole::getYuanbaoData();
         }
         return $this->render('level-order',['data'=>$player]);
     }
@@ -309,7 +309,7 @@ class PlayerController  extends AdminController
             $money = ChargeMoney::find()->where($wh)->sum('chargenum');
             $player[$k]['rechargeMoney'] = $money?$money:0;
             //更新元宝消耗记录
-            YuanbaoRole::getYuanbaoData();
+//            YuanbaoRole::getYuanbaoData();
         }
         return $this->render('zl-order',['data'=>$player]);
     }
