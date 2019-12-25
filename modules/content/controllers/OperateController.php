@@ -849,7 +849,7 @@ class OperateController  extends AdminController
         }
         if($name){
             $roleId = Player::find()->select('group_concat(roleID) as ids')->where("Name = '{$name}'")->asArray()->one()['ids'];
-            if($name){
+            if($roleId){
                 $where .= " and c.roleID in ($roleId)";
             }else{
                 $where .= " and 1 > 2 ";
