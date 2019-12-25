@@ -7,14 +7,14 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\AdminController;
-use app\libs\Methods;
+use app\modules\content\models\ActivityLog;
 use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\CurrencyData;
 use app\modules\content\models\Item;
 use app\modules\content\models\MailReceive;
 use app\modules\content\models\Player;
+use app\modules\content\models\RoleActivity;
 use app\modules\content\models\Server;
-use app\modules\content\models\User;
 use app\modules\content\models\YuanbaoRole;
 use app\modules\pay\models\Recharge;
 use yii\data\Pagination;
@@ -312,5 +312,71 @@ class PlayerController  extends AdminController
 //            YuanbaoRole::getYuanbaoData();
         }
         return $this->render('zl-order',['data'=>$player]);
+    }
+    /**
+     * 用户天中宝藏活动数据统计
+     *
+     */
+    public function actionTzbzCount(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = \Yii::$app->request->get('beginTime');
+        $endTime = \Yii::$app->request->get('endTime');
+        $name = \Yii::$app->request->get('name');
+        $serverId = \Yii::$app->request->get('server');
+        $where = " 1 = 1 ";
+
+        //天和宝藏数据字段
+        $arr = ActivityLog::tzbzReward();
+        $percent = '0%';
+        $hadRole = '';
+        if($name){
+            $roleId = Player::find()->where(" Name = '{$name}'")->asArray()->one()['RoleID'];
+            if($roleId){
+                $hadRole = $roleId;
+                $today = strtotime(date('Y-m-d'));
+                if($beginTime){
+                    $begin = strtotime($beginTime);
+                    $where .= " and unix_timestamp(dateTime) >= $begin";
+                    if($begin > $today){
+                        //统计用户最新的活动数据
+                        YuanbaoRole::updateTzbzData($roleId);
+                    }
+                }
+                if($endTime){
+                    $end = strtotime($endTime);
+                    $where .= " and unix_timestamp(dateTime) <= $end";
+                    if($end > $today){
+                        //统计用户最新的活动数据
+                        YuanbaoRole::updateTzbzData($roleId);
+                    }
+                }else{
+                    //统计用户最新的活动数据
+                    YuanbaoRole::updateTzbzData($roleId);
+                }
+                if($serverId){
+                    $where .= " and serverId = $serverId ";
+                }
+                $where .= " and roleId = '{$roleId}' and type = 1";
+                $total = 0;
+                $number = 0;//经验次数
+                foreach($arr as $k => $v){//统计次数
+                    $count = RoleActivity::find()->where("$where and contentId = {$v['id']}")->count();
+                    $count = $count?$count:0;
+                    if($v['id'] == 444444){
+                        $number = $count;
+                    }
+                    $total += $count;
+                    $arr[$k]['count'] = $count;
+                }
+                if($number && $total){
+                    $percent = (floor(100*($number/$total))/100).'%';
+                }
+            }
+        }
+        $totalArr = ['id'=>'','name'=>'概率','count'=>$percent];
+        $arr[] = $totalArr;
+        $servers = Server::getServers();
+        return $this->render('tzbz-count',['data'=>$arr,'servers'=>$servers,'hadRole'=>$hadRole]);
     }
 }

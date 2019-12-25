@@ -152,4 +152,40 @@ class YuanbaoRole extends ActiveRecord
             return '';
         }
     }
+    /**
+     * 更新当天的用户天中宝藏数据
+     */
+    public static function updateTzbzData($roleId){
+        $date = date('Y-m-d');
+        if(!$roleId){
+            return true;
+        }else{
+            $data = YuanbaoRole::find()->where(" date = '{$date}'")->asArray()->all();//当天有没有更新数据
+            if(!$data){
+                self::getYuanbaoData();
+            }
+            $data = YuanbaoRole::find()->where("type = 14 and roleId = '{$roleId}' and date = '{$date}'")->asArray()->all();//type 14 天和宝藏
+            RoleActivity::deleteAll(" date = '{$date}' and roleId = '{$roleId}' and type = 1");
+            $dataArr = ActivityLog::tzbzReward();
+            foreach($data as $k => $v){
+                $content = $v['remark'];
+                foreach($dataArr as $t => $y){
+                    $target = $y['id'];
+                    if(preg_match("/=($target)[^\d]/",$content)){
+                        $model = new RoleActivity();
+                        $model->roleId = $roleId;
+                        $model->date = $date;
+                        $model->dateTime = $v['dateTime'];
+                        $model->content = $y['name'];
+                        $model->type = 1;
+                        $model->contentId = $y['id'];
+                        $model->serverId = $v['serverId'];
+                        $model->createTime = time();
+                        $model->save();
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }
