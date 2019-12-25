@@ -845,7 +845,7 @@ class OperateController  extends AdminController
         $roleId = Yii::$app->request->get('roleId');
         $where = " 1=1 ";
         if($serverId){
-            $where .= " and u.WorldID = '{$serverId}'";
+            $where .= " and c.WorldID = '{$serverId}'";
         }
         if($name){
             $roleId = Player::find()->select('group_concat(roleID) as ids')->where("Name = '{$name}'")->asArray()->one()['ids'];
