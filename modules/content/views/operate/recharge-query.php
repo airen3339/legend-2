@@ -36,16 +36,14 @@
                     </select>
                 </td>
                 <td>
-                    角色名：
+                    充值类型：
                 </td>
                 <td>
-                    <input  style="height: 20px;" type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
-                </td>
-                <td>
-                    RoleID：
-                </td>
-                <td>
-                    <input style="height: 20px" type="text" size="10" id="roleId"  name="roleId" value="<?php echo isset($_GET['roleId'])?$_GET['roleId']:''?>"/>
+                    <select name="payType">
+                        <option value="0">请选择</option>
+                        <option value='1' <?php if(isset($_GET['payType']) && $_GET['payType'] == 1) echo 'selected';?>>支付宝</option>
+                        <option value='2 <?php if(isset($_GET['payType']) && $_GET['payType'] == 2) echo 'selected';?>'>微信</option>
+                    </select>
                 </td>
                 <td>
                     <button class="btn btn-primary" type="submit">查询</button>

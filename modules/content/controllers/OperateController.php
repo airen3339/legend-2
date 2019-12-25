@@ -17,6 +17,7 @@ use app\modules\content\models\Player;
 use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
+use app\modules\content\models\Recharge;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SliverMerchant;
@@ -841,22 +842,13 @@ class OperateController  extends AdminController
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
         $serverId = Yii::$app->request->get('server');
-        $name = Yii::$app->request->get('name');
-        $roleId = Yii::$app->request->get('roleId');
-        $where = " 1=1 ";
+        $payType = Yii::$app->request->get('payType',0);
+        $where = " status = 1 ";
         if($serverId){
-            $where .= " and c.WorldID = '{$serverId}'";
+            $where .= " and server_id = '{$serverId}'";
         }
-        if($name){
-            $roleId = Player::find()->select('group_concat(roleID) as ids')->where("Name = '{$name}'")->asArray()->one()['ids'];
-            if($roleId){
-                $where .= " and c.roleID in ($roleId)";
-            }else{
-                $where .= " and 1 > 2 ";
-            }
-        }
-        if($roleId){
-            $where .= " and c.roleID = '{$roleId}'";
+        if($payType){
+            $where .= " and payType = $payType";
         }
         if($beginTime && $endTime){
             $month_begin = $beginTime;
@@ -876,10 +868,11 @@ class OperateController  extends AdminController
             $dateTime = $monthBegin + 86400*$i;
             $date = date('Y-m-d',$dateTime);
             $end = $dateTime + 86399;
+            $between = " and  createTime between $dateTime and $end ";
             //充值次数
-            $rechargeCount = ChargeMoney::getTodayChargeCount($dateTime,$end,$where);
+            $rechargeCount = Recharge::find()->where("$where $between")->count();
             //充值金额
-            $recharge = ChargeMoney::getTodayChargeMoney($dateTime,$end,$where);
+            $recharge = Recharge::find()->where("$where $between")->sum('money');
             $totalMoney += $recharge;
             $totalCount += $rechargeCount;
             $data[] = ['date'=>$date,'count'=>$rechargeCount,'recharge'=>$recharge];
