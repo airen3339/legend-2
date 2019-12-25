@@ -870,6 +870,8 @@ class OperateController  extends AdminController
         $monthBegin = strtotime($month_begin);
         $days = ($monthNow-$monthBegin)/86400;
         $data = [];
+        $totalMoney = 0;
+        $totalCount = 0;
         for($i=$days;$i>=0;$i--){
             $dateTime = $monthBegin + 86400*$i;
             $date = date('Y-m-d',$dateTime);
@@ -878,8 +880,10 @@ class OperateController  extends AdminController
             $rechargeCount = ChargeMoney::getTodayChargeCount($dateTime,$end,$where);
             //充值金额
             $recharge = ChargeMoney::getTodayChargeMoney($dateTime,$end,$where);
+            $totalMoney += $recharge;
+            $totalCount += $rechargeCount;
             $data[] = ['date'=>$date,'count'=>$rechargeCount,'recharge'=>$recharge];
         }
-        return $this->render('recharge-query',['data'=>$data,'servers'=>$servers]);
+        return $this->render('recharge-query',['data'=>$data,'servers'=>$servers,'totalMoney'=>$totalMoney,'totalCount'=>$totalCount]);
     }
 }

@@ -58,6 +58,11 @@
             </tr>
             </thead>
             <tbody>
+            <tr  class="text-item tdPad">
+                <td ><span >数据合计</span></td>
+                <td ><span ><?php echo $totalCount;?></span></td>
+                <td ><span ><?php echo $totalMoney;?></span></td>
+            </tr>
             <?php
             foreach($data as $kss => $v) {
                 ?>
