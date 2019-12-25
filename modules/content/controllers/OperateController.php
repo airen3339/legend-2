@@ -863,22 +863,17 @@ class OperateController  extends AdminController
         $days = ($monthNow-$monthBegin)/86400;
         $data = [];
         $totalMoney = 0;
-        $totalCount = 0;
         for($i=$days;$i>=0;$i--){
             $dateTime = $monthBegin + 86400*$i;
             $date = date('Y-m-d',$dateTime);
             $end = $dateTime + 86399;
             $between = " and  createTime between $dateTime and $end ";
-            //充值次数
-            $rechargeCount = Recharge::find()->where("$where $between")->count();
             //充值金额
             $recharge = Recharge::find()->where("$where $between")->sum('money');
-            $rechargeCount = $rechargeCount?$rechargeCount:0;
             $recharge = $recharge?$recharge:0;
             $totalMoney += $recharge;
-            $totalCount += $rechargeCount;
-            $data[] = ['date'=>$date,'count'=>$rechargeCount,'recharge'=>$recharge];
+            $data[] = ['date'=>$date,'recharge'=>$recharge];
         }
-        return $this->render('recharge-query',['data'=>$data,'servers'=>$servers,'totalMoney'=>$totalMoney,'totalCount'=>$totalCount]);
+        return $this->render('recharge-query',['data'=>$data,'servers'=>$servers,'totalMoney'=>$totalMoney]);
     }
 }

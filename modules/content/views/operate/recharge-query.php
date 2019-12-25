@@ -42,7 +42,7 @@
                     <select name="payType">
                         <option value="0">请选择</option>
                         <option value='1' <?php if(isset($_GET['payType']) && $_GET['payType'] == 1) echo 'selected';?>>支付宝</option>
-                        <option value='2' <?php if(isset($_GET['payType']) && $_GET['payType'] == 2) echo 'selected';?>'>微信</option>
+                        <option value='2' <?php if(isset($_GET['payType']) && $_GET['payType'] == 2) echo 'selected';?>>微信</option>
                     </select>
                 </td>
                 <td>
@@ -57,14 +57,12 @@
             <thead>
             <tr>
                 <th>日期</th>
-                <th >充值次数</th>
                 <th >充值金额</th>
             </tr>
             </thead>
             <tbody>
             <tr  class="text-item tdPad">
                 <td ><span >数据合计</span></td>
-                <td ><span ><?php echo $totalCount;?></span></td>
                 <td ><span ><?php echo $totalMoney;?></span></td>
             </tr>
             <?php
@@ -72,7 +70,6 @@
                 ?>
                 <tr  class="text-item tdPad">
                     <td ><span ><?php echo $v['date']?></span></td>
-                    <td ><span ><?php echo $v['count']?></span></td>
                     <td ><span ><?php echo $v['recharge']?></span></td>
                 </tr>
                 <?php
