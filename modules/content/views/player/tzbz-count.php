@@ -53,7 +53,7 @@
             <thead>
             <tr>
                 <th>内容</th>
-                <th>次数/比例</th>
+                <th>次数</th>
             </tr>
             </thead>
             <tbody>

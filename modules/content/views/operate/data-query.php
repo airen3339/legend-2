@@ -62,9 +62,9 @@
             <tr>
                 <th>日期</th>
                 <th>总注册数</th>
-                <th>新增设备</th>
+<!--                <th>新增设备</th>-->
                 <th>新增账号登录</th>
-                <th >设备DAU</th>
+<!--                <th >设备DAU</th>-->
                 <th >账号DAU</th>
                 <th >账号老用户</th>
                 <th >付费率</th>
@@ -84,9 +84,9 @@
                 <tr  class="text-item tdPad">
                     <td ><span ><?php echo $v['date']?></span></td>
                     <td ><span><?php echo $v['newRegister']?></span></td>
-                    <td ><span ><?php echo $v['newDevice']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['newDevice']?><!--</span></td>-->
                     <td ><span ><?php echo $v['newLogin']?></span></td>
-                    <td ><span ><?php echo $v['deviceDau']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['deviceDau']?><!--</span></td>-->
                     <td ><span ><?php echo $v['accountDau']?></span></td>
                     <td ><span ><?php echo $v['oldUser']?></span></td>
                     <td ><span ><?php echo $v['payRate']?></span></td>

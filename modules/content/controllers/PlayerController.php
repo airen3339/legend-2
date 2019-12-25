@@ -360,24 +360,25 @@ class PlayerController  extends AdminController
                 }
                 $where .= " and roleId = '{$roleId}' and type = 1";
                 $total = 0;
-                $number = 0;//经验次数
+//                $number = 0;//经验次数
                 foreach($arr as $k => $v){//统计次数
                     $count = RoleActivity::find()->where("$where and contentId = {$v['id']}")->count();
                     $count = $count?$count:0;
-                    if($v['id'] == 444444){
-                        $number = $count;
-                    }
+//                    if($v['id'] == 444444){
+//                        $number = $count;
+//                    }
                     $total += $count;
                     $arr[$k]['count'] = $count;
                 }
-                if($number && $total){
-                    $percent = (floor(100*($number/$total))/100).'%';
-                }
+//                if($number && $total){
+//                    $percent = (floor(100*($number/$total))/100).'%';
+//                }
             }
         }
-        $totalArr = ['id'=>'','name'=>'经验次数概率','count'=>$percent];
-        $arr[] = $totalArr;
+//        $totalArr = ['id'=>'','name'=>'经验次数概率','count'=>$percent];
+//        $arr[] = $totalArr;
         $servers = Server::getServers();
         return $this->render('tzbz-count',['data'=>$arr,'servers'=>$servers,'hadRole'=>$hadRole]);
     }
+    
 }

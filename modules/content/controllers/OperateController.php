@@ -102,14 +102,14 @@ class OperateController  extends AdminController
             $newRegister = User::find()->where($where." and unix_timestamp(CreateDate) between $dateTime and $end")->count();
             $sumRegister += $newRegister;
             //当日新增设备数
-            $newDevice =  User::getTodayRegisterLoginDevice($dateTime,$end,$joinWhere);
-            $sumDevice += $newDevice;
+//            $newDevice =  User::getTodayRegisterLoginDevice($dateTime,$end,$joinWhere);
+//            $sumDevice += $newDevice;
             //新增账号登录 当日注册账号中的登录数
             $newLogin = User::getTodayRegisterLogin($dateTime,$end,$joinWhere);
             $sumLogin += $newLogin;
             //设备DAU 当日总设备登录数
-            $deviceDau = User::getTodayLoginDevice($dateTime,$end,$joinWhere);
-            $sumDeviceDau += $deviceDau;
+//            $deviceDau = User::getTodayLoginDevice($dateTime,$end,$joinWhere);
+//            $sumDeviceDau += $deviceDau;
             //账号DAU 当日总账号登录数
             $accountDau = Player::getTodayLogin($dateTime,$end,$joinWhere);
             $sumAccountDau += $accountDau;
@@ -153,7 +153,7 @@ class OperateController  extends AdminController
             //新增充值金额
             $newRechargeMoney = $rechargeData['rechargeMoney'];
             $sumNewRechMoney += $newRechargeMoney;
-            $data[] = ['date'=>$date,'newRegister'=>$newRegister,'newDevice'=>$newDevice,'newLogin'=>$newLogin,'deviceDau'=>$deviceDau,'accountDau'=>$accountDau,'oldUser'=>$oldUser,'payRate'=>$payRate,'rechargeUser'=>$rechargeUser,'rechargeCount'=>$rechargeCount,'rechargeMoney'=>$rechargeMoney,'arpu'=>round($arpu,2),'arppu'=>round($arppu,2),'newRechargeUser'=>$newRechargeUser,'newRechargeMoney'=>$newRechargeMoney];
+            $data[] = ['date'=>$date,'newRegister'=>$newRegister,'newLogin'=>$newLogin,'accountDau'=>$accountDau,'oldUser'=>$oldUser,'payRate'=>$payRate,'rechargeUser'=>$rechargeUser,'rechargeCount'=>$rechargeCount,'rechargeMoney'=>$rechargeMoney,'arpu'=>round($arpu,2),'arppu'=>round($arppu,2),'newRechargeUser'=>$newRechargeUser,'newRechargeMoney'=>$newRechargeMoney];
         }
 //        $count = $endDays-$first;
         $count = $days;
