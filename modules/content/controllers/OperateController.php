@@ -873,6 +873,8 @@ class OperateController  extends AdminController
             $rechargeCount = Recharge::find()->where("$where $between")->count();
             //充值金额
             $recharge = Recharge::find()->where("$where $between")->sum('money');
+            $rechargeCount = $rechargeCount?$rechargeCount:0;
+            $recharge = $recharge?$recharge:0;
             $totalMoney += $recharge;
             $totalCount += $rechargeCount;
             $data[] = ['date'=>$date,'count'=>$rechargeCount,'recharge'=>$recharge];
