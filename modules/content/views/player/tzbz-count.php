@@ -52,23 +52,23 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <?php foreach($data as $k => $v){?>
-                    <th><?php echo $v['name'];?></th>
-                <?php }?>
+                <th>内容</th>
+                <th>次数/比例</th>
             </tr>
             </thead>
             <tbody>
-            <tr  class="text-item tdBorder">
-                <?php
-                if(isset($hadRole) && $hadRole){
-                    foreach($data as $s => $p) {
-                        ?>
-                        <td><span><?php echo $p['count'] ?></span></td>
-                        <?php
-                    }
-                }
-                ?>
+            <?php
+            if(isset($hadRole) && $hadRole){
+                foreach($data as $s => $p) {
+            ?>
+            <tr  class="tdBorder">
+                <td><span><?php echo $p['name'] ?></span></td>
+                <td><span><?php echo $p['count'] ?></span></td>
             </tr>
+                <?php
+            }
+                }
+            ?>
             </tbody>
         </table>
     </form>

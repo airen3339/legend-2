@@ -332,6 +332,7 @@ class PlayerController  extends AdminController
         $hadRole = '';
         if($name){
             $roleId = Player::find()->where(" Name = '{$name}'")->asArray()->one()['RoleID'];
+//            $roleId = '1539274448577280';
             if($roleId){
                 $hadRole = $roleId;
                 $today = strtotime(date('Y-m-d'));
