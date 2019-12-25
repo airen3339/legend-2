@@ -831,4 +831,55 @@ class OperateController  extends AdminController
         }
         return $this->render('online-number',['data'=>$data,'servers'=>$servers]);
     }
+    /**
+     * 充值查询
+     */
+    public function actionRechargeQuery(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $servers = Server::getServers();
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        $serverId = Yii::$app->request->get('server');
+        $name = Yii::$app->request->get('name');
+        $roleId = Yii::$app->request->get('roleId');
+        $where = " 1=1 ";
+        if($serverId){
+            $where .= " and u.WorldID = '{$serverId}'";
+        }
+        if($name){
+            $roleId = Player::find()->select('group_concat(roleID) as ids')->where("Name = '{$name}'")->asArray()->one()['ids'];
+            if($name){
+                $where .= " and c.roleID in ($roleId)";
+            }else{
+                $where .= " and 1 > 2 ";
+            }
+        }
+        if($roleId){
+            $where .= " and c.roleID = '{$roleId}'";
+        }
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+        }else{
+            $month_begin = date('Y-m-01');
+            $month_now = date("Y-m-d");
+        }
+        //计算时期天数
+        $monthNow = strtotime($month_now);
+        $monthBegin = strtotime($month_begin);
+        $days = ($monthNow-$monthBegin)/86400;
+        $data = [];
+        for($i=$days;$i>=0;$i--){
+            $dateTime = $monthBegin + 86400*$i;
+            $date = date('Y-m-d',$dateTime);
+            $end = $dateTime + 86399;
+            //充值次数
+            $rechargeCount = ChargeMoney::getTodayChargeCount($dateTime,$end,$where);
+            //充值金额
+            $recharge = ChargeMoney::getTodayChargeMoney($dateTime,$end,$where);
+            $data[] = ['date'=>$date,'count'=>$rechargeCount,'recharge'=>$recharge];
+        }
+        return $this->render('recharge-query',['data'=>$data,'servers'=>$servers]);
+    }
 }

@@ -105,7 +105,7 @@ class ChargeMoney extends ActiveRecord
     public static function getTodayChargeMoney($dateTime,$end,$where){
         $sql = "select sum(c.chargenum) as money from chargemoney c inner join player p on p.RoleID = c.roleID inner join `user` u on u.UserID = p.UserID where $where and c.status = 2 and  unix_timestamp(c.finishTime) between $dateTime and $end";
         $data = \Yii::$app->db2->createCommand($sql)->queryOne();
-        $total = $data['money'];
+        $total = $data['money']?$data['money']:0;
         return $total;
     }
 }
