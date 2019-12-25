@@ -374,7 +374,7 @@ class PlayerController  extends AdminController
                 }
             }
         }
-        $totalArr = ['id'=>'','name'=>'概率','count'=>$percent];
+        $totalArr = ['id'=>'','name'=>'经验次数概率','count'=>$percent];
         $arr[] = $totalArr;
         $servers = Server::getServers();
         return $this->render('tzbz-count',['data'=>$arr,'servers'=>$servers,'hadRole'=>$hadRole]);
