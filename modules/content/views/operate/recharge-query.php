@@ -42,7 +42,7 @@
                     <select name="payType">
                         <option value="0">请选择</option>
                         <option value='1' <?php if(isset($_GET['payType']) && $_GET['payType'] == 1) echo 'selected';?>>支付宝</option>
-                        <option value='2 <?php if(isset($_GET['payType']) && $_GET['payType'] == 2) echo 'selected';?>'>微信</option>
+                        <option value='2' <?php if(isset($_GET['payType']) && $_GET['payType'] == 2) echo 'selected';?>'>微信</option>
                     </select>
                 </td>
                 <td>
