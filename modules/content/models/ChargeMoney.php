@@ -64,10 +64,11 @@ class ChargeMoney extends ActiveRecord
         $total = count($data);
         $pages = new Pagination(['totalCount'=>$total,'pageSize'=>20]);
         $limit = " limit ".($pageSize*($page-1)).",$pageSize";
-        $sql .= $limit;
+        $sql = "select p.RoleID,p.Name,p.LastLogin,p.Ingot as currentYB,u.PackageFlag,sum(chargenum) as depositMoney from chargemoney c inner join player p on p.RoleID = c.roleID inner join  `user` u on u.UserID = p.UserID where $where and status = 2  group by c.roleID order by depositMoney desc ".$limit;
         $data = \Yii::$app->db2->createCommand($sql)->queryAll();
         foreach($data as $k=> $v){
-            $depositMoney = ChargeMoney::find()->where(" status = 2 and roleID = '{$v['RoleID']}'")->sum('chargenum');//充值金额
+//            $depositMoney = ChargeMoney::find()->where(" status = 2 and roleID = '{$v['RoleID']}'")->sum('chargenum');//充值金额
+            $depositMoney = $v['depositMoney'];//充值金额
             if($depositMoney){
                 $lastRechTime = ChargeMoney::find()->where("status = 2 and roleID = '{$v['RoleID']}'")->orderBy('finishTime desc')->one()['finishTime'];
             }else{

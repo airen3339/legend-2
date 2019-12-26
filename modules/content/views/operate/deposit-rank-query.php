@@ -46,7 +46,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>平台</th>
+<!--                <th>平台</th>-->
                 <th>昵称</th>
                 <th>充值总额</th>
                 <th>当前剩余元宝数量</th>
@@ -59,7 +59,7 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item tdBorder">
-                    <td ><span ><?php echo $v['PackageFlag']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['PackageFlag']?><!--</span></td>-->
                     <td ><span ><?php echo $v['Name']?></span></td>
                     <td ><span><?php echo $v['depositMoney']?></span></td>
                     <td ><span ><?php echo $v['currentYB']?></span></td>
