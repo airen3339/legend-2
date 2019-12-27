@@ -764,7 +764,33 @@ class GmController  extends AdminController
         return $this->render('merchant-order',['data'=>$data,'count'=>$total,'page'=>$page,'servers'=>$servers]);
 
     }
-
+    /**
+     * 商人排名修改
+     */
+    public function actionMerchantOrderAdd(){
+        if($_POST){
+            $roleId = Yii::$app->request->post('roleId');
+            $rank = Yii::$app->request->post('rank',0);
+            $serverId = Yii::$app->request->post('serverId','');
+            if(!$roleId){
+                echo "<script>alert('角色id不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $res = YinShang::updateAll(['Ingot'=>$rank,'WorldID'=>$serverId],"RoleID = '{$roleId}'");
+            if($res){
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='merchant-order';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $roleId = Yii::$app->request->get('roleId');
+            $data = YinShang::find()->where("RoleID = '{$roleId}'")->asArray()->one();
+            $player = Player::find()->where("RoleID = '{$roleId}'")->asArray()->one();
+            $data['userId'] = $player['UserID'];
+            $data['name'] = $player['Name'];
+            $servers = Server::getServers();
+            return $this->render('merchant-order-add',['data'=>$data,'servers'=>$servers]);
+        }
+    }
     /**
      * 禁言解封
      */
@@ -823,11 +849,16 @@ class GmController  extends AdminController
      */
     public function actionForbiddenAdd(){
         if($_POST){
-            $userId = Yii::$app->request->post('userId');
+            $roleMsg = Yii::$app->request->post('userId');
             $type = Yii::$app->request->post('type',0);// 1-禁言 2-封号 3-禁言解封 4-封号解封
             $day = Yii::$app->request->post('day',0);//禁言封号天数
-            if(!$userId){
-                echo "<script>alert('请填写游戏账号');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            if(!$roleMsg){
+                echo "<script>alert('请填写角色信息');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                $userId = Player::find()->where("Name = '{$roleMsg}' or RoleID = '{$roleMsg}' or UserID = '{$roleMsg}'")->asArray()->one()['UserID'];
+                if(!$userId){
+                    echo "<script>alert('没有该账号');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
             }
             if(!$type){
                 echo "<script>alert('请选择操作类型');setTimeout(function(){history.go(-1);},1000)</script>";die;

@@ -5,7 +5,7 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
-        <li class="active">商人排名</li>
+        <li class="active">银商信息编辑</li>
     </ul>
     <form action="/content/gm/silver-merchant-add" method="post" class="form-horizontal" >
         <fieldset>

@@ -7,9 +7,10 @@
     <form action="/content/gm/forbidden-add" method="post" class="form-horizontal" onsubmit="javascript:if(confirm('确定进行该操作吗？')){return true;}else{return false;}">
         <fieldset>
             <div class="control-group">
-                <label for="modulename" class="control-label">游戏账号</label>
+                <label for="modulename" class="control-label">角色信息</label>
                 <div class="controls">
                     <input type="text"  name="userId" value=""  >
+                    <span class="help-block">请输入游戏账号或角色名或角色id</span>
                 </div>
             </div>
             <div class="control-group">

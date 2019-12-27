@@ -5,10 +5,8 @@
         <li class="active">禁言封号</li>
     </ul>
     <ul class="nav">
-        <li class="dropdown pull-right">
-            <a class="dropdown-toggle"
-               href="/content/gm/forbidden-add">添加</a><br/>
-        </li>
+
+        <a class="btn btn-primary" style="width: 58px;" href="/content/gm/forbidden-add">禁言封号</a><br/>
     </ul>
     <form action="/content/gm/forbidden" method="get" class="form-horizontal">
         <table class="table">

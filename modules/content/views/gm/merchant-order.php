@@ -53,10 +53,10 @@
         <table class="table table-hover ">
             <thead>
             <tr>
-                <th>游戏名</th>
                 <th>账号</th>
+                <th>角色名</th>
                 <th>角色ID</th>
-                <th>排名</th>
+                <th>排名值</th>
                 <th>区服</th>
                 <th >操作</th>
             </tr>
@@ -69,11 +69,10 @@
                     <td ><span><?php echo $v['name']?></span></td>
                     <td ><span><?php echo $v['userId']?></span></td>
                     <td ><span><?php echo $v['RoleID']?></span></td>
-                    <td><span><input type='text' value='<?php echo $v['Ingot']?>' id="rank<?php echo $kss;?>" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;</span></td>
-                    <td><span><input type='text' value='<?php echo $v['WorldID']?>' id="ser<?php echo $kss;?>" onkeyup="value = value.replace(/[^0-9]/g,'')" />&nbsp;</span></td>
+                    <td ><span><?php echo $v['Ingot']?></span></td>
+                    <td ><span><?php echo $v['WorldID']?></span></td>
                     <td  class="notSLH" style="width: 130px;">
-                        <input type="hidden" id="role<?php echo $kss;?>" value="<?php echo $v['RoleID']?>" />
-                        <a href='#'  class='btn' onclick='saveYinShang(<?php echo $kss;?>)' >保存</a>
+                        <a href='/content/gm/merchant-order-add?roleId=<?php echo $v['RoleID']?>'  class='btn'  >修改</a>
                     </td>
                 </tr>
                 <?php
@@ -96,23 +95,3 @@
         ])?>
     </div>
 </div>
-<script>
-
-    function saveYinShang(site){
-        var ingotStr = '#rank'+site;
-        var serverStr = '#ser'+site;
-        var roleStr = '#role'+site;
-        var roleId = $(roleStr).val();
-        console.log(roleStr,roleId);
-        if(confirm('确定保存改商人信息？')){
-            var ingot = $(ingotStr).val();
-            var worldId = $(serverStr).val();
-            $.post('/content/api/merchant-order',{roleId:roleId,ingot:ingot,worldId:worldId},function(e){
-                alert(e.message);
-                // if(e.code !=1){//去掉添加的联系信息
-                // }
-                window.location.reload();
-            },'json')
-        }
-    }
-</script>
