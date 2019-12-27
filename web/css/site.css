@@ -163,6 +163,9 @@ a.desc:after {
 .tdSpan td span {
     height: 3.8em !important;
 }
+.tdSpan1 td span {
+    height: 1.8em !important;
+}
 .nav-child-new{
     position: absolute;
     width: 133px;

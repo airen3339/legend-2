@@ -16,6 +16,7 @@ use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SliverMerchant;
+use app\modules\content\models\YinShang;
 use Yii;
 use yii\data\Pagination;
 
@@ -514,6 +515,8 @@ class GmController  extends AdminController
             $content = Yii::$app->request->post('content');
             if(!$servers){
                 $servers = [0];
+            }elseif($servers[0] ==0){
+                $servers = [0];
             }
             if(!$beginTime){
                 echo "<script>alert('请选择开始时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
@@ -618,6 +621,46 @@ class GmController  extends AdminController
         return $this->render('silver-merchant',$relation);
     }
     /**
+     * 银商数据
+     * 商人数据编辑修改
+     */
+    public function actionSilverMerchantAdd(){
+        if($_POST){
+            $userId = Yii::$app->request->post('userId');
+            $contact = Yii::$app->request->post('contact');
+            $servers = Yii::$app->request->post('serverIds');
+            if(!$userId){
+                echo "<script>alert('商人不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if($servers){
+                if($servers[0] == 0){//全服
+                    $serverIds = Server::find()->select("group_concat(game_id) as ids")->asArray()->one()['ids'];
+                }else{
+                    $serverIds = implode($servers);
+                }
+            }else{
+                $serverIds = '';
+            }
+            //通知服务端
+            $content = ['UserID'=>$userId,'contact'=>$contact,'enterID'=>$serverIds];
+            $host = $_SERVER['HTTP_HOST'];
+            if($host == 'www.6p39k.cn' || $host == '6p39k.cn'){
+                $serverId = 1;
+            }else{
+                $serverId = 903;
+            }
+            Methods::GmFileGet($content,$serverId,6,4244);//4244 添加银商联系方式
+        }else{
+            $userId = Yii::$app->request->get('userId');
+            if($userId){
+                $data = SliverMerchant::find()->where(" UserID = '{$userId}'")->asArray()->one();
+            }else{
+                $data = [];
+            }
+            return $this->render('silver-merchant-add',['data'=>$data]);
+        }
+    }
+    /**
      * 代码推送
      * id 4246
      */
@@ -668,5 +711,55 @@ class GmController  extends AdminController
         }
         $servers = Server::getServers();
         return $this->render('code-push-log',['data'=>$data,'count'=>$count,'page'=>$page,'servers'=>$servers]);
+    }
+    /**
+     * 商人排名
+     */
+    public function actionMerchantOrder(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $roleId = Yii::$app->request->get('roleId');
+        $userId = Yii::$app->request->get('userId');
+        $name = Yii::$app->request->get('name');
+        $serverId = Yii::$app->request->get('server');
+        $where = " 1 = 1" ;
+        if($roleId){
+            $where .= " and RoleID = '{$roleId}'";
+        }
+        if($name){//游戏名
+            $nameRoleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
+            if($nameRoleId){
+                $where .= " and RoleID = '{$nameRoleId}'";
+            }else{
+                $where .= " and 1 > 2 ";
+            }
+        }
+        if($userId){//账号
+            $userIds = Player::find()->where("UserID = '{$userId}'")->asArray()->all();
+            $roleIds = "";
+            foreach($userIds as $k => $v){
+                $roleIds .= "'".$v['RoleID']."',";
+            }
+            if($roleIds){
+                $roleIds = trim($roleIds,',');
+                $where .= " and roleID in ($roleIds)";
+            }else{
+                $where .= " and 1 > 2";
+            }
+        }
+        if($serverId){
+            $where .= " and WorldID = $serverId";
+        }
+        $total = YinShang::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$total]);
+        $data = YinShang::find()->where($where)->offset($page->offset)->limit($page->limit)->asArray()->orderBy('Ingot desc')->all();
+        foreach($data as $k => $v){
+            $role = Player::find()->where("RoleID = '{$v['RoleID']}'")->asArray()->one();
+            $data[$k]['userId'] = $role['UserID'];
+            $data[$k]['name'] = $role['Name'];
+        }
+        $servers = Server::getServers();
+        return $this->render('merchant-order',['data'=>$data,'count'=>$total,'page'=>$page,'servers'=>$servers]);
+
     }
 }

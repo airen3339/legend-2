@@ -17,6 +17,7 @@ use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
 use app\modules\content\models\Server;
+use app\modules\content\models\YinShang;
 use Hyperbolaa\Wechatpay\Facades\Jsapi;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -444,6 +445,23 @@ class ApiController extends  Controller
             Methods::jsonData(0,'id不存在');
         }
         $res = GameError::updateAll(['describe'=>$describe]," id = $id");
+        if($res){
+            Methods::jsonData(1,'保存成功');
+        }else{
+            Methods::jsonData(0,'保存失败');
+        }
+    }
+    /**
+     * 商人排序
+     */
+    public function actionMerchantOrder(){
+        $roleId = Yii::$app->request->post('roleId');
+        $ingot = Yii::$app->request->post('ingot');
+        $worldId = Yii::$app->request->post('worldId');
+        if(!$roleId){
+            Methods::jsonData(0,'角色id不存在');
+        }
+        $res = YinShang::updateAll(['Ingot'=>$ingot,'WorldID'=>$worldId],"RoleID = '{$roleId}'");
         if($res){
             Methods::jsonData(1,'保存成功');
         }else{

@@ -29,15 +29,21 @@
             <tr>
                 <th>角色账号</th>
                 <th >联系方式</th>
+                <th >可进区服</th>
+                <th >操作</th>
             </tr>
             </thead>
             <tbody>
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr class="tdSpan tdBorder">
+                <tr class="tdSpan1 tdBorder">
                     <td ><span><?php echo $v['UserID']?></span></td>
-                    <td><span><input type='text' value='<?php echo $v['contact']?>' data-userId="<?php echo $v['UserID']?>" />&nbsp;<a href='#' class='btn' onclick='addContact(this)' >添加</a></span></td>
+                    <td><span><?php echo $v['contact']?></span></td>
+                    <td><span><?php echo $v['enterWorldID']?></span></td>
+                    <td  class="notSLH" style="width: 130px;">
+                        &nbsp;&nbsp;<a href='/content/gm/silver-merchant-add?userId=<?php echo $v['UserID'];?>'  class='btn'>修改</a>
+                    </td>
                 </tr>
                 <?php
             }
@@ -59,22 +65,3 @@
         ])?>
     </div>
 </div>
-<script>
-
-    function addContact(_this){
-        if(confirm('确定添加该联系方式？')){
-            var val = $(_this).siblings("input").val();
-            var userId = $(_this).siblings("input").attr('data-userId');
-            if(val){
-                $.post('/content/api/add-contact',{userId:userId,contact:val},function(e){
-                    alert(e.message);
-                    if(e.code !=1){//去掉添加的联系信息
-                        $(_this).siblings("input").val('');
-                    }
-                },'json')
-            }else{
-                alert('请输入对应的联系方式');return false;
-            }
-        }
-    }
-</script>
