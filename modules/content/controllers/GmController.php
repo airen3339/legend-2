@@ -909,7 +909,10 @@ class GmController  extends AdminController
                     $OnlineTime = 0;
                     $content['OnlineTime'] = $OnlineTime;
                 }
-                Methods::GmFileGet($content,1,6,4247);//4247 禁言封号
+                $servers = Server::getServers();
+                foreach($servers as $k => $v){
+                    Methods::GmFileGet($content,1,$v['id'],4247);//4247 禁言封号
+                }
                 echo "<script>alert('操作成功');setTimeout(function(){location.href='forbidden';},1000)</script>";die;
             }else{
                 echo "<script>alert('操作成功');setTimeout(function(){history.go(-1);},1000)</script>";die;
