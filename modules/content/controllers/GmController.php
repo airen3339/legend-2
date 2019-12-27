@@ -650,6 +650,7 @@ class GmController  extends AdminController
                 $serverId = 903;
             }
             Methods::GmFileGet($content,$serverId,6,4244);//4244 添加银商联系方式
+            echo "<script>alert('保存成功');setTimeout(function(){location.href='silver-merchant';},1000)</script>";die;
         }else{
             $userId = Yii::$app->request->get('userId');
             if($userId){
