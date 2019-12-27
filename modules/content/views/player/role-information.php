@@ -10,6 +10,12 @@
         <table class="table">
             <tr>
                 <td>
+                    账号：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="userId"  name="userId" value="<?php echo isset($_GET['userId'])?$_GET['userId']:''?>"/>
+                </td>
+                <td>
                     角色名：
                 </td>
                 <td>

@@ -41,6 +41,7 @@ class PlayerController  extends AdminController
         $service = \Yii::$app->request->get('server');
         $roleId = \Yii::$app->request->get('roleId');
         $page = \Yii::$app->request->get('page',1);
+        $userId = \Yii::$app->request->get('userId');//账号
         $where = ' 1=1 ';
         if($name){
             $where .= " and p.Name = '{$name}'";
@@ -50,6 +51,9 @@ class PlayerController  extends AdminController
         }
         if($roleId){
             $where .= " and p.RoleID = '{$roleId}' ";
+        }
+        if($userId){
+            $where .= " and p.UserID = '{$userId}'";
         }
         $sql = "select p.RoleID,p.UserID,p.LastLogin,p.CreateDate,u.PackageFlag,p.WorldID,p.Name from `user` u inner join player p on p.UserID = u.UserID where $where";
         $count = \Yii::$app->db2->createCommand($sql)->queryAll();
@@ -69,26 +73,28 @@ class PlayerController  extends AdminController
         parent::setActionId($action);
         $uid = \Yii::$app->request->get('uid');
         $name = \Yii::$app->request->get('name','');
+        $userId = \Yii::$app->request->get('userId');
         $where = ' 1=1 ';
         $wh = ' 1=1 ';
-        if($uid || $name){
+        if($uid || $name || $userId){
             if($uid){
                 $where .= " and RoleID = '{$uid}' ";
             }
             if($name){
                 $where .= " and Name = '{$name}' ";
             }
-            $data = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->where($where)->asArray()->one();
-            if($data){
-                $roleId = $data['RoleID'];
+            if($userId){
+                $where .= " and UserID = '{$userId}'";
+            }
+            $data = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->where($where)->asArray()->all();
+            foreach($data as $k => $v){
+                $roleId = $v['RoleID'];
                 $wh .= " and status = 2 and RoleID = '{$roleId}'";
                 //充值金额
                 $money = ChargeMoney::find()->where($wh)->sum('chargenum');
-                $data['rechargeMoney'] = $money?$money:0;
+                $data[$k]['rechargeMoney'] = $money?$money:0;
                 //更新元宝消耗记录
                 YuanbaoRole::getYuanbaoData();
-            }else{
-                $data = [];
             }
         }else{
             $data = [];
@@ -106,6 +112,7 @@ class PlayerController  extends AdminController
         $order = \Yii::$app->request->get('order');
         $status = \Yii::$app->request->get('status',0);
         $name = \Yii::$app->request->get('name','');
+        $userId = \Yii::$app->request->get('userId');
         $where = ' 1=1 ';
         if($name){
             $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
@@ -129,15 +136,29 @@ class PlayerController  extends AdminController
         }elseif($status ==2){
             $where .= " and unix_timestamp(finishTime) = 0 ";
         }
-        $total = ChargeMoney::find()->where("$where")->count();
+        if($userId){
+            $roles = Player::find()->select("RoleID")->asArray()->where("UserID = '{$userId}'")->all();
+            $roleIds = "";
+            foreach($roles as $k => $v){
+                $roleIds .= "'".$v['RoleID']."',";
+            }
+            if($roleIds){
+                $roleIds = trim($roleIds,',');
+                $where .= " and roleID in ($roleIds)";
+            }else{
+                $where .= " and 1 > 2";
+            }
+        }
+        $total = ChargeMoney::find()->where("$where")->count();echo $total;
         $pages = new Pagination(['totalCount'=>$total,'pageSize'=>20]);
         $data = ChargeMoney::find()->where($where)->orderBy('createTime desc')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
         foreach($data as $k => $v){
-            $sql = "select u.Username,u.PackageFlag,p.Name from `user` u inner join player p on p.UserID = u.UserID inner join chargemoney c on c.roleID = p.RoleID where c.roleID = '{$v['roleID']}' ";
+            $sql = "select u.Username,u.PackageFlag,p.Name,p.UserID from `user` u inner join player p on p.UserID = u.UserID inner join chargemoney c on c.roleID = p.RoleID where c.roleID = '{$v['roleID']}' ";
             $da = \Yii::$app->db2->createCommand($sql)->queryOne();
             $data[$k]['username'] = $da['Username'];
             $data[$k]['packageFlag'] = $da['PackageFlag'];
             $data[$k]['roleName'] = $da['Name'];
+            $data[$k]['userId'] = $da['UserID'];
         }
         $servers = Server::getServers();
         return $this->render('order-query',['data'=>$data,'page'=>$pages,'count'=>$total,'servers'=>$servers]);

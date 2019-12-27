@@ -10,23 +10,31 @@
         <table class="table">
             <tr>
                 <td>
+                    账号：
+                </td>
+                <td>
+                    <input  style="height: 30px;" type="text"  id="userId"  name="userId" value="<?php echo isset($_GET['userId'])?$_GET['userId']:''?>"/>
+                </td>
+                <td>
                     角色名：
                 </td>
                 <td>
-                    <input  style="height: 20px;width: 92px;"  type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                    <input  style="height: 30px;"  type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
                 </td>
                 <td>
                     RoleID：
                 </td>
                 <td>
-                    <input style="height: 20px" type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
+                    <input style="height: 30px" type="text" size="10" id="uid"  name="uid" value="<?php echo isset($_GET['uid'])?$_GET['uid']:''?>"/>
                 </td>
                 <td>
                     订单号查询：
                 </td>
                 <td>
-                    <input style="height: 20px"  type="text" size="10" id="order"  name="order" value="<?php echo isset($_GET['order'])?$_GET['order']:''?>"/>
+                    <input style="height: 30px"  type="text" size="10" id="order"  name="order" value="<?php echo isset($_GET['order'])?$_GET['order']:''?>"/>
                 </td>
+            </tr>
+            <tr>
                 <td>
                     区服：
                 </td>
@@ -65,7 +73,8 @@
                 <th>账号</th>
                 <th>区服</th>
                 <th>角色名</th>
-                <th>账号名称</th>
+<!--                <th>账号名称</th>-->
+                <th>账号</th>
                 <th>渠道</th>
                 <th>订单号</th>
                 <th>金额</th>
@@ -81,7 +90,8 @@
                 <tr  class="text-item tdBorder">
                     <td ><span ><?php echo $v['roleID']?></span></td>
                     <td ><span ><?php echo $v['worldID']?></span></td>
-                    <td ><span ><?php echo $v['roleName']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['roleName']?><!--</span></td>-->
+                    <td ><span ><?php echo $v['userId']?></span></td>
                     <td ><span ><?php echo $v['username']?></span></td>
                     <td ><span ><?php echo $v['packageFlag']?></span></td>
                     <td ><span ><?php echo $v['orderid']?></span></td>

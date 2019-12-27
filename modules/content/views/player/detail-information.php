@@ -10,6 +10,12 @@
         <table class="table">
             <tr>
                 <td>
+                    账号：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="userId"  name="userId" value="<?php echo isset($_GET['userId'])?$_GET['userId']:''?>"/>
+                </td>
+                <td>
                     角色名：
                 </td>
                 <td>
@@ -33,6 +39,7 @@
             <thead>
             <tr>
                 <th>账号</th>
+                <th>角色ID</th>
                 <th>区服</th>
                 <th>昵称</th>
                 <th>战斗力</th>
@@ -52,32 +59,33 @@
             </tr>
             </thead>
             <tbody>
-                <?php if($data){?>
+                <?php foreach($data as $k =>$v){?>
                 <tr  class="text-item tdBorder" >
-                    <td ><span ><?php echo isset($data['UserID'])?$data['UserID']:''?></span></td>
-                    <td ><span ><?php echo isset($data['WorldName'])?$data['WorldName']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Name'])?$data['Name']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Battle'])?$data['Battle']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Level'])?$data['Level']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Exp'])?$data['Exp']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Ingot'])?$data['Ingot']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Cash'])?$data['Cash']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Money'])?$data['Money']:''?></span></td>
-                    <td ><span ><?php echo isset($data['CurHP'])?$data['CurHP']:''?></span></td>
-                    <td ><span ><?php echo isset($data['CurMP'])?$data['CurMP']:''?></span></td>
-                    <td ><span ><?php echo isset($data['SoulScore'])?$data['SoulScore']:''?></span></td>
-                    <td ><span ><?php echo isset($data['MonsterKillNum'])?$data['MonsterKillNum']:''?></span></td>
-                    <td ><span ><?php echo isset($data['Vital'])?$data['Vital']:''?></span></td>
-                    <td ><span ><?php echo isset($data['PkValue'])?$data['PkValue']:''?></span></td>
-                    <td ><span ><?php echo isset($data['rechargeMoney'])?$data['rechargeMoney']:''?></span></td>
+                    <td ><span ><?php echo isset($v['UserID'])?$v['UserID']:''?></span></td>
+                    <td ><span ><?php echo isset($v['RoleID'])?$v['RoleID']:''?></span></td>
+                    <td ><span ><?php echo isset($v['WorldName'])?$v['WorldName']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Name'])?$v['Name']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Battle'])?$v['Battle']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Level'])?$v['Level']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Exp'])?$v['Exp']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Ingot'])?$v['Ingot']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Cash'])?$v['Cash']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Money'])?$v['Money']:''?></span></td>
+                    <td ><span ><?php echo isset($v['CurHP'])?$v['CurHP']:''?></span></td>
+                    <td ><span ><?php echo isset($v['CurMP'])?$v['CurMP']:''?></span></td>
+                    <td ><span ><?php echo isset($v['SoulScore'])?$v['SoulScore']:''?></span></td>
+                    <td ><span ><?php echo isset($v['MonsterKillNum'])?$v['MonsterKillNum']:''?></span></td>
+                    <td ><span ><?php echo isset($v['Vital'])?$v['Vital']:''?></span></td>
+                    <td ><span ><?php echo isset($v['PkValue'])?$v['PkValue']:''?></span></td>
+                    <td ><span ><?php echo isset($v['rechargeMoney'])?$v['rechargeMoney']:''?></span></td>
                     <td  class="notSLH" style="width:220px;!important;" >
-                        <?php if(isset($data['RoleID'])){?>
-                        <a class="btn" href="/content/player/order-query?uid=<?php echo $data['RoleID'] ; ?>" >充值</a>
-                            <a class="btn " href="/content/player/log-query?uid=<?php echo $data['RoleID'] ; ?>" >元宝</a>
-                            <a class="btn" href="/content/player/log-query?type=5&uid=<?php echo $data['RoleID'] ; ?>" >送花</a>
-                            <a class="btn marTop" href="/content/player/log-query?type=6&uid=<?php echo $data['RoleID'] ; ?>" >商城</a>
-                            <a class="btn marTop" href="/content/player/log-query?type=7&uid=<?php echo $data['RoleID'] ; ?>" >混沌</a>
-                            <a class="btn marTop" href="/content/player/log-query?type=8&uid=<?php echo $data['RoleID'] ; ?>" >黑市</a>
+                        <?php if(isset($v['RoleID'])){?>
+                        <a class="btn" href="/content/player/order-query?uid=<?php echo $v['RoleID'] ; ?>" >充值</a>
+                            <a class="btn " href="/content/player/log-query?uid=<?php echo $v['RoleID'] ; ?>" >元宝</a>
+                            <a class="btn" href="/content/player/log-query?type=5&uid=<?php echo $v['RoleID'] ; ?>" >送花</a>
+                            <a class="btn marTop" href="/content/player/log-query?type=6&uid=<?php echo $v['RoleID'] ; ?>" >商城</a>
+                            <a class="btn marTop" href="/content/player/log-query?type=7&uid=<?php echo $v['RoleID'] ; ?>" >混沌</a>
+                            <a class="btn marTop" href="/content/player/log-query?type=8&uid=<?php echo $v['RoleID'] ; ?>" >黑市</a>
                         <?php }?>
                     </td>
                 </tr>
