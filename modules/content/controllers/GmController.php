@@ -911,9 +911,10 @@ class GmController  extends AdminController
                 }
                 $servers = Server::getServers();
                 foreach($servers as $k => $v){
-                    Methods::GmFileGet($content,1,$v['id'],4247);//4247 禁言封号
+                    $res = Methods::GmFileGet($content,1,$v['id'],4247);//4247 禁言封号
+                    var_dump($res);
                 }
-                echo "<script>alert('操作成功');setTimeout(function(){location.href='forbidden';},1000)</script>";die;
+//                echo "<script>alert('操作成功');setTimeout(function(){location.href='forbidden';},1000)</script>";die;
             }else{
                 echo "<script>alert('操作成功');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
