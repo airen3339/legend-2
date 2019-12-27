@@ -763,4 +763,33 @@ class GmController  extends AdminController
         return $this->render('merchant-order',['data'=>$data,'count'=>$total,'page'=>$page,'servers'=>$servers]);
 
     }
+
+    /**
+     * 禁言解封
+     */
+    public function actionForbiddenRecord(){
+        $roleId = Yii::$app->request->get('roleId');
+        $userId = Yii::$app->request->get('userId');
+        $name = Yii::$app->request->get('name');
+        $where = " 1 = 1" ;
+        if($userId){
+            $where .= " and userId = '{$userId}'";
+        }
+        if($name){
+            $userId = Player::find()->where("Name = '{$name}'")->asArray()->one()['UserID'];
+            if($userId){
+                $where .= " and userId = '{$userId}'";
+            }else{
+                $where .= " and 1 > 2 ";
+            }
+        }
+        if($roleId){
+            $userId = Player::find()->where("RoleID = '{$roleId}'")->asArray()->one()['UserID'];
+            if($userId){
+                $where .= " and userId = '{$userId}'";
+            }else{
+                $where .= " and 1 > 2 ";
+            }
+        }
+    }
 }

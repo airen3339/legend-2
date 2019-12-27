@@ -41,7 +41,7 @@
                 <th>账号</th>
                 <th>角色ID</th>
                 <th>区服</th>
-                <th>昵称</th>
+                <th>角色名</th>
                 <th>战斗力</th>
                 <th>等级</th>
                 <th>经验</th>

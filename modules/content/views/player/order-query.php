@@ -90,9 +90,9 @@
                 <tr  class="text-item tdBorder">
                     <td ><span ><?php echo $v['roleID']?></span></td>
                     <td ><span ><?php echo $v['worldID']?></span></td>
-<!--                    <td ><span >--><?php //echo $v['roleName']?><!--</span></td>-->
+                    <td ><span ><?php echo $v['roleName']?></span></td>
                     <td ><span ><?php echo $v['userId']?></span></td>
-                    <td ><span ><?php echo $v['username']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['username']?><!--</span></td>-->
                     <td ><span ><?php echo $v['packageFlag']?></span></td>
                     <td ><span ><?php echo $v['orderid']?></span></td>
                     <td ><span><?php echo $v['chargenum']?></span></td>
