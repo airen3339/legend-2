@@ -8,6 +8,7 @@ namespace app\modules\content\controllers;
 
 use app\libs\AdminController;
 use app\libs\Methods;
+use app\modules\content\models\ForbiddenRecord;
 use app\modules\content\models\Item;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
@@ -767,10 +768,13 @@ class GmController  extends AdminController
     /**
      * 禁言解封
      */
-    public function actionForbiddenRecord(){
+    public function actionForbidden(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
         $roleId = Yii::$app->request->get('roleId');
         $userId = Yii::$app->request->get('userId');
         $name = Yii::$app->request->get('name');
+        $type = Yii::$app->request->get('type',0);//1-禁言 2-封号 3-禁言解封 4-封号解封
         $where = " 1 = 1" ;
         if($userId){
             $where .= " and userId = '{$userId}'";
@@ -790,6 +794,97 @@ class GmController  extends AdminController
             }else{
                 $where .= " and 1 > 2 ";
             }
+        }
+        if($type){
+            $where .= " and type = $type";
+        }
+        $total = ForbiddenRecord::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$total]);
+        $data = ForbiddenRecord::find()->where($where)->asArray()->orderBy('id desc')->offset($page->offset)->limit(20)->all();
+        foreach($data as $k => $v){
+            $data[$k]['createName'] = Role::find()->where("id = {$v['createUser']}")->asArray()->one()['name'];
+            $data[$k]['createTime'] = date('Y-m-d H:i:s',$v['createTime']);
+            $typeStr = ''; // 1-禁言 2-封号 3-禁言解封 4-封号解封
+            if($v['type'] ==1){
+                $typeStr = '账号禁言';
+            }elseif($v['type'] == 2){
+                $typeStr = '账号封号';
+            }elseif($v['type'] == 3){
+                $typeStr = '账号禁言解封';
+            }elseif($v['type'] == 4){
+                $typeStr = '账号封号解封';
+            }
+            $data[$k]['typeStr'] = $typeStr;
+        }
+        return $this->render('forbidden-record',['data'=>$data,'count'=>$total,'page'=>$page]);
+    }
+    /**
+     * 账号禁言封号操作
+     */
+    public function actionForbiddenAdd(){
+        if($_POST){
+            $userId = Yii::$app->request->post('userId');
+            $type = Yii::$app->request->post('type',0);// 1-禁言 2-封号 3-禁言解封 4-封号解封
+            $day = Yii::$app->request->post('day',0);//禁言封号天数
+            if(!$userId){
+                echo "<script>alert('请填写游戏账号');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$type){
+                echo "<script>alert('请选择操作类型');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $remark = '';
+            if($type == 1){
+                $day = Yii::$app->request->post('jyday',0);//禁言封号天数
+                $remark = '禁言账号（'.$userId.'）'.$day.'天';
+                if(!$day){
+                    echo "<script>alert('请选择禁言时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }elseif($type == 2){
+                $day = Yii::$app->request->post('fhday',0);//禁言封号天数
+                $remark = '账号（'.$userId.'）封号'.$day.'天';
+                if(!$day){
+                    echo "<script>alert('请选择封号时间');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }elseif($type ==3){
+                $remark = '账号（'.$userId.'）禁言解封';
+            }elseif($type ==4){
+                $remark = '账号（'.$userId.'）封号解封';
+            }
+            $now = time();
+            $model = new ForbiddenRecord();
+            $model->userId = $userId;
+            $model->type = $type;
+            $model->day  = $day;
+            $model->remark = $remark;
+            $model->createTime = $now;
+            $model->createUser = Yii::$app->session->get('adminId');
+            $res = $model->save();
+            if($res){
+                $content = ['UserID'=>$userId];
+                //推送服务器
+                if($type ==1){//禁言
+                    $SpeakTime = 86400*$day + $now;
+                    $content['SpeakTime'] = $SpeakTime;
+                }
+                if($type ==2){//封号
+                    $OnlineTime = 86400*$day + $now;
+                    $content['OnlineTime'] = $OnlineTime;
+                }
+                if($type ==3 ){//禁言解封
+                    $SpeakTime = 0;
+                    $content['SpeakTime'] = $SpeakTime;
+                }
+                if($type ==4 ){//封号解封
+                    $OnlineTime = 0;
+                    $content['OnlineTime'] = $OnlineTime;
+                }
+                Methods::GmFileGet($content,1,6,4247);//4247 禁言封号
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='forbidden';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作成功');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            return $this->render('forbidden-add');
         }
     }
 }
