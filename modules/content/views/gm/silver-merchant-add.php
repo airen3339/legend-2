@@ -25,7 +25,7 @@
                 <label for="modulename" class="control-label">区服</label>
                 <div class="controls">
                     <select style="width: 222px"
-                            data-options="url:'/content/api/server?id=<?php echo isset($_GET['serverIds']) ? $_GET['serverIds'] : ''?>',method:'get',cascadeCheck:false"
+                            data-options="url:'/content/api/server?id=<?php echo isset($data['enterWorldID']) ? $data['enterWorldID'] : ''?>',method:'get',cascadeCheck:false"
                             multiple class="vice easyui-combotree" id="serverIds" name="serverIds[]">
                     </select>
                 </div>

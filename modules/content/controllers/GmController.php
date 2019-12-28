@@ -637,7 +637,7 @@ class GmController  extends AdminController
                 if($servers[0] == 0){//全服
                     $serverIds = Server::find()->select("group_concat(game_id) as ids")->asArray()->one()['ids'];
                 }else{
-                    $serverIds = implode($servers);
+                    $serverIds = implode(',',$servers);
                 }
             }else{
                 $serverIds = '';
@@ -656,6 +656,9 @@ class GmController  extends AdminController
             $userId = Yii::$app->request->get('userId');
             if($userId){
                 $data = SliverMerchant::find()->where(" UserID = '{$userId}'")->asArray()->one();
+                if($data['enterWorldID']){
+                    $data['enterWorldID'] = trim($data['enterWorldID'],',');
+                }
             }else{
                 $data = [];
             }
