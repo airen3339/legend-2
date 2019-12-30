@@ -18,6 +18,7 @@ use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SliverMerchant;
 use app\modules\content\models\YinShang;
+use Think\Exception;
 use Yii;
 use yii\data\Pagination;
 
@@ -931,6 +932,23 @@ class GmController  extends AdminController
             }
         }else{
             return $this->render('forbidden-add');
+        }
+    }
+    /**
+     * 游戏数据库sql查询
+     */
+    public function actionLegendSql(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        if($_POST){
+            $sql = Yii::$app->request->post('sql');
+            if(!$sql){
+                echo "<script>alert('请输入sql语句');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            $data = Yii::$app->db2->createCommand($sql)->queryAll();
+            return $this->render('legend-sql',['data'=>$data,'sql'=>$sql]);
+        }else{
+            return $this->render('legend-sql');
         }
     }
 }
