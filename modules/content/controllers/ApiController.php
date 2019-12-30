@@ -422,18 +422,18 @@ class ApiController extends  Controller
             $content = json_encode($content);
         }
         $md5 = md5($content);
-        $had = GameError::find()->where("md = '{$md5}'")->one();
-        if($had){
-            $had->total = isset($had->total)?(1+$had->total):1;
-            $had->save();
-        }else{
+//        $had = GameError::find()->where("md = '{$md5}'")->one();
+//        if($had){
+//            $had->total = isset($had->total)?(1+$had->total):1;
+//            $had->save();
+//        }else{
             $model = new GameError();
             $model->content = $content;
             $model->createTime = time();
             $model->md = $md5;
             $model->total = 1;
             $model->save();
-        }
+//        }
     }
     /**
      * 错误问题描述
