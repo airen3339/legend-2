@@ -15,7 +15,7 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">查询数据</label>
                 <div class="controls">
-                    <textarea name="sql"><?php var_dump(isset($data)?$data:'')?></textarea>
+                    <textarea name="sql"><?php if(isset($data)){var_dump($data);}?></textarea>
                 </div>
             </div>
             <br/>
