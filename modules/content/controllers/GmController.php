@@ -774,11 +774,20 @@ class GmController  extends AdminController
         if($_POST){
             $roleId = Yii::$app->request->post('roleId');
             $rank = Yii::$app->request->post('rank',0);
-            $serverId = Yii::$app->request->post('serverId','');
+            $servers = Yii::$app->request->post('serverIds');
+            if($servers){
+                if($servers[0] == 0){//全服
+                    $serverIds = Server::find()->select("group_concat(game_id) as ids")->asArray()->one()['ids'];
+                }else{
+                    $serverIds = implode(',',$servers);
+                }
+            }else{
+                $serverIds = '';
+            }
             if(!$roleId){
                 echo "<script>alert('角色id不存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }
-            $res = YinShang::updateAll(['Ingot'=>$rank,'WorldID'=>$serverId],"RoleID = '{$roleId}'");
+            $res = YinShang::updateAll(['Ingot'=>$rank,'WorldID'=>$serverIds],"RoleID = '{$roleId}'");
             if($res){
                 echo "<script>alert('操作成功');setTimeout(function(){location.href='merchant-order';},1000)</script>";die;
             }else{

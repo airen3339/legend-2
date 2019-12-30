@@ -37,11 +37,9 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">区服</label>
                 <div class="controls">
-                    <select name="serverId">
-                        <option value="0">请选择</option>
-                        <?php foreach($servers as $k => $v){?>
-                        <option value="<?php echo $v['id']?>" <?php if(isset($data['WorldID']) && $data['WorldID'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>
-                        <?php }?>
+                    <select style="width: 222px"
+                            data-options="url:'/content/api/server?id=<?php echo isset($data['WorldID']) ? $data['WorldID'] : ''?>',method:'get',cascadeCheck:false"
+                            multiple class="vice easyui-combotree" id="serverIds" name="serverIds[]">
                     </select>
                 </div>
             </div>
@@ -53,3 +51,43 @@
         </fieldset>
     </form>
 </div>
+<?php
+if(isset($id)){
+    ?>
+    <script>
+        $('.main').tree({
+            onLoadSuccess: function (newValue, oldValue) {
+                $('.main').combotree('setValue', <?php echo isset($data['pid'])?$data['pid']:''?>);
+            }
+        })
+    </script>
+    <?php
+}
+?>
+<?php
+if(isset($_GET['pid'])) {
+    ?>
+    <script>
+        $('.main').tree({
+            onLoadSuccess: function (newValue, oldValue) {
+                $('.main').combotree('setValue', <?php echo isset($_GET['pid'])?$_GET['pid']:''?>);
+            }
+        })
+    </script>
+    <?php
+}
+?>
+<script>
+    $('.main').combotree({
+        onClick: function (node) {
+            $("input[name='category[pid]']").val(node.id);
+        }
+    })
+
+    $('.vice').combotree({
+        onCheck:function(newValue,oldValue){
+            var nodes = $('.vice').combotree('getValues');
+            $("input[name='category[secondClass]']").val(nodes);
+        }
+    });
+</script>
