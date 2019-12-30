@@ -30,9 +30,26 @@ class YuanbaoRole extends ActiveRecord
                 ['id'=>9,'name'=>'经验树升级'],
                 ['id'=>10,'name'=>'五行下注'],
                 ['id'=>11,'name'=>'五行开奖'],
+                ['id'=>12,'name'=>'优惠礼包'],
+                ['id'=>13,'name'=>'沙城城主元宝奖励'],
+                ['id'=>14,'name'=>'天中宝藏'],
             ];
         }else{//用户定时统计 去除元宝充值
-            $arr = [1=>'元宝兑换',2=>'时时彩下注',3=>'赠送元宝',5=>'用户送花',6=>'商城购买',7=>'混沌空间',8=>'黑市商人',9=>'经验树升级',10=>'五行下注',11=>'五行开奖'];
+            $arr = [
+                1=>'元宝兑换',
+                2=>'时时彩下注',
+                3=>'赠送元宝',
+                5=>'用户送花',
+                6=>'商城购买',
+                7=>'混沌空间',
+                8=>'黑市商人',
+                9=>'经验树升级',
+                10=>'五行下注',
+                11=>'五行开奖',
+                12=>'优惠礼包',
+                13=>'沙城城主元宝奖励',
+                14=>'天中宝藏',
+                ];
         }
         return $arr;
     }
@@ -95,20 +112,18 @@ class YuanbaoRole extends ActiveRecord
             //统计元宝消耗 4-元宝充值
             $arr = YuanbaoRole::getTypes(2);//获取元宝操作类型
             foreach($arr as $t => $y){// 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝 5-用户送花 6-用户月卡 7-混沌空间 8-黑市商人 9=>'经验树升级',10=>'五行下注',11=>'五行开奖'
-                if(in_array($t,[1,7,9,11])){//元宝兑换 可有增加
-                    //增加
-                    $add = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 1")->sum('money');
-                    $model = new CurrencyData();
-                    $model->date = $date;
-                    $model->serverId = $v['id'];
-                    $model->type = 1;//1-元宝
-                    $model->typeObject = $t;
-                    $model->number = $add?$add:0;
-                    $model->added = 1;
-                    $model->remark = $y;
-                    $model->createTime = time();
-                    $model->save();
-                }
+                //增加
+                $add = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 1")->sum('money');
+                $model = new CurrencyData();
+                $model->date = $date;
+                $model->serverId = $v['id'];
+                $model->type = 1;//1-元宝
+                $model->typeObject = $t;
+                $model->number = $add?$add:0;
+                $model->added = 1;
+                $model->remark = $y;
+                $model->createTime = time();
+                $model->save();
                 //消耗
                 $reduce = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 0")->sum('money');
                 $model = new CurrencyData();
