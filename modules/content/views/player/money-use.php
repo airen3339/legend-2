@@ -49,7 +49,7 @@
             <thead>
             <tr>
                 <th>区服</th>
-                <th>操作说明</th>
+<!--                <th>操作说明</th>-->
                 <th>操作类型</th>
                 <th>元宝数量</th>
                 <th>收入支出</th>
@@ -61,7 +61,6 @@
                 ?>
                 <tr  class="text-item tdBorder">
                     <td ><span ><?php echo $v['serverId']?></span></td>
-                    <td ><span ><?php echo $v['typeObject']==1?'元宝兑换':($v['typeObject']==2?'时时彩':($v['typeObject']==3?'赠送元宝':($v['typeObject']==4?'元宝充值':($v['typeObject']==5?'用户送花':'用户月卡'))))?></span></td>
                     <td ><span ><?php echo $v['remark']?></span></td>
                     <td ><span ><?php echo $v['money']?></span></td>
                     <td ><span ><?php echo $v['added']==1?'收入':'消耗'?></span></td>

@@ -175,11 +175,7 @@ class YuanbaoRole extends ActiveRecord
         if(!$roleId){
             return true;
         }else{
-            $data = YuanbaoRole::find()->where(" date = '{$date}'")->asArray()->all();//当天有没有更新数据
-            if(!$data){
-                self::getYuanbaoData();
-            }
-            $data = YuanbaoRole::find()->where("type = 14 and roleId = '{$roleId}' and date = '{$date}'")->asArray()->all();//type 14 天和宝藏
+            $data = YuanbaoRoleLog::find()->where("type = 14 and roleId = '{$roleId}' and date = '{$date}'")->asArray()->all();//type 14 天和宝藏
             RoleActivity::deleteAll(" date = '{$date}' and roleId = '{$roleId}' and type = 1");
             $dataArr = ActivityLog::tzbzReward();
             foreach($data as $k => $v){

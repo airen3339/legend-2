@@ -66,8 +66,8 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr class="tdSpan tdBorder">
-                    <td ><span><?php echo $v['name']?></span></td>
                     <td ><span><?php echo $v['userId']?></span></td>
+                    <td ><span><?php echo $v['name']?></span></td>
                     <td ><span><?php echo $v['RoleID']?></span></td>
                     <td ><span><?php echo $v['Ingot']?></span></td>
                     <td ><span><?php echo $v['WorldID']?></span></td>

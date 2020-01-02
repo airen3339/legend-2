@@ -70,7 +70,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>账号</th>
+                <th>角色ID</th>
                 <th>区服</th>
                 <th>角色名</th>
 <!--                <th>账号名称</th>-->

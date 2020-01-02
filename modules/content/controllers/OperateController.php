@@ -876,4 +876,30 @@ class OperateController  extends AdminController
         }
         return $this->render('recharge-query',['data'=>$data,'servers'=>$servers,'totalMoney'=>$totalMoney]);
     }
+    /**
+     * 充值查询
+     */
+    public function actionMonthQuery(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $servers = Server::getServers();
+        $payType = Yii::$app->request->get('payType',0);
+        $where = " status = 1 ";
+
+        if($payType){
+            $where .= " and payType = $payType";
+        }
+        $sql = " select from_unixtime(`createTime`,'%Y-%m') as month from {{%recharge}} where $where group by month  order by month desc";
+        $months = Yii::$app->db->createCommand($sql)->queryAll();
+        $totalMoney = 0;
+        foreach($months as $k => $v){
+            $month = $v['month'];
+            $sql = "select sum(money) as money from {{%recharge}} where $where and from_unixtime(`createTime`,'%Y-%m') = '{$month}'";
+            $money = Yii::$app->db->createCommand($sql)->queryOne()['money'];
+            $money = $money?$money:0;
+            $months[$k]['money'] = $money;
+            $totalMoney += $money;
+        }
+        return $this->render('month-query',['data'=>$months,'servers'=>$servers,'totalMoney'=>$totalMoney]);
+    }
 }

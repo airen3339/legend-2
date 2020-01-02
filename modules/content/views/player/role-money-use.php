@@ -2,11 +2,11 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/player/index">运营数据</a> <span class="divider">/</span></li>
-        <li class="active">货币消耗</li>
+        <li class="active">角色货币消耗</li>
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/player/money-use" method="get" class="form-horizontal">
+    <form action="/content/player/role-money-use" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
@@ -44,10 +44,13 @@
             </tr>
         </table>
     </form>
-    <form action="/content/player/money-use" method="post">
+    <form action="/content/player/role-money-use" method="post">
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>账号</th>
+                <th>角色名</th>
+                <th>角色ID</th>
                 <th>区服</th>
                 <th>操作说明</th>
                 <th>操作类型</th>
@@ -60,8 +63,11 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item tdBorder">
+                    <td ><span ><?php echo $v['userId']?></span></td>
+                    <td ><span ><?php echo $v['name']?></span></td>
+                    <td ><span ><?php echo $v['roleId']?></span></td>
                     <td ><span ><?php echo $v['serverId']?></span></td>
-                    <td ><span ><?php echo $v['typeObject']==1?'元宝兑换':($v['typeObject']==2?'时时彩':($v['typeObject']==3?'赠送元宝':($v['typeObject']==4?'元宝充值':($v['typeObject']==5?'用户送花':'用户月卡'))))?></span></td>
+                    <td ><span ><?php echo $v['typeStr']?></span></td>
                     <td ><span ><?php echo $v['remark']?></span></td>
                     <td ><span ><?php echo $v['money']?></span></td>
                     <td ><span ><?php echo $v['added']==1?'收入':'消耗'?></span></td>
