@@ -133,7 +133,8 @@ class ActivityController  extends AdminController
                 $pushContent = ['condition'=>$conditions,'propId'=>$propIds,'number'=>$numbers,'bind'=>$binds];
                 $pushContent = json_encode($pushContent);
             }else{
-                echo "<script>alert('发放物品数据不正确');setTimeout(function(){history.go(-1);},1000)</script>";die;
+//                echo "<script>alert('发放物品数据不正确');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                $pushContent = '';
             }
             if($pushId){
                 $model = ActivityPush::findOne($pushId);
