@@ -250,6 +250,15 @@ class PlayerController  extends AdminController
         }
         $servers = Server::getServers();
         $types = YuanbaoRoleLog::getTypes();
+        foreach($data as $k => $v){
+            $typeStr = '';
+            foreach($types as $t =>$w){
+                if($v['type'] == $w['id']){
+                    $typeStr =  $w['name'];
+                }
+            }
+            $data[$k]['typeStr'] = $typeStr;
+        }
         return $this->render('log-query',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }
 
