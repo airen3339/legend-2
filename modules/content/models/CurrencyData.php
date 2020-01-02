@@ -37,7 +37,7 @@ class CurrencyData extends ActiveRecord
                 $model->createTime = time();
                 $model->save();
                 //消耗
-                $reduce = YuanbaoRole::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 0")->sum('money');
+                $reduce = YuanbaoRoleLog::find()->where(" date = '{$date}' and serverId = '{$v['id']}' and type = $t and added = 0")->sum('money');
                 $model = new CurrencyData();
                 $model->date = $date;
                 $model->serverId = $v['id'];

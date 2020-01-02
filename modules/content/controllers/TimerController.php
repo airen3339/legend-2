@@ -269,7 +269,7 @@ class TimerController extends Controller
      * type 1-元宝兑换 2-时时彩下注 3-赠送元宝 4-充值元宝
      */
     public function actionYuanbaoData(){
-        YuanbaoRole::getYuanbaoData();
+//        YuanbaoRole::getYuanbaoData();
     }
 
     /**

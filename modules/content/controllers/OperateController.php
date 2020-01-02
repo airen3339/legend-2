@@ -23,6 +23,7 @@ use app\modules\content\models\Server;
 use app\modules\content\models\SliverMerchant;
 use app\modules\content\models\User;
 use app\modules\content\models\YuanbaoRole;
+use app\modules\content\models\YuanbaoRoleLog;
 use Yii;
 use yii\data\Pagination;
 
@@ -704,9 +705,6 @@ class OperateController  extends AdminController
         $name = Yii::$app->request->get('name');
         $beginTime = Yii::$app->request->get('beginTime');
         $endTime = Yii::$app->request->get('endTime');
-        if($userId || $name || $beginTime || $endTime){//有一个搜索存在更新日志
-            YuanbaoRole::getYuanbaoData();
-        }
         $where = "where 1 = 1";
         $ycWhere = " and type = 3 ";
         if($userId){
@@ -735,8 +733,8 @@ class OperateController  extends AdminController
         foreach($data as $k => $v){
             $roleId = $v['RoleID'];
             if($roleId){//获取账号的赠送元宝和收入元宝统计
-                $out = YuanbaoRole::find()->where("roleId = '{$roleId}' and added = 0 $ycWhere ")->sum('money');
-                $in = YuanbaoRole::find()->where("roleId = '{$roleId}' and added = 1 $ycWhere")->sum('money');
+                $out = YuanbaoRoleLog::find()->where("roleId = '{$roleId}' and added = 0 $ycWhere ")->sum('money');
+                $in = YuanbaoRoleLog::find()->where("roleId = '{$roleId}' and added = 1 $ycWhere")->sum('money');
                 $out = $out?$out:0;
                 $in = $in?$in:0;
             }else{
@@ -755,9 +753,9 @@ class OperateController  extends AdminController
         $roleIds = implode(',',$roles);
         if($roleIds){
             //账号总的赠送元宝数
-            $outTotal = YuanbaoRole::find()->where(" roleId in ({$roleIds}) and added = 0 $ycWhere")->sum('money');
+            $outTotal = YuanbaoRoleLog::find()->where(" roleId in ({$roleIds}) and added = 0 $ycWhere")->sum('money');
             //账号总的收入元宝数
-            $inTotal = YuanbaoRole::find()->where(" roleId in ({$roleIds}) and added = 1 $ycWhere")->sum('money');
+            $inTotal = YuanbaoRoleLog::find()->where(" roleId in ({$roleIds}) and added = 1 $ycWhere")->sum('money');
         }else{
             $outTotal = 0;
             $inTotal = 0;
@@ -795,12 +793,12 @@ class OperateController  extends AdminController
                 $end = strtotime($endTime);
                 $where .= " and unix_timestamp(dateTime) <= $end";
             }
-            $count = YuanbaoRole::find()->where($where)->count();
+            $count = YuanbaoRoleLog::find()->where($where)->count();
         }else{
             $where = ' 1 != 1';
         }
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>20]);
-        $data = YuanbaoRole::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $data = YuanbaoRoleLog::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
         return $this->render('ys-count-detail',['page'=>$page,'count'=>$count,'data'=>$data,'roleId'=>$roleId,'type'=>$type]);
     }
     /**

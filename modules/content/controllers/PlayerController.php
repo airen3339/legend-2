@@ -183,7 +183,7 @@ class PlayerController  extends AdminController
         $page = new Pagination(['totalCount'=>$count]);
         $data = CurrencyData::find()->select("serverId,type,typeObject,remark,added,sum(number) as money")->where($where)->offset($page->offset)->limit($page->limit)->groupBy("serverId,typeObject,added")->orderBy('money desc')->asArray()->all();
         $servers = Server::getServers();
-        $types = YuanbaoRole::getTypes();
+        $types = YuanbaoRoleLog::getTypes();
         return $this->render('money-use',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
     }
     /**
