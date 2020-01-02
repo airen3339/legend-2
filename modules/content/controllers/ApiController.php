@@ -473,23 +473,23 @@ class ApiController extends  Controller
      * 元宝消耗记录迁移
      */
     public function actionYuanbaoRecordMove(){
-        $createTime = 1577945249;//更新这个时间以前的数据
-        $sql = " select * from yuanbao_role where unix_timestamp(dateTime) <= $createTime";
-        $data = Yii::$app->db->createCommand($sql)->queryAll();
-        foreach($data as $k => $v){
-            $dateTime = $v['dateTime'];
-            $arr = explode(' ',$dateTime);
-            $model = new YuanbaoRoleLog();
-            $model->date = $v['date'];
-            $model->serverId = $v['serverId'];
-            $model->roleId = $v['roleId'];
-            $model->dateTime = isset($arr[1])?$arr[1]:'';
-            $model->money = $v['money'];
-            $model->type = $v['type'];
-            $model->added = $v['added'];
-            $model->remark = $v['remark'];
-            $model->createTime = strtotime($dateTime);
-            $model->save();
-        }
+//        $createTime = 1577945249;//更新这个时间以前的数据
+//        $sql = " select * from yuanbao_role where unix_timestamp(dateTime) <= $createTime";
+//        $data = Yii::$app->db->createCommand($sql)->queryAll();
+//        foreach($data as $k => $v){
+//            $dateTime = $v['dateTime'];
+//            $arr = explode(' ',$dateTime);
+//            $model = new YuanbaoRoleLog();
+//            $model->date = $v['date'];
+//            $model->serverId = $v['serverId'];
+//            $model->roleId = $v['roleId'];
+//            $model->dateTime = isset($arr[1])?$arr[1]:'';
+//            $model->money = $v['money'];
+//            $model->type = $v['type'];
+//            $model->added = $v['added'];
+//            $model->remark = $v['remark'];
+//            $model->createTime = strtotime($dateTime);
+//            $model->save();
+//        }
     }
 }

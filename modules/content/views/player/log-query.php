@@ -93,6 +93,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>角色ID</th>
                 <th>日期</th>
                 <th>区服</th>
@@ -110,6 +111,7 @@
             foreach($data as $kss => $v) {
                 ?>
                 <tr  class="text-item tdBorder">
+                    <td ><span><?php echo $v['id']?></span></td>
                     <td ><span><?php echo $v['roleId']?></span></td>
                     <td ><span ><?php echo isset($v['type'])?$v['date']:date('Y-m-d H:i:s',$v['createTime'])?></span></td>
                     <td ><span ><?php echo isset($v['type'])?$v['serverId']:$v['server_id']?></span></td>
