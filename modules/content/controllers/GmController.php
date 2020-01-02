@@ -17,6 +17,7 @@ use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SliverMerchant;
+use app\modules\content\models\User;
 use app\modules\content\models\YinShang;
 use Think\Exception;
 use Yii;
@@ -869,8 +870,11 @@ class GmController  extends AdminController
                 echo "<script>alert('请填写角色信息');setTimeout(function(){history.go(-1);},1000)</script>";die;
             }else{
                 $userId = Player::find()->where("Name = '{$roleMsg}' or RoleID = '{$roleMsg}' or UserID = '{$roleMsg}'")->asArray()->one()['UserID'];
-                if(!$userId){
-                    echo "<script>alert('没有该账号');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                if(!$userId){//角色表查找不到再在注册表里查找
+                    $userId = User::find()->where("Username = '{$roleMsg}' or UserID = '{$roleMsg}'")->asArray()->one()['UserID'];
+                    if(!$userId){
+                        echo "<script>alert('没有该账号');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                    }
                 }
             }
             if(!$type){
