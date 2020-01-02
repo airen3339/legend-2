@@ -6,7 +6,7 @@
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/operate/recharge-query" method="get" class="form-horizontal">
+    <form action="/content/operate/month-query" method="get" class="form-horizontal">
         <table class="table">
             <tr>
 
@@ -27,7 +27,7 @@
             </tr>
         </table>
     </form>
-    <form action="/content/operate/recharge-query" method="post">
+    <form action="/content/operate/month-query" method="post">
         <table class="table table-hover">
             <thead>
             <tr>
