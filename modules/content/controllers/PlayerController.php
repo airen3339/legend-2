@@ -252,9 +252,13 @@ class PlayerController  extends AdminController
         $types = YuanbaoRoleLog::getTypes();
         foreach($data as $k => $v){
             $typeStr = '';
-            foreach($types as $t =>$w){
-                if($v['type'] == $w['id']){
-                    $typeStr =  $w['name'];
+            if($type ==4){
+                $typeStr = '元宝充值';
+            }else{
+                foreach($types as $t =>$w){
+                    if($v['type'] == $w['id']){
+                        $typeStr =  $w['name'];
+                    }
                 }
             }
             $data[$k]['typeStr'] = $typeStr;
