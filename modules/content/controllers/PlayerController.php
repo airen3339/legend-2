@@ -201,20 +201,12 @@ class PlayerController  extends AdminController
         $name = \Yii::$app->request->get('name','');
         $where = ' 1=1 ';
         if($beginTime){
-            if($type ==4){
-                $begin = strtotime($beginTime);
-                $where .= " and createTime >= $begin";
-            }else{
-                $where .=  " and date >= $beginTime";
-            }
+            $begin = strtotime($beginTime);
+            $where .= " and createTime >= $begin";
         }
         if($endTime){
-            if($type ==4){
             $end = strtotime($endTime) + 86399;
             $where .= " and createTime <= $end";
-            }else{
-                $where .= " and date <= $endTime";
-            }
         }
         if($service){
             if($type ==4){
