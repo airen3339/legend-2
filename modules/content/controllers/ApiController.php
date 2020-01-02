@@ -18,6 +18,7 @@ use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
 use app\modules\content\models\Server;
 use app\modules\content\models\YinShang;
+use app\modules\content\models\YuanbaoRoleLog;
 use Hyperbolaa\Wechatpay\Facades\Jsapi;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -466,6 +467,29 @@ class ApiController extends  Controller
             Methods::jsonData(1,'保存成功');
         }else{
             Methods::jsonData(0,'保存失败');
+        }
+    }
+    /**
+     * 元宝消耗记录迁移
+     */
+    public function actionYuanbaoRecordMove(){
+        $createTime = 1577945249;//更新这个时间以前的数据
+        $sql = " select * from yuanbao_role where unix_timestamp(dateTime) <= $createTime";
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+        foreach($data as $k => $v){
+            $dateTime = $v['dateTime'];
+            $arr = explode(' ',$dateTime);
+            $model = new YuanbaoRoleLog();
+            $model->date = $v['date'];
+            $model->serverId = $v['serverId'];
+            $model->roleId = $v['roleId'];
+            $model->dateTime = isset($arr[1])?$arr[1]:'';
+            $model->money = $v['money'];
+            $model->type = $v['type'];
+            $model->added = $v['added'];
+            $model->remark = $v['remark'];
+            $model->createTime = strtotime($dateTime);
+            $model->save();
         }
     }
 }

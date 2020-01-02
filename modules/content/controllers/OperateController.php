@@ -894,7 +894,7 @@ class OperateController  extends AdminController
             $month = $v['month'];
             $sql = "select sum(money) as money from {{%recharge}} where $where and from_unixtime(`createTime`,'%Y-%m') = '{$month}'";
             $money = Yii::$app->db->createCommand($sql)->queryOne()['money'];
-            $money = $money?$money:0;
+            $money = $money?round($money,2):0;
             $months[$k]['money'] = $money;
             $totalMoney += $money;
         }
