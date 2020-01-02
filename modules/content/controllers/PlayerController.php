@@ -236,7 +236,7 @@ class PlayerController  extends AdminController
             }
             $count = YuanbaoRoleLog::find()->where($where)->count();
             $page = new Pagination(['totalCount'=>$count]);
-            $data = YuanbaoRoleLog::find()->where($where)->orderBy('dateTime desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+            $data = YuanbaoRoleLog::find()->where($where)->orderBy('dateTime desc')->offset($page->offset)->limit($page->limit)->orderBy('id desc')->asArray()->all();
         }else{
             if($added == 0){//元宝充值没有支出
                 $count = 0;
