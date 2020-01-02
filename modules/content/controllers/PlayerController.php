@@ -444,10 +444,10 @@ class PlayerController  extends AdminController
                 $where .= " and 1 > 2";
             }
         }
-        $count = YuanbaoRoleLog::find()->where($where)->count();
+        $count = YuanbaoRoleLog::find()->where($where)->groupBy('roleId')->count();
         $page = new Pagination(['totalCount'=>$count]);
         $types = YuanbaoRoleLog::getTypes();
-        $data = YuanbaoRoleLog::find()->select("roleId,serverId,type,remark,added,sum(money) as money")->where($where)->offset($page->offset)->limit($page->limit)->orderBy('money desc')->asArray()->all();
+        $data = YuanbaoRoleLog::find()->select("roleId,serverId,type,remark,added,sum(money) as money")->where($where)->offset($page->offset)->limit($page->limit)->orderBy('money desc')->groupBy('roleId')->asArray()->all();
         foreach($data as $k => $v){
             $player = Player::find()->where("RoleID = '{$v['roleId']}'")->asArray()->one();
             if($player){

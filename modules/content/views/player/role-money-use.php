@@ -68,7 +68,7 @@
                     <td ><span ><?php echo $v['roleId']?></span></td>
                     <td ><span ><?php echo $v['serverId']?></span></td>
                     <td ><span ><?php echo $v['typeStr']?></span></td>
-                    <td ><span ><?php echo $v['remark']?></span></td>
+                    <td style="width: 300px; "><span ><?php echo $v['remark']?></span></td>
                     <td ><span ><?php echo $v['money']?></span></td>
                     <td ><span ><?php echo $v['added']==1?'收入':'消耗'?></span></td>
                 </tr>
