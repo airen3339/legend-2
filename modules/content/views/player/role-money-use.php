@@ -10,18 +10,22 @@
         <table class="table">
             <tr>
                 <td>
-                    区服：
+                    账号：
                 </td>
                 <td>
-                    <select name="server">
-                        <option value="0">请选择</option>
-                        <?php
-                        foreach($servers as $k => $v){ ?>
-                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
-                            <?php
-                        }
-                        ?>
-                    </select>
+                    <input  style="height: 20px;" type="text"  id="userId"  name="userId" value="<?php echo isset($_GET['userId'])?$_GET['userId']:''?>"/>
+                </td>
+                <td>
+                    角色名：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
+                    RoleID：
+                </td>
+                <td>
+                    <input  style="height: 20px;" type="text"  id="roleId"  name="roleId" value="<?php echo isset($_GET['roleId'])?$_GET['roleId']:''?>"/>
                 </td>
                 <td>
                     类型：
@@ -52,9 +56,9 @@
                 <th>角色名</th>
                 <th>角色ID</th>
                 <th>区服</th>
-                <th>操作说明</th>
-                <th>操作类型</th>
-                <th>元宝数量</th>
+<!--                <th>操作说明</th>-->
+<!--                <th>操作类型</th>-->
+                <th>元宝总计</th>
                 <th>收入支出</th>
             </tr>
             </thead>
@@ -67,8 +71,8 @@
                     <td ><span ><?php echo $v['name']?></span></td>
                     <td ><span ><?php echo $v['roleId']?></span></td>
                     <td ><span ><?php echo $v['serverId']?></span></td>
-                    <td ><span ><?php echo $v['typeStr']?></span></td>
-                    <td style="width: 300px; "><span ><?php echo $v['remark']?></span></td>
+<!--                    <td ><span >--><?php //echo $v['typeStr']?><!--</span></td>-->
+<!--                    <td style="width: 300px; "><span >--><?php //echo $v['remark']?><!--</span></td>-->
                     <td ><span ><?php echo $v['money']?></span></td>
                     <td ><span ><?php echo $v['added']==1?'收入':'消耗'?></span></td>
                 </tr>

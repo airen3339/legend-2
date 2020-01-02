@@ -414,7 +414,7 @@ class PlayerController  extends AdminController
         parent::setActionId($action);
         $roleId = \Yii::$app->request->get('roleId','');
         $userId = \Yii::$app->request->get('userId');//账号
-        $name = \Yii::$app->request->post('name');//角色名
+        $name = \Yii::$app->request->get('name');//角色名
         $type = \Yii::$app->request->get('type',0);
         $where = ' 1 = 1 ';
         $server = \Yii::$app->request->get('server',0);
@@ -441,9 +441,14 @@ class PlayerController  extends AdminController
             }
         }
         if($name){
-            $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
-            if($roleId){
-                $where .= " and roleId = '{$roleId}'";
+            $roleIds = Player::find()->where("Name like '%{$name}%'")->asArray()->all();
+            if($roleIds){
+                $idStr = "";
+                foreach($roleIds as $k => $v){
+                    $idStr .= "'".$v['RoleID']."',";
+                }
+                $idStr = trim($idStr,',');
+                $where .= " and roleId in ({$idStr})";
             }else{
                 $where .= " and 1 > 2";
             }
