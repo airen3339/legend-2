@@ -193,17 +193,19 @@ class ActivityController  extends AdminController
         $data = ActivityPush::find()->where($where)->orderBy('id desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
         foreach($data as $k => $v){
             $data[$k]['operatorName'] = Role::find()->where("id = {$v['operator']}")->asArray()->one()['name'];
-            $pushContent = json_decode($v['pushContent'],true);
             $pushStr = '';
-            foreach($pushContent['condition'] as $t => $y){
-                $bind = $pushContent['bind'][$t]==1?'是':($pushContent['bind'][$t]==2?'否':'');
-                $propId = $pushContent['propId'][$t];
-                if($propId){
-                    $propName = Item::find()->where("itemid = $propId")->asArray()->one()['name'];
-                }else{
-                    $propName = '';
+            if($v['pushContent']){
+                $pushContent = json_decode($v['pushContent'],true);
+                foreach($pushContent['condition'] as $t => $y){
+                    $bind = $pushContent['bind'][$t]==1?'是':($pushContent['bind'][$t]==2?'否':'');
+                    $propId = $pushContent['propId'][$t];
+                    if($propId){
+                        $propName = Item::find()->where("itemid = $propId")->asArray()->one()['name'];
+                    }else{
+                        $propName = '';
+                    }
+                    $pushStr .= "条件：{$y}  道具：{$propName}-{$propId} 数量：{$pushContent['number'][$t]} 绑定：{$bind} ； ";
                 }
-                $pushStr .= "条件：{$y}  道具：{$propName}-{$propId} 数量：{$pushContent['number'][$t]} 绑定：{$bind} ； ";
             }
             $data[$k]['pushContent'] = $pushStr;
         }
