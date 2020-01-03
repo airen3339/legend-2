@@ -815,15 +815,25 @@ class OperateController  extends AdminController
         }else{
             $time = strtotime($time);
         }
+        $reduceTime = $time - 3600;
         $data = [];
         if($serverId){
-            $count = OnlineCount::find()->where("WorldID = {$serverId} and upTime <= $time")->asArray()->orderBy('upTime desc')->one()['Count'];
-            $count = $count?$count:0;
+            $server = OnlineCount::find()->where("WorldID = {$serverId} and upTime <= $time")->asArray()->orderBy('upTime desc')->one();
+            $count = isset($server['Count'])?$server['Count']:0;
+            $upTime = isset($server['upTime'])?$server['upTime']:0;
+            if($upTime < $reduceTime){
+                $count = 0;
+            }
             $data[]= ['name'=>$serverId.'服','count'=>$count];
         }else{
             foreach($servers as $k => $v){
                 $serverId = $v['id'];
-                $count = OnlineCount::find()->where("WorldID = {$serverId} and upTime <= $time")->asArray()->orderBy('upTime desc')->one()['Count'];
+                $server = OnlineCount::find()->where("WorldID = {$serverId} and upTime <= $time")->asArray()->orderBy('upTime desc')->one();
+                $count = isset($server['Count'])?$server['Count']:0;
+                $upTime = isset($server['upTime'])?$server['upTime']:0;
+                if($upTime < $reduceTime){
+                    $count = 0;
+                }
                 $count = $count?$count:0;
                 $data[]= ['name'=>$v['name'],'count'=>$count];
             }
