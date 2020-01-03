@@ -148,7 +148,7 @@ class PlayerController  extends AdminController
                 $where .= " and 1 > 2";
             }
         }
-        $total = ChargeMoney::find()->where("$where")->count();echo $total;
+        $total = ChargeMoney::find()->where("$where")->count();
         $pages = new Pagination(['totalCount'=>$total,'pageSize'=>20]);
         $data = ChargeMoney::find()->where($where)->orderBy('createTime desc')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
         foreach($data as $k => $v){
