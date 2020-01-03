@@ -215,8 +215,13 @@ class PlayerController  extends AdminController
                 $where .= " and serverId = '{$service}'";
             }
         }
+        $str = '';
         if($uid){
             $where .= " and roleId = '{$uid}' ";
+            $player = Player::find()->where("RoleID = '{$uid}'")->asArray()->one();
+            if($player){
+                $str = "账号：".$player['UserID']."&nbsp;&nbsp;&nbsp;   角色名：".$player['Name']."&nbsp;&nbsp;&nbsp;   角色ID：".$uid.'&nbsp;&nbsp;&nbsp;   总计：';
+            }
         }
         if($name){
             $roleId = Player::find()->where("Name = '{$name}'")->asArray()->one()['RoleID'];
@@ -237,6 +242,11 @@ class PlayerController  extends AdminController
             $count = YuanbaoRoleLog::find()->where($where)->count();
             $page = new Pagination(['totalCount'=>$count]);
             $data = YuanbaoRoleLog::find()->where($where)->orderBy('dateTime desc')->offset($page->offset)->limit($page->limit)->orderBy('id desc')->asArray()->all();
+            if($uid){
+                $yuanbaoTotal = YuanbaoRoleLog::find()->where($where)->sum('money');
+                $str .= $yuanbaoTotal;
+            }
+
         }else{
             if($added == 0){//元宝充值没有支出
                 $count = 0;
@@ -246,6 +256,10 @@ class PlayerController  extends AdminController
                 $count = Recharge::find()->where($where)->count();
                 $page = new Pagination(['totalCount'=>$count]);
                 $data = Recharge::find()->where($where)->orderBy('createTime desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+            }
+            if($uid){
+                $yuanbaoTotal = Recharge::find()->where($where)->sum('money');
+                $str .= $yuanbaoTotal;
             }
         }
         $servers = Server::getServers();
@@ -263,7 +277,7 @@ class PlayerController  extends AdminController
             }
             $data[$k]['typeStr'] = $typeStr;
         }
-        return $this->render('log-query',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
+        return $this->render('log-query',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count,'str'=>$str]);
     }
 
     /**
@@ -453,10 +467,10 @@ class PlayerController  extends AdminController
                 $where .= " and 1 > 2";
             }
         }
-        $count = YuanbaoRoleLog::find()->where($where)->groupBy('roleId')->count();
+        $count = YuanbaoRoleLog::find()->where($where)->groupBy('roleId,added')->count();
         $page = new Pagination(['totalCount'=>$count]);
         $types = YuanbaoRoleLog::getTypes();
-        $data = YuanbaoRoleLog::find()->select("roleId,serverId,type,remark,added,sum(money) as money")->where($where)->offset($page->offset)->limit($page->limit)->orderBy('money desc')->groupBy('roleId')->asArray()->all();
+        $data = YuanbaoRoleLog::find()->select("roleId,serverId,type,remark,added,sum(money) as money")->where($where)->offset($page->offset)->limit($page->limit)->orderBy('money desc')->groupBy('roleId,added')->asArray()->all();
         foreach($data as $k => $v){
             $player = Player::find()->where("RoleID = '{$v['roleId']}'")->asArray()->one();
             if($player){

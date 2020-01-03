@@ -880,10 +880,17 @@ class OperateController  extends AdminController
     public function actionMonthQuery(){
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
         $servers = Server::getServers();
         $payType = Yii::$app->request->get('payType',0);
         $where = " status = 1 ";
-
+        if($beginTime){
+            $where .= " and from_unixtime(`createTime`,'%Y-%m') >= '$beginTime'";
+        }
+        if($endTime){
+            $where .= " and from_unixtime(`createTime`,'%Y-%m') <= '$endTime'";
+        }
         if($payType){
             $where .= " and payType = $payType";
         }

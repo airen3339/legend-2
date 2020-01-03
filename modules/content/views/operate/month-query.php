@@ -9,7 +9,18 @@
     <form action="/content/operate/month-query" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-
+                <td>
+                    开始日期：
+                </td>
+                <td>
+                    <input class="input-small Wdate" autocomplete="off" onclick="WdatePicker({dateFmt:'yyyy-MM'})" type="text" size="10" id="beginTime"  name="beginTime" value="<?php echo isset($_GET['beginTime'])?$_GET['beginTime']:''?>"/>
+                </td>
+                <td>
+                    结束日期：
+                </td>
+                <td>
+                    <input class="input-small Wdate" autocomplete="off" onclick="WdatePicker({dateFmt:'yyyy-MM'})"  size="10" type="text" id="endTime" name="endTime"  value="<?php echo isset($_GET['endTime'])?$_GET['endTime']:''?>"/>
+                </td>
                 <td>
                     充值类型：
                 </td>

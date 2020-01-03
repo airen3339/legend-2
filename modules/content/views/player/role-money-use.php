@@ -60,6 +60,7 @@
 <!--                <th>操作类型</th>-->
                 <th>元宝总计</th>
                 <th>收入支出</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -74,7 +75,11 @@
 <!--                    <td ><span >--><?php //echo $v['typeStr']?><!--</span></td>-->
 <!--                    <td style="width: 300px; "><span >--><?php //echo $v['remark']?><!--</span></td>-->
                     <td ><span ><?php echo $v['money']?></span></td>
-                    <td ><span ><?php echo $v['added']==1?'收入':'消耗'?></span></td>
+                    <td ><span ><?php echo $v['added']==1?'收入':'消耗'?></span></td><td  class="notSLH" >
+                        <div>
+                            <a class="btn" id="serviceAlter"  href="/content/player/log-query?uid=<?php echo $v['roleId'];?>&type=<?php echo isset($_GET['type'])?$_GET['type']:'';?>&added=<?php echo $v['added'];?>">详情</a>
+                        </div>
+                    </td>
                 </tr>
                 <?php
             }

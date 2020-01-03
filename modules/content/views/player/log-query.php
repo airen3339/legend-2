@@ -50,14 +50,14 @@
                         ?>
                     </select>
                 </td>
-                <td>
-                    属性：
-                </td>
-                <td>
-                    <select name="object">
-                        <option value="1">元宝</option>
-                    </select>
-                </td>
+<!--                <td>-->
+<!--                    属性：-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <select name="object">-->
+<!--                        <option value="1">元宝</option>-->
+<!--                    </select>-->
+<!--                </td>-->
                 <td>
                     类型：
                 </td>
@@ -91,6 +91,7 @@
     </form>
     <form action="/content/player/log-query" method="post">
         <table class="table table-hover">
+            <span><?php if($str)echo $str;?></span>
             <thead>
             <tr>
                 <th>ID</th>
