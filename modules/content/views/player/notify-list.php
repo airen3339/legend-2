@@ -9,7 +9,16 @@
     <form action="/content/player/notify-list" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-
+                <td>
+                    订单号查询：
+                </td>
+                <td>
+                    <input style="height: 30px"  type="text" size="10" id="order"  name="order" value="<?php echo isset($_GET['order'])?$_GET['order']:''?>"/>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">查询</button>
+                </td>
+                <td></td>
             </tr>
         </table>
     </form>

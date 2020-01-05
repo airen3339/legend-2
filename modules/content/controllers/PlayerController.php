@@ -511,9 +511,15 @@ class PlayerController  extends AdminController
     public function actionNotifyList(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
-        $count = Notify::find()->count();
+        $orderId = \Yii::$app->request->get('order');
+        if($orderId){
+            $where = " orderNumber = '{$orderId}'";
+        }else{
+            $where = '';
+        }
+        $count = Notify::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
-        $data = Notify::find()->offset($page->offset)->limit($page->limit)->orderBy('createTime desc')->asArray()->all();
+        $data = Notify::find()->where($where)->offset($page->offset)->limit($page->limit)->orderBy('createTime desc')->asArray()->all();
         return $this->render('notify',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
 }
