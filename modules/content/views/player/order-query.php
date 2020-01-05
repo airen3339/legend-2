@@ -138,7 +138,6 @@
     }
     function addMoney(site){
         if(confirm('确定进行补单？')){
-
             var str = '#'+site;
             var orderId = $(str).val();
             if(!orderId){
@@ -150,6 +149,8 @@
                     window.location.reload();
                 }
             },'json');
+        }else{
+            return false;
         }
     }
 </script>
