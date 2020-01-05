@@ -13,7 +13,7 @@
                     订单号查询：
                 </td>
                 <td>
-                    <input style="height: 30px"  type="text" size="10" id="order"  name="order" value="<?php echo isset($_GET['order'])?$_GET['order']:''?>"/>
+                    <input style="height: 20px"  type="text" size="10" id="order"  name="order" value="<?php echo isset($_GET['order'])?$_GET['order']:''?>"/>
                 </td>
                 <td>
                     <button class="btn btn-primary" type="submit">查询</button>
