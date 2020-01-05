@@ -520,6 +520,6 @@ class PlayerController  extends AdminController
         $count = Notify::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = Notify::find()->where($where)->offset($page->offset)->limit($page->limit)->orderBy('createTime desc')->asArray()->all();
-        return $this->render('notify',['data'=>$data,'page'=>$page,'count'=>$count]);
+        return $this->render('notify-list',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
 }
