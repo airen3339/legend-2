@@ -19,6 +19,7 @@ use app\modules\content\models\RoleFeedback;
 use app\modules\content\models\Server;
 use app\modules\content\models\YinShang;
 use app\modules\content\models\YuanbaoRoleLog;
+use app\modules\pay\models\Recharge;
 use Hyperbolaa\Wechatpay\Facades\Jsapi;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -491,5 +492,25 @@ class ApiController extends  Controller
 //            $model->createTime = strtotime($dateTime);
 //            $model->save();
 //        }
+    }
+    /**
+     * 补单
+     */
+    public function actionAddMoney(){
+        $orderId = Yii::$app->request->post('orderId','');
+        if(!$orderId){
+            Methods::jsonData(0,'id不存在');
+        }
+        $orderData = Recharge::find()->where("orderNumber = '{$orderId}'")->asArray()->one();
+        if($orderData['status'] != 1){//订单未完成
+            Recharge::updateAll(['status'=>1],"orderNumber='{$orderId}'");//修改订单状态
+            //通知服务器处理后续
+            $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderId,'ext_info'=>$orderData['extInfo']];
+            $url = \Yii::$app->params['gameServerUrl'];
+//            Methods::post($url,$postData);
+            Methods::jsonData(1,'补单成功');
+        }else{
+            Methods::jsonData(0,'订单已近是支付成功，不需要补单');
+        }
     }
 }

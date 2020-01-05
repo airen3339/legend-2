@@ -17,6 +17,7 @@ use app\modules\content\models\RoleActivity;
 use app\modules\content\models\Server;
 use app\modules\content\models\YuanbaoRole;
 use app\modules\content\models\YuanbaoRoleLog;
+use app\modules\pay\models\Notify;
 use app\modules\pay\models\Recharge;
 use yii\data\Pagination;
 
@@ -162,6 +163,7 @@ class PlayerController  extends AdminController
         $servers = Server::getServers();
         return $this->render('order-query',['data'=>$data,'page'=>$pages,'count'=>$total,'servers'=>$servers]);
     }
+    
     /**
      * 货币消耗
      * 区服统计
@@ -490,5 +492,28 @@ class PlayerController  extends AdminController
         }
         $servers = Server::getServers();
         return $this->render('role-money-use',['data'=>$data,'servers'=>$servers,'types'=>$types,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 回调详情
+     */
+    public function actionNotifyDetail(){
+        $orderId = \Yii::$app->request->get('orderId');
+        if($orderId){
+            $order = Notify::find()->where("orderNumber = '{$orderId}'")->asArray()->one();
+        }else{
+            $order = [];
+        }
+        return $this->render('notify-detail',['data'=>$order]);
+    }
+    /**
+     * 回调信息数据
+     */
+    public function actionNotifyList(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $count = Notify::find()->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = Notify::find()->offset($page->offset)->limit($page->limit)->orderBy('createTime desc')->asArray()->all();
+        return $this->render('notify',['data'=>$data,'page'=>$page,'count'=>$count]);
     }
 }

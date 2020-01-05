@@ -81,6 +81,7 @@
                 <th >充值时间</th>
                 <th >领取时间</th>
                 <th >状态</th>
+                <th >操作</th>
             </tr>
             </thead>
             <tbody>
@@ -99,6 +100,14 @@
                     <td style="width: 115px;"><span ><?php echo $v['createTime']?></span></td>
                     <td style="width: 115px;"><span><?php echo $v['finishTime']?></span></td>
                     <td ><span><?php echo strtotime($v['finishTime'])>0?'已完成':'未完成'?></span></td>
+                    <td ><span>
+                            <?php  if(strtotime($v['finishTime'])<0){?>
+                                <input type="hidden" value="<?php echo $v['orderid']?>" id="mon<?php echo $kss?>" />
+                                <button onclick="addMoney(<?php echo $kss?>)">补单</button>
+                            <?php }else{?>
+                                <a href='/content/player/notify-detail?orderId=<?php echo $v['orderid']?>'  class='btn'  >回调详情</a>
+                            <?php }?>
+                        </span></td>
                 </tr>
                 <?php
             }
@@ -128,5 +137,18 @@
             return false;
         }
         location.href = '/content/rule/role?page='+page;
+    }
+    function addMoney(site){
+        var str = '#'+site;
+        var orderId = $(str).val();
+        if(!orderId){
+            alert('订单id不存在');return false;
+        }
+        $.post('/content/api/add-money',{orderId:orderId},function(e){
+            alert(e.message);
+            if(e.code == 1){
+                window.location.reload();
+            }
+        },'json');
     }
 </script>
