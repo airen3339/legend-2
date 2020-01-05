@@ -513,4 +513,8 @@ class ApiController extends  Controller
             Methods::jsonData(0,'订单已近是支付成功，不需要补单');
         }
     }
+    public function test(){
+        Recharge::notifyLog('ceshi',1);
+        Recharge::notifyLog('ceshi',2);
+    }
 }
