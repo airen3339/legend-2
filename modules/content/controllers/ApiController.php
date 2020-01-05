@@ -507,7 +507,7 @@ class ApiController extends  Controller
             //通知服务器处理后续
             $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderId,'ext_info'=>$orderData['extInfo']];
             $url = \Yii::$app->params['gameServerUrl'];
-//            Methods::post($url,$postData);
+            Methods::post($url,$postData);
             Methods::jsonData(1,'补单成功');
         }else{
             Methods::jsonData(0,'订单已近是支付成功，不需要补单');
