@@ -138,7 +138,7 @@
     }
     function addMoney(site){
         if(confirm('确定进行补单？')){
-            var str = '#'+site;
+            var str = '#mon'+site;
             var orderId = $(str).val();
             if(!orderId){
                 alert('订单id不存在');return false;
