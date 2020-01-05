@@ -499,7 +499,7 @@ class PlayerController  extends AdminController
     public function actionNotifyDetail(){
         $orderId = \Yii::$app->request->get('orderId');
         if($orderId){
-            $order = Notify::find()->where("orderNumber = '{$orderId}'")->asArray()->one();
+            $order = Notify::find()->where("id = '{$orderId}'")->asArray()->one();
         }else{
             $order = [];
         }
