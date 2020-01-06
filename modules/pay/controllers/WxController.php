@@ -184,14 +184,15 @@ class WxController extends yii\web\Controller {
         $returnCode = $data['return_code'];//支付状态
         if($returnCode == 'SUCCESS'){
             $amount = $data['total_fee'];//支付金额 单位为分
-            $orderNo = $data['out_trade_no'];//商户订单号//验证签名
-
+            $orderNo = $data['out_trade_no'];//商户订单号
+            $merOrder = isset($data['transaction_id'])?$data['transaction_id']:'';
+            //验证签名
             $result = self::checkWxpaySign($orderNo);
             if($result){
                 $amount = $amount/100;//换成元
                 $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
-                    Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
+                    Recharge::updateAll(['status'=>1,'merOrder'=>$merOrder],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = \Yii::$app->params['gameServerUrl'];

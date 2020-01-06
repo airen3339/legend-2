@@ -178,7 +178,7 @@ class ApiController extends Controller
                 $amount = $amount/100;//换成元
                 $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = $amount")->asArray()->one();
                 if($orderData['status'] != 1){//订单未完成
-                    Recharge::updateAll(['status'=>1],"orderNumber='{$orderNo}'");//修改订单状态
+                    Recharge::updateAll(['status'=>1,'merOrder'=>$payTrxNo],"orderNumber='{$orderNo}'");//修改订单状态
                     //通知服务器处理后续
 //                    $amount = $amount/100;//换成元
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];

@@ -43,9 +43,7 @@
             <input placeholder=""  value="<?php echo isset($order['yuanbao'])?$order['yuanbao']:''?>"    readonly/>
 
         </p>
-
         <div>
-            <span class="wxBtn" style="color: <?php echo isset($order['status'])?($order['status']==1?'green':'red'):''?>;" ><?php echo isset($order['status'])?($order['status']==1?'支付成功':'支付失败'):''?></span>
             <br/>
         </div>
         <br/>

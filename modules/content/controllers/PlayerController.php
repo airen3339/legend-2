@@ -159,8 +159,16 @@ class PlayerController  extends AdminController
             $data[$k]['packageFlag'] = $da['PackageFlag'];
             $data[$k]['roleName'] = $da['Name'];
             $data[$k]['userId'] = $da['UserID'];
-            $orderType = Recharge::find()->where("orderNumber = '{$v['orderid']}'")->asArray()->one()['payType'];
+            //订单是否共存
+            $order = Recharge::find()->where("orderNumber = '{$v['orderid']}'")->asArray()->one();
+            if($order){
+                $data[$k]['merOrder'] = $order['merOrder'];
+            }else{
+                $data[$k]['merOrder'] = '';
+            }
+            //支付类型
             $orderTypeStr = '';
+            $orderType = $v['type'];
             if($orderType==1){
                 $orderTypeStr = '支付宝';
             }elseif($orderType == 2){

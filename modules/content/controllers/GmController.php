@@ -120,6 +120,7 @@ class GmController  extends AdminController
             $name = Yii::$app->request->post('name','');
             $emailTitle = Yii::$app->request->post('emailTitle');
             $emailContent = Yii::$app->request->post('emailContent');
+            $roleId = Yii::$app->request->post('roleId','');
 //            $contentOther = Yii::$app->request->post('contentOther');
             $contentOther = '';
             $propId = Yii::$app->request->post('propId');
@@ -136,6 +137,12 @@ class GmController  extends AdminController
                         echo "<script>alert('没有该玩家（".$y."）');setTimeout(function(){history.go(-1);},1000)</script>";die;
                     }
                     $roleArr[] = $roleId;
+                }
+            }
+            if($roleId){
+                $ids = explode(',',$roleId);
+                foreach($ids as $e => $w){
+                    $roleArr[] = trim($w);
                 }
             }
             if($server && $roleArr && $emailContent && $emailTitle && $propId && $propNum && $binding){

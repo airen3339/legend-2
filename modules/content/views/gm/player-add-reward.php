@@ -24,7 +24,13 @@
             <div class="control-group">
                 <label for="modulename" class="control-label">角色名</label>
                 <div class="controls">
-                    <textarea type="text" id="roleId"  name="name" value="" placeholder="多个英文逗号隔开"  ></textarea>
+                    <textarea type="text" id="name"  name="name" value="" placeholder="多个英文逗号隔开"  ></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="modulename" class="control-label">角色id</label>
+                <div class="controls">
+                    <textarea type="text" id="roleId"  name="roleId" value=""  onkeyup="value = value.replace(/[^0-9,]/g,'')" placeholder="多个英文逗号隔开"  ></textarea>
                 </div>
             </div>
             <div class="control-group">

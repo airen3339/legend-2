@@ -9,7 +9,7 @@
     <form action="/content/player/notify-list" method="get" class="form-horizontal">
         <table class="table">
             <tr>
-                <td>
+                <td width="120">
                     订单号查询：
                 </td>
                 <td>
