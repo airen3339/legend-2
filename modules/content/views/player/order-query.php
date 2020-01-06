@@ -105,7 +105,7 @@
                     <td style="width: 115px;"><span><?php echo $v['finishTime']?></span></td>
                     <td ><span><?php echo strtotime($v['finishTime'])>0?'已完成':'未完成'?></span></td>
                     <td ><span>
-                            <?php  if(strtotime($v['finishTime'])<0){?>
+                            <?php  if($v['merOrder']){?>
                                 <input type="hidden" value="<?php echo $v['orderid']?>" id="mon<?php echo $kss?>" />
                                 <button onclick="addMoney(<?php echo $kss?>)">补单</button>
                             <?php }?>
