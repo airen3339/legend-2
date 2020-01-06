@@ -19,6 +19,7 @@ use app\modules\content\models\RoleFeedback;
 use app\modules\content\models\Server;
 use app\modules\content\models\YinShang;
 use app\modules\content\models\YuanbaoRoleLog;
+use app\modules\pay\models\Lottery;
 use app\modules\pay\models\Recharge;
 use Hyperbolaa\Wechatpay\Facades\Jsapi;
 use yii\base\Exception;
@@ -516,5 +517,43 @@ class ApiController extends  Controller
     public function actionTest(){
         Recharge::notifyLog('ceshi',1);
         Recharge::notifyLog('ceshi',2);
+    }
+    /**
+     * 时时彩数据漏洞完善
+     */
+    public function actionSscDataAdd(){
+        $date = Yii::$app->request->post('date');
+        if($date){
+            $url = "http://d.apiplus.net/daily.do?token=t02ed09c241ad2e34k&code=cqssc&format=json&date=".$date;
+            $result = file_get_contents($url);
+            $data = json_decode($result,true);
+            if(isset($data['data'])){
+                $code = $data['code'];
+                $insert = $data['data'];
+                foreach($insert as $k => $v){
+                    $expect = $v['expect'];//开奖编码
+                    $openCode = $v['opencode'];//开奖码
+                    $openTime = $v['opentime'];//开奖时间   日期时间格式
+                    $openUnixTime = $v['opentimestamp'];//开间时间 时间戳
+                    $date = explode(' ',$openTime)[0];
+                    $time = time();
+                    //查看是否已有该条时彩数据
+                    $isHad = Lottery::find()->where("expect = '{$expect}' and openCode = '{$openCode}' and code = '{$code}'")->one();
+                    if($isHad){
+                        continue;
+                    }else{
+                        $model = new Lottery();
+                        $model->date = $date;
+                        $model->code = $code;
+                        $model->expect = $expect;
+                        $model->openCode = $openCode;
+                        $model->openTime = $openTime;
+                        $model->openUnixTime = $openUnixTime;
+                        $model->createTime = $time;
+                        $model->save();
+                    }
+                }
+            }
+        }
     }
 }
