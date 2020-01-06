@@ -38,13 +38,13 @@
             <?php
             foreach($data as $kss => $v) {
                 ?>
-                <tr  class="text-item tdBorder">
+                <tr  class="tdBorder">
                     <td ><span ><?php echo $v['id']?></span></td>
-                    <td ><span ><?php echo $v['orderNumber']?></span></td>
+                    <td><span ><?php echo $v['orderNumber']?></span></td>
                     <td ><span ><?php echo $v['remark']?></span></td>
-                    <td ><span style="width: 870px; max-height: 50px !important;overflow-y: hidden !important;"><?php echo $v['notify']?></span></td>
-                    <td style="width: 115px;"><span><?php echo $v['createTime']?date('Y-m-d H:i:s',$v['createTime']):''?></span></td>
-                    <td ><span><a href='/content/player/notify-detail?orderId=<?php echo $v['id']?>'  class='' >回调详情</a></span></td>
+                    <td style="width: 870px; max-height: 50px !important;overflow-y: hidden !important;"><span ><?php  if($v['notify']) echo substr($v['notify'],0,100).'....'?></span></td>
+                    <td ><span><?php echo $v['createTime']?date('Y-m-d H:i:s',$v['createTime']):''?></span></td>
+                    <td><span><a href='/content/player/notify-detail?orderId=<?php echo $v['id']?>'  class='' >回调详情</a></span></td>
                 </tr>
                 <?php
             }
