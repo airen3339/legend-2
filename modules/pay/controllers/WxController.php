@@ -28,6 +28,8 @@ class WxController extends yii\web\Controller {
     public function actionWxOrder(){
         $request = \Yii::$app->request->post();
         $poststr = json_encode($request);
+        Methods::varDumpLog('testPay.txt',$poststr,'a');
+        Methods::varDumpLog('testPay.txt',"\n",'a');
         $request = json_decode($poststr);
         $content = get_object_vars($request);
         $key = key($content);
