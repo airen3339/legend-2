@@ -163,8 +163,10 @@ class PlayerController  extends AdminController
             $order = Recharge::find()->where("orderNumber = '{$v['orderid']}'")->asArray()->one();
             if($order){
                 $data[$k]['merOrder'] = $order['merOrder'];
+                $data[$k]['hadOrder'] = 1;//php库有没有改订单 判断补单
             }else{
                 $data[$k]['merOrder'] = '';
+                $data[$k]['hadOrder'] = 0;
             }
             //支付类型
             $orderTypeStr = '';
