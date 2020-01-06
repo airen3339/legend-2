@@ -159,7 +159,7 @@ class ApiController extends Controller
      * POST方式
      */
     public function actionAlipayNotify(){
-        $data = $_POST['data'];
+        $data = isset($_POST['data'])?$_POST['data']:'';
         Recharge::notifyLog($data,1);
         if(!$data){
             echo 'fail';die;
