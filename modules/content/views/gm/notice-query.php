@@ -45,9 +45,9 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>区服</th>
                 <th>发布时间</th>
                 <th>截止时间</th>
+                <th>区服</th>
                 <th style="width: 460px;">公告内容</th>
                 <th>公告类型</th>
                 <th>操作者</th>
@@ -61,9 +61,9 @@
                 ?>
                 <tr  class="text-item tdBorder">
                     <td style="width: 30px;"><span ><?php echo $v['id']?></span></td>
-                    <td style="width: 30px;"><span ><?php echo $v['serverId']?></span></td>
                     <td style="width: 120px;"><span ><?php echo $v['beginTime']?></span></td>
                     <td style="width: 120px;"><span ><?php echo $v['endTime']?></span></td>
+                    <td style="width: 50px;"><span ><?php echo $v['serverId']?$v['serverId']:'全服'?></span></td>
                     <td ><span style="line-height: 1.4em !important;" title="<?php echo $v['content'];?>"><?php echo $v['content']?></span></td>
                     <td ><span><?php echo $v['type']==1?'首页公告':($v['type']==2?'跑马灯公告':'服务器关服')?></span></td>
                     <td ><span><?php echo $v['createName']?></span></td>
