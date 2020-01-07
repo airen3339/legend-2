@@ -2,7 +2,7 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/gm/index">GM工具</a> <span class="divider">/</span></li>
-        <li class="active">区服添加奖励</li>
+        <li class="active">玩家添加奖励</li>
     </ul>
     <form action="/content/gm/player-add-reward" method="post" class="form-horizontal" onsubmit="return submitData()">
         <fieldset>
@@ -84,6 +84,7 @@
     function submitData(){
         var server = $('#server').val();
         var roleId = $('#roleId').val();
+        var rolename = $('#name').val();
         var emailTitle = $('#emailTitle').val();
         var emailContent = $('#emailContent').val();
         var propId = $('#propId').val();
@@ -92,8 +93,8 @@
         if(server  < 1){
             alert('请选择区服');return false;
         }
-        if(!roleId){
-            alert('请填写角色名');return false;
+        if(!roleId && !rolename){
+            alert('请填写角色名或角色id');return false;
         }
         if(!emailTitle){
             alert('请填写邮件标题');return false;
