@@ -8,6 +8,7 @@ use app\libs\Methods;
 use app\modules\content\models\ActivityPush;
 use app\modules\content\models\ActivityType;
 use app\modules\content\models\Catalog;
+use app\modules\content\models\CurrencyData;
 use app\modules\content\models\GameError;
 use app\modules\content\models\Item;
 use app\modules\content\models\Notice;
@@ -18,6 +19,7 @@ use app\modules\content\models\Role;
 use app\modules\content\models\RoleFeedback;
 use app\modules\content\models\Server;
 use app\modules\content\models\YinShang;
+use app\modules\content\models\YuanbaoRole;
 use app\modules\content\models\YuanbaoRoleLog;
 use app\modules\pay\models\Lottery;
 use app\modules\pay\models\Recharge;
@@ -554,6 +556,56 @@ class ApiController extends  Controller
                     }
                 }
             }
+        }
+    }
+    /**
+     * 天中宝藏数据补全
+     */
+    public function actionTzbzDataAdd(){
+        $date = Yii::$app->request->post('date');
+        ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
+//        $date = date('Y-m-d');
+        //删除当天的数据记录
+        YuanbaoRoleLog::deleteAll("date = '{$date}' and type = 14");
+//        CurrencyData::deleteAll("date = '{$date}' and type =14");
+        $servers = Server::getServers();//获取区服
+        $url = \Yii::$app->params['legendLogUrl'];
+        foreach($servers as $k => $v) {
+            $fileName = "lua_log-{$v['id']}-$date.txt";
+            $path = $url.$fileName;
+            try{
+                $content = file_get_contents($path);
+                if(!$content){
+                    continue;
+                }
+                $content = trim($content);
+                $content = explode("legend",$content);
+                foreach($content as $p => $m){
+                    if(!trim($m)){
+                        continue;
+                    }
+                    $arr = explode('@',trim($m));//键值 0-时间 1-type类型 2-角色id 3-增加减少 4-金额 5-说明
+                    //记录用户消费数据
+                    $type = YuanbaoRole::getData($arr[1]);
+                    if($type != 14){
+                        continue;
+                    }
+                    $model = new YuanbaoRoleLog();
+                    $model->date = $date;
+                    $model->serverId = $v['id'];
+                    $model->roleId = YuanbaoRole::getData($arr[2]);
+                    $model->dateTime = $arr[0];
+                    $model->money = YuanbaoRole::getData($arr[4]);
+                    $model->type = $type;
+                    $model->added = YuanbaoRole::getData($arr[3]);
+                    $model->remark = str_replace('explain:','',$arr[5]);
+                    $time = $date." ".$arr[0];
+                    $model->createTime = strtotime($time);
+                    $model->save();
+                }
+            }catch(\Exception $e){
+            }
+
         }
     }
 }
