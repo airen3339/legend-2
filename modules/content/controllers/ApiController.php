@@ -573,13 +573,11 @@ class ApiController extends  Controller
         foreach($servers as $k => $v) {
             $fileName = "lua_log-{$v['id']}-$date.txt";
             $path = $url.$fileName;
-            var_dump($path);
             try{
                 $content = file_get_contents($path);
                 if(!$content){
                     continue;
                 }
-                var_dump($content);die;
                 $content = trim($content);
                 $content = explode("legend",$content);
                 foreach($content as $p => $m){
