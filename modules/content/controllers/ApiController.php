@@ -575,6 +575,7 @@ class ApiController extends  Controller
             $path = $url.$fileName;
             try{
                 $content = file_get_contents($path);
+                var_dump($content);die;
                 if(!$content){
                     continue;
                 }
