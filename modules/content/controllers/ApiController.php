@@ -566,7 +566,7 @@ class ApiController extends  Controller
         ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
 //        $date = date('Y-m-d');
         //删除当天的数据记录
-        YuanbaoRole::deleteAll("date = '{$date}' and type = 14");
+        YuanbaoRoleLog::deleteAll("date = '{$date}' and type = 14");
 //        CurrencyData::deleteAll("date = '{$date}' and type =14");
         $servers = Server::getServers();//获取区服
         $url = \Yii::$app->params['legendLogUrl'];
@@ -590,7 +590,7 @@ class ApiController extends  Controller
                     if($type != 14){
                         continue;
                     }
-                    $model = new YuanbaoRole();
+                    $model = new YuanbaoRoleLog();
                     $model->date = $date;
                     $model->serverId = $v['id'];
                     $model->roleId = YuanbaoRole::getData($arr[2]);
