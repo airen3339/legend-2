@@ -5,6 +5,7 @@ namespace app\modules\content\controllers;
 
 
 use app\libs\Methods;
+use app\modules\content\models\ActivityLog;
 use app\modules\content\models\ActivityPush;
 use app\modules\content\models\ActivityType;
 use app\modules\content\models\Catalog;
@@ -16,6 +17,7 @@ use app\modules\content\models\OperationLog;
 use app\modules\content\models\QuestionCategory;
 use app\modules\content\models\RewardRecord;
 use app\modules\content\models\Role;
+use app\modules\content\models\RoleActivity;
 use app\modules\content\models\RoleFeedback;
 use app\modules\content\models\Server;
 use app\modules\content\models\YinShang;
@@ -562,6 +564,7 @@ class ApiController extends  Controller
      * 天中宝藏数据补全
      */
     public function actionTzbzDataAdd(){
+        die;
         $date = Yii::$app->request->post('date');
         ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
 //        $date = date('Y-m-d');
@@ -606,6 +609,15 @@ class ApiController extends  Controller
             }catch(\Exception $e){
             }
 
+        }
+    }
+    /**
+     * 天中宝藏道具id统计补全
+     */
+    public function actionTzbzIdData(){
+        $date = Yii::$app->request->post('date');
+        if($date){
+            RoleActivity::tzbzIdData($date);
         }
     }
 }

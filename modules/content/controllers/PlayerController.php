@@ -402,7 +402,7 @@ class PlayerController  extends AdminController
                 if($beginTime){
                     $begin = strtotime($beginTime);
                     $where .= " and unix_timestamp(dateTime) >= $begin";
-                    if($begin > $today){
+                    if($begin >= $today){
                         //统计用户最新的活动数据
                         YuanbaoRoleLog::updateTzbzData($roleId);
                     }
@@ -410,7 +410,7 @@ class PlayerController  extends AdminController
                 if($endTime){
                     $end = strtotime($endTime);
                     $where .= " and unix_timestamp(dateTime) <= $end";
-                    if($end > $today){
+                    if($end >= $today){
                         //统计用户最新的活动数据
                         YuanbaoRoleLog::updateTzbzData($roleId);
                     }
