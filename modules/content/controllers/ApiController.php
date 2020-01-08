@@ -564,7 +564,7 @@ class ApiController extends  Controller
      * 天中宝藏数据补全
      */
     public function actionTzbzDataAdd(){
-        die;
+//        die;
         $date = Yii::$app->request->post('date');
         ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)');
 //        $date = date('Y-m-d');

@@ -20,6 +20,7 @@ use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\QuestionCategory;
+use app\modules\content\models\RoleActivity;
 use app\modules\content\models\Server;
 use app\modules\content\models\User;
 use app\modules\content\models\YuanbaoRole;
@@ -296,5 +297,12 @@ class TimerController extends Controller
      */
     public function actionRoleMailReceive(){
         MailReceive::getMailLog();
+    }
+    /**
+     * 天中宝藏id数据统计
+     */
+    public function actionTzbzIdData(){
+        $date = date('Y-m-d');
+        RoleActivity::tzbzIdData($date);
     }
 }
