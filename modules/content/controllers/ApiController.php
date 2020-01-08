@@ -589,6 +589,8 @@ class ApiController extends  Controller
                     $type = YuanbaoRole::getData($arr[1]);
                     if($type != 14){
                         continue;
+                    }else{
+                        var_dump($m);
                     }
                     $model = new YuanbaoRole();
                     $model->date = $date;
