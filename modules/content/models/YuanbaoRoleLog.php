@@ -88,7 +88,8 @@ class YuanbaoRoleLog extends ActiveRecord
                         $model->type = 1;
                         $model->contentId = $y['id'];
                         $model->serverId = $v['serverId'];
-                        $model->createTime = time();
+                        $time = $date.' '.$v['dateTime'];
+                        $model->createTime = strtotime($time);
                         $model->save();
                     }
                 }
