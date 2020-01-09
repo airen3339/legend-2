@@ -18,12 +18,14 @@ use app\modules\content\models\PlayerChannelRegister;
 use app\modules\content\models\PlayerLogin;
 use app\modules\content\models\PlayerRegister;
 use app\modules\content\models\Recharge;
+use app\modules\content\models\RewardData;
 use app\modules\content\models\Role;
 use app\modules\content\models\Server;
 use app\modules\content\models\SliverMerchant;
 use app\modules\content\models\User;
 use app\modules\content\models\YuanbaoRole;
 use app\modules\content\models\YuanbaoRoleLog;
+use function GuzzleHttp\Psr7\str;
 use Yii;
 use yii\data\Pagination;
 
@@ -916,5 +918,25 @@ class OperateController  extends AdminController
             $totalMoney += $money;
         }
         return $this->render('month-query',['data'=>$months,'servers'=>$servers,'totalMoney'=>$totalMoney]);
+    }
+    /**
+     * 奖池数据
+     */
+    public function actionRewardData(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+//        $endTime = Yii::$app->request->post('endTime');
+        $where = " 1 = 1 ";
+        if($beginTime){
+            $begin = strtotime($beginTime);
+            $where .= " and unix_timestamp(times) >= $begin";
+            $end = $begin + 86399;
+            $where .= " and unix_timestamp(times) <= $end";
+        }
+        $count = RewardData::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = RewardData::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('reward-data',['data'=>$data,'count'=>$count,'page'=>$page]);
     }
 }
