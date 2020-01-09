@@ -936,7 +936,7 @@ class OperateController  extends AdminController
         }
         $count = RewardData::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
-        $data = RewardData::find()->where($where)->asArray()->offset($page->offset)->limit($page->limit)->all();
+        $data = RewardData::find()->where($where)->asArray()->orderBy('times desc')->offset($page->offset)->limit($page->limit)->all();
         return $this->render('reward-data',['data'=>$data,'count'=>$count,'page'=>$page]);
     }
 }
