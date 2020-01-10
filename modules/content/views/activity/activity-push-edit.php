@@ -210,9 +210,9 @@
         if(!endTime){
             alert('请选择截止时间');return false;
         }
-        if(!condition){
-            alert('请添加发放物品');return false;
-        }
+        // if(!condition){
+        //     alert('请添加发放物品');return false;
+        // }
         if(confirm('确定修改并推送服务器？')){
             return true;
         }else{
