@@ -49,7 +49,7 @@ class ActivityLog extends ActiveRecord
             ['id'=>1559,'name'=>'声望令牌次数','count'=>0],
             ['id'=>5018,'name'=>'点金石次数','count'=>0],
             ['id'=>1074,'name'=>'洗炼符次数','count'=>0],
-            ['id'=>1245,'name'=>'防御神水次数','count'=>0],
+            ['id'=>1048,'name'=>'防御神水次数','count'=>0],
             ['id'=>1510,'name'=>'炽焰麒麟次数','count'=>0],
         ];
         return $dataArr;
