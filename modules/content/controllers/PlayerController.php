@@ -17,9 +17,11 @@ use app\modules\content\models\RoleActivity;
 use app\modules\content\models\Server;
 use app\modules\content\models\YuanbaoRole;
 use app\modules\content\models\YuanbaoRoleLog;
+use app\modules\content\models\YuanbaoType;
 use app\modules\pay\models\Notify;
 use app\modules\pay\models\Recharge;
 use yii\data\Pagination;
+use yii;
 
 class PlayerController  extends AdminController
 {
@@ -543,5 +545,86 @@ class PlayerController  extends AdminController
         $page = new Pagination(['totalCount'=>$count]);
         $data = Notify::find()->where($where)->offset($page->offset)->limit($page->limit)->orderBy('createTime desc')->asArray()->all();
         return $this->render('notify-list',['data'=>$data,'page'=>$page,'count'=>$count]);
+    }
+    /**
+     * 活动类型
+     */
+    public function actionYuanbaoType(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $types = YuanbaoType::find()->asArray()->orderBy("rank desc")->all();
+        return $this->render('yuanbao-type',['types'=>$types]);
+    }
+    /**
+     * 类型编辑修改
+     * 活动类型
+     */
+    public function actionYuanbaoTypeEdit(){
+        if($_POST){
+            $id = Yii::$app->request->post('id');
+            $name = Yii::$app->request->post('name');
+            $rank = Yii::$app->request->post('rank');
+            $type = Yii::$app->request->post('type');
+            $remark = Yii::$app->request->post('remark');
+            if($id){
+                $model = YuanbaoType::findOne($id);
+                $had = YuanbaoType::find()->where("name = '{$name}' and id != $id")->one();
+            }else{
+                $model = new YuanbaoType();
+                $had = YuanbaoType::find()->where("name = '{$name}'")->one();
+            }
+            if($had){
+                echo "<script>alert('该类型名称已存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+            if(!$type){
+                echo "<script>alert('请填写对应的元宝类型');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }else{
+                if($id ){
+                    $where = " and id != $id";
+                }else{
+                    $where = '';
+                }
+                $had = YuanbaoType::find()->where("type = $type $where")->one();
+                if($had){
+                    echo "<script>alert('该元宝类型已存在');setTimeout(function(){history.go(-1);},1000)</script>";die;
+                }
+            }
+            $model->name = $name;
+            $model->rank = $rank?$rank:0;
+            $model->type = $type;
+            $model->remark = $remark;
+            $model->createTime = time();
+            $res = $model->save();
+            if($res){
+                echo "<script>alert('操作成功');setTimeout(function(){location.href='yuanbao-type';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作失败');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            $id= Yii::$app->request->get('id');
+            if($id){
+                $type = YuanbaoType::find()->where("id = $id")->asArray()->one();
+            }else{
+                $type = [];
+            }
+            return $this->render('yuanbao-edit',['type'=>$type]);
+        }
+    }
+    /**
+     * 活动类型
+     * 删除
+     */
+    public function actionYuanbaoTypeDelete(){
+        $id = Yii::$app->request->get('id');
+        if($id){
+            $res = YuanbaoType::deleteAll("id = $id");
+            if($res ){
+                echo "<script>alert('删除成功');setTimeout(function(){location.href='yuanbao-type';},1000)</script>";die;
+            }else{
+                echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+            }
+        }else{
+            echo "<script>alert('操作失败，请重试');setTimeout(function(){history.go(-1);},1000)</script>";die;
+        }
     }
 }
