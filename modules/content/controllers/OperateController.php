@@ -10,6 +10,7 @@ use app\libs\AdminController;
 use app\libs\Chart;
 use app\modules\content\models\ChargeMoney;
 use app\modules\content\models\LoginData;
+use app\modules\content\models\LotteryData;
 use app\modules\content\models\LTV;
 use app\modules\content\models\LTVMoney;
 use app\modules\content\models\OnlineCount;
@@ -955,9 +956,9 @@ class OperateController  extends AdminController
             $end = $begin + 86399;
             $where .= " and unix_timestamp(times) <= $end";
         }
-        $count = LoginData::find()->where($where)->count();
+        $count = LotteryData::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
-        $data = LoginData::find()->where($where)->asArray()->orderBy('times desc')->offset($page->offset)->limit($page->limit)->all();
+        $data = LotteryData::find()->where($where)->asArray()->orderBy('times desc')->offset($page->offset)->limit($page->limit)->all();
         return $this->render('lottery-data',['data'=>$data,'count'=>$count,'page'=>$page]);
     }
 }
