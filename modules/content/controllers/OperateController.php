@@ -939,4 +939,25 @@ class OperateController  extends AdminController
         $data = RewardData::find()->where($where)->asArray()->orderBy('times desc')->offset($page->offset)->limit($page->limit)->all();
         return $this->render('reward-data',['data'=>$data,'count'=>$count,'page'=>$page]);
     }
+    /**
+     * 奖池数据
+     * 时来运转
+     */
+    public function actionLotteryData(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+//        $endTime = Yii::$app->request->post('endTime');
+        $where = " 1 = 1 ";
+        if($beginTime){
+            $begin = strtotime($beginTime);
+            $where .= " and unix_timestamp(times) >= $begin";
+            $end = $begin + 86399;
+            $where .= " and unix_timestamp(times) <= $end";
+        }
+        $count = LoginData::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count]);
+        $data = LoginData::find()->where($where)->asArray()->orderBy('times desc')->offset($page->offset)->limit($page->limit)->all();
+        return $this->render('lottery-data',['data'=>$data,'count'=>$count,'page'=>$page]);
+    }
 }

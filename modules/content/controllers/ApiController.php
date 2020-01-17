@@ -12,6 +12,7 @@ use app\modules\content\models\Catalog;
 use app\modules\content\models\CurrencyData;
 use app\modules\content\models\GameError;
 use app\modules\content\models\Item;
+use app\modules\content\models\LotteryData;
 use app\modules\content\models\Notice;
 use app\modules\content\models\OperationLog;
 use app\modules\content\models\QuestionCategory;
@@ -683,6 +684,30 @@ class ApiController extends  Controller
             ['column'=>'G','title'=>'日期','key'=>'times'],
         ];
         $title = '奖池数据-'.$date;
+        Methods::excelDownload($data,$title,$th_content);die;
+    }
+    /**
+     * 奖池数据excel表导出
+     */
+    public function actionLotteryExcel(){
+        $date = Yii::$app->request->get('date');
+        $data = [];
+        if($date){
+            $begin = strtotime($date);
+            $end = $begin + 86399;
+            $where = " unix_timestamp(times) between $begin and $end ";
+            $data = LotteryData::find()->where($where)->asArray()->all();
+        }
+        $th_content = [
+            ['column'=>'A','title'=>'期数','key'=>'periods'],
+            ['column'=>'B','title'=>'开奖前奖池元宝数','key'=>'data1'],
+            ['column'=>'C','title'=>'下注元宝数','key'=>'data2'],
+            ['column'=>'D','title'=>'开奖前奖池元宝数加下注元宝数','key'=>'data3'],
+            ['column'=>'E','title'=>'本期赔出的元宝数','key'=>'data4'],
+            ['column'=>'F','title'=>'本期奖池剩余元宝数','key'=>'data5'],
+            ['column'=>'G','title'=>'日期','key'=>'times'],
+        ];
+        $title = '时来运转奖池数据-'.$date;
         Methods::excelDownload($data,$title,$th_content);die;
     }
 }
