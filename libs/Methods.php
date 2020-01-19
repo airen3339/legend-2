@@ -187,9 +187,12 @@ class Methods
         $aContext = array('http'=>array('method' => 'POST','header' =>'Content-type: application/x-www-form-urlencoded','content' =>$post_data));
         $cxContext = stream_context_create($aContext);
         $res = file_get_contents($url,true,$cxContext);
-//        Methods::varDumpLog('push.txt',$post_data,'a');
-//        Methods::varDumpLog('push.txt',"\n",'a');
-//        Methods::varDumpLog('push.txt',$res,'a');
+        $date = date('Y-m-d');
+        $log = "push-$date.txt";
+        Methods::varDumpLog($log,"\n",'a');
+        Methods::varDumpLog($log,$post_data,'a');
+        Methods::varDumpLog($log,"\n",'a');
+        Methods::varDumpLog($log,$res,'a');
         return $res;
     }
     /**
