@@ -23,7 +23,7 @@ class ActivityPush extends ActiveRecord
      * @param $pushContent 发放物品
      */
     public static function pushActivity($serverId,$activityId,$type,$beginTime,$endTime,$pushContent){
-        if(empty($activityId) || empty($type) || empty($beginTime) || empty($endTime) || empty($pushContent)){
+        if(empty($activityId) || empty($type) || empty($beginTime) || empty($endTime)){
             return false;
         }else{
             $pushContent = json_decode($pushContent,true);
