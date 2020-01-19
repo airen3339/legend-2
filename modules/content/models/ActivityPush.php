@@ -28,28 +28,32 @@ class ActivityPush extends ActiveRecord
         }else{
             $pushContent = json_decode($pushContent,true);
             $data = [];//对应条件的数据
-            foreach($pushContent['condition'] as $k => $v){
-                $key = 'condition'.$v;//条件键区分
-                $propId = intval($pushContent['propId'][$k]);
-                if($propId>0){
-                    $data[$key][] = ['id'=>intval($pushContent['propId'][$k]),'count'=>intval($pushContent['number'][$k]),'binding'=>intval($pushContent['bind'][$k])];
-                }else{
-                    if( !isset($data[$key])){
-                        $data[$key] = '';
+            $AwardList = [];
+            if($pushContent){
+                foreach($pushContent['condition'] as $k => $v){
+                    $key = 'condition'.$v;//条件键区分
+                    $propId = intval($pushContent['propId'][$k]);
+                    if($propId>0){
+                        $data[$key][] = ['id'=>intval($pushContent['propId'][$k]),'count'=>intval($pushContent['number'][$k]),'binding'=>intval($pushContent['bind'][$k])];
+                    }else{
+                        if( !isset($data[$key])){
+                            $data[$key] = '';
+                        }
                     }
                 }
-            }
-            //构造推送数据
-            $AwardList = [];
-            foreach($data as $l => $t){
-                $con = str_replace('condition','',$l);
-                $con = [$con];
-                $con = ['con'=>$con];
-                if(!empty($t)){
-                    $con['awd']=$t;
+                //构造推送数据
+                foreach($data as $l => $t){
+                    $con = str_replace('condition','',$l);
+                    $con = [$con];
+                    $con = ['con'=>$con];
+                    if(!empty($t)){
+                        $con['awd']=$t;
+                    }
+                    $AwardList[] = $con;
                 }
-                $AwardList[] = $con;
             }
+
+
             $push = [
                 'MainID' => $activityId,
                 'ActivityType' => intval($type),
