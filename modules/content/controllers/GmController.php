@@ -132,17 +132,20 @@ class GmController  extends AdminController
                 $nameArr = explode(',',$name);
                 foreach($nameArr as $t => $y){
                     $y = trim($y);
-                    $roleId = Player::find()->where("Name = '{$y}'")->asArray()->one()['RoleID'];
-                    if(!$roleId){
+                    $roId = Player::find()->where("Name = '{$y}'")->asArray()->one()['RoleID'];
+                    if(!$roId){
                         echo "<script>alert('没有该玩家（".$y."）');setTimeout(function(){history.go(-1);},1000)</script>";die;
                     }
-                    $roleArr[] = $roleId;
+                    $roleArr[] = $roId;
                 }
             }
             if($roleId){
                 $ids = explode(',',$roleId);
                 foreach($ids as $e => $w){
-                    $roleArr[] = trim($w);
+                    $w = trim($w);
+                    if(!in_array($w,$roleArr)){
+                        $roleArr[] = $w;
+                    }
                 }
             }
             if($server && $roleArr && $emailContent && $emailTitle && $propId && $propNum && $binding){
