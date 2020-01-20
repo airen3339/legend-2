@@ -623,6 +623,16 @@ class ApiController extends  Controller
         }
     }
     /**
+     * 元宝消耗
+     * 往期数据补全
+     */
+    public function actionYuanbaoData(){
+        $date = Yii::$app->request->post('date');
+        if($date){
+            CurrencyData::updateDateMoneyUse($date);
+        }
+    }
+    /**
      * item道具添加
      */
     public function actionItemAdd(){
