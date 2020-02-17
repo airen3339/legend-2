@@ -52,6 +52,8 @@ class ApiController extends Controller
         $province = \Yii::$app->params['province'];
         $city = \Yii::$app->params['city'];
         $area = \Yii::$app->params['area'];
+        $payType = 'JSAPI_ALIPAY';//支付宝
+//        $payType = 'JSAPI_WEIXIN';//微信
         $roleId = $cont['roleId'];//用户角色id
         if(!$roleId){
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
@@ -82,10 +84,10 @@ class ApiController extends Controller
         $model->server_id = $server_id;
         $model->createTime = $time;
         $model->username = $username;
-        $model->payType = 1;
+        $model->payType = 1;//1-支付宝 2-微信 h5
         $model->yuanbao = $ratio*$amount+$luckNum;
         $model->save();
-        $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id);
+        $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id,$payType);
         die(json_encode($return));
     }
 
@@ -94,12 +96,13 @@ class ApiController extends Controller
      * 支付扫码
      * H5
      */
-    public static  function AliOrder($orderNumber,$productName,$amount,$time,$province,$city,$area,$orderId){
+    public static  function AliOrder($orderNumber,$productName,$amount,$time,$province,$city,$area,$orderId,$payType){
         $appid = \Yii::$app->params['alipayAppid'];
         $key = \Yii::$app->params['alipayKey'];
         $dateTime = $time;
 //        $payType = 'SCANPAY_ALIPAY';
-        $payType = 'JSAPI_ALIPAY';
+//        $payType = 'JSAPI_ALIPAY';//支付宝
+//        $payType = 'JSAPI_WEIXIN';//微信
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];//商户异步通知地址
         $returnUrl = '';//商户前端返回页面地址
         $amount = $amount*100;//金额处理 单位为分
@@ -113,7 +116,7 @@ class ApiController extends Controller
         $postData['sign'] = $sign;
         $url = 'https://pay.quanyuwenlv.com/ts/scanpay/pay';
         $return = Methods::post($url,$postData);
-        Methods::varDumpLog('aliPay.txt',$return,'a');
+//        Methods::varDumpLog('aliPay.txt',$return,'a');
         $return = json_decode($return,true);
         if($return['code'] == 'success'){
             $returnData = json_decode($return['data'],true);
@@ -214,9 +217,14 @@ class ApiController extends Controller
         $area = \Yii::$app->params['area'];
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
 //        $payType = 'SCANPAY_ALIPAY';
-        $payType = 'JSAPI_ALIPAY';
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
+        $payType = $orderData['payType'];
+        if($payType ==2){
+            $payType = 'JSAPI_WEIXIN';//微信
+        }else{
+            $payType = 'JSAPI_ALIPAY';//支付宝
+        }
         $dateTime = date('YmdHis',$orderData['createTime']);
         $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
         ksort($postData);//生成签名

@@ -51,6 +51,7 @@ class WxController extends yii\web\Controller {
         $province = \Yii::$app->params['province'];
         $city = \Yii::$app->params['city'];
         $area = \Yii::$app->params['area'];
+        $payType = 'JSAPI_WEIXIN';//微信
         $roleId = $cont['roleId'];//用户角色id
         if(!$roleId){
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
@@ -86,7 +87,7 @@ class WxController extends yii\web\Controller {
         $res = $model->save();
         if($res){
             //三方微信支付调用
-            $return = ApiController::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id);
+            $return = ApiController::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id,$payType);
 //            $payUrl = 'https://www.6p39k.cn/h5'.$model->id.'.php';
 //            $return = ['code'=>1,'payUrl'=>$payUrl];
         }else{
