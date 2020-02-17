@@ -42,10 +42,15 @@ class WxController extends yii\web\Controller {
             die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
         }
         $time = time();
+        $dateTime = date('YmdHis',$time);
         $orderNumber = $cont['orderNumber'];
         if(!$orderNumber){
             die(json_encode(['code'=>-2]));//,'msg'=>'订单号不存在'
         }
+        //签名地区参数 省 市 区
+        $province = \Yii::$app->params['province'];
+        $city = \Yii::$app->params['city'];
+        $area = \Yii::$app->params['area'];
         $roleId = $cont['roleId'];//用户角色id
         if(!$roleId){
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
@@ -80,8 +85,10 @@ class WxController extends yii\web\Controller {
         $model->yuanbao = $ratio*$amount+$luckNum;
         $res = $model->save();
         if($res){
-            $payUrl = 'https://www.6p39k.cn/h5'.$model->id.'.php';
-            $return = ['code'=>1,'payUrl'=>$payUrl];
+            //三方微信支付调用
+            $return = ApiController::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id);
+//            $payUrl = 'https://www.6p39k.cn/h5'.$model->id.'.php';
+//            $return = ['code'=>1,'payUrl'=>$payUrl];
         }else{
             $return = ['code'=>-7];//-7订单错误
         }
