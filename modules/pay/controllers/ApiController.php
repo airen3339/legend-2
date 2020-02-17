@@ -116,7 +116,8 @@ class ApiController extends Controller
         $postData['sign'] = $sign;
         $url = 'https://pay.quanyuwenlv.com/ts/scanpay/pay';
         $return = Methods::post($url,$postData);
-        Methods::varDumpLog('aliPay.txt',$return,'a');
+        $log = date('Y-m-d').'-aliPay.txt';
+        Methods::varDumpLog($log,$return,'a');
         $return = json_decode($return,true);
         if($return['code'] == 'success'){
             $returnData = json_decode($return['data'],true);
