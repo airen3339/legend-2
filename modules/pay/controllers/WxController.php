@@ -87,9 +87,9 @@ class WxController extends yii\web\Controller {
         $res = $model->save();
         if($res){
             //三方微信支付调用
-            $return = ApiController::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id,$payType);
-//            $payUrl = 'https://www.6p39k.cn/h5'.$model->id.'.php';
-//            $return = ['code'=>1,'payUrl'=>$payUrl];
+//            $return = ApiController::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id,$payType);
+            $payUrl = 'https://www.6p39k.cn/h5'.$model->id.'.php';
+            $return = ['code'=>1,'payUrl'=>$payUrl];
         }else{
             $return = ['code'=>-7];//-7订单错误
         }
