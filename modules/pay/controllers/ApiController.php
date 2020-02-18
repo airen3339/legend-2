@@ -109,7 +109,8 @@ class ApiController extends Controller
 //        $payType = 'JSAPI_ALIPAY';//支付宝
 //        $payType = 'JSAPI_WEIXIN';//微信
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];//商户异步通知地址
-        $returnUrl = '';//商户前端返回页面地址
+//        $returnUrl = '';
+        $returnUrl = \Yii::$app->params['redirect_url']."?orderId=".$orderId;;//商户前端返回页面地址
         $amount = $amount*100;//金额处理 单位为分
         //生成签名
         $postData = ['amount'=>$amount,'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$productName,'province'=>$province,'returnUrl'=>$returnUrl];
