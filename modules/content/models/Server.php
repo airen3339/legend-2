@@ -19,7 +19,7 @@ class Server extends ActiveRecord
         $servers = self::find()->asArray()->all();
         $data = [];
         foreach($servers as $k => $v){
-            $data[] = ['id'=>$v['game_id'],'realId'=>$v['game_real'],'name'=>$v['game_id'].'服'];
+            $data[] = ['id'=>$v['game_id'],'realId'=>$v['game_real'],'name'=>$v['game_id'].'区'];
         }
         return $data;
     }

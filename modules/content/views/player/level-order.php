@@ -57,7 +57,7 @@
                 <?php foreach($data as $k => $v){?>
                 <tr  class="text-item tdBorder" >
                     <td ><span ><?php echo isset($v['UserID'])?$v['UserID']:''?></span></td>
-                    <td ><span ><?php echo isset($v['WorldName'])?$v['WorldName']:''?></span></td>
+                    <td ><span ><?php echo isset($v['WorldID'])?$v['WorldID'].'区':''?></span></td>
                     <td ><span ><?php echo isset($v['Name'])?$v['Name']:''?></span></td>
                     <td ><span ><?php echo isset($v['Battle'])?$v['Battle']:''?></span></td>
                     <td ><span ><?php echo isset($v['Level'])?$v['Level']:''?></span></td>
