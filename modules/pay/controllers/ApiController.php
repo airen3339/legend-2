@@ -52,8 +52,12 @@ class ApiController extends Controller
         $province = \Yii::$app->params['province'];
         $city = \Yii::$app->params['city'];
         $area = \Yii::$app->params['area'];
-        $payType = 'JSAPI_ALIPAY';//支付宝
-//        $payType = 'JSAPI_WEIXIN';//微信
+        $payType = isset($cont['payType'])?$cont['payType']:1;//1-支付宝 2-微信
+        if($payType ==2){
+            $payTypeStr = 'JSAPI_WEIXIN';//微信
+        }else{
+            $payTypeStr = 'JSAPI_ALIPAY';//支付宝
+        }
         $roleId = $cont['roleId'];//用户角色id
         if(!$roleId){
             die(json_encode(['code'=>-3]));//,'msg'=>'角色id不存在'
@@ -84,10 +88,10 @@ class ApiController extends Controller
         $model->server_id = $server_id;
         $model->createTime = $time;
         $model->username = $username;
-        $model->payType = 1;//1-支付宝 2-微信 h5
+        $model->payType = $payType;//1-支付宝 2-微信 h5
         $model->yuanbao = $ratio*$amount+$luckNum;
         $model->save();
-        $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id,$payType);
+        $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id,$payTypeStr);
         die(json_encode($return));
     }
 
