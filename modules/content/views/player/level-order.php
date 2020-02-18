@@ -8,7 +8,26 @@
     </ul>
     <form action="/content/player/level-order" method="get" class="form-horizontal">
         <table class="table">
-
+            <tr>
+                <td>
+                    区服：
+                </td>
+                <td>
+                    <select name="server">
+                        <option value="0">请选择</option>
+                        <?php
+                        foreach($servers as $k => $v){ ?>
+                            <option value='<?php echo $v['id']?>' <?php if(isset($_GET['server']) && $_GET['server'] == $v['id']) echo 'selected';?>><?php echo $v['name']?></option>";
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">查询</button>
+                </td>
+                <td></td>
+            </tr>
         </table>
     </form>
     <form action="/content/player/level-order" method="post">

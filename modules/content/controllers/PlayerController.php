@@ -347,8 +347,13 @@ class PlayerController  extends AdminController
     public function actionLevelOrder(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
+        $serverId = Yii::$app->request->get('server',0);
+        if(!$serverId){
+            $serverId = 1;//默认显示一区数据
+        }
+        $where = " WorldID = $serverId";
         //等级前20名 等级一样以经验排
-        $player = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->orderBy("Level desc,Exp desc")->limit(20)->asArray()->all();
+        $player = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->where($where)->orderBy("Level desc,Exp desc")->limit(20)->asArray()->all();
         foreach($player as $k => $v){
             $roleId = $v['RoleID'];
             $wh = " status = 2 and RoleID = '{$roleId}'";
@@ -357,7 +362,8 @@ class PlayerController  extends AdminController
             $player[$k]['rechargeMoney'] = $money?$money:0;
             //更新元宝消耗记录
         }
-        return $this->render('level-order',['data'=>$player]);
+        $servers = Server::getServers();
+        return $this->render('level-order',['data'=>$player,'servers'=>$servers]);
     }
     /**
      * 战力排行
@@ -366,8 +372,13 @@ class PlayerController  extends AdminController
     public function actionZlOrder(){
         $action = \Yii::$app->controller->action->id;
         parent::setActionId($action);
-        //等级前20名 等级一样以经验排
-        $player = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->orderBy("Battle  desc")->limit(20)->asArray()->all();
+        $serverId = Yii::$app->request->get('server',0);
+        if(!$serverId){
+            $serverId = 1;//默认显示一区数据
+        }
+        $where = " WorldID = $serverId";
+        //战力前20名
+        $player = Player::find()->select("RoleID,UserID,WorldID,WorldName,Name,Level,Ingot,Cash,Money,CurHP,CurMP,Exp,Battle,Vital,MonsterKillNum,SoulScore,PkValue")->where($where)->orderBy("Battle  desc")->limit(20)->asArray()->all();
         foreach($player as $k => $v){
             $roleId = $v['RoleID'];
             $wh = " status = 2 and RoleID = '{$roleId}'";
@@ -376,7 +387,8 @@ class PlayerController  extends AdminController
             $player[$k]['rechargeMoney'] = $money?$money:0;
             //更新元宝消耗记录
         }
-        return $this->render('zl-order',['data'=>$player]);
+        $servers = Server::getServers();
+        return $this->render('zl-order',['data'=>$player,'servers'=>$servers]);
     }
     /**
      * 用户天中宝藏活动数据统计
