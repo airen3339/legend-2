@@ -101,6 +101,7 @@ class ApiController extends Controller
      * H5
      */
     public static  function AliOrder($orderNumber,$productName,$amount,$time,$province,$city,$area,$orderId,$payType){
+        $log = date('Y-m-d').'-aliPay.txt';
         $appid = \Yii::$app->params['alipayAppid'];
         $key = \Yii::$app->params['alipayKey'];
         $dateTime = $time;
@@ -120,8 +121,11 @@ class ApiController extends Controller
         $postData['sign'] = $sign;
         $url = 'https://pay.quanyuwenlv.com/ts/scanpay/pay';
         $return = Methods::post($url,$postData);
-        $log = date('Y-m-d').'-aliPay.txt';
+        $postDataStr = json_encode($postData);
+        Methods::varDumpLog($log,$postDataStr,'a');
+        Methods::varDumpLog($log,"\n",'a');
         Methods::varDumpLog($log,$return,'a');
+        Methods::varDumpLog($log,"\n",'a');
         $return = json_decode($return,true);
         if($return['code'] == 'success'){
             $returnData = json_decode($return['data'],true);
