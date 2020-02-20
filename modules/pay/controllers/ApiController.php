@@ -199,7 +199,7 @@ class ApiController extends Controller
 //                    $amount = $amount/100;//换成元
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = \Yii::$app->params['gameServerUrl'];
-//                    Methods::post($url,$postData);
+                    Methods::post($url,$postData);
                 }
                 echo 'SUCCESS';
             }else{
