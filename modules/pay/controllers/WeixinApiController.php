@@ -5,17 +5,16 @@ namespace app\modules\pay\controllers;
 
 
 use app\libs\Methods;
-use app\modules\cn\models\MessageLook;
 use app\modules\pay\models\Recharge;
 use yii\web\Controller;
 
 header('Access-Control-Allow-Origin:*');
 
-class ApiController extends Controller
+class WeixinApiController extends Controller
 {
     public $enableCsrfValidation = false;
     /**
-     * 支付宝
+     * 微信
      * 支付数据获取
      * 客户端请求
      * 请求参数
@@ -26,18 +25,18 @@ class ApiController extends Controller
      * 支付成功  回调地址中 验证支付结果  ==》通知服务端
      * code返回类型 1 成功 -1 支付金额不能为零 -2 订单号不存在 -3  角色id不存在 -4 服务器id不存在  -5 用户名不存在 -6 支付请求错误
      */
-    public function actionAlipayOrder(){
+    public function actionWxpayOrder(){
         $request = \Yii::$app->request->post();
         $poststr = json_encode($request);
         $date = date('Y-m-d');
-        $logDay = 'aliPayLog-'.$date.'.txt';
+        $logDay = 'WxPayLog-'.$date.'.txt';
         Methods::varDumpLog($logDay,$poststr,'a');
         Methods::varDumpLog($logDay,"\n",'a');
         $request = json_decode($poststr);
         $content = get_object_vars($request);
         $key = key($content);
         $cont = json_decode($key,true);
-        $productName = '元宝充值';
+        $productName = '微信元宝充值';
         $amount = $cont['amount'];
         if($amount <= 0){
             die(json_encode(['code'=>-1]));//,'msg'=>'支付金额不能为零'
@@ -82,10 +81,10 @@ class ApiController extends Controller
         $model->server_id = $server_id;
         $model->createTime = $time;
         $model->username = $username;
-        $model->payType = 1;
+        $model->payType = 2;//1-支付宝 2-微信
         $model->yuanbao = $ratio*$amount+$luckNum;
         $model->save();
-        $return = self::AliOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id);
+        $return = self::WxOrder($orderNumber,$productName,$amount,$dateTime,$province,$city,$area,$model->id);
         die(json_encode($return));
     }
 
@@ -94,14 +93,16 @@ class ApiController extends Controller
      * 支付扫码
      * H5
      */
-    public static  function AliOrder($orderNumber,$productName,$amount,$time,$province,$city,$area,$orderId){
+    public static  function WxOrder($orderNumber,$productName,$amount,$time,$province,$city,$area,$orderId){
         $appid = \Yii::$app->params['alipayAppid'];
         $key = \Yii::$app->params['alipayKey'];
         $dateTime = $time;
 //        $payType = 'SCANPAY_ALIPAY';
-        $payType = 'JSAPI_ALIPAY';
+//        $payType = 'JSAPI_ALIPAY';//支付宝
+        $payType = 'JSAPI_WEIXIN';
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];//商户异步通知地址
-        $returnUrl = '';//商户前端返回页面地址
+//        $returnUrl = '';//商户前端返回页面地址
+        $returnUrl = \Yii::$app->params['redirect_url']."?orderId=".$orderId;;//商户前端返回页面地址
         $amount = $amount*100;//金额处理 单位为分
         //生成签名
         $postData = ['amount'=>$amount,'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$productName,'province'=>$province,'returnUrl'=>$returnUrl];
@@ -113,7 +114,7 @@ class ApiController extends Controller
         $postData['sign'] = $sign;
         $url = 'https://pay.quanyuwenlv.com/ts/scanpay/pay';
         $return = Methods::post($url,$postData);
-        $log = 'aliPay-'.date('Y-m-d').'.txt';
+        $log = 'wxPay-'.date('Y-m-d').'.txt';
         Methods::varDumpLog($log,$return,'a');
         Methods::varDumpLog($log,"\n",'a');
         $return = json_decode($return,true);
@@ -157,14 +158,14 @@ class ApiController extends Controller
 
 
     /**
-     * 支付宝回调
+     * 微信回调
      * 支付结果通知处理
-     * 支付宝
+     * 微信
      * POST方式
      */
     public function actionAlipayNotify(){
         $data = isset($_POST['data'])?$_POST['data']:'';
-        Recharge::notifyLog($data,1);
+        Recharge::notifyLog($data,3);
         if(!$data){
             echo 'fail';die;
         }else{
@@ -216,11 +217,13 @@ class ApiController extends Controller
         $area = \Yii::$app->params['area'];
         $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
 //        $payType = 'SCANPAY_ALIPAY';
-        $payType = 'JSAPI_ALIPAY';
+//        $payType = 'JSAPI_ALIPAY';
+        $payType = 'JSAPI_WEIXIN';
         //查询数据库数据生成签名进行验证
         $orderData = Recharge::find()->where("orderNumber = '{$orderNumber}'")->asArray()->one();
+        $returnUrl = \Yii::$app->params['redirect_url']."?orderId=".$orderData['id'];;//商户前端返回页面地址
         $dateTime = date('YmdHis',$orderData['createTime']);
-        $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
+        $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>$returnUrl];
         ksort($postData);//生成签名
         $sign = self::signAlipay($postData,$key);
         $paySign = $orderData['paySign'];

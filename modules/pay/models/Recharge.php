@@ -29,6 +29,22 @@ class Recharge extends ActiveRecord {
                 $model->remark = '支付宝回调内容为空';
                 $model->save();
             }
+        }elseif($type == 3){
+            if($datas){
+                $data = json_decode($datas,true);
+                $orderNo = isset($data['orderNo'])?$data['orderNo']:'';//商户订单号
+                $model = new Notify();
+                $model->createTime = time();
+                $model->orderNumber = $orderNo;
+                $model->notify = $datas;
+                $model->remark = '微信回调内容';
+                $model->save();
+            }else{
+                $model = new Notify();
+                $model->createTime = time();
+                $model->remark = '微信回调内容为空';
+                $model->save();
+            }
         }else{
             if($datas){
                 $data = (array)simplexml_load_string($datas, 'SimpleXMLElement', LIBXML_NOCDATA); //将微信返回的XML转换成数组
