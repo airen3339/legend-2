@@ -117,7 +117,6 @@ class ApiController extends Controller
         $signArr = $postData;
         ksort($signArr);
         $sign = self::signAlipay($signArr,$key);
-
         //请求支付
         $postData['sign'] = $sign;
         $url = 'https://pay.quanyuwenlv.com/ts/scanpay/pay';
@@ -176,7 +175,6 @@ class ApiController extends Controller
     public function actionAlipayNotify(){
         $data = isset($_POST['data'])?$_POST['data']:'';
         Recharge::notifyLog($data,1);
-//        $data = '{"amount":1000,"appId":"c60cd9e370a846638c01e9a078d08f95","orderNo":"pay_20200219233131103_34","payTrxNo":"T20200219233133945xo9fl","resultcode":"0000","resultmessage":"交易成功","paySign":"e4960a598ca196879f74ab08bff7a7ac","version":1}';
         if(!$data){
             echo 'fail';die;
         }else{
@@ -190,8 +188,8 @@ class ApiController extends Controller
         $paySign = $data['paySign'];//签名信息
         $appId = $data['appId'];
         //验证签名
-//        $result = self::checkAlipaySign($orderNo,$appId);
-//        if($result){
+        $result = self::checkAlipaySign($orderNo,$appId);
+        if($result){
             if($resultcode == '0000'){
                 $amount = $amount/100;//换成元
                 $orderData = Recharge::find()->where("orderNumber = '{$orderNo}' and money = $amount")->asArray()->one();
@@ -201,15 +199,15 @@ class ApiController extends Controller
 //                    $amount = $amount/100;//换成元
                     $postData = ['uid'=>$orderData['roleId'],'pay_money'=>$orderData['money'],'ratio'=>$orderData['ratio'],'lucknum'=>$orderData['lucknum'],'server_id'=>$orderData['server_id'],'sign'=>$orderData['sign'],'order_no'=>$orderNo,'ext_info'=>$orderData['extInfo']];
                     $url = \Yii::$app->params['gameServerUrl'];
-                    Methods::post($url,$postData);
+//                    Methods::post($url,$postData);
                 }
                 echo 'SUCCESS';
             }else{
                 echo 'fail';
             }
-//        }else{
-//            echo 'fail,sign error';
-//        }
+        }else{
+            echo 'fail,sign error';
+        }
         die;
     }
 
@@ -237,7 +235,8 @@ class ApiController extends Controller
             $payType = 'JSAPI_ALIPAY';//支付宝
         }
         $dateTime = date('YmdHis',$orderData['createTime']);
-        $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>''];
+        $returnUrl = \Yii::$app->params['redirect_url']."?orderId=".$orderData['id'];;//商户前端返回页面地址
+        $postData = ['amount'=>(100*$orderData['money']),'appid'=>$appid,'area'=>$area,'asynNotifyUrl'=>$asynNotifyUrl,'city'=>$city,'dateTime'=>$dateTime,'orderNo'=>$orderNumber,'payType'=>$payType,'productName'=>$orderData['product'],'province'=>$province,'returnUrl'=>$returnUrl];
         ksort($postData);//生成签名
         $sign = self::signAlipay($postData,$key);
         $paySign = $orderData['paySign'];
