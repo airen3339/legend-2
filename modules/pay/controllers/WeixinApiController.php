@@ -100,7 +100,7 @@ class WeixinApiController extends Controller
 //        $payType = 'SCANPAY_ALIPAY';
 //        $payType = 'JSAPI_ALIPAY';//支付宝
         $payType = 'JSAPI_WEIXIN';
-        $asynNotifyUrl = \Yii::$app->params['alipayNotify'];//商户异步通知地址
+        $asynNotifyUrl = \Yii::$app->params['dsfWxNotify'];//商户异步通知地址
 //        $returnUrl = '';//商户前端返回页面地址
         $returnUrl = \Yii::$app->params['redirect_url']."?orderId=".$orderId;;//商户前端返回页面地址
         $amount = $amount*100;//金额处理 单位为分
@@ -163,7 +163,7 @@ class WeixinApiController extends Controller
      * 微信
      * POST方式
      */
-    public function actionAlipayNotify(){
+    public function actionWxNotify(){
         $data = isset($_POST['data'])?$_POST['data']:'';
         Recharge::notifyLog($data,3);
         if(!$data){
@@ -215,7 +215,7 @@ class WeixinApiController extends Controller
         $province = \Yii::$app->params['province'];
         $city = \Yii::$app->params['city'];
         $area = \Yii::$app->params['area'];
-        $asynNotifyUrl = \Yii::$app->params['alipayNotify'];
+        $asynNotifyUrl = \Yii::$app->params['dsfWxNotify'];
 //        $payType = 'SCANPAY_ALIPAY';
 //        $payType = 'JSAPI_ALIPAY';
         $payType = 'JSAPI_WEIXIN';
