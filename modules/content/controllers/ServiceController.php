@@ -79,6 +79,56 @@ class ServiceController extends  AdminController {
         $servers = Server::getServers();
         return $this->render('role-feedback',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
     }
+    /**
+     * 用户反馈删除
+     */
+    public function actionFeedbackDelete(){
+        $action = \Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = \Yii::$app->request->get('beginTime');
+        $endTime = \Yii::$app->request->get('endTime');
+        $server = \Yii::$app->request->get('serverId');
+        $content = \Yii::$app->request->get('content');
+        $name = Yii::$app->request->get('name');
+        $where  = ' 1=1 ';
+        if($beginTime){
+            $begin = strtotime($beginTime);
+            $where .= " and unix_timestamp(feedTime) >= $begin";
+        }
+        if($endTime){
+            $end = strtotime($endTime) + 86399;
+            $where .= " and unix_timestamp(feedTime) <= $end";
+        }
+        if($server){
+            $where .= " and serverId = $server";
+        }
+        if($content){
+            $where .= " and (  feedback like '%{$content}%'  or replyContent like '%{$content}%' )" ;
+        }
+        if($name){
+            $where .= " and roleName = '{$name}'";
+        }
+        $count = RoleFeedback::find()->where($where)->count();
+        $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $data = RoleFeedback::find()->where($where)->orderBy('createTime desc')->offset($page->offset)->limit($page->limit)->asArray()->all();
+        foreach($data as $k => $v){
+            $data[$k]['replyName'] = Role::find()->where("id = {$v['replyId']}")->asArray()->one()['name'];
+        }
+        $servers = Server::getServers();
+        return $this->render('feedback-delete',['data'=>$data,'page'=>$page,'count'=>$count,'servers'=>$servers]);
+    }
+    /**
+     * 用户反馈删除
+     */
+    public function actionDeleteFeedback(){
+        $id = Yii::$app->request->get('id');
+        $res = RoleFeedback::deleteAll("id = $id");
+        if($res){
+            echo "<script>alert('删除成功！');setTimeout(function(){location.href='feedback-delete';},1000)</script>";
+        }else{
+            echo "<script>alert('删除失败，请重试！');setTimeout(function(){history.go(-1);},1000)</script>";
+        }
+    }
 
     /**
      * 单据数据

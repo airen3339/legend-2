@@ -67,10 +67,10 @@
             foreach($user as $kss => $v) {
                 ?>
                 <tr  class="text-item tdBorder">
-                    <td ><span ><?php echo $v['RoleID']?></span></td>
+                    <td ><span ><a href="/content/player/detail-information?uid=<?php echo $v['RoleID']?>" ><?php echo $v['RoleID']?></a></span></td>
                     <td style="width:180px"><span ></span><?php echo $v['UserID']?></span></td>
                     <td ><span ><?php echo $v['WorldID']?></span></td>
-                    <td ><span ><?php echo $v['Name']?></span></td>
+                    <td ><span ><a href="/content/player/detail-information?name=<?php echo $v['Name']?>"><?php echo $v['Name']?></a></span></td>
                     <td ><span ><?php echo $v['PackageFlag']?></span></td>
 <!--                    <td ><span style="width: 80px; ">--><?php //echo '11'?><!--</span></td>-->
                     <td ><span ><?php echo $v['CreateDate']?></span></td>
