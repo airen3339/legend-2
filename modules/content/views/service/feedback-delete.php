@@ -2,12 +2,12 @@
 <div class="span10" id="datacontent">
     <ul class="breadcrumb">
         <li><a href="/content/service/index">客服模块</a> <span class="divider">/</span></li>
-        <li class="active">用户反馈</li>
+        <li class="active">用户反馈删除</li>
     </ul>
     <ul class="nav">
 
     </ul>
-    <form action="/content/service/role-feedback" method="get" class="form-horizontal">
+    <form action="/content/service/feedback-delete" method="get" class="form-horizontal">
         <table class="table">
             <tr>
                 <td>
