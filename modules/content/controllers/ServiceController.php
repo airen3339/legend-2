@@ -51,6 +51,7 @@ class ServiceController extends  AdminController {
         $endTime = \Yii::$app->request->get('endTime');
         $server = \Yii::$app->request->get('serverId');
         $content = \Yii::$app->request->get('content');
+        $name = Yii::$app->request->get('name');
         $where  = ' 1=1 ';
         if($beginTime){
             $begin = strtotime($beginTime);
@@ -65,6 +66,9 @@ class ServiceController extends  AdminController {
         }
         if($content){
             $where .= " and (  feedback like '%{$content}%'  or replyContent like '%{$content}%' )" ;
+        }
+        if($name){
+            $where .= " and roleName = '{$name}'";
         }
         $count = RoleFeedback::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count,'pageSize'=>10]);

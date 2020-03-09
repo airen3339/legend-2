@@ -37,6 +37,12 @@
                     </select>
                 </td>
                 <td>
+                    角色名：
+                </td>
+                <td>
+                    <input  style="height: 20px;width: 100px" type="text"   id="name"  name="name" value="<?php echo isset($_GET['name'])?$_GET['name']:''?>"/>
+                </td>
+                <td>
                     检索内容：
                 </td>
                 <td>
