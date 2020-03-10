@@ -948,9 +948,9 @@ class OperateController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
-        $endTime = Yii::$app->request->post('endTime');
+//        $endTime = Yii::$app->request->post('endTime');
         $where = " 1 = 1 ";
-        if($beginTime && $endTime){
+        if($beginTime ){
             $begin = strtotime($beginTime);
             $where .= " and unix_timestamp(times) >= $begin";
             $end = $begin + 86399;
@@ -1035,5 +1035,73 @@ class OperateController  extends AdminController
 
         }
         return $this->render('lottery-data-day',['data'=>$datas]);
+    }
+    /**
+     * 奖池数据
+     * 按天统计
+     * 折线图
+     */
+    public function actionRewardDataImg(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $day = Yii::$app->request->get('beginTime');
+        if(!$day){
+            $day = date("Y-m-d");
+        }
+        //计算时间段
+        $beginTime =strtotime($day);
+        $endTime = $beginTime + 86399;
+        $where = " unix_timestamp(times) between $beginTime and $endTime ";
+        $datas = RewardData::find()->where($where)->asArray()->orderBy('times asc')->all();
+        if(!$datas){
+            $series = '';//x轴
+            $data = '';//y轴
+        }else{
+            $seriesArr = [];
+            $dataArr = [];
+            foreach($datas as $k => $v){
+                $arr = explode(' ',$v['times']);
+                $seriesArr[] = $arr[1];
+                $dataArr[] = $v['data5'];
+            }
+            $series = implode(',',$seriesArr);
+            $data = implode(',',$dataArr);
+        }
+        $data = ['series'=>$series,'data'=>$data,'date'=>$day];
+        return $this->render('reward-data-img',$data);
+    }
+    /**
+     * 奖池数据
+     * 按天统计
+     * 折线图
+     */
+    public function actionLotteryDataImg(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $day = Yii::$app->request->get('beginTime');
+        if(!$day){
+            $day = date("Y-m-d");
+        }
+        //计算时间段
+        $beginTime =strtotime($day);
+        $endTime = $beginTime + 86399;
+        $where = " unix_timestamp(times) between $beginTime and $endTime ";
+        $datas = LotteryData::find()->where($where)->asArray()->orderBy('times asc')->all();
+        if(!$datas){
+            $series = '';//x轴
+            $data = '';//y轴
+        }else{
+            $seriesArr = [];
+            $dataArr = [];
+            foreach($datas as $k => $v){
+                $arr = explode(' ',$v['times']);
+                $seriesArr[] = $arr[1];
+                $dataArr[] = $v['data5'];
+            }
+            $series = implode(',',$seriesArr);
+            $data = implode(',',$dataArr);
+        }
+        $data = ['series'=>$series,'data'=>$data,'date'=>$day];
+        return $this->render('lottery-data-img',$data);
     }
 }
