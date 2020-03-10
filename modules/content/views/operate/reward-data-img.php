@@ -62,7 +62,7 @@
             left: '3%',
             right: '4%',
             bottom: '3%',
-            containLabel: true,
+            containLabel: true
         },
         toolbox: {
             feature: {
@@ -77,8 +77,8 @@
             data: xArr,
             axisLabel: {
                 interval:0,
-                rotate:25
-            }
+                rotate:55
+            },
         },
         yAxis: {
             name:'库存',
@@ -87,13 +87,19 @@
         },
         series: [
             {
-                name:'奖池数据',
+                name:'奖池数据库存',
                 type:'line',
                 stack: '新增',
                 data:arr
             }
 
-        ]
+        ],
+        // dataZoom:{
+        //     realtime:true, //拖动滚动条时是否动态的更新图表数据
+        //     height:25,//滚动条高度
+        //     start:40,//滚动条开始位置（共100等份）
+        //     end:65//结束位置（共100等份）
+        // }
     };
 
     if (option && typeof option === "object") {

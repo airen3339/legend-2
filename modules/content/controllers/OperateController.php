@@ -1062,6 +1062,7 @@ class OperateController  extends AdminController
             foreach($datas as $k => $v){
                 $arr = explode(' ',$v['times']);
                 $seriesArr[] = $arr[1];
+//                $seriesArr[] = '';
                 $dataArr[] = $v['data5'];
             }
             $series = implode(',',$seriesArr);
