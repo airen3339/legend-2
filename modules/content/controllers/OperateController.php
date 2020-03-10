@@ -948,17 +948,92 @@ class OperateController  extends AdminController
         $action = Yii::$app->controller->action->id;
         parent::setActionId($action);
         $beginTime = Yii::$app->request->get('beginTime');
-//        $endTime = Yii::$app->request->post('endTime');
+        $endTime = Yii::$app->request->post('endTime');
         $where = " 1 = 1 ";
-        if($beginTime){
+        if($beginTime && $endTime){
             $begin = strtotime($beginTime);
             $where .= " and unix_timestamp(times) >= $begin";
             $end = $begin + 86399;
             $where .= " and unix_timestamp(times) <= $end";
+        }else{
+
         }
         $count = LotteryData::find()->where($where)->count();
         $page = new Pagination(['totalCount'=>$count]);
         $data = LotteryData::find()->where($where)->asArray()->orderBy('times desc')->offset($page->offset)->limit($page->limit)->all();
         return $this->render('lottery-data',['data'=>$data,'count'=>$count,'page'=>$page]);
+    }
+    /**
+     * 奖池数据
+     * 按天统计
+     */
+    public function actionRewardDataDay(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+        }else{
+            $month_begin = date('Y-m-01');
+            $month_now = date("Y-m-d");
+        }
+        //计算时期天数
+        $monthNow = strtotime($month_now);
+        $monthBegin = strtotime($month_begin);
+        $days = ($monthNow-$monthBegin)/86400;
+        $datas = [];
+        for($i=$days;$i>=0;$i--) {
+            $dateTime = $monthBegin + 86400*$i;
+            $date = date('Y-m-d',$dateTime);
+            $periods = str_replace('-','',$date).'001';
+            $data = RewardData::find()->where("periods ='{$periods}'")->asArray()->one();
+            if($data){
+                $data['dateTime'] = $date;
+            }else{
+                $data = ['dateTime'=>$date,'periods'=>'','data1'=>'','data2'=>'','data3'=>'','data4'=>'','data5'=>''];
+            }
+            $datas[] = $data;
+
+        }
+        return $this->render('reward-data-day',['data'=>$datas]);
+    }
+    /**
+     * 奖池数据
+     * 时来运转
+     * 按天统计
+     */
+    public function actionLotteryDataDay(){
+        $action = Yii::$app->controller->action->id;
+        parent::setActionId($action);
+        $beginTime = Yii::$app->request->get('beginTime');
+        $endTime = Yii::$app->request->get('endTime');
+        if($beginTime && $endTime){
+            $month_begin = $beginTime;
+            $month_now = $endTime;
+        }else{
+            $month_begin = date('Y-m-01');
+            $month_now = date("Y-m-d");
+        }
+        //计算时期天数
+        $monthNow = strtotime($month_now);
+        $monthBegin = strtotime($month_begin);
+        $days = ($monthNow-$monthBegin)/86400;
+        $datas = [];
+        for($i=$days;$i>=0;$i--) {
+            $dateTime = $monthBegin + 86400*$i;
+            $date = date('Y-m-d',$dateTime);
+            $periods = str_replace('-','',$date).'001';
+            $data = LotteryData::find()->where("periods ='{$periods}'")->asArray()->one();
+            if($data){
+                $data['dateTime'] = $date;
+            }else{
+                $data = ['dateTime'=>$date,'periods'=>'','data1'=>'','data2'=>'','data3'=>'','data4'=>'','data5'=>''];
+            }
+            $datas[] = $data;
+
+        }
+        return $this->render('lottery-data-day',['data'=>$datas]);
     }
 }
