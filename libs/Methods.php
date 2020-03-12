@@ -255,6 +255,7 @@ class Methods
 #输出到浏览器
         self::browser_export('Excel',$title.'.xls');//输出到浏览器
         $objWriter->save('php://output'); //输出excel 文件到浏览器
+        die;
     }
 
     public static function browser_export($type,$filename){
