@@ -60,6 +60,10 @@ class PlayerController  extends AdminController
             $where .= " and p.UserID = '{$userId}'";
         }
         $sql = "select p.RoleID,p.UserID,p.LastLogin,p.CreateDate,u.PackageFlag,p.WorldID,p.Name from `user` u inner join player p on p.UserID = u.UserID where $where";
+        $excel = Yii::$app->request->get('excel',0);//0-搜索 1-excel导出
+        if($excel){//Excel数据导出
+            Player::roleDownloadExcel($sql);die;
+        }
         $count = \Yii::$app->db2->createCommand($sql)->queryAll();
         $count = count($count);
         $limit = " limit ".(20*($page-1)).",20";
@@ -150,6 +154,10 @@ class PlayerController  extends AdminController
             }else{
                 $where .= " and 1 > 2";
             }
+        }
+        $excel = Yii::$app->request->get('excel',0);//0-搜索 1-excel导出
+        if($excel){//Excel数据导出
+            Player::orderDownloadExcel($where);die;
         }
         $total = ChargeMoney::find()->where("$where")->count();
         $pages = new Pagination(['totalCount'=>$total,'pageSize'=>20]);

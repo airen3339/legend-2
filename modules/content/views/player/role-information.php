@@ -6,7 +6,7 @@
     </ul>
     <ul class="nav">
     </ul>
-    <form action="/content/player/role-information" method="get" class="form-horizontal">
+    <form action="/content/player/role-information" method="get" class="form-horizontal" id="excel-form">
         <table class="table">
             <tr>
                 <td>
@@ -42,7 +42,9 @@
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-primary" type="submit">查询</button>
+                    <input type="hidden" value='0' name="excel" id="excel" />
+                    <button class="btn btn-primary" type="submit">查询</button>&nbsp;&nbsp;
+                    <a href="#" class="btn btn-primary" onclick="roleExcelDownload()">导出</a>
                 </td>
                 <td></td>
             </tr>
@@ -104,5 +106,11 @@
             return false;
         }
         location.href = '/content/player/role-information?page='+page;
+    }
+    function roleExcelDownload(){
+        if(confirm('确定导出数据吗？')){
+            $('#excel').val(1);
+            $('#excel-form').submit();
+        }
     }
 </script>
