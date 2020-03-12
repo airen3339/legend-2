@@ -43,7 +43,7 @@
                 </td>
                 <td>
                     <input type="hidden" value='0' name="excel" id="excel" />
-                    <button class="btn btn-primary" type="submit">查询</button>&nbsp;&nbsp;
+                    <button class="btn btn-primary" type="submit" onclick="alterExcel()">查询</button>&nbsp;&nbsp;
                     <a href="#" class="btn btn-primary" onclick="roleExcelDownload()">导出</a>
                 </td>
                 <td></td>
@@ -112,5 +112,9 @@
             $('#excel').val(1);
             $('#excel-form').submit();
         }
+    }
+    function alterExcel(){
+        $('#excel').val(0);
+        $('#excel-form').submit();
     }
 </script>
