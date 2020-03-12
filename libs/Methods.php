@@ -241,10 +241,12 @@ class Methods
         $j = 2;
         foreach($data as $t => $r){
             foreach($th as $e => $q){
-                if(preg_match('/=/',$r[$q['key']])){//特殊字符处理
-                    $objSheet->setCellValue($q['column'].$j,' '.$r[$q['key']]);
+                $content = $r[$q['key']];
+                $content = self::wxNickNameFormat($content);
+                if(preg_match('/=/',$content)){//特殊字符处理
+                    $objSheet->setCellValue($q['column'].$j,' '.$content);
                 }else{
-                    $objSheet->setCellValue($q['column'].$j,$r[$q['key']]);
+                    $objSheet->setCellValue($q['column'].$j,$content);
                 }
                 $objSheet->getStyle($q['column'].$j)->getAlignment()->setWrapText(true);
             }
@@ -256,6 +258,12 @@ class Methods
         self::browser_export('Excel',$title.'.xls');//输出到浏览器
         $objWriter->save('php://output'); //输出excel 文件到浏览器
         die;
+    }
+    //第二种
+    public static function wxNickNameFormat($nickName){
+        $value = json_encode($nickName);
+        $value = preg_replace("/\\\u[ed][0-9a-f]{3}\\\u[ed][0-9a-f]{3}/","*",$value);
+        return json_decode($value);
     }
 
     public static function browser_export($type,$filename){
