@@ -56,6 +56,7 @@
             <tr>
                 <th>角色ID</th>
                 <th>账号</th>
+                <th>电话</th>
                 <th>区服</th>
                 <th>角色名</th>
                 <th>渠道</th>
@@ -71,6 +72,7 @@
                 <tr  class="text-item tdBorder">
                     <td ><span ><a href="/content/player/detail-information?uid=<?php echo $v['RoleID']?>" ><?php echo $v['RoleID']?></a></span></td>
                     <td style="width:180px"><span ></span><?php echo $v['UserID']?></span></td>
+                    <td style="width:180px"><span ></span><?php echo $v['Mobile']?></span></td>
                     <td ><span ><?php echo $v['WorldID']?></span></td>
                     <td ><span ><a href="/content/player/detail-information?name=<?php echo $v['Name']?>"><?php echo $v['Name']?></a></span></td>
                     <td ><span ><?php echo $v['PackageFlag']?></span></td>

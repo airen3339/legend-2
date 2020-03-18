@@ -59,7 +59,7 @@ class PlayerController  extends AdminController
         if($userId){
             $where .= " and p.UserID = '{$userId}'";
         }
-        $sql = "select p.RoleID,p.UserID,p.LastLogin,p.CreateDate,u.PackageFlag,p.WorldID,p.Name from `user` u inner join player p on p.UserID = u.UserID where $where";
+        $sql = "select p.RoleID,p.UserID,p.LastLogin,p.CreateDate,u.PackageFlag,p.WorldID,p.Name,u.Mobile from `user` u inner join player p on p.UserID = u.UserID where $where";
         $excel = Yii::$app->request->get('excel',0);//0-搜索 1-excel导出
         if($excel){//Excel数据导出
             Player::roleDownloadExcel($sql);die;
