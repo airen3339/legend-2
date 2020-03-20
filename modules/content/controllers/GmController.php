@@ -658,7 +658,7 @@ class GmController  extends AdminController
             $content = ['UserID'=>$userId,'contact'=>$contact,'enterID'=>$serverIds];
             $host = $_SERVER['HTTP_HOST'];
             if($host == 'www.6p39k.cn' || $host == '6p39k.cn'){
-                $serverId = 1;
+                $serverId = 999999;
             }else{
                 $serverId = 903;
             }
