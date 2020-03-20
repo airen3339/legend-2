@@ -181,16 +181,16 @@ class Methods
     public static function GmFileGet($command_content,$server_id=100,$command=6,$command_cls=4234){
         $url = Yii::$app->params['gameServerUrl'];
 //        Methods::varDumpLog('push.txt',$url,'a');
+        $date = date('Y-m-d');
+        $log = "push-$date.txt";
         if(!$url){return 1;}//本地不推
         $post_data = ['server_id'=>$server_id,'command'=>$command,'command_cls'=>$command_cls,'command_content'=>json_encode(['body'=>$command_content])];
+        Methods::varDumpLog($log,"\n",'a');
+        Methods::varDumpLog($log,json_decode($post_data),'a');
         $post_data = http_build_query($post_data);
         $aContext = array('http'=>array('method' => 'POST','header' =>'Content-type: application/x-www-form-urlencoded','content' =>$post_data));
         $cxContext = stream_context_create($aContext);
         $res = file_get_contents($url,true,$cxContext);
-        $date = date('Y-m-d');
-        $log = "push-$date.txt";
-        Methods::varDumpLog($log,"\n",'a');
-        Methods::varDumpLog($log,$post_data,'a');
         Methods::varDumpLog($log,"\n",'a');
         Methods::varDumpLog($log,$res,'a');
         return $res;
